@@ -2,9 +2,11 @@
 
 Cada rodada (a cada 3h, no GitHub Actions):
 1. Lê as rotas cadastradas no painel (docs/rotas.json) e os ajustes (docs/ajustes.json).
-2. Varre o calendário no Google Voos para um lote de rotas (rodízio) + rotas em foco.
-3. Compara com a média histórica do radar e marca o que está bem abaixo.
-4. Agrupa as datas com o mesmo preço, gera o texto, salva no painel e posta no Telegram.
+2. Para um lote de rotas (rodízio + rotas em foco), consulta no Google Voos o preço
+   SÓ IDA de cada dia: Fortaleza → destino (ida) e destino → Fortaleza (volta).
+3. Compara o menor preço com a média do radar para aquela rota.
+4. Quando está bem abaixo, lista as datas de ida e de volta que saem por esse valor
+   (agrupadas por mês), gera o texto, salva no painel e posta no Telegram.
 """
 
 from __future__ import annotations
@@ -26,7 +28,7 @@ import config as C  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 DOCS = ROOT / "docs"
-HIST_FILE = DATA / "historico_precos.json"
+HIST_FILE = DATA / "historico_trechos.json"
 SENT_FILE = DATA / "enviados.json"
 ROT_FILE = DATA / "rotacao.json"
 ALERTS_FILE = DOCS / "alerts.json"
@@ -44,26 +46,24 @@ OFFLINE = os.environ.get("PARTIU_OFFLINE") == "1"
 
 TZ = timezone(timedelta(hours=-3))
 MESES_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+MESES_LONGO = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto",
+               "Setembro", "Outubro", "Novembro", "Dezembro"]
 
 AJUSTES_PADRAO = {
-    "desconto_minimo": 0.20,
+    "desconto_minimo": 0.20,       # quanto abaixo da média o menor trecho precisa estar
     "max_alertas_por_rodada": 3,
-    "rotas_por_rodada": 11,
-    "dias_inicio": 7,
-    "dias_fim": 150,
-    "passo_dias": 3,
-    "duracao_nacional": 6,
-    "duracao_internacional": 10,
+    "rotas_por_rodada": 6,         # cada rota = ~2 x 90 consultas
+    "dias_inicio": 5,
+    "dias_fim": 95,                # janela de datas varrida
+    "passo_dias": 1,               # 1 = todo dia
+    "tolerancia_datas": 0.10,      # datas listadas: até 10% acima do menor preço
     "max_escalas_nacional": 1,
     "max_escalas_internacional": 2,
     "dias_sem_repetir": 3,
-    "link_whatsapp": "",
+    "link_whatsapp": "https://bit.ly/radar085",
     "assinatura": "",
-    "linha_premium": False,
     "mostrar_link": False,
-    "dias_proximos": 3,
-    "max_opcoes": 5,
-    "tolerancia_opcoes": 0.12,
+    "linha_premium": False,
     "telegram_ativo": True,
 }
 
@@ -93,10 +93,6 @@ def dm(d: str) -> str:
     return f"{d[8:10]}/{d[5:7]}"
 
 
-def dmy(d: str) -> str:
-    return f"{d[8:10]}/{d[5:7]}/{d[0:4]}"
-
-
 def log(*a):
     print(*a, flush=True)
 
@@ -104,70 +100,62 @@ def log(*a):
 def carregar_rotas() -> list[dict]:
     rotas = ler_json(ROTAS_FILE, None)
     if not rotas:
-        rotas = [{"iata": i, "nome": n, "tipo": t, "teto": teto, "ativo": True, "foco": False}
-                 for i, n, t, teto in C.DESTINOS]
+        rotas = [{"iata": i, "nome": n, "tipo": t, "teto": None, "ativo": True, "foco": False}
+                 for i, n, t, _ in C.DESTINOS]
         salvar_json(ROTAS_FILE, rotas)
     return rotas
 
 
 def carregar_ajustes() -> dict:
     a = dict(AJUSTES_PADRAO)
-    a.update(ler_json(AJUSTES_FILE, {}) or {})
-    if not AJUSTES_FILE.exists():
-        salvar_json(AJUSTES_FILE, a)
+    salvo = ler_json(AJUSTES_FILE, {}) or {}
+    a.update({k: v for k, v in salvo.items() if v is not None})
     return a
 
 
-# ----------------------------------------------------------------------------- Google Voos
-def _query(dest: str, ida: str, volta: str):
+# ----------------------------------------------------------------------------- Google Voos (só ida)
+def _query(orig: str, dest: str, dia: str):
     from fast_flights import FlightQuery, Passengers, create_query
     return create_query(
-        flights=[FlightQuery(date=ida, from_airport=C.ORIGEM, to_airport=dest),
-                 FlightQuery(date=volta, from_airport=dest, to_airport=C.ORIGEM)],
-        trip="round-trip", seat="economy", passengers=Passengers(adults=1),
+        flights=[FlightQuery(date=dia, from_airport=orig, to_airport=dest)],
+        trip="one-way", seat="economy", passengers=Passengers(adults=1),
         language="pt-BR", currency="BRL",
     )
 
 
-def google_link(dest: str, ida: str, volta: str) -> str:
+def google_link(orig: str, dest: str, dia: str) -> str:
     try:
-        return _query(dest, ida, volta).url()
+        return _query(orig, dest, dia).url()
     except Exception:
-        return f"https://www.google.com/travel/flights?q=voos%20{C.ORIGEM}%20{dest}%20{ida}%20{volta}&hl=pt-BR&curr=BRL"
+        return f"https://www.google.com/travel/flights?q=voos%20{orig}%20{dest}%20{dia}&hl=pt-BR&curr=BRL"
 
 
-def google_oferta(dest: str, ida: str, volta: str, max_escalas: int) -> dict | None:
+def google_trecho(orig: str, dest: str, dia: str, max_escalas: int) -> dict | None:
     from fast_flights import get_flights
-    res = [f for f in get_flights(_query(dest, ida, volta)) if getattr(f, "price", 0)]
+    res = [f for f in get_flights(_query(orig, dest, dia)) if getattr(f, "price", 0)]
     bons = [f for f in res if len(f.flights) - 1 <= max_escalas]
     if not bons:
         return None
     b = min(bons, key=lambda f: f.price)
-    return {"preco": float(b.price), "cia": (b.airlines or [""])[0], "escalas": max(0, len(b.flights) - 1)}
+    return {"dia": dia, "preco": float(b.price), "cia": (b.airlines or [""])[0],
+            "escalas": max(0, len(b.flights) - 1)}
 
 
-def coletar(r: dict, aj: dict) -> list[dict]:
-    if OFFLINE:
-        return dados_falsos(r)
-    nac = r["tipo"] == "nacional"
-    dur = int(r.get("duracao") or (aj["duracao_nacional"] if nac else aj["duracao_internacional"]))
-    max_esc = aj["max_escalas_nacional"] if nac else aj["max_escalas_internacional"]
+def varrer(orig: str, dest: str, max_esc: int, aj: dict) -> list[dict]:
     out, erros = [], 0
     d = date.today() + timedelta(days=int(aj["dias_inicio"]))
     fim = date.today() + timedelta(days=int(aj["dias_fim"]))
     while d <= fim:
-        ida, volta = d.isoformat(), (d + timedelta(days=dur)).isoformat()
         try:
-            o = google_oferta(r["iata"], ida, volta, max_esc)
+            o = google_trecho(orig, dest, d.isoformat(), max_esc)
             erros = 0
             if o:
-                o.update({"ida": ida, "volta": volta})
                 out.append(o)
         except Exception as e:  # noqa: BLE001
             erros += 1
-            log(f"  ! Google {r['iata']} {ida}: {type(e).__name__}: {str(e)[:100]}")
-            if erros >= 3:
-                log(f"  ! {r['iata']}: muitos erros seguidos, pulando rota")
+            log(f"  ! Google {orig}-{dest} {d}: {type(e).__name__}: {str(e)[:100]}")
+            if erros >= 4:
+                log(f"  ! {orig}-{dest}: muitos erros seguidos, parando")
                 break
             time.sleep(4)
         time.sleep(C.PAUSA_GOOGLE)
@@ -175,39 +163,53 @@ def coletar(r: dict, aj: dict) -> list[dict]:
     return out
 
 
-def dados_falsos(r: dict) -> list[dict]:
+def coletar(r: dict, aj: dict) -> tuple[list[dict], list[dict]]:
+    if OFFLINE:
+        return dados_falsos(r, "ida"), dados_falsos(r, "volta")
+    max_esc = aj["max_escalas_nacional"] if r["tipo"] == "nacional" else aj["max_escalas_internacional"]
+    ida = varrer(C.ORIGEM, r["iata"], max_esc, aj)
+    volta = varrer(r["iata"], C.ORIGEM, max_esc, aj) if ida else []
+    return ida, volta
+
+
+def dados_falsos(r: dict, sentido: str) -> list[dict]:
     import random
-    random.seed(r["iata"])
-    base = r.get("teto", 1500) * 1.1
+    random.seed(r["iata"] + sentido)
+    base = (900 if r["tipo"] == "nacional" else 2300) * random.uniform(.8, 1.2)
     out = []
-    d0 = date.today() + timedelta(days=10)
-    for i in range(0, 140, 3):
-        ida = d0 + timedelta(days=i)
-        preco = base * random.uniform(0.85, 1.4)
-        if r["iata"] in ("LIS", "REC", "SAO", "BUE") and 30 < i < 50:
-            preco = base * 0.62
-        out.append({"ida": ida.isoformat(), "volta": (ida + timedelta(days=7)).isoformat(),
-                    "preco": round(preco), "cia": random.choice(["LATAM", "Gol", "Azul", "TAP"]),
+    for i in range(5, 95):
+        dia = date.today() + timedelta(days=i)
+        p = base * random.uniform(0.9, 1.45)
+        if r["iata"] in ("LIS", "REC", "SAO", "MAB") and (30 < i < 62) and random.random() < .4:
+            p = base * 0.6
+        out.append({"dia": dia.isoformat(), "preco": round(p), "cia": random.choice(["LATAM", "Gol", "Azul"]),
                     "escalas": random.choice([0, 0, 1])})
     return out
 
 
 # ----------------------------------------------------------------------------- lógica
-def preco_tipico(rota: str, ofertas: list[dict], hist: dict) -> float | None:
-    valores = [o["preco"] for o in ofertas]
-    passadas = [h["mediana"] for h in hist.get(rota, [])][-40:]
+def tipico(chave: str, dias: list[dict], hist: dict) -> float | None:
     base = []
-    if len(valores) >= 6:
-        base.append(statistics.median(valores))
+    if len(dias) >= 8:
+        base.append(statistics.median(d["preco"] for d in dias))
+    passadas = [h["mediana"] for h in hist.get(chave, [])][-40:]
     if len(passadas) >= 3:
         base.append(statistics.median(passadas))
     return max(base) if base else None
 
 
-def agrupar_datas(ofertas: list[dict], preco_ref: float) -> list[dict]:
-    lim = preco_ref * (1 + C.TOLERANCIA_MESMO_VALOR)
-    return [{"ida": o["ida"], "volta": o["volta"], "preco": round(o["preco"])}
-            for o in sorted(ofertas, key=lambda x: x["ida"]) if o["preco"] <= lim]
+def baratas(dias: list[dict], ref: float, tol: float) -> list[dict]:
+    lim = ref * (1 + tol)
+    return sorted([d for d in dias if d["preco"] <= lim], key=lambda d: d["dia"])
+
+
+def por_mes(dias: list[dict]) -> list[dict]:
+    """[{"mes": "Novembro 2026", "dias": ["05","07"]}]"""
+    grupos: dict[str, list[str]] = {}
+    for d in sorted(dias, key=lambda x: x["dia"]):
+        y, m, dd = d["dia"].split("-")
+        grupos.setdefault(f"{MESES_LONGO[int(m) - 1]} {y}", []).append(dd)
+    return [{"mes": k, "dias": v} for k, v in grupos.items()]
 
 
 def classe(desc: float) -> tuple[str, str]:
@@ -224,63 +226,30 @@ def link_aviasales(dest: str, ida: str, volta: str) -> str:
 
 
 def montar_texto(a: dict, aj: dict) -> str:
-    paradas = "direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
+    paradas = "voo direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
     L = [
-        "🚨 O RADAR APITOU",
+        "🚨 *O RADAR APITOU*",
         "",
-        f"✈️ {C.ORIGEM_NOME} → {a['destino_nome']} (ida e volta)",
-        f"💰 {brl(a['preco'])} · {round(a['desconto'] * 100)}% abaixo da média ({brl(a['preco_tipico'])})",
-        a["classe_txt"],
+        f"✈️ {C.ORIGEM_NOME} ({C.ORIGEM}) → {a['destino_nome']} ({a['destino']})",
+        f"💰 A partir de *{brl(a['preco'])}* o trecho",
+        f"{a['classe_txt']} · {round(a['desconto'] * 100)}% abaixo da média",
         f"🛫 {a['cia_nome'] or '—'} · {paradas}",
         "",
-        f"📅 {dm(a['ida'])} → {dm(a['volta'])} · {brl(a['preco'])}",
+        "*Datas de ida:*",
     ]
-    ops = [o for o in a.get("opcoes", []) if (o["ida"], o["volta"]) != (a["ida"], a["volta"])]
-    if ops:
-        L.append("📆 Datas próximas:")
-        for o in ops[: int(aj.get("max_opcoes", 5))]:
-            L.append(f"• {dm(o['ida'])} → {dm(o['volta'])} · {brl(o['preco'])}")
+    L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
+    L += ["", "*Datas de volta:*"]
+    L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
     L += ["", "⚠️ Preço pode mudar a qualquer momento."]
     if aj.get("mostrar_link"):
         L.append(f"🔗 {a['link_google']}")
     if aj.get("linha_premium"):
         L.append("⭐ Você recebeu em primeira mão por ser Premium.")
-    rod = [x for x in [f"✈️ Receba alertas: {aj['link_whatsapp']}" if aj.get("link_whatsapp") else "", aj.get("assinatura") or ""] if x]
+    rod = [x for x in [f"✈️ Receba alertas no WhatsApp: {aj['link_whatsapp']}" if aj.get("link_whatsapp") else "",
+                       aj.get("assinatura") or ""] if x]
     if rod:
         L += [""] + rod
     return "\n".join(L)
-
-
-def datas_proximas(r: dict, aj: dict, o: dict, ofertas: list[dict]) -> list[dict]:
-    """Testa ida e volta ±N dias em volta da melhor data e junta com as datas do calendário."""
-    n = int(aj.get("dias_proximos", 3))
-    nac = r["tipo"] == "nacional"
-    max_esc = aj["max_escalas_nacional"] if nac else aj["max_escalas_internacional"]
-    ida0, volta0 = date.fromisoformat(o["ida"]), date.fromisoformat(o["volta"])
-    pares = set()
-    for k in range(-n, n + 1):
-        if k:
-            pares.add((ida0 + timedelta(days=k), volta0 + timedelta(days=k)))  # mesma duração
-            pares.add((ida0, volta0 + timedelta(days=k)))                         # muda só a volta
-            pares.add((ida0 + timedelta(days=k), volta0))                         # muda só a ida
-    minimo = date.today() + timedelta(days=2)
-    res = {(x["ida"], x["volta"]): x for x in ofertas
-           if abs((date.fromisoformat(x["ida"]) - ida0).days) <= n}
-    if not OFFLINE:
-        for ida, volta in sorted(pares):
-            if ida < minimo or volta <= ida + timedelta(days=1):
-                continue
-            try:
-                g = google_oferta(r["iata"], ida.isoformat(), volta.isoformat(), max_esc)
-                if g:
-                    res[(ida.isoformat(), volta.isoformat())] = {**g, "ida": ida.isoformat(), "volta": volta.isoformat()}
-            except Exception as e:  # noqa: BLE001
-                log(f"  ! próximas {r['iata']} {ida}: {type(e).__name__}")
-            time.sleep(C.PAUSA_GOOGLE)
-    lim = o["preco"] * (1 + float(aj.get("tolerancia_opcoes", 0.12)))
-    ops = [{"ida": x["ida"], "volta": x["volta"], "preco": round(x["preco"])} for x in res.values() if x["preco"] <= lim]
-    ops.sort(key=lambda x: (x["preco"], x["ida"]))
-    return ops[:12]
 
 
 def postar_telegram(texto: str, aj: dict) -> bool:
@@ -288,12 +257,21 @@ def postar_telegram(texto: str, aj: dict) -> bool:
         return False
     try:
         r = requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-                          json={"chat_id": TG_CHAT, "text": texto, "disable_web_page_preview": True},
+                          json={"chat_id": TG_CHAT, "text": texto.replace("*", ""), "disable_web_page_preview": True},
                           timeout=20)
         return r.ok
     except Exception as e:  # noqa: BLE001
         log(f"  ! Telegram: {e}")
         return False
+
+
+def registrar(hist: dict, chave: str, dias: list[dict], hoje: str) -> None:
+    if not dias:
+        return
+    reg = [h for h in hist.get(chave, []) if h["dia"] != hoje]
+    reg.append({"dia": hoje, "mediana": statistics.median(d["preco"] for d in dias),
+                "minimo": min(d["preco"] for d in dias)})
+    hist[chave] = reg[-90:]
 
 
 # ----------------------------------------------------------------------------- rodada
@@ -322,73 +300,88 @@ def rodada() -> None:
     enviados = ler_json(SENT_FILE, [])
     salvos = ler_json(ALERTS_FILE, {"alertas": []}).get("alertas", [])
     hoje = agora().date().isoformat()
+    tol = float(aj["tolerancia_datas"])
     lote = escolher_lote(rotas, aj)
     log(f"Lote: {', '.join(r['iata'] for r in lote)}")
 
     candidatos, resumo = [], {}
     for r in lote:
         rota = f"{C.ORIGEM}-{r['iata']}"
-        ofertas = coletar(r, aj)
-        if not ofertas:
-            log(f"{rota}: sem dados")
-            resumo[r["iata"]] = {"ofertas": 0, "quando": agora().isoformat(timespec="minutes")}
+        ida, volta = coletar(r, aj)
+        quando = agora().isoformat(timespec="minutes")
+        if not ida or not volta:
+            log(f"{rota}: sem dados suficientes (ida {len(ida)}, volta {len(volta)})")
+            resumo[r["iata"]] = {"ofertas": len(ida), "quando": quando}
             continue
-        tipico = preco_tipico(rota, ofertas, hist)
-        menor = min(ofertas, key=lambda o: o["preco"])
-        med = statistics.median(o["preco"] for o in ofertas)
-        reg = [h for h in hist.get(rota, []) if h["dia"] != hoje]
-        reg.append({"dia": hoje, "mediana": med, "minimo": menor["preco"]})
-        hist[rota] = reg[-90:]
-        resumo[r["iata"]] = {"ofertas": len(ofertas), "menor": menor["preco"], "mediana": med,
-                             "quando": agora().isoformat(timespec="minutes")}
-        if not tipico:
+        t_ida = tipico(rota, ida, hist)
+        t_volta = tipico(f"{r['iata']}-{C.ORIGEM}", volta, hist)
+        registrar(hist, rota, ida, hoje)
+        registrar(hist, f"{r['iata']}-{C.ORIGEM}", volta, hoje)
+        m_ida = min(ida, key=lambda d: d["preco"])
+        resumo[r["iata"]] = {"ofertas": len(ida), "menor": m_ida["preco"],
+                             "mediana": statistics.median(d["preco"] for d in ida), "quando": quando}
+        if not t_ida or not t_volta:
             continue
-        desc = 1 - menor["preco"] / tipico
-        log(f"{rota}: {len(ofertas)} datas · menor {brl(menor['preco'])} · média {brl(tipico)} · {desc:.0%}")
+        desc = 1 - m_ida["preco"] / t_ida
+        log(f"{rota}: {len(ida)}+{len(volta)} dias · menor ida {brl(m_ida['preco'])} · média {brl(t_ida)} · {desc:.0%}")
         teto = float(r.get("teto") or 1e9)
-        if desc >= float(aj["desconto_minimo"]) and menor["preco"] <= teto:
-            candidatos.append({"r": r, "rota": rota, "o": menor, "tipico": tipico, "desc": desc,
-                               "datas": agrupar_datas(ofertas, menor["preco"]), "todas": ofertas})
+        if desc < float(aj["desconto_minimo"]) or m_ida["preco"] > teto:
+            continue
+        d_ida = baratas(ida, m_ida["preco"], tol)
+        primeira = d_ida[0]["dia"]
+        volta_ok = [d for d in volta if d["dia"] > primeira]
+        if not volta_ok:
+            continue
+        m_volta = min(volta_ok, key=lambda d: d["preco"])
+        if m_volta["preco"] > t_volta * (1 - float(aj["desconto_minimo"]) / 2):
+            log(f"  volta cara ({brl(m_volta['preco'])} vs média {brl(t_volta)}) — sem alerta")
+            continue
+        d_volta = baratas(volta_ok, m_volta["preco"], tol)
+        candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
+                           "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
 
     limite = (agora() - timedelta(days=int(aj["dias_sem_repetir"]))).isoformat()
     recentes = [e for e in enviados if e["quando"] >= limite]
     candidatos = [c for c in candidatos
-                  if not any(e["rota"] == c["rota"] and c["o"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
-    candidatos.sort(key=lambda c: c["desc"] + min(len(c["datas"]), 10) * 0.004
+                  if not any(e["rota"] == c["rota"] and c["m_ida"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
+    candidatos.sort(key=lambda c: c["desc"] + min(len(c["d_ida"]), 10) * 0.004
                     + (0.02 if c["r"].get("foco") else 0), reverse=True)
 
     novos = []
     limite_n = 10 if ROTAS_AGORA else int(aj["max_alertas_por_rodada"])
     for c in candidatos[:limite_n]:
-        r, o = c["r"], c["o"]
+        r, mi, mv = c["r"], c["m_ida"], c["m_volta"]
         k, ktxt = classe(c["desc"])
-        opcoes = datas_proximas(r, aj, o, c.get("todas", []))
-        if opcoes and opcoes[0]["preco"] < o["preco"]:
-            o = {**o, **opcoes[0]}
         a = {
-            "id": f"{c['rota']}-{o['ida']}-{int(time.time())}",
+            "id": f"{c['rota']}-{mi['dia']}-{int(time.time())}",
             "criado": agora().isoformat(timespec="minutes"),
             "rota": c["rota"], "destino": r["iata"], "destino_nome": r["nome"], "tipo": r["tipo"],
-            "preco": round(o["preco"]), "preco_tipico": round(c["tipico"]), "desconto": round(c["desc"], 3),
+            "modo": "trecho",
+            "preco": round(mi["preco"]), "preco_volta": round(mv["preco"]),
+            "preco_tipico": round(c["t_ida"]), "desconto": round(c["desc"], 3),
             "classe": k, "classe_txt": ktxt,
-            "cia_nome": o["cia"], "escalas": o["escalas"],
-            "ida": o["ida"], "volta": o["volta"], "datas": c["datas"], "opcoes": opcoes,
-            "meses": sorted({MESES_PT[int(d["ida"][5:7]) - 1] for d in c["datas"]}, key=MESES_PT.index),
+            "cia_nome": mi["cia"], "escalas": mi["escalas"],
+            "ida": mi["dia"], "volta": mv["dia"],
+            "datas_ida": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_ida"]],
+            "datas_volta": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_volta"]],
+            "ida_meses": por_mes(c["d_ida"]), "volta_meses": por_mes(c["d_volta"]),
+            "meses": sorted({MESES_PT[int(d["dia"][5:7]) - 1] for d in c["d_ida"]}, key=MESES_PT.index),
             "verificado": True,
-            "link_google": google_link(r["iata"], o["ida"], o["volta"]),
-            "link_compra": link_aviasales(r["iata"], o["ida"], o["volta"]),
+            "link_google": google_link(C.ORIGEM, r["iata"], mi["dia"]),
+            "link_compra": link_aviasales(r["iata"], mi["dia"], mv["dia"]),
         }
         a["texto"] = montar_texto(a, aj)
         a["telegram"] = postar_telegram(a["texto"], aj)
         novos.append(a)
         enviados.append({"rota": a["rota"], "preco": a["preco"], "quando": agora().isoformat()})
-        log(f"  ✓ {a['rota']} {brl(a['preco'])} (-{a['desconto']:.0%}) {len(a['datas'])} datas")
+        log(f"  ✓ {a['rota']} {brl(a['preco'])}/trecho (-{a['desconto']:.0%}) "
+            f"{len(a['datas_ida'])} idas · {len(a['datas_volta'])} voltas")
 
     corte = (agora() - timedelta(days=45)).isoformat()
     todos = novos + [a for a in salvos if a["criado"] >= corte]
     salvar_json(ALERTS_FILE, {"atualizado": agora().isoformat(timespec="minutes"), "alertas": todos})
     salvar_json(HIST_FILE, hist)
-    salvar_json(HIST_PUB, hist)
+    salvar_json(HIST_PUB, {k: v for k, v in hist.items() if k.startswith(C.ORIGEM + "-")})
     salvar_json(SENT_FILE, [e for e in enviados if e["quando"] >= corte])
     rodadas = ler_json(LOG_FILE, [])
     rodadas.append({"quando": agora().isoformat(timespec="minutes"), "rotas": [r["iata"] for r in lote],
@@ -399,6 +392,7 @@ def rodada() -> None:
     status = ler_json(STATUS_FILE, {"rotas": {}})
     status.setdefault("rotas", {}).update(resumo)
     status["ultima_rodada"] = agora().isoformat(timespec="minutes")
+    status["modo"] = "trecho"
     salvar_json(STATUS_FILE, status)
     log(f"\nRodada: {len(lote)} rotas · {len(candidatos)} candidatos · {len(novos)} alertas · {int(time.time()-inicio)}s")
 

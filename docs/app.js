@@ -152,24 +152,28 @@ function hbars(pares, vazio = "Sem dados ainda") {
 }
 function contar(lista, fn) { const m = {}; lista.forEach(x => { const k = fn(x); if (k) m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }
 
+function mesesHTML(lista, compacto) {
+  return (lista || []).slice(0, compacto ? 2 : 6).map(g => `<div class="mesrow"><b>${esc(g.mes)}</b><span>${g.dias.map(d => `<i>${d}</i>`).join("")}</span></div>`).join("");
+}
 function cardAlerta(a, compacto = false) {
-  const outras = (a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || []));
-  const datas = outras.slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida && d.volta === a.volta ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}${a.opcoes && a.opcoes.length ? ` · ${brl(d.preco)}` : ""}</span>`).join("") +
-    (outras.length > (compacto ? 4 : 10) ? `<span>+${outras.length - (compacto ? 4 : 10)}</span>` : "");
   const k = a.classe || "boa";
   const ktxt = { imperdivel: "🔥 Imperdível", otima: "⭐ Ótima", boa: "✅ Boa" }[k];
+  const trecho = a.modo === "trecho";
+  const corpo = trecho
+    ? `<div class="idavolta"><div><div class="iv-h">🛫 Datas de ida <small>a partir de ${brl(a.preco)}</small></div>${mesesHTML(a.ida_meses, compacto)}</div>
+       <div><div class="iv-h">🛬 Datas de volta <small>a partir de ${brl(a.preco_volta)}</small></div>${mesesHTML(a.volta_meses, compacto)}</div></div>`
+    : `<div class="datas">${(a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || [])).slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}</span>`).join("")}</div>`;
   return `<article class="al ${k}">
     <div class="al-top">
       <div><div class="rt">${ORIGEM} → ${esc(a.destino)} · ${a.tipo === "internacional" ? "INTERNACIONAL" : "NACIONAL"}</div><div class="ds">${esc(a.destino_nome)}</div></div>
-      <div class="preco">${brl(a.preco)}<small>média ${brl(a.preco_tipico)}</small></div>
+      <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}média ${brl(a.preco_tipico)}</small></div>
     </div>
     <div class="tags">
       <span class="tag ${k}">${ktxt}</span><span class="tag ${k}">−${pct(a.desconto)}</span>
       <span class="tag">${esc(nomeCia(a.cia_nome))}</span><span class="tag">${paradasTxt(a.escalas)}</span>
-      <span class="tag info">${outras.length} data${outras.length > 1 ? "s" : ""} · ${(a.meses || []).join(", ")}</span>
       ${a.telegram ? `<span class="tag">✓ Telegram</span>` : ""}
     </div>
-    <div class="datas">${datas}</div>
+    ${corpo}
     <div class="al-acts">
       <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}">📋 Copiar</button>
       <a class="bt sm zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">WhatsApp</a>
@@ -230,6 +234,7 @@ function pDash() {
 }
 
 /* ------------------------------------------------------------ Alertas */
+function diasIda(a) { return a.datas_ida ? a.datas_ida.map(d => d.dia) : (a.datas || []).map(d => d.ida); }
 function filtrar() {
   const F = S.F, h = hojeISO();
   let L = S.alertas.filter(a => {
@@ -238,7 +243,7 @@ function filtrar() {
     if (F.tipo && a.tipo !== F.tipo) return false;
     if (F.classe && (a.classe || "boa") !== F.classe) return false;
     if (F.cia && a.cia_nome !== F.cia) return false;
-    if (F.mes && !(a.datas || []).some(d => d.ida.slice(0, 7) === F.mes)) return false;
+    if (F.mes && !diasIda(a).some(d => d.slice(0, 7) === F.mes)) return false;
     if (F.max && a.preco > +F.max) return false;
     if (F.direto && a.escalas !== 0) return false;
     return true;
@@ -249,7 +254,7 @@ function filtrar() {
 function pAlertas() {
   const F = S.F;
   const cias = [...new Set(S.alertas.map(a => a.cia_nome).filter(Boolean))].sort();
-  const meses = [...new Set(S.alertas.flatMap(a => (a.datas || []).map(d => d.ida.slice(0, 7))))].sort();
+  const meses = [...new Set(S.alertas.flatMap(a => diasIda(a).map(d => d.slice(0, 7))))].sort();
   const L = filtrar();
   const opt = (v, t, sel) => `<option value="${esc(v)}" ${sel === v ? "selected" : ""}>${esc(t)}</option>`;
   return head("Alertas", "Tudo que o radar apitou — filtre, copie e envie",
@@ -361,8 +366,23 @@ function linha(serie) {
 
 /* ------------------------------------------------------------ Converter */
 const CIAS_CONHECIDAS = ["LATAM", "Gol", "GOL", "Azul", "TAP", "Iberia", "Air France", "KLM", "Air Europa", "Copa", "Avianca", "American", "United", "Delta", "Aerolíneas", "Sky", "JetSMART", "Lufthansa", "British", "ITA", "Emirates", "Turkish", "Arajet", "Wingo", "Voepass"];
+function secoesDatas(txt) {
+  const M = { janeiro: 1, fevereiro: 2, "março": 3, marco: 3, abril: 4, maio: 5, junho: 6, julho: 7, agosto: 8, setembro: 9, outubro: 10, novembro: 11, dezembro: 12 };
+  const res = { ida: [], volta: [] }; let atual = null;
+  txt.split(/\n/).forEach(l => {
+    const t = l.toLowerCase();
+    if (/datas? de ida/.test(t)) { atual = "ida"; return; }
+    if (/datas? de volta/.test(t)) { atual = "volta"; return; }
+    const m = t.match(/(janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s*(\d{4})?\s*:\s*(.+)/);
+    if (atual && m) {
+      const y = m[2] || new Date().getFullYear(), mm = String(M[m[1]]).padStart(2, "0");
+      (m[3].match(/\d{1,2}/g) || []).forEach(d => res[atual].push(`${y}-${mm}-${d.padStart(2, "0")}`));
+    }
+  });
+  return res;
+}
 function extrair(txt) {
-  const out = { origem: ORIGEM, destino: "", preco: "", media: "", ida: "", volta: "", cia: "", link: "" };
+  const out = { origem: ORIGEM, destino: "", preco: "", media: "", ida: "", volta: "", idas: "", voltas: "", cia: "", link: "", milhas: "", programa: "" };
   const iatas = (txt.match(/\b[A-Z]{3}\b/g) || []).filter(c => IATA[c] || c === ORIGEM || /^[A-Z]{3}$/.test(c)).filter(c => !["BRL", "USD", "EUR", "VIP", "PIX"].includes(c));
   const dest = iatas.find(c => c !== ORIGEM); if (dest) out.destino = dest;
   if (iatas[0] && iatas[0] !== dest) out.origem = iatas[0];
@@ -375,25 +395,38 @@ function extrair(txt) {
     if (!m[3] && d < hojeISO()) y++; return `${y}-${String(m[2]).padStart(2, "0")}-${String(m[1]).padStart(2, "0")}`;
   });
   out.ida = datas[0] || ""; out.volta = datas[1] || "";
+  const blocos = secoesDatas(txt);
+  if (blocos.ida.length) { out.idas = blocos.ida.join(", "); out.ida = blocos.ida[0]; }
+  if (blocos.volta.length) { out.voltas = blocos.volta.join(", "); out.volta = blocos.volta[0]; }
+  if (!out.idas && out.ida) out.idas = out.ida;
+  if (!out.voltas && out.volta) out.voltas = out.volta;
   out.cia = CIAS_CONHECIDAS.find(c => new RegExp("\\b" + c + "\\b", "i").test(txt)) || "";
   if (out.cia === "GOL") out.cia = "Gol";
   const l = txt.match(/https?:\/\/\S+/); if (l) out.link = l[0];
+  const mi = txt.match(/(\d+(?:[.,]\d+)?\s*(?:k|mil)?)\s*(?:milhas|pontos)/i); if (mi) out.milhas = mi[1].replace(/\s+/g, "").replace(/mil$/i, "K").replace(/k$/, "K");
+  const pg = txt.match(/\b(TudoAzul|Azul Fidelidade|Smiles|LATAM Pass|TAP Miles&Go|Livelo|Esfera)\b/i); if (pg) out.programa = pg[1];
   return out;
+}
+function agrupaMes(lista) {
+  const M = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const g = {}; lista.filter(Boolean).sort().forEach(d => { const k = `${M[+d.slice(5, 7) - 1]} ${d.slice(0, 4)}`; (g[k] = g[k] || []).push(d.slice(8, 10)); });
+  return Object.entries(g).map(([m, ds]) => `${m}: ${ds.join(", ")}`);
 }
 function textoConvertido(c) {
   const aj = S.ajustes || {};
   const nome = (S.rotas.find(r => r.iata === c.destino) || {}).nome || IATA[c.destino] || c.destino;
-  const L = ["🚨 O RADAR APITOU", "", `✈️ Fortaleza → ${nome} (ida e volta)`];
-  let d = 0;
-  if (c.media && c.preco) d = 1 - c.preco / c.media;
-  L.push(`💰 ${brl(c.preco)}${d > 0 ? ` · ${Math.round(d * 100)}% abaixo da média (${brl(c.media)})` : ""}`);
-  if (d > 0) L.push(d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : "✅ BOA OPORTUNIDADE");
+  const L = ["🚨 *O RADAR APITOU*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, c.milhas ? `💰 A partir de *${c.milhas} milhas* o trecho` : `💰 A partir de *${brl(c.preco)}* o trecho`];
+  if (c.programa) L.push(`🎟️ Programa: ${c.programa}`);
+  if (c.media && c.preco) { const d = 1 - c.preco / c.media; if (d > 0) L.push(`${d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : "✅ BOA OPORTUNIDADE"} · ${Math.round(d * 100)}% abaixo da média`); }
   if (c.cia) L.push(`🛫 ${c.cia}`);
-  if (c.ida) L.push("", `📅 ${dm(c.ida)}${c.volta ? ` → ${dm(c.volta)}` : ""} · ${brl(c.preco)}`);
+  const idas = String(c.idas || c.ida || "").split(/[\s,;]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
+  const voltas = String(c.voltas || c.volta || "").split(/[\s,;]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
+  if (idas.length) L.push("", "*Datas de ida:*", ...agrupaMes(idas));
+  if (voltas.length) L.push("", "*Datas de volta:*", ...agrupaMes(voltas));
   L.push("", "⚠️ Preço pode mudar a qualquer momento.");
   if (aj.mostrar_link && c.link) L.push(`🔗 ${c.link}`);
   if (aj.linha_premium) L.push("⭐ Você recebeu em primeira mão por ser Premium.");
-  const rod = [aj.link_whatsapp ? `✈️ Receba alertas: ${aj.link_whatsapp}` : "", aj.assinatura || ""].filter(Boolean);
+  const rod = [aj.link_whatsapp ? `✈️ Receba alertas no WhatsApp: ${aj.link_whatsapp}` : "", aj.assinatura || ""].filter(Boolean);
   if (rod.length) L.push("", ...rod);
   return L.join("\n");
 }
@@ -406,8 +439,8 @@ function pConv() {
         <div class="field"><textarea id="conv-in" placeholder="Cole aqui…">${esc(S.convIn || "")}</textarea></div>
         <div style="margin-top:10px;display:flex;gap:8px"><button class="bt pri" data-act="converter">Converter</button></div>
         ${c ? `<div class="sec-gap"></div><h3>2. Confira os dados</h3><div class="form" style="margin-top:10px">
-          ${campo("origem", "Origem")}${campo("destino", "Destino")}${campo("preco", "Preço R$", "number")}${campo("media", "Média R$", "number")}
-          ${campo("ida", "Ida", "date")}${campo("volta", "Volta", "date")}${campo("cia", "Companhia")}${campo("link", "Link")}
+          ${campo("origem", "Origem")}${campo("destino", "Destino")}${campo("preco", "Preço R$", "number")}${campo("milhas", "Milhas (ex.: 20K)")}${campo("programa", "Programa de milhas")}${campo("media", "Média R$", "number")}
+          ${campo("idas", "Datas de ida (AAAA-MM-DD, separadas por vírgula)")}${campo("voltas", "Datas de volta")}${campo("cia", "Companhia")}${campo("link", "Link")}
         </div>` : ""}
       </div>
       <div class="card"><h3>${c ? "3. Texto pronto" : "Resultado"}</h3><div class="desc">No formato do seu radar</div>
@@ -445,14 +478,12 @@ function pAjustes() {
           ${num("max_alertas_por_rodada", "Alertas por rodada", "rodadas a cada 3h (8 por dia)")}
           ${num("rotas_por_rodada", "Rotas por rodada", "mais rotas = rodada mais longa")}
           ${num("dias_fim", "Buscar até (dias)", "quantos dias à frente")}
-          ${num("passo_dias", "Testar a cada (dias)", "1 = toda data; 3 = mais rápido")}
-          ${num("duracao_nacional", "Viagem nacional (dias)", "ida→volta")}
-          ${num("duracao_internacional", "Viagem internacional (dias)", "ida→volta")}
+          ${num("passo_dias", "Testar a cada (dias)", "1 = todo dia (recomendado)")}
+          ${num("dias_inicio", "Começar daqui a (dias)", "primeira data varrida")}
+          ${num("tolerancia_datas", "Datas listadas até", "0,10 = até 10% acima do menor preço", 0.01)}
           ${num("max_escalas_nacional", "Paradas máx. (nacional)", "0 = só direto")}
           ${num("max_escalas_internacional", "Paradas máx. (internac.)", "")}
           ${num("dias_sem_repetir", "Não repetir por (dias)", "mesma rota e preço")}
-          ${num("dias_proximos", "Datas próximas (± dias)", "testa ida/volta em volta da melhor data")}
-          ${num("max_opcoes", "Datas próximas no texto", "quantas opções listar")}
         </div></div>
     </div>
     <div class="head" style="margin:22px 0 12px"><div><h1 style="font-size:18px">Rodadas recentes</h1><p>O radar roda sozinho a cada 3 horas no GitHub</p></div>

@@ -10,28 +10,28 @@ ORIGEM_NOME = "Fortaleza"
 # (IATA, nome, tipo, teto ida+volta em R$)
 DESTINOS = [
     # Nacionais
-    ("SAO", "São Paulo", "nacional", 1100),
-    ("RIO", "Rio de Janeiro", "nacional", 1100),
-    ("BSB", "Brasília", "nacional", 950),
-    ("BHZ", "Belo Horizonte", "nacional", 1050),
-    ("SSA", "Salvador", "nacional", 700),
-    ("REC", "Recife", "nacional", 600),
-    ("NAT", "Natal", "nacional", 600),
-    ("JPA", "João Pessoa", "nacional", 650),
-    ("MCZ", "Maceió", "nacional", 750),
-    ("AJU", "Aracaju", "nacional", 800),
-    ("SLZ", "São Luís", "nacional", 650),
-    ("THE", "Teresina", "nacional", 600),
-    ("BEL", "Belém", "nacional", 800),
-    ("MAO", "Manaus", "nacional", 1100),
-    ("POA", "Porto Alegre", "nacional", 1300),
-    ("CWB", "Curitiba", "nacional", 1250),
-    ("FLN", "Florianópolis", "nacional", 1300),
-    ("VIX", "Vitória", "nacional", 1050),
-    ("GYN", "Goiânia", "nacional", 1050),
-    ("IGU", "Foz do Iguaçu", "nacional", 1400),
-    ("FEN", "Fernando de Noronha", "nacional", 1600),
-    ("JDO", "Juazeiro do Norte", "nacional", 550),
+    ("SAO", "São Paulo", "nacional", 1760),
+    ("RIO", "Rio de Janeiro", "nacional", 1760),
+    ("BSB", "Brasília", "nacional", 1520),
+    ("BHZ", "Belo Horizonte", "nacional", 1680),
+    ("SSA", "Salvador", "nacional", 1120),
+    ("REC", "Recife", "nacional", 960),
+    ("NAT", "Natal", "nacional", 960),
+    ("JPA", "João Pessoa", "nacional", 1040),
+    ("MCZ", "Maceió", "nacional", 1200),
+    ("AJU", "Aracaju", "nacional", 1280),
+    ("SLZ", "São Luís", "nacional", 1040),
+    ("THE", "Teresina", "nacional", 960),
+    ("BEL", "Belém", "nacional", 1280),
+    ("MAO", "Manaus", "nacional", 1760),
+    ("POA", "Porto Alegre", "nacional", 2080),
+    ("CWB", "Curitiba", "nacional", 2000),
+    ("FLN", "Florianópolis", "nacional", 2080),
+    ("VIX", "Vitória", "nacional", 1680),
+    ("GYN", "Goiânia", "nacional", 1680),
+    ("IGU", "Foz do Iguaçu", "nacional", 2240),
+    ("FEN", "Fernando de Noronha", "nacional", 2560),
+    ("JDO", "Juazeiro do Norte", "nacional", 880),
     # Internacionais
     ("LIS", "Lisboa", "internacional", 3800),
     ("OPO", "Porto", "internacional", 4000),
@@ -67,7 +67,7 @@ TOLERANCIA_MESMO_VALOR = 0.04
 DIAS_SEM_REPETIR = 3
 
 # Máximo de alertas novos por rodada (o motor roda a cada 3h)
-MAX_ALERTAS_POR_RODADA = 4
+MAX_ALERTAS_POR_RODADA = 3
 
 # Quantos candidatos conferir no Google Voos por rodada
 MAX_VERIFICACOES = 14
@@ -84,3 +84,5 @@ PASSO_DIAS = 3             # testa uma data de ida a cada 3 dias
 DURACAO_NACIONAL = 6       # dias de viagem (ida e volta) para nacionais
 DURACAO_INTERNACIONAL = 10 # para internacionais
 PAUSA_GOOGLE = 0.6         # segundos entre consultas
+MAX_ESCALAS_NACIONAL = 1       # nacional: no máximo 1 parada
+MAX_ESCALAS_INTERNACIONAL = 2  # internacional: no máximo 2 paradas

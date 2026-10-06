@@ -169,7 +169,7 @@ def google_link(dest: str, ida: str, volta: str) -> str:
         return f"https://www.google.com/travel/flights?q=voos%20{C.ORIGEM}%20{dest}%20{ida}%20{volta}&hl=pt-BR&curr=BRL"
 
 
-def google_oferta(dest: str, ida: str, volta: str) -> dict | None:
+def google_oferta(dest: str, ida: str, volta: str, max_escalas: int = 9) -> dict | None:
     """Menor oferta ida+volta ao vivo no Google Voos: {preco, cia, escalas}."""
     from fast_flights import FlightQuery, Passengers, create_query, get_flights
     q = create_query(
@@ -181,7 +181,10 @@ def google_oferta(dest: str, ida: str, volta: str) -> dict | None:
     res = [f for f in get_flights(q) if getattr(f, "price", 0)]
     if not res:
         return None
-    b = min(res, key=lambda f: f.price)
+    bons = [f for f in res if len(f.flights) - 1 <= max_escalas]
+    if not bons:
+        return None
+    b = min(bons, key=lambda f: f.price)
     return {"preco": float(b.price), "cia": (b.airlines or [""])[0],
             "escalas": max(0, len(b.flights) - 1)}
 
@@ -300,7 +303,8 @@ def coletar(dest: str, tipo: str) -> list[dict]:
     while d <= fim:
         ida, volta = d.isoformat(), (d + timedelta(days=dur)).isoformat()
         try:
-            o = google_oferta(dest, ida, volta)
+            o = google_oferta(dest, ida, volta,
+                              C.MAX_ESCALAS_NACIONAL if tipo == "nacional" else C.MAX_ESCALAS_INTERNACIONAL)
             erros = 0
             if o:
                 o.update({"ida": ida, "volta": volta, "link": ""})

@@ -1,0 +1,30 @@
+{
+ "tp_latest": {
+  "n": 22,
+  "destinos": [
+   "BEL",
+   "BKK",
+   "BRU",
+   "BSB",
+   "BUE",
+   "CGB",
+   "CWB",
+   "FLN",
+   "HAV",
+   "LIS",
+   "MAD",
+   "MIL",
+   "NVT",
+   "NYC",
+   "PNZ",
+   "POP",
+   "RIO",
+   "SAO",
+   "SAP",
+   "SCL",
+   "SSA",
+   "TAS"
+  ]
+ },
+ "google": "/integrations/__init__.py\", line 3, in <module>\n    from .base import DataSourceIntegration, FetchIntegration\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/fast_flights/integrations/base.py\", line 7, in <module>\n    from ..querying import Query\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/fast_flights/querying.py\", line 7, in <module>\n    from typing_extensions import override\nModuleNotFoundError: No module named 'typing_extensions'\n"
+}

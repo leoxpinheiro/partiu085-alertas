@@ -26,5 +26,21 @@
    "TAS"
   ]
  },
- "google": "/integrations/__init__.py\", line 3, in <module>\n    from .base import DataSourceIntegration, FetchIntegration\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/fast_flights/integrations/base.py\", line 7, in <module>\n    from ..querying import Query\n  File \"/opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/fast_flights/querying.py\", line 7, in <module>\n    from typing_extensions import override\nModuleNotFoundError: No module named 'typing_extensions'\n"
+ "google": {
+  "GRU": {
+   "n": 10,
+   "min": 1446,
+   "s": 0.6
+  },
+  "LIS": {
+   "n": 11,
+   "min": 4424,
+   "s": 0.4
+  },
+  "REC": {
+   "n": 4,
+   "min": 2517,
+   "s": 0.5
+  }
+ }
 }

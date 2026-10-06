@@ -75,3 +75,12 @@ MAX_VERIFICACOES = 14
 # Viagem: duração mínima e máxima (dias) de uma ida e volta
 DURACAO_MIN = 3
 DURACAO_MAX = 21
+
+# ---- Varredura no Google Voos ----
+ROTAS_POR_RODADA = 11      # rotas por rodada (rodízio: cada rota é varrida ~2x por dia)
+DIAS_INICIO = 7            # começa a procurar daqui a 7 dias
+DIAS_FIM = 150             # até ~5 meses
+PASSO_DIAS = 3             # testa uma data de ida a cada 3 dias
+DURACAO_NACIONAL = 6       # dias de viagem (ida e volta) para nacionais
+DURACAO_INTERNACIONAL = 10 # para internacionais
+PAUSA_GOOGLE = 0.6         # segundos entre consultas

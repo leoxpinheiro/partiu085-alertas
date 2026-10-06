@@ -1,13 +1,10 @@
-"""Motor de alertas Partiu085.
+"""Radar Partiu085 — motor de alertas de passagens saindo de Fortaleza.
 
-Fluxo de cada rodada:
-1. Puxa da Travelpayouts o calendário de preços (ida e volta) de Fortaleza para cada destino,
-   nos próximos meses.
-2. Calcula o preço típico de cada rota (mediana do calendário + histórico das rodadas anteriores).
-3. Marca como candidato o que estiver bem abaixo do típico e abaixo do teto da rota.
-4. Agrupa todas as datas com o "mesmo valor".
-5. Confere os melhores candidatos ao vivo no Google Voos.
-6. Não repete alerta recente, gera o texto pro WhatsApp, salva no site e (opcional) posta no Telegram.
+Cada rodada (a cada 3h, no GitHub Actions):
+1. Lê as rotas cadastradas no painel (docs/rotas.json) e os ajustes (docs/ajustes.json).
+2. Varre o calendário no Google Voos para um lote de rotas (rodízio) + rotas em foco.
+3. Compara com a média histórica do radar e marca o que está bem abaixo.
+4. Agrupa as datas com o mesmo preço, gera o texto, salva no painel e posta no Telegram.
 """
 
 from __future__ import annotations
@@ -31,30 +28,45 @@ DATA = ROOT / "data"
 DOCS = ROOT / "docs"
 HIST_FILE = DATA / "historico_precos.json"
 SENT_FILE = DATA / "enviados.json"
+ROT_FILE = DATA / "rotacao.json"
 ALERTS_FILE = DOCS / "alerts.json"
 LOG_FILE = DOCS / "rodadas.json"
+ROTAS_FILE = DOCS / "rotas.json"
+AJUSTES_FILE = DOCS / "ajustes.json"
+HIST_PUB = DOCS / "historico.json"
+STATUS_FILE = DOCS / "status.json"
 
-TP_TOKEN = os.environ.get("TRAVELPAYOUTS_TOKEN", "").strip()
 TP_MARKER = os.environ.get("TRAVELPAYOUTS_MARKER", "").strip()
 TG_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 TG_CHAT = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
-OFFLINE = os.environ.get("PARTIU_OFFLINE") == "1"  # testes locais com dados falsos
+ROTAS_AGORA = [x.strip().upper() for x in os.environ.get("ROTAS_AGORA", "").split(",") if x.strip()]
+OFFLINE = os.environ.get("PARTIU_OFFLINE") == "1"
 
-FORTALEZA_TZ = timezone(timedelta(hours=-3))
+TZ = timezone(timedelta(hours=-3))
 MESES_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
-CIAS = {
-    "G3": "GOL", "LA": "LATAM", "JJ": "LATAM", "AD": "Azul", "TP": "TAP", "IB": "Iberia",
-    "AF": "Air France", "KL": "KLM", "UX": "Air Europa", "CM": "Copa", "AV": "Avianca",
-    "AA": "American", "UA": "United", "DL": "Delta", "AR": "Aerolíneas", "H2": "Sky",
-    "JA": "JetSMART", "LH": "Lufthansa", "BA": "British", "AZ": "ITA", "IB*": "Iberia",
-    "EK": "Emirates", "TK": "Turkish", "VH": "Viva", "2Z": "Voepass", "DM": "Arajet",
-    "VB": "Viva Aerobus", "4M": "LATAM", "XL": "LATAM", "P5": "Wingo",
+
+AJUSTES_PADRAO = {
+    "desconto_minimo": 0.20,
+    "max_alertas_por_rodada": 3,
+    "rotas_por_rodada": 11,
+    "dias_inicio": 7,
+    "dias_fim": 150,
+    "passo_dias": 3,
+    "duracao_nacional": 6,
+    "duracao_internacional": 10,
+    "max_escalas_nacional": 1,
+    "max_escalas_internacional": 2,
+    "dias_sem_repetir": 3,
+    "link_whatsapp": "https://bit.ly/radar085",
+    "assinatura": "🌵 Partiu 085! — De Fortaleza para o mundo 🌎",
+    "linha_premium": False,
+    "telegram_ativo": True,
 }
 
 
 # ----------------------------------------------------------------------------- utilidades
 def agora() -> datetime:
-    return datetime.now(FORTALEZA_TZ)
+    return datetime.now(TZ)
 
 
 def ler_json(path: Path, padrao):
@@ -73,169 +85,133 @@ def brl(v: float) -> str:
     return "R$ " + f"{int(round(v)):,}".replace(",", ".")
 
 
+def dm(d: str) -> str:
+    return f"{d[8:10]}/{d[5:7]}"
+
+
 def dmy(d: str) -> str:
-    y, m, dd = d[:10].split("-")
-    return f"{dd}/{m}"
-
-
-def meses_alvo() -> list[str]:
-    hoje = date.today()
-    out = []
-    y, m = hoje.year, hoje.month
-    for _ in range(C.MESES_A_FRENTE):
-        out.append(f"{y}-{m:02d}")
-        m += 1
-        if m == 13:
-            y, m = y + 1, 1
-    return out
+    return f"{d[8:10]}/{d[5:7]}/{d[0:4]}"
 
 
 def log(*a):
     print(*a, flush=True)
 
 
-# ----------------------------------------------------------------------------- Travelpayouts
-def tp_calendario(dest: str, mes: str) -> list[dict]:
-    """Ofertas ida+volta saindo de FOR com ida no mês informado."""
-    url = "https://api.travelpayouts.com/aviasales/v3/prices_for_dates"
-    params = {
-        "origin": C.ORIGEM,
-        "destination": dest,
-        "departure_at": mes,
-        "one_way": "false",
-        "unique": "false",
-        "sorting": "price",
-        "direct": "false",
-        "currency": "brl",
-        "limit": 1000,
-        "page": 1,
-        "token": TP_TOKEN,
-    }
-    for tentativa in range(3):
-        try:
-            r = requests.get(url, params=params, timeout=30, headers={"Accept-Encoding": "gzip"})
-            if r.status_code == 429:
-                time.sleep(5 * (tentativa + 1))
-                continue
-            r.raise_for_status()
-            j = r.json()
-            return j.get("data") or []
-        except Exception as e:  # noqa: BLE001
-            log(f"  ! Travelpayouts {dest} {mes}: {e}")
-            time.sleep(2)
-    return []
+def carregar_rotas() -> list[dict]:
+    rotas = ler_json(ROTAS_FILE, None)
+    if not rotas:
+        rotas = [{"iata": i, "nome": n, "tipo": t, "teto": teto, "ativo": True, "foco": False}
+                 for i, n, t, teto in C.DESTINOS]
+        salvar_json(ROTAS_FILE, rotas)
+    return rotas
 
 
-def normalizar(ofertas: list[dict]) -> list[dict]:
-    hoje = date.today()
-    out = []
-    for o in ofertas:
-        try:
-            ida = o["departure_at"][:10]
-            volta = (o.get("return_at") or "")[:10]
-            if not volta:
-                continue
-            d_ida = date.fromisoformat(ida)
-            dur = (date.fromisoformat(volta) - d_ida).days
-            if d_ida <= hoje + timedelta(days=2):
-                continue
-            if not (C.DURACAO_MIN <= dur <= C.DURACAO_MAX):
-                continue
-            out.append({
-                "ida": ida,
-                "volta": volta,
-                "preco": float(o["price"]),
-                "cia": o.get("airline") or "",
-                "escalas": max(int(o.get("transfers") or 0), int(o.get("return_transfers") or 0)),
-                "link": o.get("link") or "",
-            })
-        except Exception:
-            continue
-    return out
+def carregar_ajustes() -> dict:
+    a = dict(AJUSTES_PADRAO)
+    a.update(ler_json(AJUSTES_FILE, {}) or {})
+    if not AJUSTES_FILE.exists():
+        salvar_json(AJUSTES_FILE, a)
+    return a
 
 
 # ----------------------------------------------------------------------------- Google Voos
-def google_link(dest: str, ida: str, volta: str) -> str:
-    try:
-        from fast_flights import FlightQuery, Passengers, create_query
-        q = create_query(
-            flights=[FlightQuery(date=ida, from_airport=C.ORIGEM, to_airport=dest),
-                     FlightQuery(date=volta, from_airport=dest, to_airport=C.ORIGEM)],
-            trip="round-trip", seat="economy", passengers=Passengers(adults=1),
-            language="pt-BR", currency="BRL",
-        )
-        return q.url()
-    except Exception:
-        return f"https://www.google.com/travel/flights?q=voos%20{C.ORIGEM}%20{dest}%20{ida}%20{volta}&hl=pt-BR&curr=BRL"
-
-
-def google_oferta(dest: str, ida: str, volta: str, max_escalas: int = 9) -> dict | None:
-    """Menor oferta ida+volta ao vivo no Google Voos: {preco, cia, escalas}."""
-    from fast_flights import FlightQuery, Passengers, create_query, get_flights
-    q = create_query(
+def _query(dest: str, ida: str, volta: str):
+    from fast_flights import FlightQuery, Passengers, create_query
+    return create_query(
         flights=[FlightQuery(date=ida, from_airport=C.ORIGEM, to_airport=dest),
                  FlightQuery(date=volta, from_airport=dest, to_airport=C.ORIGEM)],
         trip="round-trip", seat="economy", passengers=Passengers(adults=1),
         language="pt-BR", currency="BRL",
     )
-    res = [f for f in get_flights(q) if getattr(f, "price", 0)]
-    if not res:
-        return None
+
+
+def google_link(dest: str, ida: str, volta: str) -> str:
+    try:
+        return _query(dest, ida, volta).url()
+    except Exception:
+        return f"https://www.google.com/travel/flights?q=voos%20{C.ORIGEM}%20{dest}%20{ida}%20{volta}&hl=pt-BR&curr=BRL"
+
+
+def google_oferta(dest: str, ida: str, volta: str, max_escalas: int) -> dict | None:
+    from fast_flights import get_flights
+    res = [f for f in get_flights(_query(dest, ida, volta)) if getattr(f, "price", 0)]
     bons = [f for f in res if len(f.flights) - 1 <= max_escalas]
     if not bons:
         return None
     b = min(bons, key=lambda f: f.price)
-    return {"preco": float(b.price), "cia": (b.airlines or [""])[0],
-            "escalas": max(0, len(b.flights) - 1)}
+    return {"preco": float(b.price), "cia": (b.airlines or [""])[0], "escalas": max(0, len(b.flights) - 1)}
 
 
-def google_preco(dest: str, ida: str, volta: str) -> float | None:
-    """Menor preço ida+volta ao vivo no Google Voos (None se não deu para conferir)."""
+def coletar(r: dict, aj: dict) -> list[dict]:
     if OFFLINE:
-        return None
-    try:
-        from fast_flights import FlightQuery, Passengers, create_query, get_flights
-        q = create_query(
-            flights=[FlightQuery(date=ida, from_airport=C.ORIGEM, to_airport=dest),
-                     FlightQuery(date=volta, from_airport=dest, to_airport=C.ORIGEM)],
-            trip="round-trip", seat="economy", passengers=Passengers(adults=1),
-            language="pt-BR", currency="BRL",
-        )
-        res = get_flights(q)
-        precos = [f.price for f in res if getattr(f, "price", 0)]
-        return float(min(precos)) if precos else None
-    except Exception as e:  # noqa: BLE001
-        log(f"  ! Google Voos {dest} {ida}/{volta}: {type(e).__name__}: {str(e)[:120]}")
-        return None
+        return dados_falsos(r)
+    nac = r["tipo"] == "nacional"
+    dur = int(r.get("duracao") or (aj["duracao_nacional"] if nac else aj["duracao_internacional"]))
+    max_esc = aj["max_escalas_nacional"] if nac else aj["max_escalas_internacional"]
+    out, erros = [], 0
+    d = date.today() + timedelta(days=int(aj["dias_inicio"]))
+    fim = date.today() + timedelta(days=int(aj["dias_fim"]))
+    while d <= fim:
+        ida, volta = d.isoformat(), (d + timedelta(days=dur)).isoformat()
+        try:
+            o = google_oferta(r["iata"], ida, volta, max_esc)
+            erros = 0
+            if o:
+                o.update({"ida": ida, "volta": volta})
+                out.append(o)
+        except Exception as e:  # noqa: BLE001
+            erros += 1
+            log(f"  ! Google {r['iata']} {ida}: {type(e).__name__}: {str(e)[:100]}")
+            if erros >= 3:
+                log(f"  ! {r['iata']}: muitos erros seguidos, pulando rota")
+                break
+            time.sleep(4)
+        time.sleep(C.PAUSA_GOOGLE)
+        d += timedelta(days=int(aj["passo_dias"]))
+    return out
 
 
-# ----------------------------------------------------------------------------- lógica de promoção
+def dados_falsos(r: dict) -> list[dict]:
+    import random
+    random.seed(r["iata"])
+    base = r.get("teto", 1500) * 1.1
+    out = []
+    d0 = date.today() + timedelta(days=10)
+    for i in range(0, 140, 3):
+        ida = d0 + timedelta(days=i)
+        preco = base * random.uniform(0.85, 1.4)
+        if r["iata"] in ("LIS", "REC", "SAO", "BUE") and 30 < i < 50:
+            preco = base * 0.62
+        out.append({"ida": ida.isoformat(), "volta": (ida + timedelta(days=7)).isoformat(),
+                    "preco": round(preco), "cia": random.choice(["LATAM", "Gol", "Azul", "TAP"]),
+                    "escalas": random.choice([0, 0, 1])})
+    return out
+
+
+# ----------------------------------------------------------------------------- lógica
 def preco_tipico(rota: str, ofertas: list[dict], hist: dict) -> float | None:
-    # mínimo por dia de ida -> mediana (evita que um dia com muitas ofertas pese mais)
-    por_dia: dict[str, float] = {}
-    for o in ofertas:
-        por_dia[o["ida"]] = min(o["preco"], por_dia.get(o["ida"], 1e12))
-    valores = list(por_dia.values())
+    valores = [o["preco"] for o in ofertas]
     passadas = [h["mediana"] for h in hist.get(rota, [])][-40:]
-    if len(valores) < 6 and len(passadas) < 3:
-        return None  # pouca informação para dizer o que é "barato"
     base = []
     if len(valores) >= 6:
         base.append(statistics.median(valores))
     if len(passadas) >= 3:
         base.append(statistics.median(passadas))
-    return max(base)
+    return max(base) if base else None
 
 
 def agrupar_datas(ofertas: list[dict], preco_ref: float) -> list[dict]:
     lim = preco_ref * (1 + C.TOLERANCIA_MESMO_VALOR)
-    vistos = set()
-    out = []
-    for o in sorted(ofertas, key=lambda x: (x["ida"], x["volta"])):
-        if o["preco"] <= lim and (o["ida"], o["volta"]) not in vistos:
-            vistos.add((o["ida"], o["volta"]))
-            out.append({"ida": o["ida"], "volta": o["volta"], "preco": round(o["preco"])})
-    return out
+    return [{"ida": o["ida"], "volta": o["volta"], "preco": round(o["preco"])}
+            for o in sorted(ofertas, key=lambda x: x["ida"]) if o["preco"] <= lim]
+
+
+def classe(desc: float) -> tuple[str, str]:
+    if desc >= 0.40:
+        return "imperdivel", "🔥 IMPERDÍVEL"
+    if desc >= 0.30:
+        return "otima", "⭐ ÓTIMA OPORTUNIDADE"
+    return "boa", "✅ BOA OPORTUNIDADE"
 
 
 def link_aviasales(dest: str, ida: str, volta: str) -> str:
@@ -243,228 +219,156 @@ def link_aviasales(dest: str, ida: str, volta: str) -> str:
     return u + (f"?marker={TP_MARKER}" if TP_MARKER else "")
 
 
-def link_compra(o: dict) -> str:
-    if not o.get("link"):
-        return ""
-    base = "https://www.aviasales.com" + o["link"]
-    if TP_MARKER:
-        base += ("&" if "?" in base else "?") + f"marker={TP_MARKER}"
-    return base
-
-
-def texto_whatsapp(a: dict) -> str:
-    cia = CIAS.get(a["cia"], a["cia"]) if a["cia"] else ""
+def montar_texto(a: dict, aj: dict) -> str:
     paradas = "voo direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
-    linhas = [
-        "🚨 *ALERTA PARTIU085* ✈️",
+    L = [
+        "🚨 O RADAR APITOU",
         "",
-        f"*{C.ORIGEM_NOME} → {a['destino_nome']}*",
-        f"💰 *{brl(a['preco'])}* ida e volta",
-        f"📉 {round(a['desconto'] * 100)}% abaixo do normal (costuma sair por {brl(a['preco_tipico'])})",
+        f"✈️ {C.ORIGEM} → {a['destino']} ({a['destino_nome']}) — ida e volta",
+        f"💰 {brl(a['preco'])} (média: {brl(a['preco_tipico'])})",
+        a["classe_txt"],
+        f"📉 {round(a['desconto'] * 100)}% abaixo da média histórica do radar",
+        f"📅 Ida: {dmy(a['ida'])} · Volta: {dmy(a['volta'])}",
     ]
-    if cia or paradas:
-        linhas.append("🛫 " + " · ".join(x for x in [cia, paradas] if x))
-    datas = a["datas"]
-    linhas += ["", f"📅 *{len(datas)} combinações de data* com esse valor:" if len(datas) > 1 else "📅 *Data:*"]
-    for d in datas[:8]:
-        linhas.append(f"• {dmy(d['ida'])} → {dmy(d['volta'])}")
-    if len(datas) > 8:
-        linhas.append(f"• …e mais {len(datas) - 8} datas em {', '.join(a['meses'])}")
-    linhas += ["", f"🔎 Ver no Google Voos: {a['link_google']}"]
-    if a.get("link_compra"):
-        linhas.append(f"🛒 Comprar: {a['link_compra']}")
-    linhas += ["", "⚡ Promoção pode acabar a qualquer momento!"]
-    return "\n".join(linhas)
+    outras = [d for d in a["datas"] if d["ida"] != a["ida"]]
+    if outras:
+        txt = " · ".join(f"{dm(d['ida'])}→{dm(d['volta'])}" for d in outras[:4])
+        if len(outras) > 4:
+            txt += f" (+{len(outras) - 4})"
+        L.append(f"🗓️ Mesmo preço também em: {txt}")
+    L.append(f"🛫 Companhia: {a['cia_nome'] or '—'} · {paradas}")
+    L += ["", f"🔗 Ver o voo: {a['link_google']}", "",
+          "⚠️ Preços verificados agora pelo radar — podem mudar a qualquer momento."]
+    if aj.get("linha_premium"):
+        L += ["", "⭐ Você recebeu em primeira mão por ser Premium."]
+    L += ["", "————"]
+    if aj.get("link_whatsapp"):
+        L.append(f"✈️ Receba alertas no WhatsApp: {aj['link_whatsapp']}")
+    if aj.get("assinatura"):
+        L.append(aj["assinatura"])
+    return "\n".join(L)
 
 
-# ----------------------------------------------------------------------------- Telegram
-def postar_telegram(texto: str) -> None:
-    if not (TG_TOKEN and TG_CHAT):
-        return
+def postar_telegram(texto: str, aj: dict) -> bool:
+    if not (TG_TOKEN and TG_CHAT and aj.get("telegram_ativo", True)):
+        return False
     try:
-        requests.post(
-            f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-            json={"chat_id": TG_CHAT, "text": texto.replace("*", ""), "disable_web_page_preview": True},
-            timeout=20,
-        )
+        r = requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
+                          json={"chat_id": TG_CHAT, "text": texto, "disable_web_page_preview": True},
+                          timeout=20)
+        return r.ok
     except Exception as e:  # noqa: BLE001
         log(f"  ! Telegram: {e}")
+        return False
 
 
 # ----------------------------------------------------------------------------- rodada
-def coletar(dest: str, tipo: str) -> list[dict]:
-    """Varre o calendário no Google Voos: ida a cada N dias, volta após X dias."""
-    if OFFLINE:
-        return dados_falsos(dest)
-    dur = C.DURACAO_NACIONAL if tipo == "nacional" else C.DURACAO_INTERNACIONAL
-    out, erros = [], 0
-    d = date.today() + timedelta(days=C.DIAS_INICIO)
-    fim = date.today() + timedelta(days=C.DIAS_FIM)
-    while d <= fim:
-        ida, volta = d.isoformat(), (d + timedelta(days=dur)).isoformat()
-        try:
-            o = google_oferta(dest, ida, volta,
-                              C.MAX_ESCALAS_NACIONAL if tipo == "nacional" else C.MAX_ESCALAS_INTERNACIONAL)
-            erros = 0
-            if o:
-                o.update({"ida": ida, "volta": volta, "link": ""})
-                out.append(o)
-        except Exception as e:  # noqa: BLE001
-            erros += 1
-            log(f"  ! Google {dest} {ida}: {type(e).__name__}: {str(e)[:100]}")
-            if erros >= 3:
-                log(f"  ! {dest}: muitos erros seguidos, pulando rota")
-                break
-            time.sleep(4)
-        time.sleep(C.PAUSA_GOOGLE)
-        d += timedelta(days=C.PASSO_DIAS)
-    return out
+def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
+    if ROTAS_AGORA:
+        return [r for r in rotas if r["iata"] in ROTAS_AGORA]
+    ativas = [r for r in rotas if r.get("ativo", True)]
+    if not ativas:
+        return []
+    foco = [r for r in ativas if r.get("foco")]
+    resto = [r for r in ativas if not r.get("foco")]
+    n = max(0, int(aj["rotas_por_rodada"]) - len(foco))
+    if not resto:
+        return foco
+    i0 = ler_json(ROT_FILE, {"i": 0})["i"] % len(resto)
+    lote = [resto[(i0 + k) % len(resto)] for k in range(min(n, len(resto)))]
+    salvar_json(ROT_FILE, {"i": (i0 + len(lote)) % len(resto)})
+    return foco + lote
 
 
-def dados_falsos(dest: str) -> list[dict]:
-    import random
-    random.seed(dest)
-    base = dict((d[0], d[3]) for d in C.DESTINOS)[dest] * 1.05
-    out = []
-    d0 = date.today() + timedelta(days=10)
-    for i in range(0, 150, 2):
-        ida = d0 + timedelta(days=i)
-        preco = base * random.uniform(0.85, 1.4)
-        if dest in ("LIS", "REC", "SAO") and 30 < i < 50:
-            preco = base * 0.62
-        out.append({"departure_at": ida.isoformat() + "T10:00:00-03:00",
-                    "return_at": (ida + timedelta(days=7)).isoformat() + "T10:00:00-03:00",
-                    "price": round(preco), "airline": "TP" if dest == "LIS" else "G3", "transfers": 0,
-                    "link": f"/search/FOR{ida:%d%m}{dest}1?t=x"})
-    return normalizar(out)
-
-
-def rodada() -> dict:
-
+def rodada() -> None:
+    inicio = time.time()
+    rotas = carregar_rotas()
+    aj = carregar_ajustes()
     hist = ler_json(HIST_FILE, {})
     enviados = ler_json(SENT_FILE, [])
-    alertas_salvos = ler_json(ALERTS_FILE, {"alertas": []})
+    salvos = ler_json(ALERTS_FILE, {"alertas": []}).get("alertas", [])
     hoje = agora().date().isoformat()
+    lote = escolher_lote(rotas, aj)
+    log(f"Lote: {', '.join(r['iata'] for r in lote)}")
 
-    candidatos = []
-    rotas_ok = 0
-    rot = ler_json(DATA / "rotacao.json", {"i": 0})
-    i0 = rot["i"] % len(C.DESTINOS)
-    lote = [C.DESTINOS[(i0 + k) % len(C.DESTINOS)] for k in range(min(C.ROTAS_POR_RODADA, len(C.DESTINOS)))]
-    salvar_json(DATA / "rotacao.json", {"i": (i0 + len(lote)) % len(C.DESTINOS)})
-    for iata, nome, tipo, teto in lote:
-        rota = f"{C.ORIGEM}-{iata}"
-        ofertas = coletar(iata, tipo)
+    candidatos, resumo = [], {}
+    for r in lote:
+        rota = f"{C.ORIGEM}-{r['iata']}"
+        ofertas = coletar(r, aj)
         if not ofertas:
             log(f"{rota}: sem dados")
+            resumo[r["iata"]] = {"ofertas": 0, "quando": agora().isoformat(timespec="minutes")}
             continue
-        rotas_ok += 1
         tipico = preco_tipico(rota, ofertas, hist)
         menor = min(ofertas, key=lambda o: o["preco"])
-        # histórico: 1 registro por rota por dia
-        reg = hist.setdefault(rota, [])
-        mediana_hoje = statistics.median(o["preco"] for o in ofertas)
-        if reg and reg[-1]["dia"] == hoje:
-            reg[-1] = {"dia": hoje, "mediana": mediana_hoje, "minimo": menor["preco"]}
-        else:
-            reg.append({"dia": hoje, "mediana": mediana_hoje, "minimo": menor["preco"]})
-        hist[rota] = reg[-60:]
-
+        med = statistics.median(o["preco"] for o in ofertas)
+        reg = [h for h in hist.get(rota, []) if h["dia"] != hoje]
+        reg.append({"dia": hoje, "mediana": med, "minimo": menor["preco"]})
+        hist[rota] = reg[-90:]
+        resumo[r["iata"]] = {"ofertas": len(ofertas), "menor": menor["preco"], "mediana": med,
+                             "quando": agora().isoformat(timespec="minutes")}
         if not tipico:
-            log(f"{rota}: {len(ofertas)} ofertas, pouca base ainda")
             continue
-        desconto = 1 - menor["preco"] / tipico
-        log(f"{rota}: {len(ofertas)} ofertas · menor {brl(menor['preco'])} · típico {brl(tipico)} · {desconto:.0%}")
-        if desconto >= C.DESCONTO_MINIMO and menor["preco"] <= teto:
-            candidatos.append({
-                "rota": rota, "destino": iata, "destino_nome": nome, "tipo": tipo,
-                "oferta": menor, "tipico": tipico, "desconto": desconto,
-                "datas": agrupar_datas(ofertas, menor["preco"]),
-            })
+        desc = 1 - menor["preco"] / tipico
+        log(f"{rota}: {len(ofertas)} datas · menor {brl(menor['preco'])} · média {brl(tipico)} · {desc:.0%}")
+        teto = float(r.get("teto") or 1e9)
+        if desc >= float(aj["desconto_minimo"]) and menor["preco"] <= teto:
+            candidatos.append({"r": r, "rota": rota, "o": menor, "tipico": tipico, "desc": desc,
+                               "datas": agrupar_datas(ofertas, menor["preco"])})
 
-    # não repetir: mesma rota com preço parecido nos últimos N dias
-    limite = (agora() - timedelta(days=C.DIAS_SEM_REPETIR)).isoformat()
+    limite = (agora() - timedelta(days=int(aj["dias_sem_repetir"]))).isoformat()
     recentes = [e for e in enviados if e["quando"] >= limite]
-
-    def repetido(c) -> bool:
-        for e in recentes:
-            if e["rota"] == c["rota"] and c["oferta"]["preco"] >= e["preco"] * 0.92:
-                return True
-        return False
-
-    candidatos = [c for c in candidatos if not repetido(c)]
-    # prioridade: maior desconto, mais datas, internacional ganha um empurrão
-    candidatos.sort(key=lambda c: c["desconto"] + min(len(c["datas"]), 10) * 0.004
-                    + (0.03 if c["tipo"] == "internacional" else 0), reverse=True)
+    candidatos = [c for c in candidatos
+                  if not any(e["rota"] == c["rota"] and c["o"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
+    candidatos.sort(key=lambda c: c["desc"] + min(len(c["datas"]), 10) * 0.004
+                    + (0.02 if c["r"].get("foco") else 0), reverse=True)
 
     novos = []
-    verificados = 0
-    for c in candidatos:
-        if len(novos) >= C.MAX_ALERTAS_POR_RODADA:
-            break
-        o = c["oferta"]
-        ao_vivo = o["preco"]  # já veio do Google Voos agora
-        if ao_vivo is not None:
-            if ao_vivo > o["preco"] * 1.12:
-                log(f"  x {c['rota']}: Google mostra {brl(ao_vivo)} (cache dizia {brl(o['preco'])}) — descartado")
-                continue
-            preco = min(ao_vivo, o["preco"]) if ao_vivo >= o["preco"] * 0.6 else o["preco"]
-            verificado = True
-        else:
-            if c["desconto"] < 0.30:
-                log(f"  ? {c['rota']}: não deu pra conferir e desconto < 30% — fica pra próxima")
-                continue
-            preco, verificado = o["preco"], False
-        desconto = 1 - preco / c["tipico"]
-        if desconto < C.DESCONTO_MINIMO:
-            continue
-        meses = sorted({MESES_PT[int(d["ida"][5:7]) - 1] for d in c["datas"]},
-                       key=lambda m: MESES_PT.index(m))
+    limite_n = 10 if ROTAS_AGORA else int(aj["max_alertas_por_rodada"])
+    for c in candidatos[:limite_n]:
+        r, o = c["r"], c["o"]
+        k, ktxt = classe(c["desc"])
         a = {
             "id": f"{c['rota']}-{o['ida']}-{int(time.time())}",
             "criado": agora().isoformat(timespec="minutes"),
-            "rota": c["rota"],
-            "destino": c["destino"],
-            "destino_nome": c["destino_nome"],
-            "tipo": c["tipo"],
-            "preco": round(preco),
-            "preco_tipico": round(c["tipico"]),
-            "desconto": round(desconto, 3),
-            "cia": o["cia"],
-            "cia_nome": CIAS.get(o["cia"], o["cia"]),
-            "escalas": o["escalas"],
-            "datas": c["datas"] or [{"ida": o["ida"], "volta": o["volta"], "preco": round(preco)}],
-            "meses": meses,
-            "verificado": verificado,
-            "link_google": google_link(c["destino"], o["ida"], o["volta"]),
-            "link_compra": link_aviasales(c["destino"], o["ida"], o["volta"]),
+            "rota": c["rota"], "destino": r["iata"], "destino_nome": r["nome"], "tipo": r["tipo"],
+            "preco": round(o["preco"]), "preco_tipico": round(c["tipico"]), "desconto": round(c["desc"], 3),
+            "classe": k, "classe_txt": ktxt,
+            "cia_nome": o["cia"], "escalas": o["escalas"],
+            "ida": o["ida"], "volta": o["volta"], "datas": c["datas"],
+            "meses": sorted({MESES_PT[int(d["ida"][5:7]) - 1] for d in c["datas"]}, key=MESES_PT.index),
+            "verificado": True,
+            "link_google": google_link(r["iata"], o["ida"], o["volta"]),
+            "link_compra": link_aviasales(r["iata"], o["ida"], o["volta"]),
         }
-        a["texto"] = texto_whatsapp(a)
+        a["texto"] = montar_texto(a, aj)
+        a["telegram"] = postar_telegram(a["texto"], aj)
         novos.append(a)
         enviados.append({"rota": a["rota"], "preco": a["preco"], "quando": agora().isoformat()})
-        postar_telegram(a["texto"])
-        log(f"  ✓ ALERTA {a['rota']} {brl(a['preco'])} (-{a['desconto']:.0%}) {len(a['datas'])} datas"
-            f" {'[conferido]' if verificado else '[não conferido]'}")
+        log(f"  ✓ {a['rota']} {brl(a['preco'])} (-{a['desconto']:.0%}) {len(a['datas'])} datas")
 
-    # salvar
-    corte = (agora() - timedelta(days=30)).isoformat()
-    todos = novos + [a for a in alertas_salvos.get("alertas", []) if a["criado"] >= corte]
+    corte = (agora() - timedelta(days=45)).isoformat()
+    todos = novos + [a for a in salvos if a["criado"] >= corte]
     salvar_json(ALERTS_FILE, {"atualizado": agora().isoformat(timespec="minutes"), "alertas": todos})
     salvar_json(HIST_FILE, hist)
+    salvar_json(HIST_PUB, hist)
     salvar_json(SENT_FILE, [e for e in enviados if e["quando"] >= corte])
     rodadas = ler_json(LOG_FILE, [])
-    rodadas.append({"quando": agora().isoformat(timespec="minutes"), "rotas_com_dados": rotas_ok, "rotas": [d[0] for d in lote],
-                    "candidatos": len(candidatos), "alertas": len(novos)})
-    salvar_json(LOG_FILE, rodadas[-300:])
-    log(f"\nRodada: {rotas_ok}/{len(lote)} rotas com dados · {len(candidatos)} candidatos · {len(novos)} alertas novos")
-    return {"novos": len(novos)}
+    rodadas.append({"quando": agora().isoformat(timespec="minutes"), "rotas": [r["iata"] for r in lote],
+                    "rotas_com_dados": sum(1 for v in resumo.values() if v.get("ofertas")),
+                    "candidatos": len(candidatos), "alertas": len(novos),
+                    "manual": bool(ROTAS_AGORA), "segundos": int(time.time() - inicio)})
+    salvar_json(LOG_FILE, rodadas[-400:])
+    status = ler_json(STATUS_FILE, {"rotas": {}})
+    status.setdefault("rotas", {}).update(resumo)
+    status["ultima_rodada"] = agora().isoformat(timespec="minutes")
+    salvar_json(STATUS_FILE, status)
+    log(f"\nRodada: {len(lote)} rotas · {len(candidatos)} candidatos · {len(novos)} alertas · {int(time.time()-inicio)}s")
 
 
 if __name__ == "__main__":
     try:
         rodada()
-    except SystemExit:
-        raise
     except Exception:
         traceback.print_exc()
         sys.exit(1)

@@ -153,8 +153,8 @@ function hbars(pares, vazio = "Sem dados ainda") {
 function contar(lista, fn) { const m = {}; lista.forEach(x => { const k = fn(x); if (k) m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }
 
 function cardAlerta(a, compacto = false) {
-  const outras = (a.datas || []);
-  const datas = outras.slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}</span>`).join("") +
+  const outras = (a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || []));
+  const datas = outras.slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida && d.volta === a.volta ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}${a.opcoes && a.opcoes.length ? ` · ${brl(d.preco)}` : ""}</span>`).join("") +
     (outras.length > (compacto ? 4 : 10) ? `<span>+${outras.length - (compacto ? 4 : 10)}</span>` : "");
   const k = a.classe || "boa";
   const ktxt = { imperdivel: "🔥 Imperdível", otima: "⭐ Ótima", boa: "✅ Boa" }[k];
@@ -383,20 +383,18 @@ function extrair(txt) {
 function textoConvertido(c) {
   const aj = S.ajustes || {};
   const nome = (S.rotas.find(r => r.iata === c.destino) || {}).nome || IATA[c.destino] || c.destino;
-  const L = ["🚨 O RADAR APITOU", "", `✈️ ${c.origem} → ${c.destino} (${nome}) — ida e volta`, `💰 ${brl(c.preco)}${c.media ? ` (média: ${brl(c.media)})` : ""}`];
-  if (c.media && c.preco) {
-    const d = 1 - c.preco / c.media;
-    L.push(d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : "✅ BOA OPORTUNIDADE");
-    if (d > 0) L.push(`📉 ${Math.round(d * 100)}% abaixo da média histórica do radar`);
-  }
-  if (c.ida) L.push(`📅 Ida: ${dmy(c.ida)}${c.volta ? ` · Volta: ${dmy(c.volta)}` : ""}`);
-  if (c.cia) L.push(`🛫 Companhia: ${c.cia}`);
-  if (c.link) L.push("", `🔗 Ver o voo: ${c.link}`);
-  L.push("", "⚠️ Preços verificados agora pelo radar — podem mudar a qualquer momento.");
-  if (aj.linha_premium) L.push("", "⭐ Você recebeu em primeira mão por ser Premium.");
-  L.push("", "————");
-  if (aj.link_whatsapp) L.push(`✈️ Receba alertas no WhatsApp: ${aj.link_whatsapp}`);
-  if (aj.assinatura) L.push(aj.assinatura);
+  const L = ["🚨 O RADAR APITOU", "", `✈️ Fortaleza → ${nome} (ida e volta)`];
+  let d = 0;
+  if (c.media && c.preco) d = 1 - c.preco / c.media;
+  L.push(`💰 ${brl(c.preco)}${d > 0 ? ` · ${Math.round(d * 100)}% abaixo da média (${brl(c.media)})` : ""}`);
+  if (d > 0) L.push(d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : "✅ BOA OPORTUNIDADE");
+  if (c.cia) L.push(`🛫 ${c.cia}`);
+  if (c.ida) L.push("", `📅 ${dm(c.ida)}${c.volta ? ` → ${dm(c.volta)}` : ""} · ${brl(c.preco)}`);
+  L.push("", "⚠️ Preço pode mudar a qualquer momento.");
+  if (aj.mostrar_link && c.link) L.push(`🔗 ${c.link}`);
+  if (aj.linha_premium) L.push("⭐ Você recebeu em primeira mão por ser Premium.");
+  const rod = [aj.link_whatsapp ? `✈️ Receba alertas: ${aj.link_whatsapp}` : "", aj.assinatura || ""].filter(Boolean);
+  if (rod.length) L.push("", ...rod);
   return L.join("\n");
 }
 function pConv() {
@@ -435,8 +433,9 @@ function pAjustes() {
     <div class="grid two">
       <div class="card"><h3>Texto dos alertas</h3><div class="desc">Vale para os próximos alertas e para o conversor.</div>
         <div class="form" style="grid-template-columns:1fr">
-          ${txt("link_whatsapp", "Link do grupo (rodapé)", "Aparece em “Receba alertas no WhatsApp”")}
-          ${txt("assinatura", "Assinatura", "Última linha do alerta")}
+          ${txt("link_whatsapp", "Link do grupo (rodapé)", "Vazio = não aparece no alerta")}
+          ${txt("assinatura", "Assinatura", "Vazio = não aparece no alerta")}
+          <label class="chk"><input type="checkbox" data-aj="mostrar_link" ${a.mostrar_link ? "checked" : ""}> Mostrar link do voo no texto</label>
           <label class="chk"><input type="checkbox" data-aj="linha_premium" ${a.linha_premium ? "checked" : ""}> Incluir “⭐ Você recebeu em primeira mão por ser Premium.”</label>
           <label class="chk"><input type="checkbox" data-aj="telegram_ativo" ${a.telegram_ativo !== false ? "checked" : ""}> Postar automaticamente no canal do Telegram</label>
         </div></div>
@@ -452,6 +451,8 @@ function pAjustes() {
           ${num("max_escalas_nacional", "Paradas máx. (nacional)", "0 = só direto")}
           ${num("max_escalas_internacional", "Paradas máx. (internac.)", "")}
           ${num("dias_sem_repetir", "Não repetir por (dias)", "mesma rota e preço")}
+          ${num("dias_proximos", "Datas próximas (± dias)", "testa ida/volta em volta da melhor data")}
+          ${num("max_opcoes", "Datas próximas no texto", "quantas opções listar")}
         </div></div>
     </div>
     <div class="head" style="margin:22px 0 12px"><div><h1 style="font-size:18px">Rodadas recentes</h1><p>O radar roda sozinho a cada 3 horas no GitHub</p></div>

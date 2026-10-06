@@ -57,9 +57,13 @@ AJUSTES_PADRAO = {
     "max_escalas_nacional": 1,
     "max_escalas_internacional": 2,
     "dias_sem_repetir": 3,
-    "link_whatsapp": "https://bit.ly/radar085",
-    "assinatura": "🌵 Partiu 085! — De Fortaleza para o mundo 🌎",
+    "link_whatsapp": "",
+    "assinatura": "",
     "linha_premium": False,
+    "mostrar_link": False,
+    "dias_proximos": 3,
+    "max_opcoes": 5,
+    "tolerancia_opcoes": 0.12,
     "telegram_ativo": True,
 }
 
@@ -220,33 +224,63 @@ def link_aviasales(dest: str, ida: str, volta: str) -> str:
 
 
 def montar_texto(a: dict, aj: dict) -> str:
-    paradas = "voo direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
+    paradas = "direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
     L = [
         "🚨 O RADAR APITOU",
         "",
-        f"✈️ {C.ORIGEM} → {a['destino']} ({a['destino_nome']}) — ida e volta",
-        f"💰 {brl(a['preco'])} (média: {brl(a['preco_tipico'])})",
+        f"✈️ {C.ORIGEM_NOME} → {a['destino_nome']} (ida e volta)",
+        f"💰 {brl(a['preco'])} · {round(a['desconto'] * 100)}% abaixo da média ({brl(a['preco_tipico'])})",
         a["classe_txt"],
-        f"📉 {round(a['desconto'] * 100)}% abaixo da média histórica do radar",
-        f"📅 Ida: {dmy(a['ida'])} · Volta: {dmy(a['volta'])}",
+        f"🛫 {a['cia_nome'] or '—'} · {paradas}",
+        "",
+        f"📅 {dm(a['ida'])} → {dm(a['volta'])} · {brl(a['preco'])}",
     ]
-    outras = [d for d in a["datas"] if d["ida"] != a["ida"]]
-    if outras:
-        txt = " · ".join(f"{dm(d['ida'])}→{dm(d['volta'])}" for d in outras[:4])
-        if len(outras) > 4:
-            txt += f" (+{len(outras) - 4})"
-        L.append(f"🗓️ Mesmo preço também em: {txt}")
-    L.append(f"🛫 Companhia: {a['cia_nome'] or '—'} · {paradas}")
-    L += ["", f"🔗 Ver o voo: {a['link_google']}", "",
-          "⚠️ Preços verificados agora pelo radar — podem mudar a qualquer momento."]
+    ops = [o for o in a.get("opcoes", []) if (o["ida"], o["volta"]) != (a["ida"], a["volta"])]
+    if ops:
+        L.append("📆 Datas próximas:")
+        for o in ops[: int(aj.get("max_opcoes", 5))]:
+            L.append(f"• {dm(o['ida'])} → {dm(o['volta'])} · {brl(o['preco'])}")
+    L += ["", "⚠️ Preço pode mudar a qualquer momento."]
+    if aj.get("mostrar_link"):
+        L.append(f"🔗 {a['link_google']}")
     if aj.get("linha_premium"):
-        L += ["", "⭐ Você recebeu em primeira mão por ser Premium."]
-    L += ["", "————"]
-    if aj.get("link_whatsapp"):
-        L.append(f"✈️ Receba alertas no WhatsApp: {aj['link_whatsapp']}")
-    if aj.get("assinatura"):
-        L.append(aj["assinatura"])
+        L.append("⭐ Você recebeu em primeira mão por ser Premium.")
+    rod = [x for x in [f"✈️ Receba alertas: {aj['link_whatsapp']}" if aj.get("link_whatsapp") else "", aj.get("assinatura") or ""] if x]
+    if rod:
+        L += [""] + rod
     return "\n".join(L)
+
+
+def datas_proximas(r: dict, aj: dict, o: dict, ofertas: list[dict]) -> list[dict]:
+    """Testa ida e volta ±N dias em volta da melhor data e junta com as datas do calendário."""
+    n = int(aj.get("dias_proximos", 3))
+    nac = r["tipo"] == "nacional"
+    max_esc = aj["max_escalas_nacional"] if nac else aj["max_escalas_internacional"]
+    ida0, volta0 = date.fromisoformat(o["ida"]), date.fromisoformat(o["volta"])
+    pares = set()
+    for k in range(-n, n + 1):
+        if k:
+            pares.add((ida0 + timedelta(days=k), volta0 + timedelta(days=k)))  # mesma duração
+            pares.add((ida0, volta0 + timedelta(days=k)))                         # muda só a volta
+            pares.add((ida0 + timedelta(days=k), volta0))                         # muda só a ida
+    minimo = date.today() + timedelta(days=2)
+    res = {(x["ida"], x["volta"]): x for x in ofertas
+           if abs((date.fromisoformat(x["ida"]) - ida0).days) <= n}
+    if not OFFLINE:
+        for ida, volta in sorted(pares):
+            if ida < minimo or volta <= ida + timedelta(days=1):
+                continue
+            try:
+                g = google_oferta(r["iata"], ida.isoformat(), volta.isoformat(), max_esc)
+                if g:
+                    res[(ida.isoformat(), volta.isoformat())] = {**g, "ida": ida.isoformat(), "volta": volta.isoformat()}
+            except Exception as e:  # noqa: BLE001
+                log(f"  ! próximas {r['iata']} {ida}: {type(e).__name__}")
+            time.sleep(C.PAUSA_GOOGLE)
+    lim = o["preco"] * (1 + float(aj.get("tolerancia_opcoes", 0.12)))
+    ops = [{"ida": x["ida"], "volta": x["volta"], "preco": round(x["preco"])} for x in res.values() if x["preco"] <= lim]
+    ops.sort(key=lambda x: (x["preco"], x["ida"]))
+    return ops[:12]
 
 
 def postar_telegram(texto: str, aj: dict) -> bool:
@@ -314,7 +348,7 @@ def rodada() -> None:
         teto = float(r.get("teto") or 1e9)
         if desc >= float(aj["desconto_minimo"]) and menor["preco"] <= teto:
             candidatos.append({"r": r, "rota": rota, "o": menor, "tipico": tipico, "desc": desc,
-                               "datas": agrupar_datas(ofertas, menor["preco"])})
+                               "datas": agrupar_datas(ofertas, menor["preco"]), "todas": ofertas})
 
     limite = (agora() - timedelta(days=int(aj["dias_sem_repetir"]))).isoformat()
     recentes = [e for e in enviados if e["quando"] >= limite]
@@ -328,6 +362,9 @@ def rodada() -> None:
     for c in candidatos[:limite_n]:
         r, o = c["r"], c["o"]
         k, ktxt = classe(c["desc"])
+        opcoes = datas_proximas(r, aj, o, c.get("todas", []))
+        if opcoes and opcoes[0]["preco"] < o["preco"]:
+            o = {**o, **opcoes[0]}
         a = {
             "id": f"{c['rota']}-{o['ida']}-{int(time.time())}",
             "criado": agora().isoformat(timespec="minutes"),
@@ -335,7 +372,7 @@ def rodada() -> None:
             "preco": round(o["preco"]), "preco_tipico": round(c["tipico"]), "desconto": round(c["desc"], 3),
             "classe": k, "classe_txt": ktxt,
             "cia_nome": o["cia"], "escalas": o["escalas"],
-            "ida": o["ida"], "volta": o["volta"], "datas": c["datas"],
+            "ida": o["ida"], "volta": o["volta"], "datas": c["datas"], "opcoes": opcoes,
             "meses": sorted({MESES_PT[int(d["ida"][5:7]) - 1] for d in c["datas"]}, key=MESES_PT.index),
             "verificado": True,
             "link_google": google_link(r["iata"], o["ida"], o["volta"]),

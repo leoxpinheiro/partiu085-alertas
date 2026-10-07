@@ -155,10 +155,10 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 /* ------------------------------------------------------------ navegação */
 const MENU = [
   ["", [["dashboard", "grid", "Início"]]],
-  ["Passagens em dinheiro", [["alertas", "bell", "Alertas em dinheiro"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico de preços"]]],
-  ["Passagens em milhas", [["milhas", "coins", "Alertas em milhas"], ["promocoes", "zap", "Promoções de milhas"]]],
-  ["Divulgação", [["marketing", "calendar", "Calendário de posts"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]]],
-  ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]]],
+  ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
+  ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
+  ["Divulgação", [["marketing", "calendar", "Calendário de posts"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
+  ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8"],
 ];
 const PAGS = MENU.flatMap(g => g[1]);
 function contadorMenu(k) {
@@ -170,10 +170,10 @@ function contadorMenu(k) {
 }
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard";
-  $("#rail").innerHTML = `<a class="side-brand" href="#dashboard"><img class="mark-img" src="marca/icone.png" alt=""><span><b>Partiu 085</b><small>Radar de passagens</small></span></a>` +
-    MENU.map(([t, itens]) => `<div class="side-g">${t ? `<div class="side-t">${t}</div>` : ""}${itens.map(([k, i, n]) => { const c = contadorMenu(k);
-      return `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`).join("") +
-    `<button class="side-tema" data-act="tema">${ic("moon")}<span>Tema claro / escuro</span></button>`;
+  $("#rail").innerHTML = `<div class="side-top"><a class="side-brand" href="#dashboard"><img class="mark-img" src="marca/icone.png" alt=""><span><b>Partiu 085</b><small>Radar de passagens</small></span></a>
+      <button class="side-tema" data-act="tema" title="Tema claro/escuro" aria-label="Tema claro/escuro">${ic("moon")}</button></div>` +
+    MENU.map(([t, itens, cor]) => `<div class="side-g ${t ? "box" : ""}" style="--c:${cor || "transparent"}">${t ? `<div class="side-t">${t}</div>` : ""}${itens.map(([k, i, n]) => { const c = contadorMenu(k);
+      return `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`).join("");
   const cAl = contadorMenu("alertas"), cMi = contadorMenu("milhas");
   $("#bottom").innerHTML = `<a href="#dashboard" class="${pag === "dashboard" ? "on" : ""}" aria-label="Início">${ic("grid")}<small>Início</small></a>
     <a href="#alertas" class="${pag === "alertas" ? "on" : ""}" aria-label="Alertas">${ic("bell")}<small>Dinheiro</small>${cAl ? `<b class="cnt">${cAl}</b>` : ""}</a>

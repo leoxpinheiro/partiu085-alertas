@@ -602,3 +602,21 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 .mi-off-i{flex-shrink:0;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:#FF7A00;color:#fff}
 .mi-off .desc{font-size:14px;line-height:1.5}
 @media (max-width:640px){.mi-off{flex-direction:column}}
+
+/* menu lateral compacto: cabe numa tela, sem rolar */
+.rail{padding:14px 10px;gap:8px;overflow-y:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.side-top{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 2px 4px}
+.rail a.side-brand{height:auto;padding:2px 4px;gap:10px;flex:1;min-width:0}
+.side-brand .mark-img{width:36px;height:36px;border-radius:11px}
+.side-brand b{font-size:15px}.side-brand small{font-size:11px}
+.side-tema{margin:0;width:34px;height:34px;padding:0;justify-content:center;border-radius:10px;flex-shrink:0;color:var(--text-tertiary)}
+.side-g{gap:1px}
+.side-g.box{padding:4px;border-radius:14px;background:rgba(127,127,127,.06);box-shadow:inset 0 0 0 1px var(--glass-line)}
+.side-t{display:flex;align-items:center;gap:7px;padding:5px 8px 4px;font-size:10.5px;letter-spacing:.08em}
+.side-t::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+.rail a{height:34px;border-radius:10px;padding:0 10px;gap:9px;font-size:13.5px}
+.rail a svg.i{width:17px;height:17px}
+.rail a.on{box-shadow:inset 3px 0 0 var(--c,transparent)}
+.rail a .cnt{min-width:20px;height:18px;font-size:10px}
+@media (max-height:700px){.rail{gap:5px;padding:10px 8px}.rail a{height:30px;font-size:13px}.side-t{padding:3px 8px 2px}.side-brand small{display:none}}

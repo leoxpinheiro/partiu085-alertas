@@ -11,7 +11,7 @@ const milN = n => Math.round(+n || 0).toLocaleString("pt-BR");
 function carregarMilhas() {
   if (S.mi) return;
   S.mi = { carregando: true, ofertas: [] };
-  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { S.mi = d; S.mv = v; if (/milhas/.test(location.hash)) render(); });
+  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { S.mi = d; S.mv = v; const pg = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard"; if (["milhas", "promocoes", "dashboard"].includes(pg) && !document.querySelector("input:focus,textarea:focus")) render(); else navs(); });
 }
 function validadeTxt(o) {
   if (!o.validade) return ["", "sem data informada"];
@@ -225,14 +225,25 @@ function secaoPromos() {
 
 function pMilhas() {
   carregarMilhas();
-  if (S.mi.carregando) return head("Milhas", "Carregando…") + `<div class="card vazio">Carregando…</div>`;
-  const nVoos = (S.mi.ofertas || []).filter(o => o.busca_propria && o.ativa !== false).length;
-  const nProm = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.ativa !== false).length;
-  return head("Milhas", "Passagens em milhas saindo de Fortaleza e, separado, as promoções e transferências",
-    `<button class="bt" data-act="miatualizar">${ic("refresh")}Atualizar promoções</button>`) +
-    `<div class="filtros-l">${pills("mis", MI.sec, [["voos", `Passagens saindo de FOR${nVoos ? ` · ${nVoos}` : ""}`], ["promos", `Promoções e transferências${nProm ? ` · ${nProm}` : ""}`]])}
-      <label class="chk"><input type="checkbox" data-mi-ativas ${MI.ativas ? "checked" : ""}> Só o que ainda vale</label></div>
-    ${MI.sec === "voos" ? secaoVoos() : secaoPromos()}`;
+  if (S.mi.carregando) return head("Alertas em milhas", "Carregando…") + `<div class="card vazio">Carregando…</div>`;
+  const sub = "Passagens pagas com milhas (Smiles, Azul) saindo de Fortaleza, achadas pelo nosso robô data por data, ida e volta.";
+  const sites = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.fortaleza && o.ativa !== false);
+  const listaSites = sites.length ? `<h2 class="mv-t" style="margin-top:28px">Vistos em outros sites · saindo de Fortaleza</h2>
+      <div class="mv-sites">${sites.map(o => `<div class="mv-site"><span class="tag">${esc(MI_TIPOS[o.tipo])}</span><span class="t">${esc(o.titulo)}<small>${esc((o.fontes || [o.fonte]).slice(0, 2).join(" · "))} · ${dm(o.publicado)}</small></span>
+        <button class="bt sm" data-act="micopiar" data-id="${esc(o.id)}">${ic("copy")}Copiar</button>${o.link ? `<a class="bt sm ghost" target="_blank" rel="noopener" href="${esc(o.link)}">${ic("ext")}Fonte</a>` : ""}</div>`).join("")}</div>` : "";
+  if (!S.mv) return head("Alertas em milhas", sub) + `
+    <div class="card mi-off"><div class="mi-off-i">${ic("coins")}</div><div><h3>A busca em milhas ainda não está ligada</h3>
+      <p class="desc" style="margin:6px 0 12px">Ela já está pronta. Falta só a chave da GeckoAPI, que tem teste grátis com 100 créditos. Depois que ligar, esta tela mostra os alertas de Smiles e Azul do mesmo jeito dos alertas em dinheiro: milhas + taxas, datas de ida e volta, copiar e mandar no WhatsApp.</p>
+      <ol class="mi-passos"><li>Crie a conta grátis em <a href="https://geckoapi.com.br" target="_blank" rel="noopener">geckoapi.com.br</a> e copie a chave.</li><li>Cole em <a href="#ajustes">Ajustes e APIs › Integrações › GeckoAPI</a>.</li><li>Pronto: na próxima rodada (até 3h) os primeiros preços aparecem aqui.</li></ol>
+      <div class="al-acts" style="margin-top:14px"><a class="bt pri" href="#ajustes">${ic("key")}Colocar a chave agora</a><a class="bt" href="#promocoes">${ic("zap")}Ver promoções de milhas</a></div></div></div>` + listaSites;
+  return head("Alertas em milhas", sub) + secaoVoos().replace(/<h2 class="mv-t" style="margin-top:28px">Vistos em outros sites[\s\S]*$/, "") + listaSites;
+}
+function pPromocoes() {
+  carregarMilhas();
+  if (S.mi.carregando) return head("Promoções de milhas", "Carregando…") + `<div class="card vazio">Carregando…</div>`;
+  return head("Promoções de milhas", "Bônus de transferência (Livelo, Esfera → Smiles, Azul, LATAM), compra de milhas com desconto e clubes, lidos dos principais sites de milhas a cada 3h. Conteúdo pro grupo de milhas.",
+    `<button class="bt" data-act="miatualizar">${ic("refresh")}Atualizar agora</button>`) +
+    `<div class="filtros-l" style="justify-content:flex-end"><label class="chk"><input type="checkbox" data-mi-ativas ${MI.ativas ? "checked" : ""}> Só o que ainda vale</label></div>` + secaoPromos();
 }
 
 document.addEventListener("click", async e => {

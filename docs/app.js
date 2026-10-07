@@ -153,31 +153,41 @@ async function carregar() {
 const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
 /* ------------------------------------------------------------ navegação */
-const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["marketing", "image", "Marketing"], ["milhas", "coins", "Milhas"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
-  ["rotas", "plane", "Rotas"], ["grupos", "users", "Grupos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
+const MENU = [
+  ["", [["dashboard", "grid", "Início"]]],
+  ["Passagens em dinheiro", [["alertas", "bell", "Alertas em dinheiro"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico de preços"]]],
+  ["Passagens em milhas", [["milhas", "coins", "Alertas em milhas"], ["promocoes", "zap", "Promoções de milhas"]]],
+  ["Divulgação", [["marketing", "calendar", "Calendário de posts"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]]],
+  ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]]],
 ];
-function navs() {
-  const real = (location.hash || "#dashboard").slice(1).split("?")[0];
-  const pag = real === "criativos" ? "marketing" : real;
-  const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 6 ? `<span class="sep"></span>` : "") +
-    `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
-  $("#tabs").innerHTML = PAGS.slice(0, 6).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
-  $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
-    `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
-    [PAGS[2], PAGS[3]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
-  $("#more").innerHTML = PAGS.slice(4).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
-  return real;
+const PAGS = MENU.flatMap(g => g[1]);
+function contadorMenu(k) {
+  const h = hojeISO();
+  if (k === "alertas") return S.alertas.filter(a => a.criado.slice(0, 10) === h && !enviado(a)).length;
+  if (k === "milhas") return S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => o.busca_propria && o.ativa !== false && !enviado(o)).length : 0;
+  if (k === "promocoes") return S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => !o.busca_propria && o.ativa !== false && !enviado(o)).length : 0;
+  return 0;
 }
-function subMarketing(pag) {
-  return `<div class="subnav">${[["marketing", "calendar", "Calendário e ideias"], ["criativos", "image", "Criar arte"]].map(([k, i, n]) => `<a href="#${k}" class="pill ${pag === k ? "on" : ""}">${ic(i, "i sm")}${n}</a>`).join("")}</div>`;
+function navs() {
+  const pag = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard";
+  $("#rail").innerHTML = `<a class="side-brand" href="#dashboard"><img class="mark-img" src="marca/icone.png" alt=""><span><b>Partiu 085</b><small>Radar de passagens</small></span></a>` +
+    MENU.map(([t, itens]) => `<div class="side-g">${t ? `<div class="side-t">${t}</div>` : ""}${itens.map(([k, i, n]) => { const c = contadorMenu(k);
+      return `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`).join("") +
+    `<button class="side-tema" data-act="tema">${ic("moon")}<span>Tema claro / escuro</span></button>`;
+  const cAl = contadorMenu("alertas"), cMi = contadorMenu("milhas");
+  $("#bottom").innerHTML = `<a href="#dashboard" class="${pag === "dashboard" ? "on" : ""}" aria-label="Início">${ic("grid")}<small>Início</small></a>
+    <a href="#alertas" class="${pag === "alertas" ? "on" : ""}" aria-label="Alertas">${ic("bell")}<small>Dinheiro</small>${cAl ? `<b class="cnt">${cAl}</b>` : ""}</a>
+    <button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>
+    <a href="#milhas" class="${pag === "milhas" ? "on" : ""}" aria-label="Milhas">${ic("coins")}<small>Milhas</small>${cMi ? `<b class="cnt">${cMi}</b>` : ""}</a>
+    <button data-act="menu" aria-label="Menu">${ic("more")}<small>Menu</small></button>`;
+  document.body.classList.remove("menu-aberto");
+  return pag;
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
-  $("#main").innerHTML = (pag === "marketing" || pag === "criativos" ? subMarketing(pag) : "") + fn();
+  $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
   if (pag === "destinos" && typeof mapaDestinos === "function") setTimeout(mapaDestinos, 0);
   window.scrollTo(0, 0);
@@ -248,41 +258,44 @@ function cardAlerta(a, compacto = false) {
 }
 
 /* ------------------------------------------------------------ Dashboard */
+function filaEnvio() {
+  const lim = diaMenos(hojeISO(), 1);
+  const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a)).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
+  if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
+    ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${brl(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
+    : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: o.titulo, v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
+  return L.sort((x, y) => y.q.localeCompare(x.q));
+}
 function pDash() {
+  carregarMilhas();
   const h = hojeISO(), A = S.alertas;
-  const em = n => A.filter(a => a.criado.slice(0, 10) >= diaMenos(h, n - 1));
-  const a7 = em(7), a30 = em(30);
-  const melhor = a30.slice().sort((x, y) => y.desconto - x.desconto)[0];
-  const ativas = S.rotas.filter(r => r.ativo !== false).length;
+  const fila = filaEnvio();
+  const enviadosHoje = Object.values(S.marcados).filter(v => v && v.slice(0, 10) === new Date().toISOString().slice(0, 10)).length;
+  const miHoje = S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => o.busca_propria && o.publicado.slice(0, 10) === h).length : 0;
+  const promos = S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => !o.busca_propria && o.ativa !== false).length : 0;
   const dias = Array.from({ length: 14 }, (_, i) => diaMenos(h, 13 - i));
   const cont = Object.fromEntries(dias.map(d => [d, 0])); A.forEach(a => { const d = a.criado.slice(0, 10); if (d in cont) cont[d]++; });
-  const max = Math.max(META_DIA + 2, ...Object.values(cont)), H = 170;
-  const bateu = dias.filter(d => cont[d] >= META_DIA).length;
+  const max = Math.max(META_DIA + 2, ...Object.values(cont)), H = 150;
   const cols = `<div class="meta" style="bottom:${(META_DIA / max) * H + 30}px"><span>meta ${META_DIA}</span></div>` +
     dias.map((d, i) => `<div class="col ${i === 13 ? "sel" : ""} ${cont[d] >= META_DIA ? "hit" : ""}" data-tip="${dmy(d)}: ${cont[d]} alerta${cont[d] === 1 ? "" : "s"}"><span class="v">${cont[d] || ""}</span><span class="bar ${cont[d] ? "" : "ghost"}" style="height:${Math.max(6, (cont[d] / max) * H)}px"></span><span class="d">${d.slice(8, 10)}</span></div>`).join("");
-  const precos = ordenarDest(destinosStatus(), S.dashOrd).slice(0, 8);
+  const precos = ordenarDest(destinosStatus(), "ofertas").slice(0, 6);
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
-  return head("Dashboard", "O que o radar encontrou saindo de Fortaleza", statusPill()) +
-    `<div class="grid kpis">
-      ${kpi("Alertas hoje", `${hojeN}<small> / ${META_DIA}</small>`, `Meta de ${META_DIA} por dia · ${A.filter(a => a.criado.slice(0, 10) === h && !enviado(a)).length} ainda não enviados`, true, "bell")}
-      ${kpi("Maior desconto (30 dias)", melhor ? "−" + pct(melhor.desconto) : "–", melhor ? `<span class="badge pos">${brl(melhor.preco)}</span>${esc(melhor.destino_nome)}` : "Ainda sem alertas", false, "downr")}
-      ${kpi("Rotas vigiadas", ativas, `<span class="badge">${S.rotas.filter(r => r.foco).length} em foco</span>${a30.length} alertas em 30 dias`, false, "plane")}
+  const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
+  return head("Início", "O resumo do dia e tudo que ainda falta enviar", statusPill()) +
+    `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
+    <div class="card fila" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Para enviar agora</h3><div class="desc">Tudo de ontem e hoje que ainda não foi marcado como enviado. Copiar já marca como enviado.</div></div></div>
+      ${fila.length ? `<div class="fila-l">${fila.map(f => `<div class="fila-i" style="--c:${f.cor}"><span class="fila-tag">${esc(f.rot)}</span>
+        <span class="fila-t"><b>${esc(f.t)}</b><small>${esc(f.v)}${f.d ? ` · <span class="pos">${f.d}</span>` : ""} · ${f.q.slice(0, 10) === h ? "hoje" : "ontem"} ${f.q.slice(11, 16)}</small></span>
+        <button class="bt sm" data-act="filacopiar" data-id="${esc(f.id)}">${ic("copy")}<span>Copiar</span></button>
+        <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(f.id)}" href="https://wa.me/?text=${encodeURIComponent(f.texto || "")}">${ic("send")}<span>WhatsApp</span></a>
+        <a class="bt sm ghost" href="${f.link}" title="Abrir">${ic("ext")}</a></div>`).join("")}</div>` : `<div class="vazio">Tudo enviado. 🎉 Os próximos alertas aparecem aqui.</div>`}
     </div>
     <div class="grid two">
-      <div class="card"><div class="card-h"><div><h3>Alertas por dia</h3><div class="desc">Últimos 14 dias · bateu a meta em ${bateu} dia${bateu === 1 ? "" : "s"}</div></div></div>
-        <div class="cols">${cols}</div>
-        <div class="legend"><span><i style="background:var(--lime-300)"></i>Hoje</span><span><i style="background:var(--white)"></i>Dias anteriores</span><span>– – Meta de ${META_DIA}</span></div>
+      <div class="card"><div class="card-h"><div><h3>Alertas em dinheiro por dia</h3><div class="desc">Últimos 14 dias · meta de ${META_DIA} por dia</div></div></div><div class="cols">${cols}</div></div>
+      <div class="card"><div class="card-h"><div><h3>Mais barato agora</h3><div class="desc">Em dinheiro, comparado com a média de cada destino</div></div><a class="bt sm" href="#destinos">Ver todos</a></div>
+        ${precos.length ? `<div class="mini-l">${precos.map(p => `<a class="mini-i" href="#destinos" data-act="abrirdest" data-iata="${p.k}"><span><b>${esc(p.nome)}</b><small>${p.k}</small></span><span class="r"><b>${brl(p.menor)}</b><span class="badge ${p.d >= .2 ? "pos" : ""}">−${pct(p.d)}</span></span></a>`).join("")}</div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
       </div>
-      <div class="card"><div class="card-h"><div><h3>Por companhia</h3><div class="desc">Alertas dos últimos 30 dias</div></div></div>${hbars(contar(a30, a => a.cia_nome).slice(0, 6))}</div>
-    </div>
-    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Onde está mais barato agora</h3><div class="desc">Menor preço da última varredura vs. média da rota</div></div><div class="acts">${pills("dash", S.dashOrd, ORDENS_DEST)}<a class="bt sm" href="#destinos">Ver todos os destinos</a></div></div>
-      ${precos.length ? `<div class="tbl-wrap"><table class="tiles"><thead><tr><th>Destino</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Abaixo da média</th><th class="num">Varrida</th></tr></thead><tbody>
-      ${precos.map(p => `<tr><td data-l="Destino"><span><span class="iata">${p.k}</span> <span class="sub">${esc(p.nome)}</span></span></td><td class="num" data-l="Menor">${brl(p.menor)}</td><td class="num" data-l="Média">${brl(p.mediana)}</td><td class="num" data-l="Abaixo"><span class="badge ${p.d >= .2 ? "pos" : ""}">−${pct(p.d)} ↘</span></td><td class="num sub" data-l="Varrida">${haQuanto(p.quando)}</td></tr>`).join("")}
-      </tbody></table></div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
-    </div>
-    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Destinos com mais alertas</h3><div class="desc">Últimos 30 dias</div></div></div>${hbars(contar(a30, a => a.destino_nome).slice(0, 6))}</div>
-    <div class="sec-h"><h2>Últimos alertas</h2><a class="bt" href="#alertas">Ver todos</a></div>
-    ${A.length ? `<div class="alertas">${A.slice(0, 3).map(a => cardAlerta(a, true)).join("")}</div>` : `<div class="card vazio">Nenhum alerta ainda. O radar varre a cada 3 horas.</div>`}`;
+    </div>`;
 }
 
 /* ------------------------------------------------------------ Alertas */
@@ -311,7 +324,7 @@ function pAlertas() {
   const meses = [...new Set(S.alertas.flatMap(a => diasIda(a).map(d => d.slice(0, 7))))].sort();
   const L = filtrar();
   const opt = (v, t, sel) => `<option value="${esc(v)}" ${sel === v ? "selected" : ""}>${esc(t)}</option>`;
-  return head("Alertas", "Tudo que o radar apitou — filtre, copie e envie",
+  return head("Alertas em dinheiro", "Promoções em reais que o radar achou saindo de Fortaleza. Copie ou mande no WhatsApp: o quadro fica verde quando enviado.",
     `<button class="bt" data-act="copiarvisiveis">${ic("copy")}Copiar todos visíveis</button>`) +
     `<div class="filtros" id="filtros">
       <input class="busca" type="search" placeholder="Buscar destino ou companhia…" data-f="q" value="${esc(F.q)}">
@@ -352,7 +365,7 @@ function calHTML(c, ref) {
 }
 function pDestinos() {
   const total = S.rotas.filter(r => r.ativo !== false).length, comBase = destinosStatus().length;
-  return head("Destinos", "Preços em dinheiro saindo de Fortaleza. Toque no destino para ver o calendário",
+  return head("Preços por destino", "Quanto está cada destino em reais, dia a dia. É a base que o radar usa pra saber o que é promoção. Toque num destino pra ver o calendário.",
     `<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button>`) +
     (comBase < total ? `<div class="aviso warn"><span>${ic("chart")} ${comBase} de ${total} destinos já têm base de preços. A varredura turbo completa o resto em ~25 min.</span></div>` : "") +
     blocoDestinos("real");
@@ -448,7 +461,7 @@ function pRotas() {
         <button class="bt sm ghost danger" data-act="excluirrota" data-i="${i}" title="Excluir" aria-label="Excluir">${ic("x")}</button></td>
     </tr>`;
   }).join("");
-  return head("Rotas", "Trechos que o radar vigia saindo de Fortaleza",
+  return head("Rotas vigiadas", "Os destinos que o radar procura saindo de Fortaleza. Adicione, tire ou coloque em foco.",
     `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>` : ""}<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button><button class="bt" data-act="rodar">${ic("play")}Rodar radar agora</button>`) +
     (!token() ? `<div class="aviso warn"><span>${ic("key")} Para salvar rotas e rodar o radar daqui, configure seu token do GitHub.</span><a class="bt sm" href="#ajustes">Configurar</a></div>` : "") +
     (S.rotasSujo ? `<div class="aviso warn"><span>Você tem alterações não salvas.</span><button class="bt sm pri" data-act="salvarrotas">Salvar agora</button></div>` : "") +
@@ -695,7 +708,7 @@ function pAjustes() {
   const num = (k, lbl, dica, step = 1) => `<div class="field"><label>${lbl}</label><input type="number" step="${step}" data-aj="${k}" value="${esc(a[k] ?? "")}"><small>${dica}</small></div>`;
   const txt = (k, lbl, dica) => `<div class="field"><label>${lbl}</label><input data-aj="${k}" value="${esc(a[k] ?? "")}"><small>${dica}</small></div>`;
   const rd = S.rodadas.slice(-12).reverse();
-  return head("Ajustes", "Textos, sensibilidade do radar e acesso",
+  return head("Ajustes e APIs", "Acesso, chaves das APIs, texto dos alertas e sensibilidade do radar",
     `${S.ajustesSujo ? `<button class="bt pri" data-act="salvarajustes">${ic("save")}Salvar ajustes</button>` : ""}`) +
     `<div class="card" style="margin-bottom:14px"><h3>Acesso para salvar</h3><div class="desc">O painel é público só para leitura. Para salvar rotas/ajustes e rodar o radar, cole seu token do GitHub (fica guardado só neste navegador).</div>
       <div class="form"><div class="field" style="grid-column:span 2"><label>Token do GitHub</label><input type="password" id="tok" placeholder="github_pat_…" value="${t ? "••••••••••••" + t.slice(-4) : ""}"></div>
@@ -733,6 +746,7 @@ function pAjustes() {
 }
 
 /* ------------------------------------------------------------ eventos */
+document.addEventListener("click", e => { if (document.body.classList.contains("menu-aberto") && !e.target.closest("#rail") && !e.target.closest('[data-act="menu"]')) document.body.classList.remove("menu-aberto"); });
 document.addEventListener("click", e => { const z = e.target.closest("[data-marca]"); if (z && !enviado({ id: z.dataset.marca })) marcar(z.dataset.marca, true); }, true);
 document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
@@ -740,6 +754,8 @@ document.addEventListener("click", async e => {
   if (b.tagName === "A" && act === "limpar") e.preventDefault();
   const A = id => S.alertas.find(a => a.id === id);
   try {
+    if (act === "filacopiar") { const f = filaEnvio().find(x => x.id === b.dataset.id); if (f) { await copiar(f.texto); marcar(f.id, true); toast("Copiado e marcado como enviado."); render(); } return; }
+    if (act === "menu") { document.body.classList.toggle("menu-aberto"); return; }
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
     else if (act === "marcar") { marcar(b.dataset.id, !enviado(A(b.dataset.id))); }
     else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast("Copiado e marcado como enviado. Toque em “Enviado” para desfazer."); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }

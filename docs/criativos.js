@@ -396,7 +396,7 @@ function pCriativos() {
   const chip = (k, v, t) => `<button class="chip ${CR[k] === v ? "on" : ""}" data-act="cr" data-k="${k}" data-v="${v}">${t}</button>`;
   const dests = typeof destinosStatus === "function" ? destinosStatus().sort((x, y) => x.nome.localeCompare(y.nome, "pt-BR")) : [];
   const lista = topSemana();
-  return head("Criativos", "Artes de stories, feed e carrossel com a identidade do Partiu 085",
+  return head("Criar arte", "Banners de stories, feed e carrossel com a identidade do Partiu 085",
     `<a class="bt" href="#marketing">${ic("calendar")}Calendário de posts</a>${CR.hashId ? `<a class="bt" href="#alertas">${ic("back")}Voltar aos alertas</a>` : ""}`) +
     `<div class="grid cr-grid">
       <div class="card cr-ctrl">

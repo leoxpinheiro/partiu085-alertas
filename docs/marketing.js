@@ -70,11 +70,11 @@ function storiesHoje() {
   ];
 }
 function pMarketing() {
-  if (!MK.dados) { carregarMK().then(render); return head("Marketing", "Carregando o calendário…"); }
+  if (!MK.dados) { carregarMK().then(render); return head("Calendário de posts", "Carregando…"); }
   const posts = MK.dados.posts.slice().sort((a, b) => a.data.localeCompare(b.data));
   const hoje = hojeISO(), feitos = posts.filter(p => p.feito).length;
   const prox = posts.filter(p => p.data >= hoje && !p.feito);
-  return head("Marketing", "Calendário de posts, stories do dia e banco de frases do Partiu 085",
+  return head("Calendário de posts", "O que postar em cada dia, ideias de stories e banco de frases do Partiu 085",
     `${MK.sujo ? `<button class="bt pri" data-act="mksalvar">${ic("save")}Salvar calendário</button>` : ""}<button class="bt" data-act="mknova">${ic("zap")}Gerar próxima semana</button>`) +
     `<div class="grid kpis">
       ${kpi("Posts no calendário", posts.length, `${feitos} já postados`, true, "calendar")}

@@ -98,7 +98,7 @@ async function checarRodando() {
   try {
     const r = await fetch(API + "/actions/runs?per_page=3", { headers: { Accept: "application/vnd.github+json" } }).then(r => r.json());
     const rodando = (r.workflow_runs || []).some(w => w.status !== "completed" && w.name.startsWith("Alertas"));
-    const p = $("#pulse"); p.innerHTML = rodando ? "<i></i>Varrendo agora…" : "<i></i>Radar ligado";
+    const p = $("#pulse"); if (p) p.innerHTML = rodando ? `<span class="dot run"></span>Varrendo agora…` : `<span class="dot"></span>Última varredura ${haQuanto(S.ultima)} · roda a cada 3h`;
     if (rodando) setTimeout(checarRodando, 30000);
   } catch (e) { }
 }
@@ -117,21 +117,27 @@ async function carregar() {
   if (!S.rotasSujo) S.rotas = r;
   if (!S.ajustesSujo) S.ajustes = aj;
   S.status = st || { rotas: {} }; S.hist = h || {}; S.rodadas = rd || [];
-  $("#ultima").textContent = "Última varredura " + haQuanto(S.status.ultima_rodada || a.atualizado) + " · próxima " + proximaRodada();
+  S.ultima = S.status.ultima_rodada || a.atualizado;
 }
+
+/* ------------------------------------------------------------ ícones (traço fino, sprite no index.html) */
+const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "📊", "Dashboard"], ["alertas", "🚨", "Alertas"], ["rotas", "✈️", "Rotas"],
-  ["historico", "📈", "Histórico"], ["converter", "🔄", "Converter"], ["ajustes", "⚙️", "Ajustes"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["rotas", "plane", "Rotas"],
+  ["historico", "chart", "Histórico"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
   const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#nav").innerHTML = `<div class="nav-sec">Radar</div>` + PAGS.map(([k, i, n], idx) =>
-    (idx === 2 ? `<div class="nav-sec">O que vigiar</div>` : idx === 4 ? `<div class="nav-sec">Ferramentas</div>` : "") +
-    `<a href="#${k}" class="${pag === k ? "on" : ""}">${i} ${n}${k === "alertas" && hoje ? `<span class="cnt">${hoje} hoje</span>` : ""}${k === "rotas" ? `<span class="cnt">${S.rotas.filter(r => r.ativo !== false).length}</span>` : ""}</a>`).join("");
-  $("#bottom").innerHTML = PAGS.map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}"><span>${i}</span>${n}</a>`).join("");
+  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 4 ? `<span class="sep"></span>` : "") +
+    `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
+  $("#tabs").innerHTML = PAGS.slice(0, 4).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
+  $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
+    `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
+    [PAGS[2], PAGS[5]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
+  $("#more").innerHTML = PAGS.slice(3).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
   return pag;
 }
 function render() {
@@ -144,11 +150,13 @@ window.addEventListener("hashchange", render);
 
 /* ------------------------------------------------------------ componentes */
 function head(t, p, acts = "") { return `<div class="head"><div><h1>${t}</h1><p>${p}</p></div><div class="acts">${acts}</div></div>`; }
-function kpi(lbl, num, sub = "", acc = false) { return `<div class="card kpi"><div class="lbl">${lbl}</div><div class="num ${acc ? "acc" : ""}">${num}</div><div class="sub">${sub}</div></div>`; }
+function statusPill() { return `<span class="status" id="pulse"><span class="dot"></span>Última varredura ${haQuanto(S.ultima)} · roda a cada 3h</span>`; }
+function kpi(lbl, num, sub = "", acc = false, icone = "bell") { return `<div class="card kpi ${acc ? "lime" : ""}"><div class="kpi-h"><span>${lbl}</span><span class="kpi-ic">${ic(icone)}</span></div><div class="num">${num}</div><div class="sub">${sub}</div></div>`; }
 function hbars(pares, vazio = "Sem dados ainda") {
   if (!pares.length) return `<div class="vazio">${vazio}</div>`;
   const max = Math.max(...pares.map(p => p[1]));
-  return `<div class="hbars">${pares.map(([n, v]) => `<div class="hrow" data-tip="${esc(n)}: ${v} alerta${v > 1 ? "s" : ""}"><span class="n">${esc(n)}</span><span class="t"><i style="width:${(v / max) * 100}%"></i></span><span class="v">${v}</span></div>`).join("")}</div>`;
+  const ini = n => n.replace(/[^A-Za-zÀ-ú ]/g, "").split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase() || "?";
+  return `<div class="rows">${pares.map(([n, v], i) => `<div class="row" data-tip="${esc(n)}: ${v} alerta${v > 1 ? "s" : ""}"><span class="av ${i ? "n" : ""}">${esc(ini(n))}</span><span class="t"><b>${esc(n)}</b><span class="prog"><i style="width:${(v / max) * 100}%"></i></span></span><span class="r">${v}<small>alerta${v > 1 ? "s" : ""}</small></span></div>`).join("")}</div>`;
 }
 function contar(lista, fn) { const m = {}; lista.forEach(x => { const k = fn(x); if (k) m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }
 
@@ -157,11 +165,11 @@ function mesesHTML(lista, compacto) {
 }
 function cardAlerta(a, compacto = false) {
   const k = a.classe || "boa";
-  const ktxt = { imperdivel: "🔥 Imperdível", otima: "⭐ Ótima", boa: "✅ Boa" }[k];
+  const ktxt = { imperdivel: "Imperdível", otima: "Ótima", boa: "Boa" }[k];
   const trecho = a.modo === "trecho";
   const corpo = trecho
-    ? `<div class="idavolta"><div><div class="iv-h">🛫 Datas de ida <small>a partir de ${brl(a.preco)}</small></div>${mesesHTML(a.ida_meses, compacto)}</div>
-       <div><div class="iv-h">🛬 Datas de volta <small>a partir de ${brl(a.preco_volta)}</small></div>${mesesHTML(a.volta_meses, compacto)}</div></div>`
+    ? `<div class="idavolta"><div><div class="iv-h">${ic("up", "i sm")} Datas de ida <small>a partir de ${brl(a.preco)}</small></div>${mesesHTML(a.ida_meses, compacto)}</div>
+       <div><div class="iv-h">${ic("downl", "i sm")} Datas de volta <small>a partir de ${brl(a.preco_volta)}</small></div>${mesesHTML(a.volta_meses, compacto)}</div></div>`
     : `<div class="datas">${(a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || [])).slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}</span>`).join("")}</div>`;
   return `<article class="al ${k}">
     <div class="al-top">
@@ -169,15 +177,15 @@ function cardAlerta(a, compacto = false) {
       <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}média ${brl(a.preco_tipico)}</small></div>
     </div>
     <div class="tags">
-      <span class="tag ${k}">${ktxt}</span><span class="tag ${k}">−${pct(a.desconto)}</span>
+      <span class="tag ${k}">${ktxt} · −${pct(a.desconto)} ↘</span>
       <span class="tag">${esc(nomeCia(a.cia_nome))}</span><span class="tag">${paradasTxt(a.escalas)}</span>
-      ${a.telegram ? `<span class="tag">✓ Telegram</span>` : ""}
+      ${a.telegram ? `<span class="tag">${ic("check", "i sm")}Telegram</span>` : ""}
     </div>
     ${corpo}
     <div class="al-acts">
-      <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}">📋 Copiar</button>
-      <a class="bt sm zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">WhatsApp</a>
-      <a class="bt sm" target="_blank" rel="noopener" href="${esc(a.link_google)}">Google Voos</a>
+      <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}">${ic("copy")}<span>Copiar</span></button>
+      <a class="bt sm zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">${ic("send")}WhatsApp</a>
+      <a class="bt sm" target="_blank" rel="noopener" href="${esc(a.link_google)}">${ic("ext")}Google Voos</a>
       ${compacto ? "" : `<button class="bt sm ghost" data-act="vertexto" data-id="${esc(a.id)}">Ver texto</button>`}
     </div>
     <div class="texto" id="tx-${esc(a.id)}" hidden>${esc(a.texto)}</div>
@@ -194,43 +202,35 @@ function pDash() {
   const ativas = S.rotas.filter(r => r.ativo !== false).length;
   const dias = Array.from({ length: 14 }, (_, i) => diaMenos(h, 13 - i));
   const cont = Object.fromEntries(dias.map(d => [d, 0])); A.forEach(a => { const d = a.criado.slice(0, 10); if (d in cont) cont[d]++; });
-  const max = Math.max(META_DIA + 2, ...Object.values(cont));
+  const max = Math.max(META_DIA + 2, ...Object.values(cont)), H = 170;
   const bateu = dias.filter(d => cont[d] >= META_DIA).length;
-  const metaTop = 18 + (1 - META_DIA / max) * 152;
-  const bars = dias.map(d => `<div class="vbar ${cont[d] >= META_DIA ? "hit" : ""}" data-tip="${dmy(d)}: ${cont[d]} alerta${cont[d] === 1 ? "" : "s"}"><b>${cont[d] || ""}</b><i style="height:${(cont[d] / max) * 152}px"></i></div>`).join("");
+  const cols = `<div class="meta" style="bottom:${(META_DIA / max) * H + 30}px"><span>meta ${META_DIA}</span></div>` +
+    dias.map((d, i) => `<div class="col ${i === 13 ? "sel" : ""} ${cont[d] >= META_DIA ? "hit" : ""}" data-tip="${dmy(d)}: ${cont[d]} alerta${cont[d] === 1 ? "" : "s"}"><span class="v">${cont[d] || ""}</span><span class="bar ${cont[d] ? "" : "ghost"}" style="height:${Math.max(6, (cont[d] / max) * H)}px"></span><span class="d">${d.slice(8, 10)}</span></div>`).join("");
   const precos = Object.entries(S.status.rotas || {}).filter(([, v]) => v.menor && v.mediana)
     .map(([k, v]) => ({ k, ...v, d: 1 - v.menor / v.mediana, nome: (S.rotas.find(r => r.iata === k) || {}).nome || IATA[k] || k }))
     .sort((a, b) => b.d - a.d).slice(0, 8);
-  const classes = contar(a30, a => a.classe || "boa");
-  const cc = k => (classes.find(c => c[0] === k) || [0, 0])[1];
-  return head("Dashboard", "O que o radar encontrou saindo de Fortaleza",
-    `<button class="bt" data-act="recarregar">↻ Atualizar</button><button class="bt pri" data-act="rodar">▶ Rodar radar agora</button>`) +
+  const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
+  return head("Dashboard", "O que o radar encontrou saindo de Fortaleza", statusPill()) +
     `<div class="grid kpis">
-      ${kpi("Alertas hoje", A.filter(a => a.criado.slice(0, 10) === h).length, `meta: ${META_DIA} por dia`, true)}
-      ${kpi("Últimos 7 dias", a7.length, `média ${(a7.length / 7).toFixed(1).replace(".", ",")} por dia`)}
-      ${kpi("Últimos 30 dias", a30.length, `${cc("imperdivel")} imperdíveis · ${cc("otima")} ótimas`)}
-      ${kpi("Maior desconto", melhor ? "−" + pct(melhor.desconto) : "–", melhor ? `${melhor.destino_nome} por ${brl(melhor.preco)}` : "ainda sem alertas")}
-      ${kpi("Rotas vigiadas", ativas, `${S.rotas.filter(r => r.foco).length} em foco`)}
-      ${kpi("Última varredura", haQuanto(S.status.ultima_rodada), "próxima " + proximaRodada())}
+      ${kpi("Alertas hoje", `${hojeN}<small> / ${META_DIA}</small>`, `Meta de ${META_DIA} alertas bons por dia · ${a7.length} nos últimos 7 dias`, true, "bell")}
+      ${kpi("Maior desconto (30 dias)", melhor ? "−" + pct(melhor.desconto) : "–", melhor ? `<span class="badge pos">${brl(melhor.preco)}</span>${esc(melhor.destino_nome)}` : "Ainda sem alertas", false, "downr")}
+      ${kpi("Rotas vigiadas", ativas, `<span class="badge">${S.rotas.filter(r => r.foco).length} em foco</span>${a30.length} alertas em 30 dias`, false, "plane")}
     </div>
     <div class="grid two">
       <div class="card"><div class="card-h"><div><h3>Alertas por dia</h3><div class="desc">Últimos 14 dias · bateu a meta em ${bateu} dia${bateu === 1 ? "" : "s"}</div></div></div>
-        <div class="vbars"><div class="meta-line" style="top:${metaTop}px"><span>meta ${META_DIA}</span></div>${bars}</div>
-        <div class="vlab">${dias.map(d => `<span>${d.slice(8, 10)}</span>`).join("")}</div>
-        <div class="legend"><span><i style="background:var(--bar)"></i>bateu a meta</span><span><i style="background:var(--bar2)"></i>abaixo da meta</span></div>
+        <div class="cols">${cols}</div>
+        <div class="legend"><span><i style="background:var(--lime-300)"></i>Hoje</span><span><i style="background:var(--white)"></i>Dias anteriores</span><span>– – Meta de ${META_DIA}</span></div>
       </div>
-      <div class="card"><h3>Por companhia</h3><div class="desc">Alertas dos últimos 30 dias</div>${hbars(contar(a30, a => a.cia_nome).slice(0, 7))}</div>
+      <div class="card"><div class="card-h"><div><h3>Por companhia</h3><div class="desc">Alertas dos últimos 30 dias</div></div></div>${hbars(contar(a30, a => a.cia_nome).slice(0, 6))}</div>
     </div>
-    <div class="grid two">
-      <div class="card"><h3>Onde está mais barato agora</h3><div class="desc">Menor preço da última varredura vs. média da rota</div>
-        ${precos.length ? `<div class="tbl-wrap" style="border:none"><table><thead><tr><th>Destino</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Abaixo</th><th></th></tr></thead><tbody>
-        ${precos.map(p => `<tr><td><span class="iata">${p.k}</span> <span style="color:var(--muted)">${esc(p.nome)}</span></td><td class="num">${brl(p.menor)}</td><td class="num">${brl(p.mediana)}</td><td class="num" style="color:${p.d >= .2 ? "var(--acc)" : "var(--ink2)"};font-weight:650">−${pct(p.d)}</td><td class="num" style="color:var(--muted);font-size:12px">${haQuanto(p.quando)}</td></tr>`).join("")}
-        </tbody></table></div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
-      </div>
-      <div class="card"><h3>Destinos com mais alertas</h3><div class="desc">Últimos 30 dias</div>${hbars(contar(a30, a => a.destino_nome).slice(0, 8))}</div>
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Onde está mais barato agora</h3><div class="desc">Menor preço da última varredura vs. média da rota</div></div><a class="bt sm" href="#rotas">Ver rotas</a></div>
+      ${precos.length ? `<div class="tbl-wrap"><table class="tiles"><thead><tr><th>Destino</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Abaixo da média</th><th class="num">Varrida</th></tr></thead><tbody>
+      ${precos.map(p => `<tr><td data-l="Destino"><span><span class="iata">${p.k}</span> <span class="sub">${esc(p.nome)}</span></span></td><td class="num" data-l="Menor">${brl(p.menor)}</td><td class="num" data-l="Média">${brl(p.mediana)}</td><td class="num" data-l="Abaixo"><span class="badge ${p.d >= .2 ? "pos" : ""}">−${pct(p.d)} ↘</span></td><td class="num sub" data-l="Varrida">${haQuanto(p.quando)}</td></tr>`).join("")}
+      </tbody></table></div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
     </div>
-    <div class="head" style="margin:22px 0 12px"><div><h1 style="font-size:18px">Últimos alertas</h1></div><div class="acts"><a class="bt" href="#alertas">Ver todos →</a></div></div>
-    ${A.length ? `<div class="alertas">${A.slice(0, 4).map(a => cardAlerta(a, true)).join("")}</div>` : `<div class="card vazio">Nenhum alerta ainda — o radar varre a cada 3 horas.</div>`}`;
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Destinos com mais alertas</h3><div class="desc">Últimos 30 dias</div></div></div>${hbars(contar(a30, a => a.destino_nome).slice(0, 6))}</div>
+    <div class="sec-h"><h2>Últimos alertas</h2><a class="bt" href="#alertas">Ver todos</a></div>
+    ${A.length ? `<div class="alertas">${A.slice(0, 3).map(a => cardAlerta(a, true)).join("")}</div>` : `<div class="card vazio">Nenhum alerta ainda. O radar varre a cada 3 horas.</div>`}`;
 }
 
 /* ------------------------------------------------------------ Alertas */
@@ -258,12 +258,12 @@ function pAlertas() {
   const L = filtrar();
   const opt = (v, t, sel) => `<option value="${esc(v)}" ${sel === v ? "selected" : ""}>${esc(t)}</option>`;
   return head("Alertas", "Tudo que o radar apitou — filtre, copie e envie",
-    `<button class="bt" data-act="copiarvisiveis">📋 Copiar todos visíveis</button>`) +
+    `<button class="bt" data-act="copiarvisiveis">${ic("copy")}Copiar todos visíveis</button>`) +
     `<div class="filtros" id="filtros">
       <input class="busca" type="search" placeholder="Buscar destino ou companhia…" data-f="q" value="${esc(F.q)}">
       <select data-f="dias">${opt("1", "Hoje", F.dias)}${opt("7", "7 dias", F.dias)}${opt("30", "30 dias", F.dias)}${opt("", "Tudo", F.dias)}</select>
       <select data-f="tipo">${opt("", "Nacional + internacional", F.tipo)}${opt("nacional", "Nacional", F.tipo)}${opt("internacional", "Internacional", F.tipo)}</select>
-      <select data-f="classe">${opt("", "Todas as classes", F.classe)}${opt("imperdivel", "🔥 Imperdível", F.classe)}${opt("otima", "⭐ Ótima", F.classe)}${opt("boa", "✅ Boa", F.classe)}</select>
+      <select data-f="classe">${opt("", "Todas as classes", F.classe)}${opt("imperdivel", "Imperdível", F.classe)}${opt("otima", "Ótima", F.classe)}${opt("boa", "Boa", F.classe)}</select>
       <select data-f="cia">${opt("", "Todas as cias", F.cia)}${cias.map(c => opt(c, c, F.cia)).join("")}</select>
       <select data-f="mes">${opt("", "Qualquer mês", F.mes)}${meses.map(m => opt(m, MESES[+m.slice(5, 7) - 1] + "/" + m.slice(2, 4), F.mes)).join("")}</select>
       <input type="number" inputmode="numeric" placeholder="Até R$" data-f="max" value="${esc(F.max)}" style="width:100px">
@@ -286,16 +286,16 @@ function pRotas() {
       <td class="num"><input class="mini" type="number" data-rota="${i}" data-campo="teto" value="${r.teto || ""}" placeholder="sem teto"></td>
       <td class="num">${s.menor ? brl(s.menor) : "–"}</td>
       <td class="num">${s.mediana ? brl(s.mediana) : "–"}</td>
-      <td style="color:var(--muted);font-size:12px;white-space:nowrap">${s.quando ? haQuanto(s.quando) : "ainda não"}</td>
+      <td style="color:var(--text-tertiary);font-size:12px;white-space:nowrap">${s.quando ? haQuanto(s.quando) : "ainda não"}</td>
       <td><label class="sw" title="Foco: varre em toda rodada"><input type="checkbox" data-rota="${i}" data-campo="foco" ${r.foco ? "checked" : ""}><span></span></label></td>
       <td><label class="sw" title="Ativa"><input type="checkbox" data-rota="${i}" data-campo="ativo" ${r.ativo !== false ? "checked" : ""}><span></span></label></td>
       <td style="white-space:nowrap"><button class="bt sm" data-act="buscarrota" data-iata="${esc(r.iata)}">Buscar agora</button>
-        <button class="bt sm ghost danger" data-act="excluirrota" data-i="${i}" title="Excluir">✕</button></td>
+        <button class="bt sm ghost danger" data-act="excluirrota" data-i="${i}" title="Excluir" aria-label="Excluir">${ic("x")}</button></td>
     </tr>`;
   }).join("");
   return head("Rotas", "Trechos que o radar vigia saindo de Fortaleza",
-    `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">💾 Salvar alterações</button>` : ""}<button class="bt" data-act="rodar">▶ Rodar radar completo</button>`) +
-    (!token() ? `<div class="aviso warn"><span>🔑 Para salvar rotas e rodar o radar daqui, configure seu token do GitHub.</span><a class="bt sm" href="#ajustes">Configurar</a></div>` : "") +
+    `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>` : ""}<button class="bt" data-act="rodar">${ic("play")}Rodar radar completo</button>`) +
+    (!token() ? `<div class="aviso warn"><span>${ic("key")} Para salvar rotas e rodar o radar daqui, configure seu token do GitHub.</span><a class="bt sm" href="#ajustes">Configurar</a></div>` : "") +
     (S.rotasSujo ? `<div class="aviso warn"><span>Você tem alterações não salvas.</span><button class="bt sm pri" data-act="salvarrotas">Salvar agora</button></div>` : "") +
     `<div class="card" style="margin-bottom:14px"><h3>Cadastrar trecho</h3><div class="desc">Viu passagem barata em outro canal? Cadastre o destino e marque “foco” — ele passa a ser varrido em toda rodada.</div>
       <div class="form" id="form-rota">
@@ -307,11 +307,11 @@ function pRotas() {
         <div class="field"><label class="chk" style="padding:8px 0"><input type="checkbox" id="nr-foco" checked> Foco (toda rodada)</label></div>
         <div class="field"><button class="bt pri" data-act="addrota">+ Adicionar</button></div>
       </div>
-      <div class="presets"><span style="font-size:12px;color:var(--muted);align-self:center">Pacotes prontos:</span>${Object.keys(PRESETS).map(p => `<button class="chip" data-act="preset" data-p="${p}">+ ${p}</button>`).join("")}</div>
+      <div class="presets"><span style="font-size:12px;color:var(--text-tertiary);align-self:center">Pacotes prontos:</span>${Object.keys(PRESETS).map(p => `<button class="chip" data-act="preset" data-p="${p}">+ ${p}</button>`).join("")}</div>
     </div>
     <div class="tbl-wrap"><table><thead><tr><th>Cód.</th><th>Destino</th><th>Tipo</th><th class="num">Teto</th><th class="num">Menor agora</th><th class="num">Média</th><th>Varrida</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
     <tbody>${linhas || `<tr><td colspan="10" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
-    <p style="font-size:12px;color:var(--muted);margin-top:10px">Rodízio: a cada rodada (3 em 3 horas) o radar varre ${S.ajustes.rotas_por_rodada || 11} rotas, sempre incluindo as de foco. Use foco em poucas rotas (até 5) para não deixar a rodada lenta.</p>`;
+    <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">Rodízio: a cada rodada (3 em 3 horas) o radar varre ${S.ajustes.rotas_por_rodada || 11} rotas, sempre incluindo as de foco. Use foco em poucas rotas (até 5) para não deixar a rodada lenta.</p>`;
 }
 function addRota(iata, extra = {}) {
   iata = (iata || "").toUpperCase().trim();
@@ -337,9 +337,9 @@ function pHist() {
   const nome = k => { const i = k.split("-")[1]; return `${i} · ${(S.rotas.find(r => r.iata === i) || {}).nome || IATA[i] || ""}`; };
   return head("Histórico de preços", "Como o preço de cada rota se comporta dia a dia (ida e volta)") +
     `<div class="filtros"><select data-act="histsel" style="min-width:240px">${keys.map(k => `<option value="${k}" ${k === S.histRota ? "selected" : ""}>${esc(nome(k))}</option>`).join("")}</select>
-      <span style="font-size:12.5px;color:var(--muted)">${serie.length} dia${serie.length === 1 ? "" : "s"} de histórico</span></div>
+      <span style="font-size:12.5px;color:var(--text-tertiary)">${serie.length} dia${serie.length === 1 ? "" : "s"} de histórico</span></div>
     <div class="card linechart">${serie.length >= 2 ? linha(serie) : `<div class="vazio">${serie.length ? `Hoje: menor ${brl(serie[0].minimo)} · média ${brl(serie[0].mediana)}.<br>` : ""}O gráfico aparece a partir do 2º dia de varredura dessa rota.</div>`}
-      <div class="legend"><span><i style="background:var(--acc)"></i>Menor preço do dia</span><span><i style="background:var(--bar2)"></i>Preço médio (mediana)</span></div></div>
+      <div class="legend"><span><i style="background:var(--ink)"></i>Menor preço do dia</span><span><i style="background:var(--text-disabled)"></i>Preço médio (mediana)</span></div></div>
     <div class="sec-gap"></div>
     <div class="tbl-wrap"><table><thead><tr><th>Dia</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Diferença</th></tr></thead><tbody>
     ${serie.slice().reverse().map(p => `<tr><td>${dmy(p.dia)}</td><td class="num">${brl(p.minimo)}</td><td class="num">${brl(p.mediana)}</td><td class="num">−${pct(1 - p.minimo / p.mediana)}</td></tr>`).join("") || `<tr><td colspan="4" class="vazio">Sem histórico.</td></tr>`}
@@ -445,9 +445,9 @@ function pConv() {
       </div>
       <div class="card"><h3>${c ? "3. Texto pronto" : "Resultado"}</h3><div class="desc">No formato do seu radar</div>
         ${c ? `<div class="texto" id="conv-out">${esc(textoConvertido(c))}</div>
-        <div class="al-acts" style="margin-top:10px"><button class="bt" data-act="convcopiar">📋 Copiar</button>
+        <div class="al-acts" style="margin-top:10px"><button class="bt" data-act="convcopiar">${ic("copy")}Copiar</button>
           <a class="bt zap" id="conv-zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(textoConvertido(c))}">WhatsApp</a>
-          ${c.destino ? `<button class="bt" data-act="convrota">✈️ Vigiar ${esc(c.destino)} no radar</button>` : ""}</div>` : `<div class="vazio">O texto convertido aparece aqui.</div>`}
+          ${c.destino ? `<button class="bt" data-act="convrota">${ic("plane")}Vigiar ${esc(c.destino)} no radar</button>` : ""}</div>` : `<div class="vazio">O texto convertido aparece aqui.</div>`}
       </div></div>`;
 }
 
@@ -458,8 +458,8 @@ function pAjustes() {
   const txt = (k, lbl, dica) => `<div class="field"><label>${lbl}</label><input data-aj="${k}" value="${esc(a[k] ?? "")}"><small>${dica}</small></div>`;
   const rd = S.rodadas.slice(-12).reverse();
   return head("Ajustes", "Textos, sensibilidade do radar e acesso",
-    `${S.ajustesSujo ? `<button class="bt pri" data-act="salvarajustes">💾 Salvar ajustes</button>` : ""}`) +
-    `<div class="card" style="margin-bottom:14px"><h3>🔑 Acesso para salvar</h3><div class="desc">O painel é público só para leitura. Para salvar rotas/ajustes e rodar o radar, cole seu token do GitHub (fica guardado só neste navegador).</div>
+    `${S.ajustesSujo ? `<button class="bt pri" data-act="salvarajustes">${ic("save")}Salvar ajustes</button>` : ""}`) +
+    `<div class="card" style="margin-bottom:14px"><h3>Acesso para salvar</h3><div class="desc">O painel é público só para leitura. Para salvar rotas/ajustes e rodar o radar, cole seu token do GitHub (fica guardado só neste navegador).</div>
       <div class="form"><div class="field" style="grid-column:span 2"><label>Token do GitHub</label><input type="password" id="tok" placeholder="github_pat_…" value="${t ? "••••••••••••" + t.slice(-4) : ""}"></div>
       <div class="field"><button class="bt pri" data-act="salvartoken">Salvar e testar</button></div>
       ${t ? `<div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div></div>
@@ -487,9 +487,9 @@ function pAjustes() {
         </div></div>
     </div>
     <div class="head" style="margin:22px 0 12px"><div><h1 style="font-size:18px">Rodadas recentes</h1><p>O radar roda sozinho a cada 3 horas no GitHub</p></div>
-      <div class="acts"><a class="bt" target="_blank" rel="noopener" href="https://github.com/${REPO}/actions">Ver no GitHub ↗</a><button class="bt pri" data-act="rodar">▶ Rodar agora</button></div></div>
+      <div class="acts"><a class="bt" target="_blank" rel="noopener" href="https://github.com/${REPO}/actions">${ic("ext")}Ver no GitHub</a><button class="bt pri" data-act="rodar">${ic("play")}Rodar agora</button></div></div>
     <div class="tbl-wrap"><table><thead><tr><th>Quando</th><th>Rotas</th><th class="num">Candidatos</th><th class="num">Alertas</th><th class="num">Duração</th></tr></thead><tbody>
-      ${rd.map(r => `<tr><td style="white-space:nowrap">${dm(r.quando)} ${r.quando.slice(11, 16)}${r.manual ? ' <span class="tag info">manual</span>' : ""}</td><td style="font-size:12px;color:var(--ink2)">${(r.rotas || []).join(", ")}</td><td class="num">${r.candidatos}</td><td class="num" style="font-weight:700;color:${r.alertas ? "var(--acc)" : "inherit"}">${r.alertas}</td><td class="num">${r.segundos ? Math.round(r.segundos / 60) + " min" : "–"}</td></tr>`).join("") || `<tr><td colspan="5" class="vazio">Sem rodadas ainda.</td></tr>`}
+      ${rd.map(r => `<tr><td style="white-space:nowrap">${dm(r.quando)} ${r.quando.slice(11, 16)}${r.manual ? ' <span class="tag info">manual</span>' : ""}</td><td style="font-size:12px;color:var(--text-body)">${(r.rotas || []).join(", ")}</td><td class="num">${r.candidatos}</td><td class="num" style="font-weight:700;color:${r.alertas ? "var(--positive-text)" : "inherit"}">${r.alertas}</td><td class="num">${r.segundos ? Math.round(r.segundos / 60) + " min" : "–"}</td></tr>`).join("") || `<tr><td colspan="5" class="vazio">Sem rodadas ainda.</td></tr>`}
     </tbody></table></div>`;
 }
 
@@ -500,8 +500,8 @@ document.addEventListener("click", async e => {
   if (b.tagName === "A" && act === "limpar") e.preventDefault();
   const A = id => S.alertas.find(a => a.id === id);
   try {
-    if (act === "tema") { const n = document.documentElement.dataset.theme === "light" ? "dark" : "light"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
-    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); b.textContent = "✓ Copiado"; b.classList.add("done"); setTimeout(() => { b.textContent = "📋 Copiar"; b.classList.remove("done"); }, 1600); }
+    if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
+    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
     else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }
@@ -543,12 +543,12 @@ document.addEventListener("input", e => {
     const r = S.rotas[+el.dataset.rota], k = el.dataset.campo;
     r[k] = el.type === "checkbox" ? el.checked : (el.value ? +el.value : null);
     S.rotasSujo = true;
-    if (el.type === "checkbox") render(); else { const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarrotas"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarrotas">💾 Salvar alterações</button>`); }
+    if (el.type === "checkbox") render(); else { const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarrotas"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>`); }
   } else if (el.dataset.aj !== undefined) {
     const k = el.dataset.aj;
     S.ajustes[k] = el.type === "checkbox" ? el.checked : el.type === "number" ? (el.value === "" ? null : +el.value) : el.value;
     S.ajustesSujo = true;
-    const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarajustes"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarajustes">💾 Salvar ajustes</button>`);
+    const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarajustes"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarajustes">${ic("save")}Salvar ajustes</button>`);
   } else if (el.dataset.conv !== undefined) {
     S.conv[el.dataset.conv] = el.type === "number" ? (+el.value || "") : el.value;
     $("#conv-out").textContent = textoConvertido(S.conv);

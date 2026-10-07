@@ -200,7 +200,6 @@ def texto(o: dict, link_grupo: str) -> str:
         L += [f"💳 {par}", f"🎁 Até *{o['pct']}% de bônus* na transferência"]
         if val:
             L.append(val)
-        L += ["", f"💡 Com {o['pct']}% de bônus, 10 mil pontos viram até {mil(10000 * (100 + o['pct']) // 100)} milhas."]
         L += ["", "⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir."]
     elif o["tipo"] == "compra":
         prog = o["para"] or (o["programas"][0] if o["programas"] else "milhas")

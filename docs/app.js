@@ -173,7 +173,6 @@ function render() {
   const pag = navs();
   const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
-  if (pag === "milhas") setTimeout(calcOut, 0);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
 }

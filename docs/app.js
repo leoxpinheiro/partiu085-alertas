@@ -119,7 +119,9 @@ function marcar(id, valor = true) {
   if (valor) S.marcados[id] = new Date().toISOString(); else S.marcados[id] = null;
   try { localStorage.setItem("p085_marcados", JSON.stringify(S.marcados)); } catch (e) { }
   const card = document.querySelector(`article.al[data-id="${CSS.escape(id)}"]`);
-  if (card) card.outerHTML = cardAlerta(S.alertas.find(a => a.id === id), card.dataset.compacto === "1");
+  if (card && !card.closest(".al-row")) card.outerHTML = cardAlerta(S.alertas.find(a => a.id === id), card.dataset.compacto === "1");
+  const row = document.querySelector(`article.al-row[data-id="${CSS.escape(id)}"]`);
+  if (row) row.outerHTML = linhaAlerta(S.alertas.find(a => a.id === id));
   clearTimeout(_salvarMarc);
   if (token()) _salvarMarc = setTimeout(async () => {
     const limpo = Object.fromEntries(Object.entries(S.marcados).filter(([, v]) => v));
@@ -220,6 +222,32 @@ function contar(lista, fn) { const m = {}; lista.forEach(x => { const k = fn(x);
 
 function mesesHTML(lista, compacto) {
   return (lista || []).slice(0, compacto ? 2 : 6).map(g => `<div class="mesrow"><b>${esc(g.mes)}</b><span>${g.dias.map(d => `<i>${d}</i>`).join("")}</span></div>`).join("");
+}
+let ALV = "lista";
+try { ALV = localStorage.getItem("p085_vista_alertas") || "lista"; } catch (e) { }
+function resumoDatas(meses, max = 6) {
+  const L = []; (meses || []).forEach(g => g.dias.forEach(d => L.push(`${d}/${MESES[["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"].indexOf(g.mes.split(" ")[0])] || ""}`)));
+  return L.length ? L.slice(0, max).join(", ") + (L.length > max ? ` <b>+${L.length - max}</b>` : "") : "";
+}
+function linhaAlerta(a) {
+  const k = a.classe || "boa", env = enviado(a), aberto = S.alAberto === a.id, trecho = a.modo === "trecho";
+  const ida = trecho ? resumoDatas(a.ida_meses) : (a.datas || []).slice(0, 4).map(d => dm(d.ida)).join(", ");
+  const volta = trecho ? resumoDatas(a.volta_meses, 4) : "";
+  return `<article class="al-row ${k} ${env ? "enviado" : ""} ${aberto ? "aberto" : ""}" data-id="${esc(a.id)}">
+    <div class="alr">
+      <button class="alr-dest" data-act="alabrir" data-id="${esc(a.id)}" title="Ver detalhes"><span class="rt">FOR → ${esc(a.destino)}${a.vip ? " · ⭐ VIP" : ""}</span><b>${esc(a.destino_nome)}</b></button>
+      <div class="alr-preco"><b>${brl(a.preco)}</b><small>${trecho ? "o trecho" : "ida e volta"} · média ${brl(a.preco_tipico)}</small></div>
+      <span class="tag ${k}">−${pct(a.desconto)}</span>
+      <div class="alr-info"><span>${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
+      <div class="alr-acts">
+        <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}" title="Copiar texto">${ic("copy")}<span>Copiar</span></button>
+        <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(a.id)}" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}" title="WhatsApp">${ic("send")}</a>
+        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? "Enviado" : "Enviar"}</span></button>
+        <button class="bt sm ghost alr-x" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">${aberto ? "▴" : "▾"}</button>
+      </div>
+    </div>
+    ${aberto ? `<div class="alr-c">${cardAlerta(a)}</div>` : ""}
+  </article>`;
 }
 function cardAlerta(a, compacto = false) {
   const k = a.classe || "boa";
@@ -335,9 +363,9 @@ function pAlertas() {
       <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label>
       <select data-f="env">${opt("", "Enviados e não enviados", F.env)}${opt("nao", "Só não enviados", F.env)}${opt("sim", "Só enviados", F.env)}</select>
     </div>
-    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("alertas", F.ordem, [["recentes", "Mais recentes"], ["desconto", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"], ["ida", "Data de ida"]])}</div>
+    <div class="ordbar">${pills("alvista", ALV, [["lista", "☰ Lista"], ["quadros", "▦ Quadros"]])}<span class="ord-l">Ordenar</span>${pills("alertas", F.ordem, [["recentes", "Mais recentes"], ["desconto", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"], ["ida", "Data de ida"]])}</div>
     <div class="resultado"><span>${L.length} alerta${L.length === 1 ? "" : "s"}</span>${Object.values(F).some((v, i) => v && !["recentes", "30"].includes(v)) ? `<a href="#" data-act="limpar">Limpar filtros</a>` : ""}</div>
-    ${L.length ? `<div class="alertas">${L.map(a => cardAlerta(a)).join("")}</div>` : `<div class="card vazio">Nenhum alerta com esses filtros.</div>`}`;
+    ${L.length ? (ALV === "lista" ? `<div class="al-lista">${L.map(linhaAlerta).join("")}</div>` : `<div class="alertas compacto">${L.map(a => cardAlerta(a, true)).join("")}</div>`) : `<div class="card vazio">Nenhum alerta com esses filtros.</div>`}`;
 }
 
 /* ------------------------------------------------------------ Destinos (base de preços + calendário) */
@@ -752,6 +780,7 @@ document.addEventListener("click", async e => {
   if (b.tagName === "A" && act === "limpar") e.preventDefault();
   const A = id => S.alertas.find(a => a.id === id);
   try {
+    if (act === "alabrir") { S.alAberto = S.alAberto === b.dataset.id ? "" : b.dataset.id; const r = document.querySelector(`article.al-row[data-id="${CSS.escape(b.dataset.id)}"]`); document.querySelectorAll("article.al-row.aberto").forEach(x => { const a = S.alertas.find(y => y.id === x.dataset.id); if (a && x !== r) x.outerHTML = linhaAlerta(a); }); const r2 = document.querySelector(`article.al-row[data-id="${CSS.escape(b.dataset.id)}"]`); if (r2) r2.outerHTML = linhaAlerta(S.alertas.find(y => y.id === b.dataset.id)); return; }
     if (act === "filacopiar") { const f = filaEnvio().find(x => x.id === b.dataset.id); if (f) { await copiar(f.texto); marcar(f.id, true); toast("Copiado e marcado como enviado."); render(); } return; }
     if (act === "menu") { document.body.classList.toggle("menu-aberto"); return; }
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
@@ -779,7 +808,8 @@ document.addEventListener("click", async e => {
     else if (act === "turbo") { b.disabled = true; await rodarTurbo(); b.disabled = false; }
     else if (act === "pill") {
       const g = b.dataset.g, v = b.dataset.v;
-      if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
+      if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
+      else if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
       else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
       render(); return;
     }

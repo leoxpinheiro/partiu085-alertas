@@ -198,9 +198,11 @@ def tipico(chave: str, dias: list[dict], hist: dict) -> float | None:
     return max(base) if base else None
 
 
-def baratas(dias: list[dict], ref: float, tol: float) -> list[dict]:
+def baratas(dias: list[dict], ref: float, tol: float, maximo: int = 12) -> list[dict]:
+    """Datas até tol% acima do menor preço; no máximo `maximo` (as mais baratas), em ordem de data."""
     lim = ref * (1 + tol)
-    return sorted([d for d in dias if d["preco"] <= lim], key=lambda d: d["dia"])
+    boas = sorted([d for d in dias if d["preco"] <= lim], key=lambda d: (d["preco"], d["dia"]))[:maximo]
+    return sorted(boas, key=lambda d: d["dia"])
 
 
 def por_mes(dias: list[dict]) -> list[dict]:
@@ -337,6 +339,22 @@ def rodada() -> None:
             log(f"  volta cara ({brl(m_volta['preco'])} vs média {brl(t_volta)}) — sem alerta")
             continue
         d_volta = baratas(volta_ok, m_volta["preco"], tol)
+        # só idas que tenham alguma volta barata depois (pelo menos 2 dias)
+        ultima_volta = max(d["dia"] for d in d_volta)
+        d_ida = [d for d in d_ida
+                 if (date.fromisoformat(ultima_volta) - date.fromisoformat(d["dia"])).days >= 2]
+        if not d_ida:
+            continue
+        primeira = d_ida[0]["dia"]
+        d_volta = [d for d in d_volta
+                   if (date.fromisoformat(d["dia"]) - date.fromisoformat(primeira)).days >= 2]
+        if not d_volta:
+            continue
+        m_ida = min(d_ida, key=lambda d: d["preco"])
+        m_volta = min(d_volta, key=lambda d: d["preco"])
+        desc = 1 - m_ida["preco"] / t_ida
+        if desc < float(aj["desconto_minimo"]):
+            continue
         candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
 

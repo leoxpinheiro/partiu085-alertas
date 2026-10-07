@@ -62,6 +62,7 @@ AJUSTES_PADRAO = {
     "max_escalas_nacional": 1,
     "max_escalas_internacional": 2,
     "dias_sem_repetir": 3,
+    "vip_desconto": 0.12,
     "descanso_rota_dias": 4,
     "queda_para_repetir": 0.15,
     "link_whatsapp": "https://bit.ly/radar085",
@@ -240,9 +241,10 @@ def montar_texto(a: dict, aj: dict) -> str:
         f"💰 A partir de *{brl(a['preco'])}* o trecho",
         f"{a['classe_txt']} · {round(a['desconto'] * 100)}% abaixo da média",
         f"🛫 {a['cia_nome'] or '—'} · {paradas}",
-        "",
-        "*Datas de ida:*",
     ]
+    if a.get("vip"):
+        L.append("🎯 Rota acompanhada a pedido dos assinantes VIP")
+    L += ["", "*Datas de ida:*"]
     L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
     L += ["", "*Datas de volta:*"]
     L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
@@ -315,8 +317,8 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     ativas = [r for r in rotas if r.get("ativo", True)]
     if not ativas:
         return []
-    foco = [r for r in ativas if r.get("foco")]
-    resto = [r for r in ativas if not r.get("foco")]
+    foco = [r for r in ativas if r.get("foco") or r.get("vip")]
+    resto = [r for r in ativas if not (r.get("foco") or r.get("vip"))]
     n = max(0, int(aj["rotas_por_rodada"]) - len(foco))
     if not resto:
         return foco
@@ -374,7 +376,11 @@ def rodada() -> None:
         desc = 1 - m_ida["preco"] / t_ida
         log(f"{rota}: {len(ida)}+{len(volta)} dias · menor ida {brl(m_ida['preco'])} · média {brl(t_ida)} · {desc:.0%}")
         teto = float(r.get("teto") or 1e9)
-        if desc < float(aj["desconto_minimo"]) or m_ida["preco"] > teto:
+        vip = bool(r.get("vip"))
+        alvo = float(r.get("vip_alvo") or 0)
+        limiar = min(float(aj["desconto_minimo"]), float(aj.get("vip_desconto", 0.12))) if vip else float(aj["desconto_minimo"])
+        no_alvo = vip and alvo > 0 and m_ida["preco"] <= alvo
+        if (desc < limiar and not no_alvo) or m_ida["preco"] > teto:
             continue
         d_ida = baratas(ida, m_ida["preco"], tol)
         primeira = d_ida[0]["dia"]
@@ -382,7 +388,7 @@ def rodada() -> None:
         if not volta_ok:
             continue
         m_volta = min(volta_ok, key=lambda d: d["preco"])
-        if m_volta["preco"] > t_volta * (1 - float(aj["desconto_minimo"]) / 2):
+        if not vip and m_volta["preco"] > t_volta * (1 - float(aj["desconto_minimo"]) / 2):
             log(f"  volta cara ({brl(m_volta['preco'])} vs média {brl(t_volta)}) — sem alerta")
             continue
         d_volta = baratas(volta_ok, m_volta["preco"], tol)
@@ -400,7 +406,8 @@ def rodada() -> None:
         m_ida = min(d_ida, key=lambda d: d["preco"])
         m_volta = min(d_volta, key=lambda d: d["preco"])
         desc = 1 - m_ida["preco"] / t_ida
-        if desc < float(aj["desconto_minimo"]):
+        no_alvo = vip and alvo > 0 and m_ida["preco"] <= alvo
+        if desc < limiar and not no_alvo:
             continue
         candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
@@ -420,6 +427,8 @@ def rodada() -> None:
     descanso = (agora() - timedelta(days=float(aj.get("descanso_rota_dias", 4)))).isoformat()
     queda = 1 - float(aj.get("queda_para_repetir", 0.15))
     def em_descanso(c):
+        if c["r"].get("vip"):
+            return False  # pedido VIP: só respeita o "não repetir" curto
         ant = [e["preco"] for e in enviados if e["rota"] == c["rota"] and e["quando"] >= descanso]
         return bool(ant) and c["m_ida"]["preco"] > min(ant) * queda
     bloqueados = [c["rota"] for c in candidatos if em_descanso(c)]
@@ -450,6 +459,7 @@ def rodada() -> None:
             "classe": k, "classe_txt": ktxt,
             "cia_nome": mi["cia"], "escalas": mi["escalas"],
             "ida": mi["dia"], "volta": mv["dia"],
+            "vip": bool(r.get("vip")), "vip_nome": r.get("vip_nome") or "",
             "datas_ida": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_ida"]],
             "datas_volta": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_volta"]],
             "ida_meses": por_mes(c["d_ida"]), "volta_meses": por_mes(c["d_volta"]),

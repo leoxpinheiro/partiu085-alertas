@@ -489,3 +489,55 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 .ig-f{display:flex;gap:6px;align-items:center}
 .ig-f input{flex:1;min-width:0;height:36px;border-radius:var(--radius-pill);border:0;padding:0 14px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line);color:inherit;font:inherit;font-size:13px}
 @media (max-width:760px){.ig-item{grid-template-columns:1fr}.ig-f{flex-wrap:wrap}}
+
+/* ---------- milhas: cores por programa, números, quadros/lista, mapa */
+.mv-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-4)}
+.mv-m{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:var(--radius-pill);background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line);font-size:14px;font-weight:600;color:var(--text-body)}
+.mv-m i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.mv-m.on{background:var(--c);color:#fff;box-shadow:none}
+.mv-m.on i{background:#fff}
+.mv-nums{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:var(--space-4)}
+.mv-s{padding:14px 16px;border-radius:20px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line)}
+.mv-s b{display:block;font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.mv-s b small{font-size:14px;font-weight:500;color:var(--text-tertiary)}
+.mv-s span{font-size:12px;color:var(--text-tertiary)}
+.mv-s.dest{background:var(--prog);box-shadow:none}
+.mv-s.dest b,.mv-s.dest span{color:#fff}
+@media (max-width:900px){.mv-nums{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mv-t{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:24px 0 12px}
+.mv-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin:24px 0 12px}
+.mv-head .mv-t{margin:0}
+.mv-head .ordbar{margin:0}
+.mv .dest{box-shadow:inset 3px 0 0 var(--prog),inset 0 0 0 1px var(--glass-line)}
+.mv .dest.aberto{box-shadow:inset 0 0 0 2px var(--prog)}
+.mv .dest-p b{color:var(--prog)}
+.mv .cal-d.c-top{background:var(--prog);color:#fff}
+.dests.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.dests.grade .dest.aberto{grid-column:1/-1}
+.dests.grade .dest-h{grid-template-columns:1fr auto;grid-template-areas:"n b" "p p" "x x";gap:6px;padding:var(--space-5)}
+.dests.grade .dest-n{grid-area:n}.dests.grade .badge{grid-area:b;justify-self:end}
+.dests.grade .dest-p{grid-area:p;text-align:left}.dests.grade .dest-x{grid-area:x;text-align:left}
+.dests.grade .dest-p b{font-size:26px}
+.mv-esp{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:20px;background:var(--glass)}
+.mv-sites{display:flex;flex-direction:column;gap:6px}
+.mv-site{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:18px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line)}
+.mv-site .t{flex:1;min-width:0;font-size:14px;line-height:1.35}
+.mv-site .t small{display:block;font-size:11px;color:var(--text-tertiary)}
+@media (max-width:640px){.mv-site{flex-wrap:wrap}.mv-site .t{flex-basis:100%}}
+.mapa-card{margin-bottom:var(--space-4)}
+.mapa-card .card-h{flex-wrap:wrap}
+.mapa{height:380px;border-radius:20px;overflow:hidden;background:var(--tile);z-index:0;position:relative}
+@media (max-width:640px){.mapa{height:300px}}
+.mapa-leg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:12px;color:var(--text-tertiary)}
+.mapa-leg span{display:inline-flex;align-items:center;gap:6px}
+.mapa-leg .mk{width:12px;height:12px;font-size:0}
+.mk-w{background:none;border:0}
+.mk{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;font:700 12px/1 "Plus Jakarta Sans",system-ui,sans-serif;color:#fff;box-sizing:border-box}
+.mk.promo{background:var(--c,#16A34A);box-shadow:0 0 0 3px rgba(255,255,255,.85),0 4px 10px rgba(0,0,0,.25)}
+.mk.base{background:#173A5E;box-shadow:0 0 0 2px #fff}
+.mk.cad{background:#fff;box-shadow:inset 0 0 0 2px #94a3b8}
+.mk.origem{background:#F5C531;color:#173A5E;border-radius:999px;font-size:11px;box-shadow:0 0 0 2px #fff}
+.mapa-leg .mk.origem{width:12px}
+.mk-pop{display:flex;flex-direction:column;gap:4px;font:13px/1.4 "Plus Jakarta Sans",system-ui,sans-serif;min-width:170px}
+.mk-pop b{font-size:15px}.mk-pop .mk-n{margin:4px 0}.mk-pop .bt{margin-top:4px;align-self:flex-start}
+.leaflet-popup-content-wrapper{border-radius:16px}

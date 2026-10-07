@@ -178,6 +178,8 @@ function render() {
   const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = (pag === "marketing" || pag === "criativos" ? subMarketing(pag) : "") + fn();
+  if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
+  if (pag === "destinos" && typeof mapaDestinos === "function") setTimeout(mapaDestinos, 0);
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", render);
@@ -356,6 +358,7 @@ function pDestinos() {
   return head("Destinos", "A base de preços de cada destino saindo de Fortaleza — clique para ver o calendário",
     `<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button>`) +
     (comBase < total ? `<div class="aviso warn"><span>${ic("chart")} ${comBase} de ${total} destinos já têm base de preços. A varredura turbo completa o resto em ~25 min.</span></div>` : "") +
+    mapaHTML("mapa-dest", "Mapa dos destinos", "#16A34A") +
     `<div class="filtros"><input class="busca" type="search" placeholder="Buscar destino…" data-d="q" value="${esc(D.q)}"></div>
     <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("dest", D.ordem, ORDENS_DEST.concat([["recente", "Varridos agora"]]))}${pills("desttipo", D.tipo, [["", "Todos"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}</div>
     <div class="resultado"><span>${L.length} destino${L.length === 1 ? "" : "s"}</span></div>
@@ -368,6 +371,13 @@ function pDestinos() {
       </button>
       ${D.sel === x.k ? `<div class="dest-c">${calHTML(S.cal[x.k], x)}<div class="al-acts" style="margin-top:var(--space-3)"><button class="bt sm" data-act="buscarrota" data-iata="${x.k}">${ic("refresh")}Buscar agora</button>${x.foco ? "" : `<button class="bt sm" data-act="focodest" data-iata="${x.k}">${ic("plane")}Colocar em foco</button>`}</div></div>` : ""}
     </article>`).join("")}</div>` : `<div class="card vazio">Nenhum destino com base ainda. Rode a varredura turbo.</div>`}`;
+}
+
+function mapaDestinos() {
+  const ks = new Set([...S.rotas.filter(r => r.ativo !== false).map(r => r.iata), ...Object.keys(S.status.rotas || {})]);
+  montarMapa("mapa-dest", [...ks].map(k => { const st = (S.status.rotas || {})[k] || {}, nome = (S.rotas.find(r => r.iata === k) || {}).nome || IATA[k] || k;
+    const n = S.alertas.filter(a => a.destino === k && noPeriodo(a.criado)).length;
+    return { k, nome, n, estado: n ? "promo" : st.menor ? "base" : "cad", info: st.menor ? `<span>ida a partir de <b>${brl(st.menor)}</b></span>` : "", act: `<button class="bt sm" data-act="abrirdest" data-iata="${k}">${ic("calendar")}Ver calendário</button>` }; }), "#16A34A");
 }
 
 /* ------------------------------------------------------------ Grupos e links */

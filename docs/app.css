@@ -720,3 +720,11 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 @media (max-width:640px){.g-lin{overflow-x:auto;-webkit-overflow-scrolling:touch}.g-lin svg{min-width:680px;max-height:none}}
 textarea.ev-texto{width:100%;min-height:320px;border:0;color:inherit;font:inherit;font-size:14px;resize:vertical;outline:none;box-shadow:inset 0 0 0 1px var(--glass-line)}
 textarea.ev-texto:focus{box-shadow:inset 0 0 0 2px var(--lime-300)}
+
+/* importar resgates */
+.imp-c{margin-bottom:var(--space-4);box-shadow:inset 0 4px 0 var(--c),inset 0 0 0 1px var(--glass-line)}
+.imp-h{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.imp-h b{font-size:18px}
+.imp-g{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;align-items:start}
+@media (max-width:900px){.imp-g{grid-template-columns:1fr}}
+.imp-cv{width:100%;max-width:420px;height:auto;border-radius:16px;display:block;box-shadow:0 8px 24px rgba(0,0,0,.25)}

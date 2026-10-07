@@ -18,6 +18,7 @@ const S = {
 const $ = (s, el = document) => el.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const brl = v => "R$ " + Math.round(+v || 0).toLocaleString("pt-BR");
+const taxaR = t => t == null || t === "" ? "taxas" : brl(t);
 const pct = v => Math.round((+v || 0) * 100) + "%";
 const dm = s => s ? s.slice(8, 10) + "/" + s.slice(5, 7) : "";
 const dmy = s => s ? s.slice(8, 10) + "/" + s.slice(5, 7) + "/" + s.slice(0, 4) : "";
@@ -219,6 +220,7 @@ function render() {
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
+  if (pag === "converter" && typeof desenharImportados === "function") setTimeout(desenharImportados, 0);
   if (pag === "destinos" && typeof mapaDestinos === "function") setTimeout(mapaDestinos, 0);
   window.scrollTo(0, 0);
 }
@@ -325,7 +327,7 @@ function filaEnvio() {
   const lim = diaMenos(hojeISO(), 1);
   const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a) && !(a.conferido && a.conferido.status === "subiu")).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
-    ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${brl(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
+    ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${taxaR(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
   return L.sort((x, y) => y.q.localeCompare(x.q));
 }
@@ -760,7 +762,11 @@ function pConv() {
   const campo = (k, lbl, tipo = "text") => `<div class="field"><label>${lbl}</label><input type="${tipo}" data-conv="${k}" value="${esc(c ? c[k] : "")}"></div>`;
   const T = c ? convTextos(c) : null;
   const tipoNome = { passagem: "Passagem em dinheiro", milhas: "Passagem com milhas", bonus: "Bônus de transferência" };
-  return head("Converter texto", "Cole qualquer oferta de outro canal — o 085 reescreve na nossa linguagem, pro grupo, pro Instagram e pros stories") +
+  const modo = S.convModo || "milhas";
+  const topo = head("Converter texto", "Cole ofertas de outros canais: o 085 reescreve na nossa linguagem e, no caso dos resgates em milhas, faz a imagem e guarda no nosso banco") +
+    `<div class="ordbar">${pills("convmodo", modo, [["milhas", "Resgates em milhas (vários de uma vez)"], ["outros", "Outras ofertas (dinheiro e bônus)"]])}</div>`;
+  if (modo === "milhas") { carregarMilhas(); return topo + pImportar(); }
+  return topo +
     `<div class="grid two conv">
       <div class="card"><h3>1. Cole o texto original</h3><div class="desc">Passagem em dinheiro, passagem com milhas ou bônus de transferência (Livelo, Esfera…).</div>
         <div class="field"><textarea id="conv-in" placeholder="Cole aqui…" style="min-height:220px">${esc(S.convIn || "")}</textarea></div>
@@ -874,7 +880,8 @@ document.addEventListener("click", async e => {
     else if (act === "turbo") { b.disabled = true; await rodarTurbo(); b.disabled = false; }
     else if (act === "pill") {
       const g = b.dataset.g, v = b.dataset.v;
-      if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
+      if (g === "convmodo") { S.convModo = v; }
+      else if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
       else if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
       else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
       render(); return;

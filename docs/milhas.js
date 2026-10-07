@@ -11,7 +11,7 @@ const milN = n => Math.round(+n || 0).toLocaleString("pt-BR");
 function carregarMilhas() {
   if (S.mi) return;
   S.mi = { carregando: true, ofertas: [] };
-  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { (d.ofertas || []).forEach(o => { o.texto0 = o.texto; o.texto = textoFinal(o.texto, "milhas"); }); S.mi = d; S.mv = v; const pg = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard"; if (["milhas", "promocoes", "dashboard"].includes(pg) && !document.querySelector("input:focus,textarea:focus")) render(); else navs(); });
+  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null), getJSON("milhas_importados.json", [])]).then(([d, v, imps]) => { (d.ofertas || []).forEach(o => { o.texto0 = o.texto; o.texto = textoFinal(o.texto, "milhas"); }); S.mi = d; S.mv = v; if (typeof juntarImportados === "function") juntarImportados(imps || []); const pg = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard"; if (["milhas", "promocoes", "dashboard"].includes(pg) && !document.querySelector("input:focus,textarea:focus")) render(); else navs(); });
 }
 function validadeTxt(o) {
   if (!o.validade) return ["", "sem data informada"];
@@ -64,15 +64,15 @@ function cardVoo(o) {
     ${env ? `<div class="env-faixa">${ic("check", "i sm")}${S.marcados[o.id] === "descartado" ? "Tirado da fila (não enviado)" : "Enviado no grupo · " + new Date(S.marcados[o.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top">
       <div><div class="rt">FOR → ${esc(o.aeroporto || o.iata || "")} · ${esc(o.para || "")}</div><div class="ds">${esc(o.destino || "")}</div></div>
-      <div class="preco">${milN(o.milhas)} milhas<small>+ ${brl(o.taxa)} de taxas · o trecho</small></div>
+      <div class="preco">${milN(o.milhas)} milhas<small>+ ${o.taxa == null ? "taxas" : brl(o.taxa) + " de taxas"} · o trecho</small></div>
     </div>
     <div class="tags">
       ${o.desconto ? `<span class="tag ${k}">${ktxt} · −${pct(o.desconto)} ↘</span>` : ""}
       ${o.cia ? `<span class="tag">${esc(o.cia)}</span>` : ""}${o.paradas != null ? `<span class="tag">${paradasTxt(o.paradas)}</span>` : ""}
       ${o.telegram ? `<span class="tag">${ic("check", "i sm")}Telegram</span>` : ""}
     </div>
-    <div class="idavolta"><div><div class="iv-h">${ic("up", "i sm")} Datas de ida <small>${milN(o.milhas)} milhas + ${brl(o.taxa)}</small></div>${mesesHTML(o.ida_meses, false)}</div>
-      <div><div class="iv-h">${ic("downl", "i sm")} Datas de volta ${o.milhas_volta ? `<small>${milN(o.milhas_volta)} milhas + ${brl(o.taxa_volta)}</small>` : ""}</div>${o.volta_meses && o.volta_meses.length ? mesesHTML(o.volta_meses, false) : `<div class="sub">ainda sem volta consultada</div>`}</div></div>
+    <div class="idavolta"><div><div class="iv-h">${ic("up", "i sm")} Datas de ida <small>${milN(o.milhas)} milhas + ${taxaR(o.taxa)}</small></div>${mesesHTML(o.ida_meses, false)}</div>
+      <div><div class="iv-h">${ic("downl", "i sm")} Datas de volta ${o.milhas_volta ? `<small>${milN(o.milhas_volta)} milhas + ${taxaR(o.taxa_volta)}</small>` : ""}</div>${o.volta_meses && o.volta_meses.length ? mesesHTML(o.volta_meses, false) : `<div class="sub">ainda sem volta consultada</div>`}</div></div>
     <div class="al-acts">
       <button class="bt sm" data-act="micopiar" data-id="${esc(o.id)}">${ic("copy")}<span>Copiar</span></button>
       <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(o.id)}" href="https://wa.me/?text=${encodeURIComponent(o.texto || "")}">${ic("send")}WhatsApp</a>
@@ -100,7 +100,7 @@ function linhaReal(c, x) {
   return g ? `<div class="g-tit">Preço por dia (por trecho)</div>` + g : "";
 }
 function calMilhas(r, nome, prog) {
-  const ser = s => Object.entries((r || {})[s] || {}).filter(([, v]) => !v.sem).map(([dia, v]) => ({ dia, preco: v.milhas, tip: "+ " + brl(v.taxa) }));
+  const ser = s => Object.entries((r || {})[s] || {}).filter(([, v]) => !v.sem).map(([dia, v]) => ({ dia, preco: v.milhas, tip: "+ " + taxaR(v.taxa) }));
   const graf = gLinha([{ n: "Ida", cor: GC.azul, pts: ser("ida") }, { n: "Volta", cor: GC.ambar, tracejada: true, pts: ser("volta") }], r && r.normal_ida, v => milK(Math.round(v)));
   return (graf ? `<div class="g-tit">Milhas por dia</div>` + graf : "") + calMilhas0(r, nome, prog);
 }
@@ -113,7 +113,7 @@ function calMilhas0(r, nome, prog) {
     return `<div class="cal-b"><div class="cal-t">${titulo} <span class="sub">menor ${milN(lo)} · maior ${milN(hi)} milhas</span></div>
       ${Object.entries(meses).map(([m, ds]) => `<div class="cal-m"><b>${MESES[+m.slice(5, 7) - 1]} ${m.slice(0, 4)}</b><div class="cal-g">${ds.map(d => {
         const t = hi > lo ? (d.milhas - lo) / (hi - lo) : 0, cls = d.milhas <= lo * 1.05 ? "c-top" : t < .33 ? "c-bom" : t < .66 ? "c-med" : "c-caro";
-        return `<span class="cal-d ${cls}" data-tip="${dmy(d.dia)} · ${milN(d.milhas)} milhas + ${brl(d.taxa)}${d.cia ? " · " + esc(d.cia) : ""}${d.paradas === 0 ? " · direto" : d.paradas ? ` · ${d.paradas} parada${d.paradas > 1 ? "s" : ""}` : ""}"><i>${d.dia.slice(8, 10)}</i><small>${milK(d.milhas)}</small></span>`;
+        return `<span class="cal-d ${cls}" data-tip="${dmy(d.dia)} · ${milN(d.milhas)} milhas + ${taxaR(d.taxa)}${d.cia ? " · " + esc(d.cia) : ""}${d.paradas === 0 ? " · direto" : d.paradas ? ` · ${d.paradas} parada${d.paradas > 1 ? "s" : ""}` : ""}"><i>${d.dia.slice(8, 10)}</i><small>${milK(d.milhas)}</small></span>`;
       }).join("")}</div></div>`).join("")}</div>`;
   };
   return `<div class="cal-leg"><span><i class="c-top"></i>mais barato</span><span><i class="c-bom"></i>bom</span><span><i class="c-med"></i>médio</span><span><i class="c-caro"></i>caro</span><span class="sub">Milhas por trecho, ${esc(prog)} · + taxas (passe o dedo/mouse no dia)</span></div>
@@ -155,7 +155,7 @@ function pontosMapa(moeda) {
       return { k, nome, n, estado: n ? "promo" : st.menor ? "base" : "cad", info: st.menor ? `<span>ida a partir de <b>${brl(st.menor)}</b></span>` : "", act: st.menor ? act(k, "abrirdest") : "" }; });
   }
   return linhasDestinos(moeda).map(x => { const n = (S.mi.ofertas || []).filter(o => o.busca_propria && o.para === moeda && o.iata === x.k && noPeriodo(o.publicado)).length;
-    return { k: x.k, nome: x.nome, n, estado: n ? "promo" : x.ida ? "base" : "cad", info: x.ida ? `<span>ida a partir de <b>${milN(x.ida.milhas)} milhas</b> + ${brl(x.ida.taxa)}</span>` : "", act: x.ida || x.volta ? act(x.k, "miabrir") : "" }; });
+    return { k: x.k, nome: x.nome, n, estado: n ? "promo" : x.ida ? "base" : "cad", info: x.ida ? `<span>ida a partir de <b>${milN(x.ida.milhas)} milhas</b> + ${taxaR(x.ida.taxa)}</span>` : "", act: x.ida || x.volta ? act(x.k, "miabrir") : "" }; });
 }
 function mapaMilhas() { if (MI.sec === "voos") montarMapa("mapa-milhas", pontosMapa(MI.moeda), COR_MOEDA[MI.moeda]); }
 function mapaDestinos() { montarMapa("mapa-dest", pontosMapa("real"), COR_MOEDA.real); }
@@ -171,9 +171,9 @@ function blocoDestinos(moeda) {
   const N = numerosVoos(moeda);
   const quadro = x => {
     const aberto = st.sel === x.k;
-    const preco = x.real ? `<b>${brl(x.menor)}</b><small>ida · média ${brl(x.mediana)}</small>${gBullet(x.menor, x.mediana, x.d >= .4 ? GC.verde : x.d >= .2 ? GC.azul : GC.ambar)}` : `<b>${milN((x.ida || x.volta).milhas)}</b><small>milhas + ${brl((x.ida || x.volta).taxa)} · ${x.ida ? "ida" : "volta"}</small>`;
+    const preco = x.real ? `<b>${brl(x.menor)}</b><small>ida · média ${brl(x.mediana)}</small>${gBullet(x.menor, x.mediana, x.d >= .4 ? GC.verde : x.d >= .2 ? GC.azul : GC.ambar)}` : `<b>${milN((x.ida || x.volta).milhas)}</b><small>milhas + ${taxaR((x.ida || x.volta).taxa)} · ${x.ida ? "ida" : "volta"}</small>`;
     const extra = x.real ? [x.menor_volta ? `volta ${brl(x.menor_volta)}` : "", x.melhor_mes ? `melhor mês: ${MESES[+x.melhor_mes.slice(5, 7) - 1]}` : ""].filter(Boolean).join(" · ")
-      : (x.ida && x.volta ? `volta ${milN(x.volta.milhas)} + ${brl(x.volta.taxa)}` : "");
+      : (x.ida && x.volta ? `volta ${milN(x.volta.milhas)} + ${taxaR(x.volta.taxa)}` : "");
     return `<article class="dest ${aberto ? "aberto" : ""}" id="${real ? "cal-" : "mcal-"}${x.k}">
       <button class="dest-h" data-act="${real ? "abrirdest" : "miabrir"}" data-iata="${x.k}" aria-expanded="${aberto}">
         <span class="dest-n"><span class="micro">${x.k}${x.foco ? " · em foco" : ""}</span><b>${esc(x.nome)}</b></span>
@@ -205,7 +205,8 @@ function secaoVoos() {
   const alertas = (S.mi.ofertas || []).filter(o => o.busca_propria && o.para === moeda && (!MI.ativas || o.ativa !== false));
   const sites = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.fortaleza && (!MI.ativas || o.ativa !== false));
   let aviso = "";
-  if (moeda === "LATAM Pass") aviso = `<div class="aviso warn"><span>${ic("key")} Ainda não temos fornecedor para LATAM Pass. Quando tiver, a chave entra em Ajustes › Integrações.</span><a class="bt sm" href="#ajustes">Integrações</a></div>`;
+  const temDados = Object.values((V || {}).rotas || {}).some(ps => ps[moeda] && (ps[moeda].menor_ida || ps[moeda].menor_volta));
+  if (moeda === "LATAM Pass" && !temDados) aviso = `<div class="aviso warn"><span>${ic("key")} Ainda não temos fornecedor para LATAM Pass. Quando tiver, a chave entra em Ajustes › Integrações.</span><a class="bt sm" href="#ajustes">Integrações</a></div>`;
   else if (!V) aviso = `<div class="aviso warn"><span>${ic("key")} A busca em milhas está pronta, falta só a chave da GeckoAPI (teste grátis).</span><a class="bt sm" href="#ajustes">Colocar a chave</a></div>`;
   else if (V.status && V.status !== "ok") aviso = `<div class="aviso warn"><span>${ic("key")} ${{ SEM_CREDITOS: "Os créditos da GeckoAPI acabaram.", CHAVE_INVALIDA: "A chave da GeckoAPI não funcionou." }[V.status] || esc(V.status)}</span><a class="bt sm" href="#ajustes">Integrações</a></div>`;
   return `<div class="mv-bar">${MOEDAS.map(([v, t]) => `<button class="mv-m ${moeda === v ? "on" : ""}" data-act="pill" data-g="mim" data-v="${v}" style="--c:${COR_MOEDA[v]}"><i></i>${t}</button>`).join("")}</div>
@@ -236,7 +237,7 @@ function secaoPromos() {
 function pMilhas() {
   carregarMilhas();
   if (S.mi.carregando) return head("Alertas em milhas", "Carregando…") + `<div class="card vazio">Carregando…</div>`;
-  const sub = "Passagens pagas com milhas (Smiles, Azul) saindo de Fortaleza, achadas pelo nosso robô data por data, ida e volta.";
+  const sub = "Passagens pagas com milhas (Smiles, Azul, LATAM) saindo de Fortaleza: as que o nosso robô acha e as que você importa em Converter texto.";
   const sites = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.fortaleza && o.ativa !== false);
   const listaSites = sites.length ? `<h2 class="mv-t" style="margin-top:28px">Vistos em outros sites · saindo de Fortaleza</h2>
       <div class="mv-sites">${sites.map(o => `<div class="mv-site"><span class="tag">${esc(MI_TIPOS[o.tipo])}</span><span class="t">${esc(o.titulo)}<small>${esc((o.fontes || [o.fonte]).slice(0, 2).join(" · "))} · ${dm(o.publicado)}</small></span>
@@ -265,7 +266,7 @@ document.addEventListener("click", async e => {
     else if (act === "mitexto") { MI.aberto = MI.aberto === b.dataset.id ? "" : b.dataset.id; render(); }
     else if (act === "mibanner") {
       const o = O(b.dataset.id), par = [o.de, o.para].filter(Boolean).join(" → ").toUpperCase();
-      if (o.busca_propria) { CR.tpl = "livre"; CR.txt = { ideia: `${(o.destino || "").toUpperCase()}\n${milN(o.milhas)} milhas + ${brl(o.taxa)} o trecho\nSaindo de Fortaleza · ${o.para}\nAlertas de milhas no grupo do 085` }; location.hash = "#criativos"; return; }
+      if (o.busca_propria) { CR.tpl = "livre"; CR.txt = { ideia: `${(o.destino || "").toUpperCase()}\n${milN(o.milhas)} milhas + ${taxaR(o.taxa)} o trecho\nSaindo de Fortaleza · ${o.para}\nAlertas de milhas no grupo do 085` }; location.hash = "#criativos"; return; }
       const l1 = o.tipo === "bonus" ? `${par || "MILHAS"}: ${o.pct}% DE BÔNUS` : o.tipo === "passagem" && o.milhas ? `${o.destino ? o.destino.toUpperCase() + " · " : ""}${milN(o.milhas)} MILHAS` : o.titulo;
       const [, vt] = validadeTxt(o);
       CR.tpl = "livre"; CR.txt = { ideia: `${l1}\n${o.tipo === "passagem" ? o.titulo : o.tipo === "bonus" ? "na transferência de pontos" : ""}${o.validade ? `\nVálido ${vt}` : ""}\nAlertas de milhas no grupo do 085` };

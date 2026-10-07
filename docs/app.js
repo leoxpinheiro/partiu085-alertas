@@ -154,15 +154,15 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["marketing", "calendar", "Marketing"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["marketing", "calendar", "Marketing"], ["milhas", "coins", "Milhas"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
   ["rotas", "plane", "Rotas"], ["grupos", "users", "Grupos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
   const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 6 ? `<span class="sep"></span>` : "") +
+  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 7 ? `<span class="sep"></span>` : "") +
     `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
-  $("#tabs").innerHTML = PAGS.slice(0, 6).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
+  $("#tabs").innerHTML = PAGS.slice(0, 7).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
     [PAGS[2], PAGS[3]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
@@ -171,8 +171,9 @@ function navs() {
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
+  if (pag === "milhas") setTimeout(calcOut, 0);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
 }
@@ -864,5 +865,5 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
 /* ------------------------------------------------------------ início */
 (async () => {
   await carregar(); render(); checarRodando();
-  setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (!/converter|ajustes|rotas/.test(location.hash)) render(); } }, 120000);
+  setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas/.test(location.hash)) render(); } }, 120000);
 })();

@@ -160,8 +160,20 @@ def validade_em(txt: str, base: datetime) -> str | None:
         return None
 
 
+def destino_em(tit: str) -> str | None:
+    cid = r"([A-ZÀ-Ú][\wÀ-ú]+(?:(?: de| do| da)? [A-ZÀ-Ú][\wÀ-ú]+)*)"
+    m = re.search(r"\bentre " + cid + r" e " + cid, tit)
+    if m:
+        a, b = m.group(1), m.group(2)
+        return a if b == "Fortaleza" else b
+    m = re.search(r"\b(?:para|entre [A-ZÀ-Ú][\wÀ-ú]+(?: de [A-ZÀ-Ú][\wÀ-ú]+| [A-ZÀ-Ú][\wÀ-ú]+)* e)\s+(?:o |a |os |as )?([A-ZÀ-Ú][\wÀ-ú]+(?:(?: de| do| da)? [A-ZÀ-Ú][\wÀ-ú]+)*)", tit)
+    return m.group(1) if m else None
+
+
 def entender(it: dict) -> dict | None:
     tit, res = it["titulo"], it["resumo"]
+    if re.search(r"curso|aprenda|e-?book|webinar|aula|ponto a ponto|mentoria|guia completo", sem_acento(tit)):
+        return None
     tipo = classificar(tit, res)
     if not tipo:
         return None
@@ -174,11 +186,15 @@ def entender(it: dict) -> dict | None:
     pct = maior_pct(tit) or (maior_pct(res) if tipo in ("bonus", "compra") else None)
     if tipo == "bonus" and not pct:
         return None
+    mi = milhas_em(tudo) if tipo == "passagem" else None
+    if tipo == "passagem" and not mi:
+        return None
     o = {
+        "destino": destino_em(tit) if tipo == "passagem" else None,
         "tipo": tipo, "titulo": tit, "resumo": res[:280], "link": it["link"], "fonte": it["fonte"],
         "publicado": it["quando"].isoformat(timespec="minutes"),
         "programas": progs, "de": de, "para": para, "pct": pct,
-        "milhas": milhas_em(tudo) if tipo == "passagem" else None,
+        "milhas": mi,
         "validade": validade_em(tudo, it["quando"]),
         "fortaleza": bool(re.search(r"fortaleza|\bfor\b", sem_acento(tudo))),
     }
@@ -216,7 +232,9 @@ def texto(o: dict, link_grupo: str) -> str:
             L.append(val)
         L += ["", "💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências."]
     else:
-        L += [f"✈️ {o['titulo']}"]
+        if o.get("destino"):
+            L += [f"✈️ {'Fortaleza → ' if o.get('fortaleza') else ''}{o['destino']}"]
+        L += [f"📰 {o['titulo']}"]
         if o.get("milhas"):
             L.append(f"🎟️ A partir de *{mil(o['milhas'])} milhas*" + (f" · {o['para']}" if o.get("para") else ""))
         if o.get("fortaleza"):

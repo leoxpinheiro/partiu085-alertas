@@ -263,7 +263,7 @@ function filaEnvio() {
   const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a)).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
     ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${brl(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
-    : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: o.titulo, v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
+    : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
   return L.sort((x, y) => y.q.localeCompare(x.q));
 }
 function pDash() {
@@ -281,14 +281,12 @@ function pDash() {
   const precos = ordenarDest(destinosStatus(), "ofertas").slice(0, 6);
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
-  return head("Início", "O resumo do dia e tudo que ainda falta enviar", statusPill()) +
+  return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) +
     `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
-    <div class="card fila" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Para enviar agora</h3><div class="desc">Tudo de ontem e hoje que ainda não foi marcado como enviado. Copiar já marca como enviado.</div></div></div>
-      ${fila.length ? `<div class="fila-l">${fila.map(f => `<div class="fila-i" style="--c:${f.cor}"><span class="fila-tag">${esc(f.rot)}</span>
-        <span class="fila-t"><b>${esc(f.t)}</b><small>${esc(f.v)}${f.d ? ` · <span class="pos">${f.d}</span>` : ""} · ${f.q.slice(0, 10) === h ? "hoje" : "ontem"} ${f.q.slice(11, 16)}</small></span>
-        <button class="bt sm" data-act="filacopiar" data-id="${esc(f.id)}">${ic("copy")}<span>Copiar</span></button>
-        <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(f.id)}" href="https://wa.me/?text=${encodeURIComponent(f.texto || "")}">${ic("send")}<span>WhatsApp</span></a>
-        <a class="bt sm ghost" href="${f.link}" title="Abrir">${ic("ext")}</a></div>`).join("")}</div>` : `<div class="vazio">Tudo enviado. 🎉 Os próximos alertas aparecem aqui.</div>`}
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). O envio é feito na página de cada tipo, onde você vê o texto completo antes de copiar.</div></div></div>
+      <div class="falta">${[["dinheiro", "Alertas em dinheiro", "#16A34A", "#alertas"], ["milhas", "Alertas em milhas", "#FF7A00", "#milhas"], ["promo", "Promoções de milhas", "#8B5CF6", "#promocoes"]].map(([t, n, cor, href]) => {
+        const L = fila.filter(f => f.tipo === t);
+        return `<a class="falta-i" href="${href}" style="--c:${cor}"><b>${L.length}</b><span class="falta-t"><strong>${n}</strong><small>${L.length ? esc(L.slice(0, 4).map(f => f.t).join(" · ")) + (L.length > 4 ? ` e mais ${L.length - 4}` : "") : "tudo enviado ✓"}</small></span><span class="bt sm ${L.length ? "pri" : "ghost"}">${L.length ? "Abrir e enviar" : "Abrir"}</span></a>`; }).join("")}</div>
     </div>
     <div class="grid two">
       <div class="card"><div class="card-h"><div><h3>Alertas em dinheiro por dia</h3><div class="desc">Últimos 14 dias · meta de ${META_DIA} por dia</div></div></div><div class="cols">${cols}</div></div>

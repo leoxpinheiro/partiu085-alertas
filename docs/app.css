@@ -541,3 +541,16 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 .mk-pop{display:flex;flex-direction:column;gap:4px;font:13px/1.4 "Plus Jakarta Sans",system-ui,sans-serif;min-width:170px}
 .mk-pop b{font-size:15px}.mk-pop .mk-n{margin:4px 0}.mk-pop .bt{margin-top:4px;align-self:flex-start}
 .leaflet-popup-content-wrapper{border-radius:16px}
+.mv-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:var(--space-3)}
+.mv-tools .busca{flex:1 1 220px;max-width:340px;margin:0;height:var(--control-md);padding:0 18px;border:0;border-radius:var(--radius-pill);background:var(--tile);box-shadow:var(--shadow-xs);font-size:14px;outline:none;color:inherit}
+.mapa-card{padding:var(--space-4) var(--space-5)}
+.mapa-card summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none}
+.mapa-card summary::-webkit-details-marker{display:none}
+.mapa-sum{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mapa-sum b{font-size:16px;font-weight:600}
+.mapa-seta{transition:transform .2s var(--ease)}
+.mapa-card[open] .mapa-seta{transform:rotate(180deg)}
+.mapa-bar{display:flex;flex-wrap:wrap;gap:8px;margin:var(--space-4) 0 var(--space-3)}
+.mapa .leaflet-container,.mapa.leaflet-container{font:inherit}
+.leaflet-tooltip{font:600 12px/1.3 "Plus Jakarta Sans",system-ui,sans-serif;border-radius:10px}
+@media (max-width:640px){.dests.grade{grid-template-columns:1fr 1fr;gap:8px}.dests.grade .dest-h{padding:var(--space-4)}.dests.grade .dest-p b{font-size:20px}.dests.grade .dest-n b{font-size:15px}.dests.grade .badge{height:20px;padding:0 6px;font-size:11px}.mv-tools .pills{max-width:100%;overflow-x:auto;flex-wrap:nowrap}}

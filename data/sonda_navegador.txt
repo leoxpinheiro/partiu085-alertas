@@ -1,12 +1,79 @@
 == smiles: página 200
   título: Viver o mundo começa aqui
   texto: Smiles FOR GRU Sab, 21 nov 1 pessoa adulta Alterar busca Acesse ou crie a sua conta  Junte milhas e comece a viajar  Acessar conta Criar conta Taxas da viagem Você vai visualizar as taxas de viagem depois de escolher os voos. Aguarde enquanto buscamos os melhores voos para sua viagem  Smiles. A mais completa plataforma de viagens  Suas milhas podem fazer seus sonhos decolarem para mais de 1.600 destinos!  + 55 companhias aéreas  Alguma dúvida sobre a Smiles?  Atendimento Smiles E perguntas frequ
-  respostas de API: 0
-== azul: página 403
-  título: Access Denied
-  texto: Access Denied You don't have permission to access "http://www.voeazul.com.br/br/pt/home/selecao-voo?" on this server.  Reference #18.851c2117.1791348082.5a46fab0  https://errors.edgesuite.net/18.851c2117.1791348082.5a46fab0
-  respostas de API: 0
-== latam: página 403
-  título: Access Denied
-  texto: Por motivos de seguridad, no pudimos permitir tu acceso al sitio. Puedes intentar nuevamente más tarde, eliminar archivos temporales de internet, cambiar de navegador o de red.  For security reasons, we cannot grant you access to our website at this moment. You can try again later, delete cache files, use another browser or move to a different network  Por razões de segurança, nâo é possível permitir seu acesso ao site. Você pode tentar novamente mais tarde, eliminar arquivos temporários da Inte
-  respostas de API: 0
+  respostas de API: 45
+  200 https://www.smiles.com.br/mfe-portal/static/import.map-libs.json?v=0.95.2507
+    {
+  "imports": {
+    "axios": "/mfe-portal/static/libs/axios@0.19.2/axios.min.js",
+    "lottie-web": "/mfe-portal/static/libs/lottie-web@5.7.4/lottie.min.js",
+    "react": "/mfe-portal/static/libs/react@16.13.0/re
+  200 https://www.smiles.com.br/mfe-portal/static/import.map-mfe.json?v=0.95.2507
+    {
+  "imports": {
+    "@smiles/member-account": "/mfe-apps/member-account/0.5.412/smiles-member-account.js",
+    "@smiles/my-account": "/mfe-apps/my-account/0.37.350/smiles-my-account.js",
+    "@smiles/register": "/
+  200 https://www.smiles.com.br/mfe-apps/check-env.txt
+    green
+  201 https://www.smiles.com.br/TpMz-H/HVb/fiQ/BUyMaY7Z/OS7VmrVkbQLtQ2t9/AXwXOCo/SWwM/OkY9Z3w
+    {"success": true}
+
+  200 https://www.smiles.com.br/mfe-portal/static/import.map-mfe.json?v=0.95.2507
+    {
+  "imports": {
+    "@smiles/member-account": "/mfe-apps/member-account/0.5.412/smiles-member-account.js",
+    "@smiles/my-account": "/mfe-apps/my-account/0.37.350/smiles-my-account.js",
+    "@smiles/register": "/
+  200 https://c.go-mpulse.net/api/config.json?key=VKHNQ-4R7CE-B546X-STSHF-KSTXB&d=www.smiles.com.br&t=5971161&v=1.792.0&sl=0&si=2c9521d3-e4af-4446-95c9-c9cc
+    {"site_domain":"arlid:1039706","rate_limited":true}
+
+  201 https://www.smiles.com.br/TpMz-H/HVb/fiQ/BUyMaY7Z/OS7VmrVkbQLtQ2t9/AXwXOCo/SWwM/OkY9Z3w
+    {"success": true}
+
+  302 https://www.google.com/measurement/conversion?random=1791348246844&cv=11&tid=G-L25DPPG37X&fst=1791348246844&fmt=8&en=session_start&gtm=45je6a51h1v8866
+    <Response.text: Response body is unavailable for redirect responses>
+  200 https://www.smiles.com.br/mfe-apps/check-env.txt?t=1791348246552
+    green
+  204 https://www.google-analytics.com/g/collect?v=2&tid=G-BBTY3LETEV&gtm=45je6a51h1v9187883301z871476682za20gzb71476682zd71476682xf1&_p=1791348244909&gcd=1
+    
+  204 https://analytics.google.com/g/collect?v=2&tid=G-L25DPPG37X&gtm=45je6a51h1v886685129z871476682za20gzb71476682zd71476682xf1&_p=1791348244909&_gaz=1&gcd
+    
+  200 https://www.google.com/measurement/1p-conversion/?random=201264909&cv=11&tid=G-L25DPPG37X&fst=1791348246844&fmt=8&en=session_start&gtm=45je6a51h1v8866
+    
+  200 https://ldrelay-green.smiles.com.br/sdk/evalx/5ff64893991a4c0aa4974fc7/users/eyJrZXkiOiJHUkVFTiJ9
+    {"api-data":{"value":{"constants":{"APP":{"API_OAG_VERSION":2,"ENABLE_NEW_HOTEL":false,"OagApiKey":"p6QLrMhjOu3erSfHtFbRK8C1zC1VxIV85OTfEBJK","UberApiKey":"p6QLrMhjOu3erSfHtFbRK8C1zC1VxIV85OTf
+  204 https://analytics.google.com/g/collect?v=2&tid=G-L25DPPG37X&gtm=45je6a51h1v886685129za20gzb71476682zd71476682xf1&_p=1791348244909&gcd=13l3l3l3l1l1&npa
+    
+  200 https://www.smiles.com.br/mfe-apps/check-env.txt
+    green
+  200 https://airports-green.smiles.com.br/v1/airports?q=airport&size=50
+    [{"country":"Brasil","altitude":"35","code":"JJG","city":"Jaguaruna Airport","congenere":"true","timezone":"America/Santa Catarina","latitude":"-28.67","active":"true","description":"Jaguaruna Airport, Brasil (JJG) [Jaguaru
+  200 https://ldrelay-green.smiles.com.br/sdk/evalx/635fd4e05678860c4ff7492d/users/eyJraW5kIjoidXNlcnMiLCJrZXkiOiJleUpyWlhraU9pSmtaWFkySW4wPSJ9
+    {"baggage-congenere":{"value":true,"variation":0,"version":6},"booking-mfa":{"value":false,"variation":1,"version":10},"booking-pet-g3":{"value":true,"v
+  200 https://ldrelay-green.smiles.com.br/sdk/goals/635fd4e05678860c4ff7492d
+    []
+  200 https://ldrelay-green.smiles.com.br/sdk/evalx/6914ec0a78178909bf9cea73/users/eyJraW5kIjoidXNlcnMiLCJrZXkiOiJleUpyWlhraU9pSmtaWFkySW4wPSJ9
+    {"areaMagno_soonPeriod":{"value":false,"variation":0,"version":3},"areaMagno_unmarkedExpiration":{"value":false,"variation":0,"version":3},"boo-back-cad
+  200 https://ldrelay-green.smiles.com.br/sdk/goals/6914ec0a78178909bf9cea73
+    []
+  200 https://static.smiler.com.br/hf-contents/smiles-header-smiles.json?v=2026100704
+    {"id":7901726,"name":"smiles-header-smiles","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<!-- v r12 1.0 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400
+  200 https://static.smiler.com.br/hf-contents/smiles-header-viagem-passagem-aluguel-carro.json?v=2026100704
+    {"id":4910452,"name":"smiles-header-viagem-passagem-aluguel-carro","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<style type=\"text/css\">#smls__te_levo_de_milhas_banner {    back
+  200 https://static.smiler.com.br/hf-contents/smiles-header-miles1.json?v=2026100704
+    {"id":6874885,"name":"smiles-header-miles1","datePublished":"2023-10-06T19:12:00Z","contentHtml":"<!-- versão r12 1.0 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wgh
+  200 https://static.smiler.com.br/hf-contents/smiles-header-miles2.json?v=2026100704
+    {"id":6874852,"name":"smiles-header-miles2","datePublished":"2023-10-06T19:35:00Z","contentHtml":"<!-- versão r12 1.0 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wgh
+  200 https://static.smiler.com.br/hf-contents/smiles-header-shopping.json?v=2026100704
+    {"id":4910486,"name":"smiles-header-shopping","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<style type=\"text/css\">#smls-header-menu-shopping {    background: url('https://www.smiles.com.br/document
+  200 https://static.smiler.com.br/hf-contents/smiles-header-servicos.json?v=2026100704
+    {"id":4910469,"name":"smiles-header-servicos","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&d
+  200 https://static.smiler.com.br/hf-contents/smiles-header-package1.json?v=2026100704
+    {"id":6874945,"name":"smiles-header-package1","datePublished":"2023-10-06T19:35:00Z","contentHtml":"<!-- v r12 1.1 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wght
+  200 https://static.smiler.com.br/hf-contents/smiles-header-package2.json?v=2026100704
+    {"id":6874918,"name":"smiles-header-package2","datePublished":"2023-10-06T19:35:00Z","contentHtml":"<!-- v r12 1.1 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wght
+  200 https://static.smiler.com.br/hf-contents/smiles-header-smiles.json?v=2026100704
+    {"id":7901726,"name":"smiles-header-smiles","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<!-- v r12 1.0 --><style type=\"text/css\">@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400
+  200 https://static.smiler.com.br/hf-contents/smiles-header-viagem-passagem-aluguel-carro.json?v=2026100704
+    {"id":4910452,"name":"smiles-header-viagem-passagem-aluguel-carro","datePublished":"2023-06-01T18:10:00Z","contentHtml":"<style type=\"text/css\">#smls__te_levo_de_milhas_banner {    back

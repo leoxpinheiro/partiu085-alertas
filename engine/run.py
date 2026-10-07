@@ -60,6 +60,8 @@ AJUSTES_PADRAO = {
     "max_escalas_nacional": 1,
     "max_escalas_internacional": 2,
     "dias_sem_repetir": 3,
+    "descanso_rota_dias": 4,
+    "queda_para_repetir": 0.15,
     "link_whatsapp": "https://bit.ly/radar085",
     "assinatura": "",
     "mostrar_link": False,
@@ -362,8 +364,24 @@ def rodada() -> None:
     recentes = [e for e in enviados if e["quando"] >= limite]
     candidatos = [c for c in candidatos
                   if not any(e["rota"] == c["rota"] and c["m_ida"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
+    # descanso da rota: depois de um alerta, a mesma rota só volta se o preço cair bem mais
+    descanso = (agora() - timedelta(days=float(aj.get("descanso_rota_dias", 4)))).isoformat()
+    queda = 1 - float(aj.get("queda_para_repetir", 0.15))
+    def em_descanso(c):
+        ant = [e["preco"] for e in enviados if e["rota"] == c["rota"] and e["quando"] >= descanso]
+        return bool(ant) and c["m_ida"]["preco"] > min(ant) * queda
+    bloqueados = [c["rota"] for c in candidatos if em_descanso(c)]
+    if bloqueados:
+        log(f"  em descanso (alerta recente): {', '.join(bloqueados)}")
+    candidatos = [c for c in candidatos if not em_descanso(c)]
+    # variedade: rotas que apitaram menos nos últimos 14 dias ganham prioridade
+    corte14 = (agora() - timedelta(days=14)).isoformat()
+    vezes = {}
+    for e in enviados:
+        if e["quando"] >= corte14:
+            vezes[e["rota"]] = vezes.get(e["rota"], 0) + 1
     candidatos.sort(key=lambda c: c["desc"] + min(len(c["d_ida"]), 10) * 0.004
-                    + (0.02 if c["r"].get("foco") else 0), reverse=True)
+                    + (0.02 if c["r"].get("foco") else 0) - 0.03 * vezes.get(c["rota"], 0), reverse=True)
 
     novos = []
     limite_n = 10 if ROTAS_AGORA else int(aj["max_alertas_por_rodada"])

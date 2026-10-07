@@ -8,7 +8,8 @@ const API = "https://api.github.com/repos/" + REPO;
 const S = {
   alertas: [], rotas: [], ajustes: {}, status: { rotas: {} }, hist: {}, rodadas: [],
   rotasSujo: false, ajustesSujo: false,
-  F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" },
+  F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "" },
+  marcados: {},
   histRota: "", conv: null,
 };
 
@@ -103,20 +104,37 @@ async function checarRodando() {
   } catch (e) { }
 }
 
+/* ------------------------------------------------------------ marcados como enviados */
+let _salvarMarc;
+function marcar(id, valor = true) {
+  if (valor) S.marcados[id] = new Date().toISOString(); else S.marcados[id] = null;
+  try { localStorage.setItem("p085_marcados", JSON.stringify(S.marcados)); } catch (e) { }
+  const card = document.querySelector(`article.al[data-id="${CSS.escape(id)}"]`);
+  if (card) card.outerHTML = cardAlerta(S.alertas.find(a => a.id === id), card.dataset.compacto === "1");
+  clearTimeout(_salvarMarc);
+  if (token()) _salvarMarc = setTimeout(async () => {
+    const limpo = Object.fromEntries(Object.entries(S.marcados).filter(([, v]) => v));
+    try { await salvarArquivo("docs/marcados.json", limpo, "Painel: marca alertas enviados"); } catch (e) { toast("Marcado só neste aparelho: " + e.message, 4000); }
+  }, 2500);
+}
+const enviado = a => !!S.marcados[a.id];
+
 /* ------------------------------------------------------------ dados */
 async function getJSON(f, padrao) {
   try { const r = await fetch(f + "?t=" + Date.now()); if (!r.ok) throw 0; return await r.json(); } catch (e) { return padrao; }
 }
 async function carregar() {
-  const [a, r, aj, st, h, rd] = await Promise.all([
+  const [a, r, aj, st, h, rd, mk] = await Promise.all([
     getJSON("alerts.json", { alertas: [] }), getJSON("rotas.json", []), getJSON("ajustes.json", {}),
-    getJSON("status.json", { rotas: {} }), getJSON("historico.json", {}), getJSON("rodadas.json", []),
+    getJSON("status.json", { rotas: {} }), getJSON("historico.json", {}), getJSON("rodadas.json", []), getJSON("marcados.json", {}),
   ]);
   S.alertas = (a.alertas || []).map(x => ({ ...x, ida: x.ida || (x.datas && x.datas[0] && x.datas[0].ida), volta: x.volta || (x.datas && x.datas[0] && x.datas[0].volta) }))
     .sort((x, y) => y.criado.localeCompare(x.criado));
   if (!S.rotasSujo) S.rotas = r;
   if (!S.ajustesSujo) S.ajustes = aj;
   S.status = st || { rotas: {} }; S.hist = h || {}; S.rodadas = rd || [];
+  let local = {}; try { local = JSON.parse(load("p085_marcados") || "{}"); } catch (e) { }
+  S.marcados = { ...(mk || {}), ...local };
   S.ultima = S.status.ultima_rodada || a.atualizado;
 }
 
@@ -126,7 +144,7 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
   ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["rotas", "plane", "Rotas"],
-  ["historico", "chart", "Histórico"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
+  ["historico", "chart", "Histórico"], ["criativos", "image", "Criativos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
@@ -136,13 +154,14 @@ function navs() {
   $("#tabs").innerHTML = PAGS.slice(0, 4).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
-    [PAGS[2], PAGS[5]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
+    [PAGS[2], PAGS[6]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
   $("#more").innerHTML = PAGS.slice(3).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
   return pag;
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos }[pag] || pDash;
+  if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
 }
@@ -171,7 +190,9 @@ function cardAlerta(a, compacto = false) {
     ? `<div class="idavolta"><div><div class="iv-h">${ic("up", "i sm")} Datas de ida <small>a partir de ${brl(a.preco)}</small></div>${mesesHTML(a.ida_meses, compacto)}</div>
        <div><div class="iv-h">${ic("downl", "i sm")} Datas de volta <small>a partir de ${brl(a.preco_volta)}</small></div>${mesesHTML(a.volta_meses, compacto)}</div></div>`
     : `<div class="datas">${(a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || [])).slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}</span>`).join("")}</div>`;
-  return `<article class="al ${k}">
+  const env = enviado(a);
+  return `<article class="al ${k} ${env ? "enviado" : ""}" data-id="${esc(a.id)}" data-compacto="${compacto ? 1 : 0}">
+    ${env ? `<div class="env-faixa">${ic("check", "i sm")}Enviado no grupo · ${new Date(S.marcados[a.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top">
       <div><div class="rt">${ORIGEM} → ${esc(a.destino)} · ${a.tipo === "internacional" ? "INTERNACIONAL" : "NACIONAL"}</div><div class="ds">${esc(a.destino_nome)}</div></div>
       <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}média ${brl(a.preco_tipico)}</small></div>
@@ -184,9 +205,11 @@ function cardAlerta(a, compacto = false) {
     ${corpo}
     <div class="al-acts">
       <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}">${ic("copy")}<span>Copiar</span></button>
-      <a class="bt sm zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">${ic("send")}WhatsApp</a>
+      <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(a.id)}" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">${ic("send")}WhatsApp</a>
       <a class="bt sm" target="_blank" rel="noopener" href="${esc(a.link_google)}">${ic("ext")}Google Voos</a>
+      <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}">${ic(env ? "check" : "circle")}${env ? "Enviado" : "Marcar enviado"}</button>
       ${compacto ? "" : `<button class="bt sm ghost" data-act="vertexto" data-id="${esc(a.id)}">Ver texto</button>`}
+      <a class="bt sm ghost" href="#criativos?id=${encodeURIComponent(a.id)}">${ic("image")}Banner</a>
     </div>
     <div class="texto" id="tx-${esc(a.id)}" hidden>${esc(a.texto)}</div>
     <div class="quando"><span>Encontrado ${a.criado.slice(0, 10) === hojeISO() ? "hoje" : dm(a.criado)} às ${a.criado.slice(11, 16)}</span>${a.link_compra ? `<a href="${esc(a.link_compra)}" target="_blank" rel="noopener">link de compra ↗</a>` : ""}</div>
@@ -212,7 +235,7 @@ function pDash() {
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   return head("Dashboard", "O que o radar encontrou saindo de Fortaleza", statusPill()) +
     `<div class="grid kpis">
-      ${kpi("Alertas hoje", `${hojeN}<small> / ${META_DIA}</small>`, `Meta de ${META_DIA} alertas bons por dia · ${a7.length} nos últimos 7 dias`, true, "bell")}
+      ${kpi("Alertas hoje", `${hojeN}<small> / ${META_DIA}</small>`, `Meta de ${META_DIA} por dia · ${A.filter(a => a.criado.slice(0, 10) === h && !enviado(a)).length} ainda não enviados`, true, "bell")}
       ${kpi("Maior desconto (30 dias)", melhor ? "−" + pct(melhor.desconto) : "–", melhor ? `<span class="badge pos">${brl(melhor.preco)}</span>${esc(melhor.destino_nome)}` : "Ainda sem alertas", false, "downr")}
       ${kpi("Rotas vigiadas", ativas, `<span class="badge">${S.rotas.filter(r => r.foco).length} em foco</span>${a30.length} alertas em 30 dias`, false, "plane")}
     </div>
@@ -246,6 +269,8 @@ function filtrar() {
     if (F.mes && !diasIda(a).some(d => d.slice(0, 7) === F.mes)) return false;
     if (F.max && a.preco > +F.max) return false;
     if (F.direto && a.escalas !== 0) return false;
+    if (F.env === "nao" && enviado(a)) return false;
+    if (F.env === "sim" && !enviado(a)) return false;
     return true;
   });
   const ord = { recentes: (x, y) => y.criado.localeCompare(x.criado), preco: (x, y) => x.preco - y.preco, desconto: (x, y) => y.desconto - x.desconto, ida: (x, y) => (x.ida || "").localeCompare(y.ida || "") }[F.ordem];
@@ -268,6 +293,7 @@ function pAlertas() {
       <select data-f="mes">${opt("", "Qualquer mês", F.mes)}${meses.map(m => opt(m, MESES[+m.slice(5, 7) - 1] + "/" + m.slice(2, 4), F.mes)).join("")}</select>
       <input type="number" inputmode="numeric" placeholder="Até R$" data-f="max" value="${esc(F.max)}" style="width:100px">
       <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label>
+      <select data-f="env">${opt("", "Enviados e não enviados", F.env)}${opt("nao", "Só não enviados", F.env)}${opt("sim", "Só enviados", F.env)}</select>
       <select data-f="ordem">${opt("recentes", "Mais recentes", F.ordem)}${opt("desconto", "Maior desconto", F.ordem)}${opt("preco", "Menor preço", F.ordem)}${opt("ida", "Data de ida", F.ordem)}</select>
     </div>
     <div class="resultado"><span>${L.length} alerta${L.length === 1 ? "" : "s"}</span>${Object.values(F).some((v, i) => v && !["recentes", "30"].includes(v)) ? `<a href="#" data-act="limpar">Limpar filtros</a>` : ""}</div>
@@ -494,6 +520,7 @@ function pAjustes() {
 }
 
 /* ------------------------------------------------------------ eventos */
+document.addEventListener("click", e => { const z = e.target.closest("[data-marca]"); if (z && !enviado({ id: z.dataset.marca })) marcar(z.dataset.marca, true); }, true);
 document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
@@ -501,7 +528,8 @@ document.addEventListener("click", async e => {
   const A = id => S.alertas.find(a => a.id === id);
   try {
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
-    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
+    else if (act === "marcar") { marcar(b.dataset.id, !enviado(A(b.dataset.id))); }
+    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast("Copiado e marcado como enviado. Toque em “Enviado” para desfazer."); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
     else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }

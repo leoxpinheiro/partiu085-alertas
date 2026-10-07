@@ -40,6 +40,9 @@ FONTES = [
     ("Google Notícias", GN + "b%C3%B4nus+transfer%C3%AAncia+milhas+when:4d"),
     ("Google Notícias", GN + "promo%C3%A7%C3%A3o+milhas+Fortaleza+when:7d"),
     ("Google Notícias", GN + "compra+de+milhas+desconto+when:4d"),
+    ("Google Notícias", GN + "milhas+%22Fortaleza%22+passagens+when:14d"),
+    ("Google Notícias", GN + "%22saindo+de+Fortaleza%22+milhas+OR+pontos+when:14d"),
+    ("Google Notícias", GN + "Smiles+OR+%22LATAM+Pass%22+OR+%22Azul+Fidelidade%22+Fortaleza+when:14d"),
 ]
 
 PROGRAMAS = [  # (nome exibido, padrões)
@@ -259,7 +262,7 @@ def rodada(sondar: bool = False) -> None:
             print(f"! {nome}: {e}")
             continue
         for it in itens:
-            if it["quando"] < agora - timedelta(days=10):
+            if it["quando"] < agora - timedelta(days=14):
                 continue
             o = entender(it)
             if not o:

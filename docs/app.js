@@ -154,26 +154,30 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["marketing", "calendar", "Marketing"], ["milhas", "coins", "Milhas"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["marketing", "image", "Marketing"], ["milhas", "coins", "Milhas"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
   ["rotas", "plane", "Rotas"], ["grupos", "users", "Grupos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
-  const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
+  const real = (location.hash || "#dashboard").slice(1).split("?")[0];
+  const pag = real === "criativos" ? "marketing" : real;
   const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 7 ? `<span class="sep"></span>` : "") +
+  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 6 ? `<span class="sep"></span>` : "") +
     `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
-  $("#tabs").innerHTML = PAGS.slice(0, 7).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
+  $("#tabs").innerHTML = PAGS.slice(0, 6).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
     [PAGS[2], PAGS[3]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
   $("#more").innerHTML = PAGS.slice(4).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
-  return pag;
+  return real;
+}
+function subMarketing(pag) {
+  return `<div class="subnav">${[["marketing", "calendar", "Calendário e ideias"], ["criativos", "image", "Criar arte"]].map(([k, i, n]) => `<a href="#${k}" class="pill ${pag === k ? "on" : ""}">${ic(i, "i sm")}${n}</a>`).join("")}</div>`;
 }
 function render() {
   const pag = navs();
   const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
-  $("#main").innerHTML = fn();
+  $("#main").innerHTML = (pag === "marketing" || pag === "criativos" ? subMarketing(pag) : "") + fn();
   window.scrollTo(0, 0);
 }
 window.addEventListener("hashchange", render);
@@ -709,6 +713,7 @@ function pAjustes() {
       <div class="form"><div class="field" style="grid-column:span 2"><label>Token do GitHub</label><input type="password" id="tok" placeholder="github_pat_…" value="${t ? "••••••••••••" + t.slice(-4) : ""}"></div>
       <div class="field"><button class="bt pri" data-act="salvartoken">Salvar e testar</button></div>
       ${t ? `<div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div></div>
+    ${integracoesHTML()}
     <div class="grid two">
       <div class="card"><h3>Texto dos alertas</h3><div class="desc">Vale para os próximos alertas e para o conversor.</div>
         <div class="form" style="grid-template-columns:1fr">
@@ -801,7 +806,7 @@ document.addEventListener("click", async e => {
       if (r.permissions && r.permissions.push) { toast("✓ Token funcionando — você já pode salvar e rodar o radar."); render(); }
       else toast("O token não tem permissão de escrita neste repositório.", 5000);
     }
-    else if (act === "sairtoken") { store("p085_token", ""); render(); }
+    else if (act === "sairtoken") { store("p085_token", ""); IG.lista = null; render(); }
     else if (act === "converter") { S.convIn = $("#conv-in").value; S.conv = extrair(S.convIn); render(); }
     else if (act === "convcopiar") { await copiar(convTextos(S.conv)[b.dataset.k || "grupo"]); toast("Copiado."); }
     else if (act === "convtipo") { S.conv.tipo = b.dataset.v; render(); }

@@ -1,6 +1,7 @@
 /* Radar Partiu085 — aba Milhas: 1) passagens em milhas saindo de FOR (principal)  2) promoções e transferências (de outros sites) */
 "use strict";
-const MI = { sec: "voos", f: "todas", ativas: true, aberto: "" };
+const MI = { sec: "voos", f: "todas", ativas: true, aberto: "", moeda: "", ordem: "ofertas", sel: "" };
+const MOEDAS = [["real", "Dinheiro (R$)"], ["Smiles", "Smiles"], ["Azul Fidelidade", "Azul"], ["LATAM Pass", "LATAM Pass"]];
 const MI_TIPOS = { bonus: "Bônus de transferência", compra: "Compra de milhas", passagem: "Passagem em milhas", clube: "Clube" };
 const milN = n => Math.round(+n || 0).toLocaleString("pt-BR");
 
@@ -80,31 +81,77 @@ function cardVoo(o) {
     <div class="quando"><span>Encontrado ${o.publicado.slice(0, 10) === hojeISO() ? "hoje" : dm(o.publicado)} às ${o.publicado.slice(11, 16)}</span></div>
   </article>`;
 }
-function secaoVoos() {
-  const V = S.mv, aj = S.ajustes || {};
+function cfgMilhasHTML() {
+  const aj = S.ajustes || {};
   const dest = (aj.milhas_destinos || ["SAO", "RIO", "BSB", "REC", "SSA", "LIS", "MIA", "ORL", "BUE", "SCL"]).join(", ");
-  const cfg = `<div class="form" style="margin-top:var(--space-4)">
+  return `<div class="form" style="margin-top:var(--space-4)">
       <div class="field" style="grid-column:1/-1"><label>Destinos vigiados em milhas</label><input data-mic="milhas_destinos" value="${esc(dest)}"><small>Códigos separados por vírgula. Menos destinos = gasta menos créditos.</small></div>
       <div class="field"><label>Consultas por rodada</label><input type="number" data-mic="milhas_buscas_por_rodada" value="${esc(aj.milhas_buscas_por_rodada || 4)}"><small>8 rodadas por dia</small></div>
       <div class="field"><label>Alertar quando</label><input type="number" step="0.05" data-mic="milhas_desconto" value="${esc(aj.milhas_desconto ?? 0.25)}"><small>0,25 = 25% abaixo do normal da rota</small></div>
       <div class="field"><button class="bt pri" data-act="misalvarcfg">${ic("save")}Salvar</button></div></div>`;
-  if (!V) return `<div class="card"><h3>Pronta pra ligar</h3><div class="desc">O robô consulta Smiles e Azul data por data, ida e volta, saindo de Fortaleza. Falta só a chave da GeckoAPI (teste grátis com 100 créditos).</div>
-      <ol class="mi-passos"><li>Crie a conta grátis em <a href="https://geckoapi.com.br" target="_blank" rel="noopener">geckoapi.com.br</a> e copie a sua chave de API.</li>
-      <li>No GitHub, abra <a href="https://github.com/${REPO}/settings/secrets/actions/new" target="_blank" rel="noopener">Settings → Secrets → New secret</a>, nome <b>GECKO_API_KEY</b>, e cole a chave.</li>
-      <li>Pronto: a busca roda junto com o radar a cada 3h e os alertas aparecem aqui.</li></ol>${cfg}</div>`;
-  const al = (S.mi.ofertas || []).filter(o => o.busca_propria && (!MI.ativas || o.ativa !== false));
-  const linhas = [];
-  Object.entries(V.rotas || {}).forEach(([k, ps]) => Object.entries(ps).forEach(([prog, r]) => { if (r.menor_ida || r.menor_volta) linhas.push({ k, prog, ida: r.menor_ida, volta: r.menor_volta, normal: r.normal_ida }); }));
-  linhas.sort((a, b) => ((a.ida || {}).milhas || 1e9) - ((b.ida || {}).milhas || 1e9));
-  const cel = x => x ? `${milN(x.milhas)} + ${brl(x.taxa)}<small>${dm(x.dia)}</small>` : "–";
-  const st = { ok: "funcionando", SEM_CREDITOS: "sem créditos na GeckoAPI", CHAVE_INVALIDA: "chave inválida" }[V.status] || V.status;
-  return `<div class="alertas">${al.map(cardVoo).join("") || `<div class="card vazio">Nenhum alerta em milhas ainda. Eles aparecem quando a ida fica bem abaixo do normal da rota.</div>`}</div>
-    <div class="card" style="margin-top:var(--space-4)">
-    <div class="card-h"><div><h3>Menores valores por destino</h3><div class="desc">${esc(st)} · ${V.consultas_hoje || 0} consultas hoje · atualizado ${haQuanto(V.atualizado)}</div></div></div>
-    <div class="tbl-wrap"><table class="mi-tab"><thead><tr><th>Destino</th><th>Programa</th><th class="num">Ida (milhas + taxas)</th><th class="num">Volta (milhas + taxas)</th></tr></thead><tbody>
-    ${linhas.map(l => `<tr><td><b>${esc((S.rotas.find(r => r.iata === l.k) || {}).nome || IATA[l.k] || l.k)}</b></td><td>${esc(l.prog)}</td><td class="num">${cel(l.ida)}</td><td class="num">${cel(l.volta)}</td></tr>`).join("") || `<tr><td colspan="4" class="vazio">As primeiras consultas aparecem aqui depois da próxima rodada.</td></tr>`}
-    </tbody></table></div>
-    <details style="margin-top:var(--space-4)"><summary class="sub" style="cursor:pointer">Configurar a busca</summary>${cfg}</details></div>`;
+}
+const milK = n => n >= 1000 ? (n / 1000).toFixed(n % 1000 ? 1 : 0).replace(".", ",") + "k" : String(n);
+function calMilhas(r, nome, prog) {
+  const lista = sentido => Object.entries((r || {})[sentido] || {}).filter(([, v]) => !v.sem).map(([dia, v]) => ({ dia, ...v })).sort((a, b) => a.dia.localeCompare(b.dia));
+  const faixa = (L, titulo) => {
+    if (!L.length) return `<div class="cal-b"><div class="cal-t">${titulo}</div><div class="sub">Ainda sem datas consultadas.</div></div>`;
+    const ps = L.map(d => d.milhas), lo = Math.min(...ps), hi = Math.max(...ps), meses = {};
+    L.forEach(d => (meses[d.dia.slice(0, 7)] = meses[d.dia.slice(0, 7)] || []).push(d));
+    return `<div class="cal-b"><div class="cal-t">${titulo} <span class="sub">menor ${milN(lo)} · maior ${milN(hi)} milhas</span></div>
+      ${Object.entries(meses).map(([m, ds]) => `<div class="cal-m"><b>${MESES[+m.slice(5, 7) - 1]} ${m.slice(0, 4)}</b><div class="cal-g">${ds.map(d => {
+        const t = hi > lo ? (d.milhas - lo) / (hi - lo) : 0, cls = d.milhas <= lo * 1.05 ? "c-top" : t < .33 ? "c-bom" : t < .66 ? "c-med" : "c-caro";
+        return `<span class="cal-d ${cls}" data-tip="${dmy(d.dia)} · ${milN(d.milhas)} milhas + ${brl(d.taxa)}${d.cia ? " · " + esc(d.cia) : ""}${d.paradas === 0 ? " · direto" : d.paradas ? ` · ${d.paradas} parada${d.paradas > 1 ? "s" : ""}` : ""}"><i>${d.dia.slice(8, 10)}</i><small>${milK(d.milhas)}</small></span>`;
+      }).join("")}</div></div>`).join("")}</div>`;
+  };
+  return `<div class="cal-leg"><span><i class="c-top"></i>mais barato</span><span><i class="c-bom"></i>bom</span><span><i class="c-med"></i>médio</span><span><i class="c-caro"></i>caro</span><span class="sub">Milhas por trecho, ${esc(prog)} · + taxas (passe o dedo/mouse no dia)</span></div>
+    <div class="cal-2">${faixa(lista("ida"), "Ida · Fortaleza → " + esc(nome))}${faixa(lista("volta"), "Volta · " + esc(nome) + " → Fortaleza")}</div>`;
+}
+function linhasDestinos(moeda) {
+  const V = S.mv || { rotas: {} };
+  if (moeda === "real") return destinosStatus().map(x => ({ ...x, real: true }));
+  const ks = new Set([...Object.keys(V.rotas || {}), ...((S.ajustes || {}).milhas_destinos || ["SAO", "RIO", "BSB", "REC", "SSA", "LIS", "MIA", "ORL", "BUE", "SCL"])]);
+  return [...ks].map(k => {
+    const r = ((V.rotas || {})[k] || {})[moeda] || null, ida = r && r.menor_ida, volta = r && r.menor_volta;
+    const nome = (S.rotas.find(x => x.iata === k) || {}).nome || IATA[k] || k;
+    return { k, nome, r, ida, volta, menor: ida ? ida.milhas : null, d: ida && r.normal_ida ? 1 - ida.milhas / r.normal_ida : 0, normal: r && r.normal_ida, tipo: INTL.has(k) ? "internacional" : "nacional" };
+  });
+}
+function secaoVoos() {
+  const V = S.mv;
+  if (!MI.moeda) MI.moeda = V && Object.keys(V.rotas || {}).length ? "Smiles" : "real";
+  const moeda = MI.moeda, real = moeda === "real";
+  let L = linhasDestinos(moeda);
+  const ord = { ofertas: (a, b) => (b.d || 0) - (a.d || 0) || (a.menor || 1e12) - (b.menor || 1e12), preco: (a, b) => (a.menor || 1e12) - (b.menor || 1e12), az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR") }[MI.ordem];
+  L.sort(ord);
+  const alertas = real ? [] : (S.mi.ofertas || []).filter(o => o.busca_propria && o.para === moeda && (!MI.ativas || o.ativa !== false));
+  const sites = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.fortaleza && (!MI.ativas || o.ativa !== false));
+  let aviso = "";
+  if (!real && moeda === "LATAM Pass") aviso = `<div class="aviso warn"><span>${ic("key")} Ainda não temos fornecedor para LATAM Pass. Quando tiver, coloque a chave em Ajustes › Integrações (espaço “Outra API de milhas”).</span><a class="bt sm" href="#ajustes">Abrir Integrações</a></div>`;
+  else if (!real && !V) aviso = `<div class="aviso warn"><span>${ic("key")} A busca em milhas está pronta, falta só a chave da GeckoAPI (teste grátis).</span><a class="bt sm" href="#ajustes">Colocar a chave</a></div>`;
+  else if (!real && V && V.status && V.status !== "ok") aviso = `<div class="aviso warn"><span>${ic("key")} ${{ SEM_CREDITOS: "Os créditos da GeckoAPI acabaram.", CHAVE_INVALIDA: "A chave da GeckoAPI não funcionou." }[V.status] || esc(V.status)}</span><a class="bt sm" href="#ajustes">Ver Integrações</a></div>`;
+  const linha = x => {
+    const aberto = MI.sel === x.k;
+    const preco = x.real ? `<b>${brl(x.menor)}</b><small>ida a partir de · média ${brl(x.mediana)}</small>`
+      : x.ida ? `<b>${milN(x.ida.milhas)} milhas</b><small>+ ${brl(x.ida.taxa)} · ida em ${dm(x.ida.dia)}</small>` : `<b class="sub">—</b><small>sem dados em milhas ainda</small>`;
+    const extra = x.real ? `${x.melhor_mes ? `melhor mês: ${MESES[+x.melhor_mes.slice(5, 7) - 1]}` : ""}${x.menor_volta ? ` · volta desde ${brl(x.menor_volta)}` : ""} · ${haQuanto(x.quando)}`
+      : x.volta ? `volta desde ${milN(x.volta.milhas)} milhas + ${brl(x.volta.taxa)}` : "";
+    return `<article class="dest ${aberto ? "aberto" : ""}" id="mcal-${x.k}">
+      <button class="dest-h" data-act="miabrir" data-iata="${x.k}" aria-expanded="${aberto}">
+        <span class="dest-n"><span class="micro">${ORIGEM} → ${x.k} · ${x.tipo === "internacional" ? "Internacional" : "Nacional"}</span><b>${esc(x.nome)}</b></span>
+        <span class="dest-p">${preco}</span>
+        ${x.d > 0 ? `<span class="badge ${x.d >= .2 ? "pos" : ""}">−${pct(x.d)} ↘</span>` : `<span></span>`}
+        <span class="dest-x sub">${extra}</span>
+      </button>
+      ${aberto ? `<div class="dest-c">${x.real ? calHTML(S.cal[x.k], x) : calMilhas(x.r, x.nome, moeda)}</div>` : ""}
+    </article>`;
+  };
+  return `<div class="ordbar">${pills("mim", moeda, MOEDAS)}<span class="ord-l">Ordenar</span>${pills("mio", MI.ordem, [["ofertas", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"]])}</div>
+    ${aviso}
+    ${alertas.length ? `<div class="head" style="margin:8px 0 12px"><div><h1 style="font-size:18px">Alertas em milhas · ${esc(moeda)}</h1></div></div><div class="alertas">${alertas.map(cardVoo).join("")}</div>` : ""}
+    <div class="head" style="margin:20px 0 12px"><div><h1 style="font-size:18px">${real ? "Saindo de Fortaleza · em dinheiro" : `Saindo de Fortaleza · ${esc(moeda)}`}</h1><p>${real ? "Os mesmos dados do radar. Toque no destino para ver o calendário." : "Toque no destino para ver o calendário em milhas, ida e volta."}</p></div></div>
+    ${L.length ? `<div class="dests">${L.map(linha).join("")}</div>` : `<div class="card vazio">Sem destinos ainda.</div>`}
+    ${!real && V ? `<details class="card" style="margin-top:var(--space-4)"><summary class="sub" style="cursor:pointer">Configurar a busca em milhas · ${esc({ ok: "funcionando" }[V.status] || V.status || "")} · ${V.consultas_hoje || 0} consultas hoje · ${haQuanto(V.atualizado)}</summary>${cfgMilhasHTML()}</details>` : ""}
+    ${sites.length ? `<div class="head" style="margin:28px 0 12px"><div><h1 style="font-size:18px">Vistos nos sites de milhas · saindo de Fortaleza</h1><p>Achados de outros sites, pra conferir e repassar</p></div></div><div class="alertas">${sites.map(cardMilha).join("")}</div>` : ""}`;
 }
 
 /* ---------------- separado: promoções e transferências (lidas de outros sites) */
@@ -129,7 +176,7 @@ function pMilhas() {
   const nProm = (S.mi.ofertas || []).filter(o => !o.busca_propria && o.ativa !== false).length;
   return head("Milhas", "Passagens em milhas saindo de Fortaleza e, separado, as promoções e transferências",
     `<button class="bt" data-act="miatualizar">${ic("refresh")}Atualizar promoções</button>`) +
-    `<div class="filtros-l">${pills("mis", MI.sec, [["voos", `Passagens em milhas${nVoos ? ` · ${nVoos}` : ""}`], ["promos", `Promoções e transferências${nProm ? ` · ${nProm}` : ""}`]])}
+    `<div class="filtros-l">${pills("mis", MI.sec, [["voos", `Passagens saindo de FOR${nVoos ? ` · ${nVoos}` : ""}`], ["promos", `Promoções e transferências${nProm ? ` · ${nProm}` : ""}`]])}
       <label class="chk"><input type="checkbox" data-mi-ativas ${MI.ativas ? "checked" : ""}> Só o que ainda vale</label></div>
     ${MI.sec === "voos" ? secaoVoos() : secaoPromos()}`;
 }
@@ -156,6 +203,11 @@ document.addEventListener("click", async e => {
       toast("Lendo as promoções de milhas… atualiza em ~2 min.", 4000);
       setTimeout(async () => { S.mi = null; carregarMilhas(); }, 150000);
     }
+    else if (act === "miabrir") {
+      MI.sel = MI.sel === b.dataset.iata ? "" : b.dataset.iata;
+      if (MI.sel && MI.moeda === "real") await carregarCal(MI.sel);
+      render(); setTimeout(() => { const el = document.getElementById("mcal-" + MI.sel); if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50);
+    }
     else if (act === "misalvarcfg") {
       const v = k => ($(`[data-mic="${k}"]`) || {}).value;
       S.ajustes.milhas_destinos = String(v("milhas_destinos") || "").toUpperCase().split(/[\s,;]+/).filter(x => /^[A-Z]{3}$/.test(x));
@@ -166,4 +218,5 @@ document.addEventListener("click", async e => {
   } catch (err) { toast("Erro: " + err.message, 5000); b.disabled = false; }
 });
 document.addEventListener("input", e => { if (e.target.dataset.miAtivas !== undefined) { MI.ativas = e.target.checked; render(); } });
-document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="mi"]'); if (b) { if (b.dataset.g === "mis") MI.sec = b.dataset.v; else MI.f = b.dataset.v; } }, true);
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="mi"]'); if (!b) return; const g = b.dataset.g, v = b.dataset.v;
+  if (g === "mis") MI.sec = v; else if (g === "mim") { MI.moeda = v; MI.sel = ""; } else if (g === "mio") MI.ordem = v; else MI.f = v; }, true);

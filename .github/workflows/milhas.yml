@@ -41,6 +41,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_MILHAS: ${{ secrets.TELEGRAM_CHAT_MILHAS }}
           GECKO_API_KEY: ${{ secrets.GECKO_API_KEY }}
+          SEATS_AERO_KEY: ${{ secrets.SEATS_AERO_KEY }}
+          MILHAS_API_KEY: ${{ secrets.MILHAS_API_KEY }}
         run: |
           python engine/milhas.py
           python engine/milhas_busca.py

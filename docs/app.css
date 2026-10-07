@@ -475,3 +475,17 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 .mi-res.vazio{color:var(--text-tertiary)}
 .mi-passos{margin:var(--space-3) 0 0 var(--space-5);display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.5}.mi-passos a{color:inherit;text-decoration:underline}
 .mi-tab td.num small{display:block;font-size:11px;color:var(--text-tertiary)}
+.subnav{display:inline-flex;gap:4px;padding:4px;border-radius:var(--radius-pill);background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line);margin-bottom:var(--space-5)}
+.subnav .pill{display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.ig-g{display:flex;flex-direction:column;gap:8px;margin-top:var(--space-4)}
+.ig-g .micro{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary)}
+.ig-item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:var(--space-3);align-items:center;padding:var(--space-4);border-radius:var(--radius-inner);background:var(--tile)}
+.ig-item.on{box-shadow:inset 3px 0 0 var(--positive-text)}
+.ig-t{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.ig-t b{font-size:14px;font-weight:600}
+.ig-t small{flex-basis:100%;font-size:12px;color:var(--text-tertiary);line-height:1.4}
+.ig-t small a{color:inherit}
+.ig-t code{font-size:11px;color:var(--text-tertiary)}
+.ig-f{display:flex;gap:6px;align-items:center}
+.ig-f input{flex:1;min-width:0;height:36px;border-radius:var(--radius-pill);border:0;padding:0 14px;background:var(--glass);box-shadow:inset 0 0 0 1px var(--glass-line);color:inherit;font:inherit;font-size:13px}
+@media (max-width:760px){.ig-item{grid-template-columns:1fr}.ig-f{flex-wrap:wrap}}

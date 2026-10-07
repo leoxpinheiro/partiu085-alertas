@@ -240,6 +240,7 @@ def montar_texto(a: dict, aj: dict) -> str:
         f"✈️ {C.ORIGEM_NOME} ({C.ORIGEM}) → {a['destino_nome']} ({a['destino']})",
         f"💰 A partir de *{brl(a['preco'])}* o trecho",
         f"{a['classe_txt']} · {round(a['desconto'] * 100)}% abaixo da média",
+        *([f"📉 Menor preço que já vimos nesse trecho ({a['base']['dias']} dias de pesquisa)"] if a.get("recorde") else []),
         f"🛫 {a['cia_nome'] or '—'} · {paradas}",
     ]
     if a.get("vip"):
@@ -409,6 +410,9 @@ def rodada() -> None:
         no_alvo = vip and alvo > 0 and m_ida["preco"] <= alvo
         if desc < limiar and not no_alvo:
             continue
+        if r["tipo"] == "internacional" and (m_ida.get("escalas") or 0) >= 2 and desc < float(aj.get("desconto_2paradas", 0.30)) and not no_alvo:
+            log(f"  2 paradas e só {desc:.0%} abaixo — sem alerta (filtro de qualidade)")
+            continue
         candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
 
@@ -468,6 +472,11 @@ def rodada() -> None:
             "link_google": google_link(C.ORIGEM, r["iata"], mi["dia"]),
             "link_compra": link_aviasales(r["iata"], mi["dia"], mv["dia"]),
         }
+        passado = [h for h in hist.get(f"{C.ORIGEM}-{r['iata']}", []) if h["dia"] < agora().date().isoformat()]
+        if passado:
+            menor_visto = min(h["minimo"] for h in passado)
+            a["base"] = {"dias": len(passado), "menor_visto": round(menor_visto)}
+            a["recorde"] = len(passado) >= 3 and a["preco"] <= menor_visto
         a["texto"] = montar_texto(a, aj)
         a["telegram"] = postar_telegram(a["texto"], aj)
         novos.append(a)

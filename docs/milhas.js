@@ -34,7 +34,7 @@ function cardMilha(o) {
     : [o.de, o.para].filter(Boolean).join(" → ") || (o.programas || []).slice(0, 2).join(" · ") || "Milhas";
   const big = o.tipo === "passagem" && o.milhas ? `${milN(o.milhas)}<small>milhas</small>` : o.pct ? `${o.pct}%<small>${o.tipo === "bonus" ? "de bônus" : "de vantagem"}</small>` : `<small>${MI_TIPOS[o.tipo]}</small>`;
   return `<article class="mi ${o.tipo} ${env ? "enviado" : ""} ${o.ativa === false ? "vencida" : ""}" data-id="${esc(o.id)}">
-    ${env ? `<div class="env-faixa">${ic("check", "i sm")}Enviado no grupo · ${new Date(S.marcados[o.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
+    ${env ? `<div class="env-faixa">${ic("check", "i sm")}${S.marcados[o.id] === "descartado" ? "Tirado da fila (não enviado)" : "Enviado no grupo · " + new Date(S.marcados[o.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top"><div><div class="rt">${MI_TIPOS[o.tipo] || o.tipo}</div><div class="ds">${esc(par)}</div></div><div class="preco mi-big">${big}</div></div>
     <p class="mi-tit">${esc(o.titulo)}</p>
     <div class="tags">
@@ -61,7 +61,7 @@ function cardVoo(o) {
   const env = enviado(o), k = o.desconto >= .4 ? "imperdivel" : o.desconto >= .3 ? "otima" : "boa";
   const ktxt = { imperdivel: "Imperdível", otima: "Ótima", boa: "Boa" }[k];
   return `<article class="al ${k} ${env ? "enviado" : ""}" data-id="${esc(o.id)}">
-    ${env ? `<div class="env-faixa">${ic("check", "i sm")}Enviado no grupo · ${new Date(S.marcados[o.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
+    ${env ? `<div class="env-faixa">${ic("check", "i sm")}${S.marcados[o.id] === "descartado" ? "Tirado da fila (não enviado)" : "Enviado no grupo · " + new Date(S.marcados[o.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top">
       <div><div class="rt">FOR → ${esc(o.aeroporto || o.iata || "")} · ${esc(o.para || "")}</div><div class="ds">${esc(o.destino || "")}</div></div>
       <div class="preco">${milN(o.milhas)} milhas<small>+ ${brl(o.taxa)} de taxas · o trecho</small></div>

@@ -116,12 +116,13 @@ async function checarRodando() {
 /* ------------------------------------------------------------ marcados como enviados */
 let _salvarMarc;
 function marcar(id, valor = true) {
-  if (valor) S.marcados[id] = new Date().toISOString(); else S.marcados[id] = null;
+  if (valor === "descartado") S.marcados[id] = "descartado"; else if (valor) S.marcados[id] = new Date().toISOString(); else S.marcados[id] = null;
   try { localStorage.setItem("p085_marcados", JSON.stringify(S.marcados)); } catch (e) { }
   const card = document.querySelector(`article.al[data-id="${CSS.escape(id)}"]`);
   if (card && !card.closest(".al-row")) card.outerHTML = cardAlerta(S.alertas.find(a => a.id === id), card.dataset.compacto === "1");
   const row = document.querySelector(`article.al-row[data-id="${CSS.escape(id)}"]`);
-  if (row) row.outerHTML = linhaAlerta(S.alertas.find(a => a.id === id));
+  const al = S.alertas.find(a => a.id === id);
+  if (row && al) row.outerHTML = linhaAlerta(al);
   clearTimeout(_salvarMarc);
   if (token()) _salvarMarc = setTimeout(async () => {
     const limpo = Object.fromEntries(Object.entries(S.marcados).filter(([, v]) => v));
@@ -156,7 +157,7 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const MENU = [
-  ["", [["dashboard", "grid", "Início"]]],
+  ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
   ["Divulgação", [["marketing", "calendar", "Calendário de posts"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
@@ -165,6 +166,7 @@ const MENU = [
 const PAGS = MENU.flatMap(g => g[1]);
 function contadorMenu(k) {
   const h = hojeISO();
+  if (k === "enviar") return typeof filaModoEnvio === "function" ? filaModoEnvio().length : 0;
   if (k === "alertas") return S.alertas.filter(a => a.criado.slice(0, 10) === h && !enviado(a)).length;
   if (k === "milhas") return S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => o.busca_propria && o.ativa !== false && !enviado(o)).length : 0;
   if (k === "promocoes") return S.mi && !S.mi.carregando ? (S.mi.ofertas || []).filter(o => !o.busca_propria && o.ativa !== false && !enviado(o)).length : 0;
@@ -187,7 +189,7 @@ function navs() {
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
@@ -197,7 +199,12 @@ function render() {
 window.addEventListener("hashchange", render);
 
 /* ------------------------------------------------------------ componentes */
-function head(t, p, acts = "") { return `<div class="head"><div><h1>${t}</h1><p>${p}</p></div><div class="acts">${acts}</div></div>`; }
+function avisoConta() {
+  if (!token()) return `<div class="aviso warn conta">${ic("key")}<span>Este aparelho não está conectado: o que você marcar como enviado fica só aqui e não aparece no celular/computador. </span><a class="bt sm" href="#ajustes">Conectar</a></div>`;
+  if (S.tokenVence != null && S.tokenVence <= 10) return `<div class="aviso warn conta">${ic("key")}<span>Seu token do GitHub vence em ${S.tokenVence} dia${S.tokenVence === 1 ? "" : "s"}. Depois disso o painel para de salvar (o radar continua rodando). Gere um novo e cole em Ajustes.</span><a class="bt sm" href="#ajustes">Ajustes</a></div>`;
+  return "";
+}
+function head(t, p, acts = "") { return avisoConta() + `<div class="head"><div><h1>${t}</h1><p>${p}</p></div><div class="acts">${acts}</div></div>`; }
 function pills(grupo, atual, opcoes) {
   return `<div class="pills" role="group">${opcoes.map(([v, t]) => `<button class="pill ${atual === v ? "on" : ""}" data-act="pill" data-g="${grupo}" data-v="${v}">${t}</button>`).join("")}</div>`;
 }
@@ -233,16 +240,18 @@ function linhaAlerta(a) {
   const k = a.classe || "boa", env = enviado(a), aberto = S.alAberto === a.id, trecho = a.modo === "trecho";
   const ida = trecho ? resumoDatas(a.ida_meses) : (a.datas || []).slice(0, 4).map(d => dm(d.ida)).join(", ");
   const volta = trecho ? resumoDatas(a.volta_meses, 4) : "";
-  return `<article class="al-row ${k} ${env ? "enviado" : ""} ${aberto ? "aberto" : ""}" data-id="${esc(a.id)}">
+  const subiu = a.conferido && a.conferido.status === "subiu";
+  return `<article class="al-row ${k} ${env ? "enviado" : ""} ${subiu ? "subiu" : ""} ${aberto ? "aberto" : ""}" data-id="${esc(a.id)}">
     <div class="alr">
       <button class="alr-dest" data-act="alabrir" data-id="${esc(a.id)}" title="Ver detalhes"><span class="rt">FOR → ${esc(a.destino)}${a.vip ? " · ⭐ VIP" : ""}</span><b>${esc(a.destino_nome)}</b></button>
       <div class="alr-preco"><b>${brl(a.preco)}</b><small>${trecho ? "o trecho" : "ida e volta"} · média ${brl(a.preco_tipico)}</small></div>
       <span class="tag ${k}">−${pct(a.desconto)}</span>
-      <div class="alr-info"><span>${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
+      <div class="alr-info"><span>${a.conferido && a.conferido.status === "subiu" ? `<b class="neg">subiu p/ ${brl(a.conferido.preco)}</b> · ` : a.conferido && a.conferido.status === "valendo" ? `<b class="pos">✓ ainda valendo</b> · ` : ""}${a.recorde ? "📉 menor já visto · " : ""}${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
       <div class="alr-acts">
         <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}" title="Copiar texto">${ic("copy")}<span>Copiar</span></button>
         <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(a.id)}" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}" title="WhatsApp">${ic("send")}</a>
-        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? "Enviado" : "Enviar"}</span></button>
+        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? (S.marcados[a.id] === "descartado" ? "Descartado" : "Enviado") : "Enviar"}</span></button>
+        ${(Date.now() - new Date(a.criado).getTime()) > 6 * 36e5 && !env ? `<button class="bt sm ghost" data-act="buscarrota" data-iata="${esc(a.destino)}" title="Buscar o preço de novo agora">${ic("refresh")}</button>` : ""}
         <button class="bt sm ghost alr-x" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">${aberto ? "▴" : "▾"}</button>
       </div>
     </div>
@@ -259,7 +268,7 @@ function cardAlerta(a, compacto = false) {
     : `<div class="datas">${(a.opcoes && a.opcoes.length ? a.opcoes : (a.datas || [])).slice(0, compacto ? 4 : 10).map(d => `<span class="${d.ida === a.ida ? "main" : ""}">${dm(d.ida)} → ${dm(d.volta)}</span>`).join("")}</div>`;
   const env = enviado(a);
   return `<article class="al ${k} ${env ? "enviado" : ""}" data-id="${esc(a.id)}" data-compacto="${compacto ? 1 : 0}">
-    ${env ? `<div class="env-faixa">${ic("check", "i sm")}Enviado no grupo · ${new Date(S.marcados[a.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
+    ${env ? `<div class="env-faixa">${ic("check", "i sm")}${S.marcados[a.id] === "descartado" ? "Tirado da fila (não enviado)" : "Enviado no grupo · " + new Date(S.marcados[a.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top">
       <div><div class="rt">${ORIGEM} → ${esc(a.destino)} · ${a.tipo === "internacional" ? "INTERNACIONAL" : "NACIONAL"}</div><div class="ds">${esc(a.destino_nome)}</div></div>
       <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}média ${brl(a.preco_tipico)}</small></div>
@@ -288,7 +297,7 @@ function cardAlerta(a, compacto = false) {
 /* ------------------------------------------------------------ Dashboard */
 function filaEnvio() {
   const lim = diaMenos(hojeISO(), 1);
-  const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a)).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
+  const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a) && !(a.conferido && a.conferido.status === "subiu")).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
     ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${brl(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
@@ -311,7 +320,7 @@ function pDash() {
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
   return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) +
     `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
-    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). O envio é feito na página de cada tipo, onde você vê o texto completo antes de copiar.</div></div></div>
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). Alertas cujo preço já subiu ficam de fora.</div></div><a class="bt pri" href="#enviar">${ic("send")}Abrir Modo envio</a></div>
       <div class="falta">${[["dinheiro", "Alertas em dinheiro", "#16A34A", "#alertas"], ["milhas", "Alertas em milhas", "#FF7A00", "#milhas"], ["promo", "Promoções de milhas", "#8B5CF6", "#promocoes"]].map(([t, n, cor, href]) => {
         const L = fila.filter(f => f.tipo === t);
         return `<a class="falta-i" href="${href}" style="--c:${cor}"><b>${L.length}</b><span class="falta-t"><strong>${n}</strong><small>${L.length ? esc(L.slice(0, 4).map(f => f.t).join(" · ")) + (L.length > 4 ? ` e mais ${L.length - 4}` : "") : "tudo enviado ✓"}</small></span><span class="bt sm ${L.length ? "pri" : "ghost"}">${L.length ? "Abrir e enviar" : "Abrir"}</span></a>`; }).join("")}</div>
@@ -761,6 +770,7 @@ function pAjustes() {
           ${num("tolerancia_datas", "Datas listadas até", "0,10 = até 10% acima do menor preço", 0.01)}
           ${num("max_escalas_nacional", "Paradas máx. (nacional)", "0 = só direto")}
           ${num("max_escalas_internacional", "Paradas máx. (internac.)", "")}
+          ${num("desconto_2paradas", "Internacional c/ 2 paradas", "só alerta se ≥ este desconto (0,30 = 30%)", 0.01)}
           ${num("dias_sem_repetir", "Não repetir por (dias)", "mesma rota e preço")}
         </div></div>
     </div>
@@ -785,7 +795,7 @@ document.addEventListener("click", async e => {
     if (act === "menu") { document.body.classList.toggle("menu-aberto"); return; }
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
     else if (act === "marcar") { marcar(b.dataset.id, !enviado(A(b.dataset.id))); }
-    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast("Copiado e marcado como enviado. Toque em “Enviado” para desfazer."); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
+    else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast(`Copiado: ${A(b.dataset.id).destino_nome} · ${brl(A(b.dataset.id).preco)} — marcado como enviado.`, 3500); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
     else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }
@@ -901,5 +911,6 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
 /* ------------------------------------------------------------ início */
 (async () => {
   await carregar(); render(); checarRodando();
+  if (token()) fetch(API, { headers: { Authorization: "Bearer " + token() } }).then(r => { const h = r.headers.get("github-authentication-token-expiration"); if (h) { S.tokenVence = Math.floor((new Date(h.replace(" UTC", "Z").replace(" ", "T")) - Date.now()) / 864e5); if (S.tokenVence <= 10) render(); } }).catch(() => { });
   setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas/.test(location.hash)) render(); } }, 120000);
 })();

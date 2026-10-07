@@ -10,6 +10,7 @@ const S = {
   rotasSujo: false, ajustesSujo: false,
   F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "" },
   marcados: {},
+  R: { ordem: "az", tipo: "" }, D: { ordem: "ofertas", tipo: "", q: "", sel: "" }, dashOrd: "ofertas", cal: {},
   histRota: "", conv: null,
 };
 
@@ -95,6 +96,11 @@ async function rodarRadar(rotas = "") {
   toast(rotas ? `Buscando ${rotas} agora… os alertas aparecem em ~3 min.` : "Rodada completa iniciada… leva ~10 min.", 4200);
   setTimeout(checarRodando, 4000);
 }
+async function rodarTurbo() {
+  if (!token()) { toast("Configure o token do GitHub em Ajustes primeiro."); location.hash = "#ajustes"; return; }
+  await gh("/actions/workflows/varredura.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { robos: "8" } }) });
+  toast("Varredura turbo iniciada: 8 robôs varrendo todas as rotas (~25 min). Não gera alertas, monta a base de preços.", 6000);
+}
 async function checarRodando() {
   try {
     const r = await fetch(API + "/actions/runs?per_page=3", { headers: { Accept: "application/vnd.github+json" } }).then(r => r.json());
@@ -143,24 +149,24 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["rotas", "plane", "Rotas"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["destinos", "globe", "Destinos"], ["rotas", "plane", "Rotas"],
   ["historico", "chart", "Histórico"], ["criativos", "image", "Criativos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
   const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 4 ? `<span class="sep"></span>` : "") +
+  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 5 ? `<span class="sep"></span>` : "") +
     `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
-  $("#tabs").innerHTML = PAGS.slice(0, 4).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
+  $("#tabs").innerHTML = PAGS.slice(0, 5).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
-    [PAGS[2], PAGS[6]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
+    [PAGS[2], PAGS[7]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
   $("#more").innerHTML = PAGS.slice(3).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
   return pag;
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
@@ -169,6 +175,18 @@ window.addEventListener("hashchange", render);
 
 /* ------------------------------------------------------------ componentes */
 function head(t, p, acts = "") { return `<div class="head"><div><h1>${t}</h1><p>${p}</p></div><div class="acts">${acts}</div></div>`; }
+function pills(grupo, atual, opcoes) {
+  return `<div class="pills" role="group">${opcoes.map(([v, t]) => `<button class="pill ${atual === v ? "on" : ""}" data-act="pill" data-g="${grupo}" data-v="${v}">${t}</button>`).join("")}</div>`;
+}
+const ORDENS_DEST = [["ofertas", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"]];
+function ordenarDest(lista, ordem) {
+  const f = { ofertas: (a, b) => b.d - a.d, preco: (a, b) => a.menor - b.menor, az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR"), recente: (a, b) => (b.quando || "").localeCompare(a.quando || "") }[ordem] || ((a, b) => b.d - a.d);
+  return lista.slice().sort(f);
+}
+function destinosStatus() {
+  return Object.entries(S.status.rotas || {}).filter(([, v]) => v.menor && v.mediana)
+    .map(([k, v]) => { const r = S.rotas.find(x => x.iata === k) || {}; return { k, ...v, d: 1 - v.menor / v.mediana, nome: r.nome || v.nome || IATA[k] || k, tipo: r.tipo || v.tipo || (INTL.has(k) ? "internacional" : "nacional"), foco: !!r.foco }; });
+}
 function statusPill() { return `<span class="status" id="pulse"><span class="dot"></span>Última varredura ${haQuanto(S.ultima)} · roda a cada 3h</span>`; }
 function kpi(lbl, num, sub = "", acc = false, icone = "bell") { return `<div class="card kpi ${acc ? "lime" : ""}"><div class="kpi-h"><span>${lbl}</span><span class="kpi-ic">${ic(icone)}</span></div><div class="num">${num}</div><div class="sub">${sub}</div></div>`; }
 function hbars(pares, vazio = "Sem dados ainda") {
@@ -201,6 +219,7 @@ function cardAlerta(a, compacto = false) {
       <span class="tag ${k}">${ktxt} · −${pct(a.desconto)} ↘</span>
       <span class="tag">${esc(nomeCia(a.cia_nome))}</span><span class="tag">${paradasTxt(a.escalas)}</span>
       ${a.telegram ? `<span class="tag">${ic("check", "i sm")}Telegram</span>` : ""}
+      ${a.conferido ? (a.conferido.status === "valendo" ? `<span class="tag ok-t">${ic("check", "i sm")}Ainda valendo · conferido ${haQuanto(a.conferido.quando)}</span>` : `<span class="tag neg-t">Subiu para ${brl(a.conferido.preco)} · ${haQuanto(a.conferido.quando)}</span>`) : ""}
     </div>
     ${corpo}
     <div class="al-acts">
@@ -229,9 +248,7 @@ function pDash() {
   const bateu = dias.filter(d => cont[d] >= META_DIA).length;
   const cols = `<div class="meta" style="bottom:${(META_DIA / max) * H + 30}px"><span>meta ${META_DIA}</span></div>` +
     dias.map((d, i) => `<div class="col ${i === 13 ? "sel" : ""} ${cont[d] >= META_DIA ? "hit" : ""}" data-tip="${dmy(d)}: ${cont[d]} alerta${cont[d] === 1 ? "" : "s"}"><span class="v">${cont[d] || ""}</span><span class="bar ${cont[d] ? "" : "ghost"}" style="height:${Math.max(6, (cont[d] / max) * H)}px"></span><span class="d">${d.slice(8, 10)}</span></div>`).join("");
-  const precos = Object.entries(S.status.rotas || {}).filter(([, v]) => v.menor && v.mediana)
-    .map(([k, v]) => ({ k, ...v, d: 1 - v.menor / v.mediana, nome: (S.rotas.find(r => r.iata === k) || {}).nome || IATA[k] || k }))
-    .sort((a, b) => b.d - a.d).slice(0, 8);
+  const precos = ordenarDest(destinosStatus(), S.dashOrd).slice(0, 8);
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   return head("Dashboard", "O que o radar encontrou saindo de Fortaleza", statusPill()) +
     `<div class="grid kpis">
@@ -246,7 +263,7 @@ function pDash() {
       </div>
       <div class="card"><div class="card-h"><div><h3>Por companhia</h3><div class="desc">Alertas dos últimos 30 dias</div></div></div>${hbars(contar(a30, a => a.cia_nome).slice(0, 6))}</div>
     </div>
-    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Onde está mais barato agora</h3><div class="desc">Menor preço da última varredura vs. média da rota</div></div><a class="bt sm" href="#rotas">Ver rotas</a></div>
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Onde está mais barato agora</h3><div class="desc">Menor preço da última varredura vs. média da rota</div></div><div class="acts">${pills("dash", S.dashOrd, ORDENS_DEST)}<a class="bt sm" href="#destinos">Ver todos os destinos</a></div></div>
       ${precos.length ? `<div class="tbl-wrap"><table class="tiles"><thead><tr><th>Destino</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Abaixo da média</th><th class="num">Varrida</th></tr></thead><tbody>
       ${precos.map(p => `<tr><td data-l="Destino"><span><span class="iata">${p.k}</span> <span class="sub">${esc(p.nome)}</span></span></td><td class="num" data-l="Menor">${brl(p.menor)}</td><td class="num" data-l="Média">${brl(p.mediana)}</td><td class="num" data-l="Abaixo"><span class="badge ${p.d >= .2 ? "pos" : ""}">−${pct(p.d)} ↘</span></td><td class="num sub" data-l="Varrida">${haQuanto(p.quando)}</td></tr>`).join("")}
       </tbody></table></div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
@@ -273,7 +290,7 @@ function filtrar() {
     if (F.env === "sim" && !enviado(a)) return false;
     return true;
   });
-  const ord = { recentes: (x, y) => y.criado.localeCompare(x.criado), preco: (x, y) => x.preco - y.preco, desconto: (x, y) => y.desconto - x.desconto, ida: (x, y) => (x.ida || "").localeCompare(y.ida || "") }[F.ordem];
+  const ord = { recentes: (x, y) => y.criado.localeCompare(x.criado), preco: (x, y) => x.preco - y.preco, desconto: (x, y) => y.desconto - x.desconto, ida: (x, y) => (x.ida || "").localeCompare(y.ida || ""), az: (x, y) => x.destino_nome.localeCompare(y.destino_nome, "pt-BR") || y.criado.localeCompare(x.criado) }[F.ordem];
   return L.sort(ord);
 }
 function pAlertas() {
@@ -294,16 +311,66 @@ function pAlertas() {
       <input type="number" inputmode="numeric" placeholder="Até R$" data-f="max" value="${esc(F.max)}" style="width:100px">
       <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label>
       <select data-f="env">${opt("", "Enviados e não enviados", F.env)}${opt("nao", "Só não enviados", F.env)}${opt("sim", "Só enviados", F.env)}</select>
-      <select data-f="ordem">${opt("recentes", "Mais recentes", F.ordem)}${opt("desconto", "Maior desconto", F.ordem)}${opt("preco", "Menor preço", F.ordem)}${opt("ida", "Data de ida", F.ordem)}</select>
     </div>
+    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("alertas", F.ordem, [["recentes", "Mais recentes"], ["desconto", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"], ["ida", "Data de ida"]])}</div>
     <div class="resultado"><span>${L.length} alerta${L.length === 1 ? "" : "s"}</span>${Object.values(F).some((v, i) => v && !["recentes", "30"].includes(v)) ? `<a href="#" data-act="limpar">Limpar filtros</a>` : ""}</div>
     ${L.length ? `<div class="alertas">${L.map(a => cardAlerta(a)).join("")}</div>` : `<div class="card vazio">Nenhum alerta com esses filtros.</div>`}`;
+}
+
+/* ------------------------------------------------------------ Destinos (base de preços + calendário) */
+async function carregarCal(iata) {
+  if (S.cal[iata]) return;
+  S.cal[iata] = await getJSON(`calendario/${iata}.json`, null);
+}
+function calHTML(c, ref) {
+  if (!c) return `<div class="vazio">O calendário aparece depois da próxima varredura deste destino.</div>`;
+  const faixa = (lista, titulo) => {
+    if (!lista || !lista.length) return "";
+    const ps = lista.map(d => d.preco), lo = Math.min(...ps), hi = Math.max(...ps);
+    const meses = {};
+    lista.forEach(d => (meses[d.dia.slice(0, 7)] = meses[d.dia.slice(0, 7)] || []).push(d));
+    return `<div class="cal-b"><div class="cal-t">${titulo} <span class="sub">menor ${brl(lo)} · maior ${brl(hi)}</span></div>
+      ${Object.entries(meses).map(([m, ds]) => `<div class="cal-m"><b>${MESES[+m.slice(5, 7) - 1]} ${m.slice(0, 4)}</b><div class="cal-g">${ds.map(d => {
+        const t = hi > lo ? (d.preco - lo) / (hi - lo) : 0, cls = d.preco <= lo * 1.05 ? "c-top" : t < .33 ? "c-bom" : t < .66 ? "c-med" : "c-caro";
+        return `<span class="cal-d ${cls}" data-tip="${dmy(d.dia)} · ${brl(d.preco)} · ${esc(d.cia || "")}${d.escalas === 0 ? " · direto" : d.escalas ? ` · ${d.escalas} parada${d.escalas > 1 ? "s" : ""}` : ""}"><i>${d.dia.slice(8, 10)}</i><small>${Math.round(d.preco / 10) * 10 >= 1000 ? (d.preco / 1000).toFixed(1).replace(".", ",") + "k" : Math.round(d.preco)}</small></span>`;
+      }).join("")}</div></div>`).join("")}</div>`;
+  };
+  return `<div class="cal-leg"><span><i class="c-top"></i>mais barato</span><span><i class="c-bom"></i>bom</span><span><i class="c-med"></i>médio</span><span><i class="c-caro"></i>caro</span><span class="sub">Preço só ida, por trecho · atualizado ${haQuanto(c.atualizado)}</span></div>
+    <div class="cal-2">${faixa(c.ida, "Ida · Fortaleza → " + esc(c.nome))}${faixa(c.volta, "Volta · " + esc(c.nome) + " → Fortaleza")}</div>`;
+}
+function pDestinos() {
+  const D = S.D;
+  let L = destinosStatus().filter(x => (!D.tipo || x.tipo === D.tipo) && (!D.q || (x.nome + " " + x.k).toLowerCase().includes(D.q.toLowerCase())));
+  L = ordenarDest(L, D.ordem);
+  const total = S.rotas.filter(r => r.ativo !== false).length, comBase = destinosStatus().length;
+  return head("Destinos", "A base de preços de cada destino saindo de Fortaleza — clique para ver o calendário",
+    `<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button>`) +
+    (comBase < total ? `<div class="aviso warn"><span>${ic("chart")} ${comBase} de ${total} destinos já têm base de preços. A varredura turbo completa o resto em ~25 min.</span></div>` : "") +
+    `<div class="filtros"><input class="busca" type="search" placeholder="Buscar destino…" data-d="q" value="${esc(D.q)}"></div>
+    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("dest", D.ordem, ORDENS_DEST.concat([["recente", "Varridos agora"]]))}${pills("desttipo", D.tipo, [["", "Todos"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}</div>
+    <div class="resultado"><span>${L.length} destino${L.length === 1 ? "" : "s"}</span></div>
+    ${L.length ? `<div class="dests">${L.map(x => `<article class="dest ${D.sel === x.k ? "aberto" : ""}" id="cal-${x.k}">
+      <button class="dest-h" data-act="abrirdest" data-iata="${x.k}" aria-expanded="${D.sel === x.k}">
+        <span class="dest-n"><span class="micro">${ORIGEM} → ${x.k} · ${x.tipo === "internacional" ? "Internacional" : "Nacional"}${x.foco ? " · em foco" : ""}</span><b>${esc(x.nome)}</b></span>
+        <span class="dest-p"><b>${brl(x.menor)}</b><small>ida a partir de · média ${brl(x.mediana)}</small></span>
+        <span class="badge ${x.d >= .2 ? "pos" : ""}">−${pct(x.d)} ↘</span>
+        <span class="dest-x sub">${x.melhor_mes ? `melhor mês: ${MESES[+x.melhor_mes.slice(5, 7) - 1]}` : ""}${x.menor_volta ? ` · volta desde ${brl(x.menor_volta)}` : ""} · ${haQuanto(x.quando)}</span>
+      </button>
+      ${D.sel === x.k ? `<div class="dest-c">${calHTML(S.cal[x.k], x)}<div class="al-acts" style="margin-top:var(--space-3)"><button class="bt sm" data-act="buscarrota" data-iata="${x.k}">${ic("refresh")}Buscar agora</button>${x.foco ? "" : `<button class="bt sm" data-act="focodest" data-iata="${x.k}">${ic("plane")}Colocar em foco</button>`}</div></div>` : ""}
+    </article>`).join("")}</div>` : `<div class="card vazio">Nenhum destino com base ainda. Rode a varredura turbo.</div>`}`;
 }
 
 /* ------------------------------------------------------------ Rotas */
 function pRotas() {
   const st = S.status.rotas || {};
-  const linhas = S.rotas.map((r, i) => {
+  const R = S.R;
+  const idx = S.rotas.map((r, i) => i).filter(i => !R.tipo || S.rotas[i].tipo === R.tipo);
+  const val = i => { const s = st[S.rotas[i].iata] || {}; return s; };
+  idx.sort({ az: (a, b) => S.rotas[a].nome.localeCompare(S.rotas[b].nome, "pt-BR"), preco: (a, b) => (val(a).menor || 1e9) - (val(b).menor || 1e9),
+    ofertas: (a, b) => ((val(b).menor && val(b).mediana) ? 1 - val(b).menor / val(b).mediana : -1) - ((val(a).menor && val(a).mediana) ? 1 - val(a).menor / val(a).mediana : -1),
+    recente: (a, b) => (val(b).quando || "").localeCompare(val(a).quando || ""), foco: (a, b) => (S.rotas[b].foco ? 1 : 0) - (S.rotas[a].foco ? 1 : 0) }[R.ordem] || (() => 0));
+  const linhas = idx.map(i => {
+    const r = S.rotas[i];
     const s = st[r.iata] || {};
     return `<tr class="${r.ativo === false ? "off" : ""}">
       <td><span class="iata">${esc(r.iata)}</span></td>
@@ -320,7 +387,7 @@ function pRotas() {
     </tr>`;
   }).join("");
   return head("Rotas", "Trechos que o radar vigia saindo de Fortaleza",
-    `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>` : ""}<button class="bt" data-act="rodar">${ic("play")}Rodar radar completo</button>`) +
+    `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>` : ""}<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button><button class="bt" data-act="rodar">${ic("play")}Rodar radar agora</button>`) +
     (!token() ? `<div class="aviso warn"><span>${ic("key")} Para salvar rotas e rodar o radar daqui, configure seu token do GitHub.</span><a class="bt sm" href="#ajustes">Configurar</a></div>` : "") +
     (S.rotasSujo ? `<div class="aviso warn"><span>Você tem alterações não salvas.</span><button class="bt sm pri" data-act="salvarrotas">Salvar agora</button></div>` : "") +
     `<div class="card" style="margin-bottom:14px"><h3>Cadastrar trecho</h3><div class="desc">Viu passagem barata em outro canal? Cadastre o destino e marque “foco” — ele passa a ser varrido em toda rodada.</div>
@@ -335,6 +402,8 @@ function pRotas() {
       </div>
       <div class="presets"><span style="font-size:12px;color:var(--text-tertiary);align-self:center">Pacotes prontos:</span>${Object.keys(PRESETS).map(p => `<button class="chip" data-act="preset" data-p="${p}">+ ${p}</button>`).join("")}</div>
     </div>
+    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("rotas", R.ordem, [["az", "A–Z"], ["ofertas", "Melhores ofertas"], ["preco", "Menor valor"], ["recente", "Varridas agora"], ["foco", "Em foco"]])}
+      ${pills("rotastipo", R.tipo, [["", "Todas"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}</div>
     <div class="tbl-wrap"><table><thead><tr><th>Cód.</th><th>Destino</th><th>Tipo</th><th class="num">Teto</th><th class="num">Menor agora</th><th class="num">Média</th><th>Varrida</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
     <tbody>${linhas || `<tr><td colspan="10" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
     <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">Rodízio: a cada rodada (3 em 3 horas) o radar varre ${S.ajustes.rotas_por_rodada || 11} rotas, sempre incluindo as de foco. Use foco em poucas rotas (até 5) para não deixar a rodada lenta.</p>`;
@@ -513,7 +582,7 @@ function pAjustes() {
         </div></div>
     </div>
     <div class="head" style="margin:22px 0 12px"><div><h1 style="font-size:18px">Rodadas recentes</h1><p>O radar roda sozinho a cada 3 horas no GitHub</p></div>
-      <div class="acts"><a class="bt" target="_blank" rel="noopener" href="https://github.com/${REPO}/actions">${ic("ext")}Ver no GitHub</a><button class="bt pri" data-act="rodar">${ic("play")}Rodar agora</button></div></div>
+      <div class="acts"><a class="bt" target="_blank" rel="noopener" href="https://github.com/${REPO}/actions">${ic("ext")}Ver no GitHub</a><button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button><button class="bt pri" data-act="rodar">${ic("play")}Rodar agora</button></div></div>
     <div class="tbl-wrap"><table><thead><tr><th>Quando</th><th>Rotas</th><th class="num">Candidatos</th><th class="num">Alertas</th><th class="num">Duração</th></tr></thead><tbody>
       ${rd.map(r => `<tr><td style="white-space:nowrap">${dm(r.quando)} ${r.quando.slice(11, 16)}${r.manual ? ' <span class="tag info">manual</span>' : ""}</td><td style="font-size:12px;color:var(--text-body)">${(r.rotas || []).join(", ")}</td><td class="num">${r.candidatos}</td><td class="num" style="font-weight:700;color:${r.alertas ? "var(--positive-text)" : "inherit"}">${r.alertas}</td><td class="num">${r.segundos ? Math.round(r.segundos / 60) + " min" : "–"}</td></tr>`).join("") || `<tr><td colspan="5" class="vazio">Sem rodadas ainda.</td></tr>`}
     </tbody></table></div>`;
@@ -534,6 +603,15 @@ document.addEventListener("click", async e => {
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
     else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }
     else if (act === "recarregar") { await carregar(); render(); toast("✓ Atualizado"); }
+    else if (act === "turbo") { b.disabled = true; await rodarTurbo(); b.disabled = false; }
+    else if (act === "pill") {
+      const g = b.dataset.g, v = b.dataset.v;
+      if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
+      else if (g === "dash") S.dashOrd = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
+      render(); return;
+    }
+    else if (act === "abrirdest") { S.D.sel = S.D.sel === b.dataset.iata ? "" : b.dataset.iata; if (S.D.sel) await carregarCal(S.D.sel); render(); setTimeout(() => { const el = document.getElementById("cal-" + S.D.sel); if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50); return; }
+    else if (act === "focodest") { addRota(b.dataset.iata, { foco: true }); await salvarRotas(); }
     else if (act === "rodar") { b.disabled = true; await rodarRadar(""); b.disabled = false; }
     else if (act === "buscarrota") { if (S.rotasSujo) await salvarRotas(); b.disabled = true; await rodarRadar(b.dataset.iata); b.textContent = "Buscando…"; }
     else if (act === "addrota") {
@@ -567,6 +645,8 @@ document.addEventListener("input", e => {
     S.F[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value;
     if (el.type === "search" || el.type === "number") { clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-f="${el.dataset.f}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250); }
     else render();
+  } else if (el.dataset.d !== undefined) {
+    S.D[el.dataset.d] = el.value; clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-d="${el.dataset.d}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250);
   } else if (el.dataset.rota !== undefined) {
     const r = S.rotas[+el.dataset.rota], k = el.dataset.campo;
     r[k] = el.type === "checkbox" ? el.checked : (el.value ? +el.value : null);

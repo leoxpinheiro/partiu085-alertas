@@ -43,6 +43,8 @@ TG_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
 TG_CHAT = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
 ROTAS_AGORA = [x.strip().upper() for x in os.environ.get("ROTAS_AGORA", "").split(",") if x.strip()]
 OFFLINE = os.environ.get("PARTIU_OFFLINE") == "1"
+BASE_SAIDA = os.environ.get("BASE_SAIDA", "").strip()   # varredura turbo: só coleta, sem alertas
+CAL_DIR = DOCS / "calendario"
 
 TZ = timezone(timedelta(hours=-3))
 MESES_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
@@ -279,6 +281,34 @@ def registrar(hist: dict, chave: str, dias: list[dict], hoje: str) -> None:
 
 
 # ----------------------------------------------------------------------------- rodada
+def reconferir(salvos: list[dict], rotas: list[dict], aj: dict, maximo: int = 6) -> None:
+    """Confere de novo o preço dos alertas das últimas 36h: ainda valendo ou já subiu?"""
+    if OFFLINE:
+        return
+    limite = (agora() - timedelta(hours=36)).isoformat()
+    tipos = {r["iata"]: r["tipo"] for r in rotas}
+    feitos = 0
+    for a in salvos:
+        if feitos >= maximo or a.get("modo") != "trecho" or a["criado"] < limite or a.get("ida", "") <= date.today().isoformat():
+            continue
+        conf = a.get("conferido") or {}
+        if conf.get("quando", "") >= (agora() - timedelta(hours=5)).isoformat():
+            continue
+        nac = tipos.get(a["destino"], a.get("tipo")) == "nacional"
+        try:
+            g = google_trecho(C.ORIGEM, a["destino"], a["ida"],
+                              aj["max_escalas_nacional"] if nac else aj["max_escalas_internacional"])
+        except Exception as e:  # noqa: BLE001
+            log(f"  ! reconferir {a['destino']}: {type(e).__name__}")
+            continue
+        feitos += 1
+        if g:
+            st = "valendo" if g["preco"] <= a["preco"] * 1.10 else "subiu"
+            a["conferido"] = {"quando": agora().isoformat(timespec="minutes"), "preco": round(g["preco"]), "status": st}
+            log(f"  conferido {a['destino']} {a['ida']}: {brl(g['preco'])} ({st})")
+        time.sleep(C.PAUSA_GOOGLE)
+
+
 def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     if ROTAS_AGORA:
         return [r for r in rotas if r["iata"] in ROTAS_AGORA]
@@ -308,7 +338,7 @@ def rodada() -> None:
     lote = escolher_lote(rotas, aj)
     log(f"Lote: {', '.join(r['iata'] for r in lote)}")
 
-    candidatos, resumo = [], {}
+    candidatos, resumo, calendarios = [], {}, {}
     for r in lote:
         rota = f"{C.ORIGEM}-{r['iata']}"
         ida, volta = coletar(r, aj)
@@ -322,8 +352,23 @@ def rodada() -> None:
         registrar(hist, rota, ida, hoje)
         registrar(hist, f"{r['iata']}-{C.ORIGEM}", volta, hoje)
         m_ida = min(ida, key=lambda d: d["preco"])
-        resumo[r["iata"]] = {"ofertas": len(ida), "menor": m_ida["preco"],
-                             "mediana": statistics.median(d["preco"] for d in ida), "quando": quando}
+        m_v = min(volta, key=lambda d: d["preco"])
+        por_mes_ida: dict[str, float] = {}
+        for d in ida:
+            por_mes_ida[d["dia"][:7]] = min(d["preco"], por_mes_ida.get(d["dia"][:7], 1e12))
+        resumo[r["iata"]] = {"ofertas": len(ida), "menor": m_ida["preco"], "dia_menor": m_ida["dia"],
+                             "mediana": statistics.median(d["preco"] for d in ida),
+                             "menor_volta": m_v["preco"], "mediana_volta": statistics.median(d["preco"] for d in volta),
+                             "melhor_mes": min(por_mes_ida, key=por_mes_ida.get), "cia": m_ida["cia"],
+                             "nome": r["nome"], "tipo": r["tipo"], "quando": quando}
+        cal = {"iata": r["iata"], "nome": r["nome"], "atualizado": quando,
+               "ida": [{k: d[k] for k in ("dia", "preco", "cia", "escalas")} for d in ida],
+               "volta": [{k: d[k] for k in ("dia", "preco", "cia", "escalas")} for d in volta]}
+        calendarios[r["iata"]] = cal
+        if not BASE_SAIDA:
+            salvar_json(CAL_DIR / f"{r['iata']}.json", cal)
+        if BASE_SAIDA:
+            continue
         if not t_ida or not t_volta:
             continue
         desc = 1 - m_ida["preco"] / t_ida
@@ -359,6 +404,13 @@ def rodada() -> None:
             continue
         candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
+
+    if BASE_SAIDA:
+        chaves = {f"{C.ORIGEM}-{r['iata']}" for r in lote} | {f"{r['iata']}-{C.ORIGEM}" for r in lote}
+        salvar_json(Path(BASE_SAIDA), {"hist": {k: v for k, v in hist.items() if k in chaves},
+                                       "status": resumo, "cal": calendarios})
+        log(f"\nVarredura turbo: {len(lote)} rotas salvas em {BASE_SAIDA} · {int(time.time()-inicio)}s")
+        return
 
     limite = (agora() - timedelta(days=int(aj["dias_sem_repetir"]))).isoformat()
     recentes = [e for e in enviados if e["quando"] >= limite]
@@ -413,6 +465,7 @@ def rodada() -> None:
         log(f"  ✓ {a['rota']} {brl(a['preco'])}/trecho (-{a['desconto']:.0%}) "
             f"{len(a['datas_ida'])} idas · {len(a['datas_volta'])} voltas")
 
+    reconferir(salvos, rotas, aj)
     corte = (agora() - timedelta(days=45)).isoformat()
     todos = novos + [a for a in salvos if a["criado"] >= corte]
     salvar_json(ALERTS_FILE, {"atualizado": agora().isoformat(timespec="minutes"), "alertas": todos})

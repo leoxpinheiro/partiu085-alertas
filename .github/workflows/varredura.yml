@@ -1,0 +1,85 @@
+name: Varredura turbo
+
+# Varre TODAS as rotas ativas de uma vez, com vários robôs em paralelo (~25 min),
+# para montar a base de preços de todos os destinos. Não envia alertas.
+on:
+  workflow_dispatch:
+    inputs:
+      robos:
+        description: "Quantos robôs em paralelo (1 a 10)"
+        required: false
+        default: "8"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: varredura
+  cancel-in-progress: false
+
+jobs:
+  plano:
+    runs-on: ubuntu-latest
+    outputs:
+      lotes: ${{ steps.p.outputs.lotes }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os
+          rotas = [r["iata"] for r in json.load(open("docs/rotas.json")) if r.get("ativo", True)]
+          n = max(1, min(10, int(os.environ.get("ROBOS") or 8)))
+          lotes = [",".join(rotas[i::n]) for i in range(n) if rotas[i::n]]
+          print("lotes=" + json.dumps(lotes))
+          PY
+        env:
+          ROBOS: ${{ github.event.inputs.robos }}
+  varrer:
+    needs: plano
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        lote: ${{ fromJson(needs.plano.outputs.lotes) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Varrer lote
+        env:
+          ROTAS_AGORA: ${{ matrix.lote }}
+          BASE_SAIDA: base/parte.json
+        run: python engine/run.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: base-${{ strategy.job-index }}
+          path: base/parte.json
+          if-no-files-found: ignore
+  juntar:
+    needs: varrer
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - uses: actions/download-artifact@v4
+        with:
+          path: partes
+      - run: python engine/juntar_base.py partes
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs data
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Varredura turbo $(TZ=America/Fortaleza date '+%d/%m %H:%M')"
+          for i in 1 2 3 4; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 6; done
+          exit 1

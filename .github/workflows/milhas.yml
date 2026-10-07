@@ -28,7 +28,8 @@ jobs:
       - name: Sondar fontes
         if: github.event.inputs.sondar == 'sim'
         run: |
-          python engine/milhas.py --sondar
+          mkdir -p data
+          { python engine/milhas.py --sondar
           echo "---- Smiles (teste de acesso)"
           D=$(date -d '+40 days' +%F)
           curl -s -o /tmp/s.json -w "HTTP %{http_code}\n" -m 25 \
@@ -36,7 +37,11 @@ jobs:
             -H "origin: https://www.smiles.com.br" -H "referer: https://www.smiles.com.br/" \
             -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" \
             "https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search?cabinType=all&originAirportCode=FOR&destinationAirportCode=GRU&departureDate=$D&memberNumber=&adults=1&children=0&infants=0&forceCongener=false" || true
-          head -c 400 /tmp/s.json; echo
+          head -c 600 /tmp/s.json; echo; } > data/sonda_milhas.txt 2>&1
+          cat data/sonda_milhas.txt
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add data/sonda_milhas.txt && git commit -q -m "Sonda milhas" && git pull --rebase -X theirs -q && git push -q
       - name: Atualizar milhas
         if: github.event.inputs.sondar != 'sim'
         env:

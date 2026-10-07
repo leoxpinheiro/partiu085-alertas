@@ -249,12 +249,15 @@ def montar_texto(a: dict, aj: dict) -> str:
     L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
     L += ["", "*Datas de volta:*"]
     L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
-    L += ["", "⚠️ Preço pode mudar a qualquer momento."]
+    aviso = aj.get("aviso_preco", "⚠️ Preço pode mudar a qualquer momento.")
+    if aviso and aviso.strip():
+        L += ["", aviso.strip()]
     if aj.get("mostrar_link"):
         L.append(f"🔗 {a['link_google']}")
     if aj.get("linha_premium"):
         L.append("⭐ Você recebeu em primeira mão por ser Premium.")
-    rod = [x for x in [f"✈️ Receba alertas no WhatsApp: {aj['link_whatsapp']}" if aj.get("link_whatsapp") else "",
+    modelo = aj.get("rodape", "✈️ Receba alertas no WhatsApp: {link}")
+    rod = [x for x in [(modelo or "").replace("{link}", aj.get("link_whatsapp") or "https://bit.ly/radar085").strip(),
                        aj.get("assinatura") or ""] if x]
     if rod:
         L += [""] + rod

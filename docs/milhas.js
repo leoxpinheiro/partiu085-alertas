@@ -11,7 +11,7 @@ const milN = n => Math.round(+n || 0).toLocaleString("pt-BR");
 function carregarMilhas() {
   if (S.mi) return;
   S.mi = { carregando: true, ofertas: [] };
-  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { S.mi = d; S.mv = v; const pg = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard"; if (["milhas", "promocoes", "dashboard"].includes(pg) && !document.querySelector("input:focus,textarea:focus")) render(); else navs(); });
+  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { (d.ofertas || []).forEach(o => { o.texto0 = o.texto; o.texto = textoFinal(o.texto, "milhas"); }); S.mi = d; S.mv = v; const pg = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard"; if (["milhas", "promocoes", "dashboard"].includes(pg) && !document.querySelector("input:focus,textarea:focus")) render(); else navs(); });
 }
 function validadeTxt(o) {
   if (!o.validade) return ["", "sem data informada"];

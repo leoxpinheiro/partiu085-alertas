@@ -21,7 +21,7 @@ function pEnviar() {
     <div class="ev-prog"><span>Faltam ${tot} pra enviar${EV.i ? ` · vendo o ${EV.i + 1}º` : ""}</span></div>
     <div class="card ev-card" style="--c:${f.cor}">
       <div class="ev-h"><span class="fila-tag">${esc(f.rot)}</span><div><b>${esc(f.t)}</b><small>${esc(f.v)}${f.d ? ` · ${f.d}` : ""} · achado ${f.q.slice(0, 10) === hojeISO() ? "hoje" : "ontem"} às ${f.q.slice(11, 16)}</small></div></div>
-      <div class="ev-texto" id="ev-texto">${esc(f.texto)}</div>
+      <textarea class="ev-texto" id="ev-texto" spellcheck="false" title="Pode editar antes de copiar">${esc(f.texto)}</textarea><div class="sub" style="margin-top:6px">Dá pra editar o texto aqui antes de copiar. A mudança vale só pra este envio.</div>
       <div class="ev-acts">
         <button class="bt pri lg" data-act="evcopiar">${ic("copy")}Copiar e ir pro próximo</button>
         ${pode ? `<button class="bt lg" data-act="evshare">${ic("send")}Compartilhar no WhatsApp</button>` : `<a class="bt lg zap" target="_blank" rel="noopener" data-act="evzap" href="https://wa.me/?text=${encodeURIComponent(f.texto || "")}">${ic("send")}Abrir no WhatsApp</a>`}
@@ -44,9 +44,10 @@ document.addEventListener("click", async e => {
   if (act === "evpular") { EV.i = Math.min(EV.i + 1, F.length - 1); render(); return; }
   if (act === "evvoltar") { EV.i = Math.max(0, EV.i - 1); render(); return; }
   if (!f) return;
-  if (act === "evcopiar") { await copiar(f.texto); await evConcluir(f); }
-  else if (act === "evshare") { try { await navigator.share({ text: f.texto }); await evConcluir(f, `Enviado: ${f.t}`); } catch (x) { /* cancelou */ } }
-  else if (act === "evzap") { setTimeout(() => evConcluir(f, `Aberto no WhatsApp: ${f.t}`), 300); }
+  const txt = ($("#ev-texto") || {}).value || f.texto;
+  if (act === "evcopiar") { await copiar(txt); await evConcluir(f); }
+  else if (act === "evshare") { try { await navigator.share({ text: txt }); await evConcluir(f, `Enviado: ${f.t}`); } catch (x) { /* cancelou */ } }
+  else if (act === "evzap") { b.href = "https://wa.me/?text=" + encodeURIComponent(txt); setTimeout(() => evConcluir(f, `Aberto no WhatsApp: ${f.t}`), 300); }
   else if (act === "evacabou") { marcar(f.id, "descartado"); toast(`${f.t} tirado da fila.`); render(); }
 });
 document.addEventListener("input", e => { if (e.target.dataset.evPromos !== undefined) { EV.promos = e.target.checked; EV.i = 0; try { localStorage.setItem("p085_env_promos", EV.promos ? "1" : "0"); } catch (x) { } render(); } });

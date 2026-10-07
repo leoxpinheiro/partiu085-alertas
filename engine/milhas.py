@@ -66,6 +66,9 @@ MESES = {"janeiro": 1, "fevereiro": 2, "marco": 3, "abril": 4, "maio": 5, "junho
          "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
 
 
+RODAPE = "✈️ Receba alertas no WhatsApp: {link}"
+
+
 def sem_acento(s: str) -> str:
     return unicodedata.normalize("NFD", s).encode("ascii", "ignore").decode().lower()
 
@@ -226,7 +229,7 @@ def texto(o: dict, link_grupo: str) -> str:
         if val:
             L.append(val)
         L += ["", "⚠️ Disponibilidade em milhas some rápido. Confira no app do programa."]
-    L += ["", f"✈️ Receba alertas no WhatsApp: {link_grupo}"]
+    L += ["", RODAPE.replace("{link}", link_grupo)]
     return "\n".join(L)
 
 
@@ -249,6 +252,8 @@ def rodada(sondar: bool = False) -> None:
     hoje = agora.date().isoformat()
     aj = json.loads(AJUSTES.read_text()) if AJUSTES.exists() else {}
     link = aj.get("link_whatsapp_milhas") or aj.get("link_whatsapp") or "https://bit.ly/radar085"
+    global RODAPE
+    RODAPE = (aj.get("rodape_milhas") or aj.get("rodape") or RODAPE).strip() or RODAPE
     antigo = json.loads(SAIDA.read_text()) if SAIDA.exists() else {"ofertas": []}
     por_id = {o["id"]: o for o in antigo.get("ofertas", [])}
 

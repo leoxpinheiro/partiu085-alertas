@@ -36,6 +36,9 @@ PROGRAMAS = {"Smiles": "smiles.com.br", "Azul Fidelidade": "voeazul.com.br"}
 MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 
 
+RODAPE = "✈️ Receba alertas no WhatsApp: {link}"
+
+
 def log(*a):
     print(*a, flush=True)
 
@@ -127,7 +130,7 @@ def montar_texto(a: dict, link: str) -> str:
     if a.get("volta_meses"):
         L += ["", f"*Datas de volta:* a partir de {mil(a['milhas_volta'])} milhas + R$ {a['taxa_volta']:.0f}"]
         L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
-    L += ["", "⚠️ Disponibilidade em milhas pode acabar a qualquer momento.", "", f"✈️ Receba alertas no WhatsApp: {link}"]
+    L += ["", "⚠️ Disponibilidade em milhas pode acabar a qualquer momento.", "", RODAPE.replace("{link}", link)]
     return "\n".join(L)
 
 
@@ -143,7 +146,9 @@ def rodada() -> None:
     progs = [p for p in PROGRAMAS if p in (aj.get("milhas_programas") or list(PROGRAMAS))]
     dias = [int(x) for x in (aj.get("milhas_dias") or [10, 25, 40, 60, 80])]
     desconto_min = float(aj.get("milhas_desconto") or 0.25)
-    link = aj.get("link_whatsapp") or "https://bit.ly/radar085"
+    link = aj.get("link_whatsapp_milhas") or aj.get("link_whatsapp") or "https://bit.ly/radar085"
+    global RODAPE
+    RODAPE = (aj.get("rodape_milhas") or aj.get("rodape") or RODAPE).strip() or RODAPE
     agora = datetime.now(FUSO)
     hoje = agora.date().isoformat()
 

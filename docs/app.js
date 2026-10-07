@@ -131,6 +131,31 @@ function marcar(id, valor = true) {
 }
 const enviado = a => !!S.marcados[a.id];
 
+/* ------------------------------------------------------------ texto final (rodapé e aviso configuráveis) */
+const RODAPE_PADRAO = "✈️ Receba alertas no WhatsApp: {link}";
+const AVISO_PADRAO = "⚠️ Preço pode mudar a qualquer momento.";
+function textoFinal(t, tipo) {
+  const aj = S.ajustes || {};
+  if (!t) return t;
+  let L = String(t).split("\n");
+  const ass = (aj.assinatura || "").trim();
+  // tira o rodapé antigo (link do grupo / assinatura) do fim
+  while (L.length && (L[L.length - 1].trim() === "" || /Receba alertas no WhatsApp|bit\.ly\/radar085/i.test(L[L.length - 1]) || (ass && L[L.length - 1].trim() === ass) || (aj._rodape_ant && aj._rodape_ant.split("\n").includes(L[L.length - 1])))) L.pop();
+  if (tipo === "dinheiro") {
+    const av = aj.aviso_preco ?? AVISO_PADRAO;
+    L = L.flatMap(l => /^⚠️ Preço pode mudar/.test(l) ? (av.trim() ? [av] : []) : [l]);
+  }
+  const milhas = tipo === "milhas";
+  const link = (milhas ? aj.link_whatsapp_milhas : "") || aj.link_whatsapp || "https://bit.ly/radar085";
+  const rod = ((milhas ? aj.rodape_milhas : "") || aj.rodape || RODAPE_PADRAO).replace(/\{link\}/g, link).trim();
+  const out = L.join("\n").replace(/\n{3,}/g, "\n\n");
+  return rod ? out + "\n\n" + rod : out;
+}
+function reaplicarTextos() {
+  S.alertas.forEach(a => { a.texto = textoFinal(a.texto0 || a.texto, "dinheiro"); });
+  if (S.mi && S.mi.ofertas) S.mi.ofertas.forEach(o => { o.texto = textoFinal(o.texto0 || o.texto, "milhas"); });
+}
+
 /* ------------------------------------------------------------ dados */
 async function getJSON(f, padrao) {
   try { const r = await fetch(f + "?t=" + Date.now()); if (!r.ok) throw 0; return await r.json(); } catch (e) { return padrao; }
@@ -140,7 +165,7 @@ async function carregar() {
     getJSON("alerts.json", { alertas: [] }), getJSON("rotas.json", []), getJSON("ajustes.json", {}),
     getJSON("status.json", { rotas: {} }), getJSON("historico.json", {}), getJSON("rodadas.json", []), getJSON("marcados.json", {}), getJSON("grupos.json", null),
   ]);
-  S.alertas = (a.alertas || []).map(x => ({ ...x, ida: x.ida || (x.datas && x.datas[0] && x.datas[0].ida), volta: x.volta || (x.datas && x.datas[0] && x.datas[0].volta) }))
+  S.alertas = (a.alertas || []).map(x => ({ ...x, texto0: x.texto, ida: x.ida || (x.datas && x.datas[0] && x.datas[0].ida), volta: x.volta || (x.datas && x.datas[0] && x.datas[0].volta) }))
     .sort((x, y) => y.criado.localeCompare(x.criado));
   if (!S.rotasSujo) S.rotas = r;
   if (!S.ajustesSujo) S.ajustes = aj;
@@ -150,6 +175,7 @@ async function carregar() {
   S.marcados = { ...(mk || {}), ...local };
   if (!S.gruposSujo) S.grupos = gp || GRUPOS_PADRAO.map(g => ({ ...g }));
   S.ultima = S.status.ultima_rodada || a.atualizado;
+  reaplicarTextos();
 }
 
 /* ------------------------------------------------------------ ícones (traço fino, sprite no index.html) */
@@ -757,6 +783,10 @@ function pConv() {
 }
 
 /* ------------------------------------------------------------ Ajustes */
+function previaTexto() {
+  const ex = S.alertas[0] ? (S.alertas[0].texto0 || S.alertas[0].texto) : "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Recife (REC)\n💰 A partir de *R$ 379* o trecho\n\n⚠️ Preço pode mudar a qualquer momento.";
+  return textoFinal(ex, "dinheiro").split("\n").slice(-6).join("\n");
+}
 function pAjustes() {
   const a = S.ajustes, t = token();
   const num = (k, lbl, dica, step = 1) => `<div class="field"><label>${lbl}</label><input type="number" step="${step}" data-aj="${k}" value="${esc(a[k] ?? "")}"><small>${dica}</small></div>`;
@@ -770,10 +800,16 @@ function pAjustes() {
       ${t ? `<div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div></div>
     ${integracoesHTML()}
     <div class="grid two">
-      <div class="card"><h3>Texto dos alertas</h3><div class="desc">Vale para os próximos alertas e para o conversor.</div>
+      <div class="card"><h3>Texto das mensagens</h3><div class="desc">O fim de toda mensagem (rodapé) e o aviso. Vale na hora para tudo que você copiar, inclusive alertas antigos, e para o Telegram nas próximas rodadas.</div>
         <div class="form" style="grid-template-columns:1fr">
-          ${txt("link_whatsapp", "Link do grupo (rodapé)", "Vazio = não aparece no alerta")}
-          ${txt("assinatura", "Assinatura", "Vazio = não aparece no alerta")}
+          ${txt("link_whatsapp", "Link principal", "Entra no lugar de {link} no rodapé")}
+          <div class="field"><label>Rodapé das mensagens</label><textarea data-aj="rodape" rows="3" style="min-height:84px" placeholder="${esc(RODAPE_PADRAO)}">${esc(a.rodape ?? RODAPE_PADRAO)}</textarea><small>Pode ter mais de uma linha. Use {link} onde o link deve aparecer. Vazio = sem rodapé.</small></div>
+          <div class="presets" style="margin-top:0">${[["✈️ Receba alertas no WhatsApp: {link}", "Convite WhatsApp"], ["👉 Entre no grupo grátis: {link}\n📲 Siga @partiu.085", "Grupo + Instagram"], ["⭐ Quer receber primeiro? VIP: {link}", "Chamada VIP"], ["Partiu 085 · Viajar bem é questão de oportunidade\n{link}", "Slogan + link"]].map(([v, t]) => `<button class="chip" data-act="rodapemodelo" data-v="${esc(v)}">${t}</button>`).join("")}</div>
+          ${txt("aviso_preco", "Aviso de preço (alertas em dinheiro)", "Vazio = sem aviso")}
+          <details><summary class="sub" style="cursor:pointer">Rodapé diferente para mensagens de milhas</summary>
+            <div class="form" style="grid-template-columns:1fr;margin-top:10px">${txt("link_whatsapp_milhas", "Link do grupo de milhas", "Vazio = usa o link principal")}
+            <div class="field"><label>Rodapé de milhas</label><textarea data-aj="rodape_milhas" rows="2" style="min-height:64px" placeholder="Vazio = usa o rodapé principal">${esc(a.rodape_milhas || "")}</textarea></div></div></details>
+          <div class="field"><label>Como vai ficar</label><div class="texto" id="prev-rodape">${esc(previaTexto())}</div></div>
           <label class="chk"><input type="checkbox" data-aj="mostrar_link" ${a.mostrar_link ? "checked" : ""}> Mostrar link do voo no texto</label>
           <label class="chk"><input type="checkbox" data-aj="linha_premium" ${a.linha_premium ? "checked" : ""}> Incluir “⭐ Você recebeu em primeira mão por ser Premium.”</label>
           <label class="chk"><input type="checkbox" data-aj="telegram_ativo" ${a.telegram_ativo !== false ? "checked" : ""}> Postar automaticamente no canal do Telegram</label>
@@ -811,6 +847,7 @@ document.addEventListener("click", async e => {
   try {
     if (act === "alabrir") { S.alAberto = S.alAberto === b.dataset.id ? "" : b.dataset.id; const r = document.querySelector(`article.al-row[data-id="${CSS.escape(b.dataset.id)}"]`); document.querySelectorAll("article.al-row.aberto").forEach(x => { const a = S.alertas.find(y => y.id === x.dataset.id); if (a && x !== r) x.outerHTML = linhaAlerta(a); }); const r2 = document.querySelector(`article.al-row[data-id="${CSS.escape(b.dataset.id)}"]`); if (r2) r2.outerHTML = linhaAlerta(S.alertas.find(y => y.id === b.dataset.id)); return; }
     if (act === "filacopiar") { const f = filaEnvio().find(x => x.id === b.dataset.id); if (f) { await copiar(f.texto); marcar(f.id, true); toast("Copiado e marcado como enviado."); render(); } return; }
+    if (act === "rodapemodelo") { const t = $('[data-aj="rodape"]'); if (t) { t.value = b.dataset.v; t.dispatchEvent(new Event("input", { bubbles: true })); } return; }
     if (act === "menu") { document.body.classList.toggle("menu-aberto"); return; }
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
     else if (act === "marcar") { marcar(b.dataset.id, !enviado(A(b.dataset.id))); }
@@ -906,6 +943,7 @@ document.addEventListener("input", e => {
     const k = el.dataset.aj;
     S.ajustes[k] = el.type === "checkbox" ? el.checked : el.type === "number" ? (el.value === "" ? null : +el.value) : el.value;
     S.ajustesSujo = true;
+    if (["rodape", "rodape_milhas", "link_whatsapp", "link_whatsapp_milhas", "aviso_preco", "assinatura"].includes(k)) { reaplicarTextos(); const pv = $("#prev-rodape"); if (pv) pv.textContent = previaTexto(); }
     const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarajustes"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarajustes">${ic("save")}Salvar ajustes</button>`);
   } else if (el.dataset.conv !== undefined && false) {
     S.conv[el.dataset.conv] = el.type === "number" ? (+el.value || "") : el.value;

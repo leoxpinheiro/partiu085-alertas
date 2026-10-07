@@ -14,7 +14,7 @@ const reais = v => "R$ " + (+v || 0).toLocaleString("pt-BR", { minimumFractionDi
 function carregarMilhas() {
   if (S.mi) return;
   S.mi = { carregando: true, ofertas: [] };
-  getJSON("milhas.json", { ofertas: [], vazio: true }).then(d => { S.mi = d; if (/milhas/.test(location.hash)) render(); });
+  Promise.all([getJSON("milhas.json", { ofertas: [], vazio: true }), getJSON("milhas_voos.json", null)]).then(([d, v]) => { S.mi = d; S.mv = v; if (/milhas/.test(location.hash)) render(); });
 }
 function validadeTxt(o) {
   if (!o.validade) return ["", "sem data informada"];
@@ -57,6 +57,33 @@ function cardMilha(o) {
     ${MI.aberto === o.id ? `<div class="texto">${esc(o.texto)}</div>` : ""}
     <div class="quando"><span>Publicado ${o.publicado.slice(0, 10) === hojeISO() ? "hoje" : dm(o.publicado)} às ${o.publicado.slice(11, 16)}</span></div>
   </article>`;
+}
+
+/* ---------------- busca própria (Smiles e Azul por data) */
+function buscaPropriaHTML() {
+  const V = S.mv, aj = S.ajustes || {};
+  const dest = (aj.milhas_destinos || ["SAO", "RIO", "BSB", "REC", "SSA", "LIS", "MIA", "ORL", "BUE", "SCL"]).join(", ");
+  const cfg = `<div class="form" style="margin-top:var(--space-4)">
+      <div class="field" style="grid-column:1/-1"><label>Destinos vigiados em milhas</label><input data-mic="milhas_destinos" value="${esc(dest)}"><small>Códigos separados por vírgula. Menos destinos = gasta menos créditos.</small></div>
+      <div class="field"><label>Consultas por rodada</label><input type="number" data-mic="milhas_buscas_por_rodada" value="${esc(aj.milhas_buscas_por_rodada || 4)}"><small>8 rodadas por dia</small></div>
+      <div class="field"><label>Alertar quando</label><input type="number" step="0.05" data-mic="milhas_desconto" value="${esc(aj.milhas_desconto ?? 0.25)}"><small>0,25 = 25% abaixo do normal da rota</small></div>
+      <div class="field"><button class="bt pri" data-act="misalvarcfg">${ic("save")}Salvar</button></div></div>`;
+  const head2 = `<div class="head" style="margin:28px 0 12px"><div><h1 style="font-size:20px">Busca própria em milhas · saindo de FOR</h1><p>O robô consulta Smiles e Azul data por data e compara com o preço em dinheiro do radar</p></div></div>`;
+  if (!V) return head2 + `<div class="card"><h3>Pronta pra ligar</h3><div class="desc">Falta só a chave da GeckoAPI (teste grátis com 100 créditos).</div>
+      <ol class="mi-passos"><li>Crie a conta grátis em <a href="https://geckoapi.com.br" target="_blank" rel="noopener">geckoapi.com.br</a> e copie a sua chave de API.</li>
+      <li>No GitHub, abra <a href="https://github.com/${REPO}/settings/secrets/actions/new" target="_blank" rel="noopener">Settings → Secrets → New secret</a>, nome <b>GECKO_API_KEY</b>, e cole a chave.</li>
+      <li>Pronto: a busca roda junto com o radar a cada 3h e os achados aparecem aqui e nos alertas de milhas.</li></ol>${cfg}</div>`;
+  const linhas = [];
+  Object.entries(V.rotas || {}).forEach(([k, ps]) => Object.entries(ps).forEach(([prog, r]) => { if (r.menor) linhas.push({ k, prog, ...r.menor, normal: r.normal }); }));
+  linhas.sort((a, b) => a.milhas - b.milhas);
+  const st = { ok: "funcionando", SEM_CREDITOS: "sem créditos na GeckoAPI", CHAVE_INVALIDA: "chave inválida" }[V.status] || V.status;
+  return head2 + `<div class="card">
+    <div class="card-h"><div><h3>Menores valores encontrados</h3><div class="desc">${esc(st)} · ${V.consultas_hoje || 0} consultas hoje · atualizado ${haQuanto(V.atualizado)}</div></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Destino</th><th>Programa</th><th class="num">Milhas + taxas</th><th>Data</th><th class="num">Em dinheiro</th><th class="num">Milheiro vale</th></tr></thead><tbody>
+    ${linhas.map(l => { const nome = (S.rotas.find(r => r.iata === l.k) || {}).nome || IATA[l.k] || l.k; const vm = l.dinheiro ? (l.dinheiro - l.taxa) / (l.milhas / 1000) : null;
+      return `<tr><td><b>${esc(nome)}</b></td><td>${esc(l.prog)}</td><td class="num">${milN(l.milhas)} + ${brl(l.taxa)}${l.normal && l.milhas < l.normal * .8 ? ` <span class="tag ok-t">−${Math.round((1 - l.milhas / l.normal) * 100)}%</span>` : ""}</td><td>${dm(l.dia)}</td><td class="num">${l.dinheiro ? brl(l.dinheiro) : "–"}</td><td class="num" style="font-weight:700;color:${vm == null ? "inherit" : vm >= 20 ? "var(--positive-text)" : "var(--negative-text)"}">${vm == null ? "–" : reais(vm)}</td></tr>`; }).join("") || `<tr><td colspan="6" class="vazio">As primeiras consultas aparecem aqui depois da próxima rodada.</td></tr>`}
+    </tbody></table></div>
+    <details style="margin-top:var(--space-4)"><summary class="sub" style="cursor:pointer">Configurar a busca</summary>${cfg}</details></div>`;
 }
 
 /* ---------------- calculadoras */
@@ -111,6 +138,7 @@ function pMilhas() {
       <label class="chk"><input type="checkbox" data-mi-ativas ${MI.ativas ? "checked" : ""}> Só as que ainda valem</label></div>
     <div class="alertas">${L.map(cardMilha).join("") || `<div class="card vazio">${M.vazio ? "O radar de milhas roda junto com o de passagens, a cada 3h. A primeira leitura aparece aqui em breve." : "Nada nesse filtro agora."}</div>`}</div>
 
+    ${buscaPropriaHTML()}
     <div class="head" style="margin:28px 0 12px"><div><h1 style="font-size:20px">Calculadoras do milheiro</h1><p>Responde a pergunta que todo mundo faz no grupo: vale usar milhas ou pagar em dinheiro?</p></div></div>
     <div class="grid mi-calcs">
       <div class="card"><h3>Milhas ou dinheiro?</h3><div class="desc">Puxa o menor preço do radar ou digite o seu.</div>
@@ -157,6 +185,13 @@ document.addEventListener("click", async e => {
       setTimeout(async () => { S.mi = null; carregarMilhas(); }, 150000);
     }
     else if (act === "mibonus") { MI[b.dataset.g].bonus = b.dataset.v; const i = $(`[data-mi="${b.dataset.g}.bonus"]`); if (i) i.value = b.dataset.v; calcOut(); }
+    else if (act === "misalvarcfg") {
+      const v = k => ($(`[data-mic="${k}"]`) || {}).value;
+      S.ajustes.milhas_destinos = String(v("milhas_destinos") || "").toUpperCase().split(/[\s,;]+/).filter(x => /^[A-Z]{3}$/.test(x));
+      S.ajustes.milhas_buscas_por_rodada = Math.max(1, Math.min(30, +v("milhas_buscas_por_rodada") || 4));
+      S.ajustes.milhas_desconto = Math.max(0.05, Math.min(0.6, +String(v("milhas_desconto")).replace(",", ".") || 0.25));
+      b.disabled = true; await salvarArquivo("docs/ajustes.json", S.ajustes, "Painel: ajustes da busca em milhas"); toast("Busca em milhas configurada."); b.disabled = false;
+    }
     else if (act === "mic1copiar") { const t = calc1Texto(); if (!t) { toast("Preencha a calculadora primeiro."); return; } await copiar(t); toast("Comparação copiada."); }
   } catch (err) { toast("Erro: " + err.message, 5000); b.disabled = false; }
 });

@@ -40,13 +40,16 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_MILHAS: ${{ secrets.TELEGRAM_CHAT_MILHAS }}
-        run: python engine/milhas.py
+          GECKO_API_KEY: ${{ secrets.GECKO_API_KEY }}
+        run: |
+          python engine/milhas.py
+          python engine/milhas_busca.py
       - name: Salvar
         if: github.event.inputs.sondar != 'sim'
         run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"
-          git add docs/milhas.json
+          git add docs/milhas.json docs/milhas_voos.json data/milhas_fila.json 2>/dev/null; git add docs/milhas.json
           git diff --cached --quiet && exit 0
           git commit -q -m "Milhas $(TZ=America/Fortaleza date '+%d/%m %H:%M')"
           for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done

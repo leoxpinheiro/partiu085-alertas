@@ -18,6 +18,8 @@ async def sondar(pw, nome, url, chaves):
     await ctx.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>undefined})")
     p = await ctx.new_page()
     vistos = []
+    falhas = []
+    p.on("requestfailed", lambda rq: falhas.append(rq.url[:150]))
     async def resp(r):
         if any(k in r.url.lower() for k in chaves) and r.request.resource_type in ("xhr", "fetch"):
             try: corpo = (await r.text())[:700]
@@ -34,7 +36,10 @@ async def sondar(pw, nome, url, chaves):
     except Exception as e:
         print(f"== {nome}: erro {e}")
     print(f"  respostas de API: {len(vistos)}")
-    for v in vistos[:30]: print(v[:300])
+    import re as _re
+    for v in vistos:
+        if _re.search(r"flight|search|avail|offer| 4\d\d | 5\d\d ", v[:200], _re.I): print(v[:900])
+    print("  falhas:", falhas[:10])
     await b.close()
 
 async def main():

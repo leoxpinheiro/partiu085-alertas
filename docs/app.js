@@ -315,7 +315,8 @@ function pDash() {
   const max = Math.max(META_DIA + 2, ...Object.values(cont)), H = 150;
   const cols = `<div class="meta" style="bottom:${(META_DIA / max) * H + 30}px"><span>meta ${META_DIA}</span></div>` +
     dias.map((d, i) => `<div class="col ${i === 13 ? "sel" : ""} ${cont[d] >= META_DIA ? "hit" : ""}" data-tip="${dmy(d)}: ${cont[d]} alerta${cont[d] === 1 ? "" : "s"}"><span class="v">${cont[d] || ""}</span><span class="bar ${cont[d] ? "" : "ghost"}" style="height:${Math.max(6, (cont[d] / max) * H)}px"></span><span class="d">${d.slice(8, 10)}</span></div>`).join("");
-  const precos = ordenarDest(destinosStatus(), "ofertas").slice(0, 6);
+  const precos = ordenarDest(destinosStatus(), "ofertas").slice(0, 8);
+  const a7 = A.filter(a => a.criado.slice(0, 10) >= diaMenos(h, 6));
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
   return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) +
@@ -327,9 +328,14 @@ function pDash() {
     </div>
     <div class="grid two">
       <div class="card"><div class="card-h"><div><h3>Alertas em dinheiro por dia</h3><div class="desc">Últimos 14 dias · meta de ${META_DIA} por dia</div></div></div><div class="cols">${cols}</div></div>
-      <div class="card"><div class="card-h"><div><h3>Mais barato agora</h3><div class="desc">Em dinheiro, comparado com a média de cada destino</div></div><a class="bt sm" href="#destinos">Ver todos</a></div>
-        ${precos.length ? `<div class="mini-l">${precos.map(p => `<a class="mini-i" href="#destinos" data-act="abrirdest" data-iata="${p.k}"><span><b>${esc(p.nome)}</b><small>${p.k}</small></span><span class="r"><b>${brl(p.menor)}</b><span class="badge ${p.d >= .2 ? "pos" : ""}">−${pct(p.d)}</span></span></a>`).join("")}</div>` : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
+      <div class="card"><div class="card-h"><div><h3>Qualidade dos alertas</h3><div class="desc">Últimos 7 dias, por classe</div></div></div>
+        ${gDonut(["imperdivel", "otima", "boa"].map(k => ({ n: CLASSE_NOME[k], v: a7.filter(a => (a.classe || "boa") === k).length, cor: CLASSE_COR[k] })), a7.length, "alertas")}
+        <div class="sec-gap"></div><div class="desc" style="margin-bottom:6px">Nacional × internacional</div>
+        ${gStack([{ n: "Nacional", v: a7.filter(a => a.tipo !== "internacional").length, cor: GC.azul }, { n: "Internacional", v: a7.filter(a => a.tipo === "internacional").length, cor: GC.ambar }])}
       </div>
+    </div>
+    <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Mais barato agora, comparado com a média</h3><div class="desc">Quanto o menor preço de cada destino está abaixo do normal da rota (em dinheiro, só ida)</div></div><a class="bt sm" href="#destinos">Ver todos</a></div>
+      ${precos.length ? gHBars(precos.map(p => ({ n: p.nome, v: p.d, rot: `${brl(p.menor)} · −${pct(p.d)}`, tip: `${p.nome}: ${brl(p.menor)} (média ${brl(p.mediana)})`, href: "#destinos", cor: p.d >= .4 ? GC.verde : p.d >= .3 ? GC.azul : GC.ambar })), 1) : `<div class="vazio">Aparece depois da primeira varredura.</div>`}
     </div>`;
 }
 
@@ -353,6 +359,18 @@ function filtrar() {
   const ord = { recentes: (x, y) => y.criado.localeCompare(x.criado), preco: (x, y) => x.preco - y.preco, desconto: (x, y) => y.desconto - x.desconto, ida: (x, y) => (x.ida || "").localeCompare(y.ida || ""), az: (x, y) => x.destino_nome.localeCompare(y.destino_nome, "pt-BR") || y.criado.localeCompare(x.criado) }[F.ordem];
   return L.sort(ord);
 }
+function painelAlertas(L) {
+  const h = hojeISO(), dias = Array.from({ length: 14 }, (_, i) => diaMenos(h, 13 - i));
+  const porDia = dias.map(d => ({ d, v: S.alertas.filter(a => a.criado.slice(0, 10) === d).length }));
+  const cias = contar(L, a => a.cia_nome).slice(0, 4);
+  const env = L.filter(a => enviado(a)).length;
+  return `<div class="g-strip">
+    <div class="card g-mini"><div class="g-t">Alertas por dia <small>14 dias</small></div>${gCols(porDia)}</div>
+    <div class="card g-mini"><div class="g-t">Por classe <small>${L.length} na lista</small></div>${gStack(["imperdivel", "otima", "boa"].map(k => ({ n: CLASSE_NOME[k], v: L.filter(a => (a.classe || "boa") === k).length, cor: CLASSE_COR[k] })))}</div>
+    <div class="card g-mini"><div class="g-t">Enviados <small>da lista</small></div>${gStack([{ n: "Enviados", v: env, cor: GC.verde }, { n: "Falta enviar", v: L.length - env, cor: GC.cinza }])}</div>
+    <div class="card g-mini"><div class="g-t">Companhias</div>${cias.length ? gHBars(cias.map(([n, v]) => ({ n, v, rot: String(v), cor: GC.azul }))) : `<div class="sub">sem dados</div>`}</div>
+  </div>`;
+}
 function pAlertas() {
   const F = S.F;
   const cias = [...new Set(S.alertas.map(a => a.cia_nome).filter(Boolean))].sort();
@@ -372,6 +390,7 @@ function pAlertas() {
       <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label>
       <select data-f="env">${opt("", "Enviados e não enviados", F.env)}${opt("nao", "Só não enviados", F.env)}${opt("sim", "Só enviados", F.env)}</select>
     </div>
+    ${painelAlertas(L)}
     <div class="ordbar">${pills("alvista", ALV, [["lista", "☰ Lista"], ["quadros", "▦ Quadros"]])}<span class="ord-l">Ordenar</span>${pills("alertas", F.ordem, [["recentes", "Mais recentes"], ["desconto", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"], ["ida", "Data de ida"]])}</div>
     <div class="resultado"><span>${L.length} alerta${L.length === 1 ? "" : "s"}</span>${Object.values(F).some((v, i) => v && !["recentes", "30"].includes(v)) ? `<a href="#" data-act="limpar">Limpar filtros</a>` : ""}</div>
     ${L.length ? (ALV === "lista" ? `<div class="al-lista">${L.map(linhaAlerta).join("")}</div>` : `<div class="alertas compacto">${L.map(a => cardAlerta(a, true)).join("")}</div>`) : `<div class="card vazio">Nenhum alerta com esses filtros.</div>`}`;

@@ -94,7 +94,17 @@ function cfgMilhasHTML() {
       <div class="field"><button class="bt pri" data-act="misalvarcfg">${ic("save")}Salvar</button></div></div>`;
 }
 const milK = n => n >= 1000 ? (n / 1000).toFixed(n % 1000 ? 1 : 0).replace(".", ",") + "k" : String(n);
+function linhaReal(c, x) {
+  if (!c) return "";
+  const g = gLinha([{ n: "Ida", cor: GC.azul, pts: (c.ida || []).map(d => ({ dia: d.dia, preco: d.preco, tip: d.cia })) }, { n: "Volta", cor: GC.ambar, tracejada: true, pts: (c.volta || []).map(d => ({ dia: d.dia, preco: d.preco, tip: d.cia })) }], x.mediana);
+  return g ? `<div class="g-tit">Preço por dia (por trecho)</div>` + g : "";
+}
 function calMilhas(r, nome, prog) {
+  const ser = s => Object.entries((r || {})[s] || {}).filter(([, v]) => !v.sem).map(([dia, v]) => ({ dia, preco: v.milhas, tip: "+ " + brl(v.taxa) }));
+  const graf = gLinha([{ n: "Ida", cor: GC.azul, pts: ser("ida") }, { n: "Volta", cor: GC.ambar, tracejada: true, pts: ser("volta") }], r && r.normal_ida, v => milK(Math.round(v)));
+  return (graf ? `<div class="g-tit">Milhas por dia</div>` + graf : "") + calMilhas0(r, nome, prog);
+}
+function calMilhas0(r, nome, prog) {
   const lista = sentido => Object.entries((r || {})[sentido] || {}).filter(([, v]) => !v.sem).map(([dia, v]) => ({ dia, ...v })).sort((a, b) => a.dia.localeCompare(b.dia));
   const faixa = (L, titulo) => {
     if (!L.length) return `<div class="cal-b"><div class="cal-t">${titulo}</div><div class="sub">Ainda sem datas consultadas.</div></div>`;
@@ -161,7 +171,7 @@ function blocoDestinos(moeda) {
   const N = numerosVoos(moeda);
   const quadro = x => {
     const aberto = st.sel === x.k;
-    const preco = x.real ? `<b>${brl(x.menor)}</b><small>ida · média ${brl(x.mediana)}</small>` : `<b>${milN((x.ida || x.volta).milhas)}</b><small>milhas + ${brl((x.ida || x.volta).taxa)} · ${x.ida ? "ida" : "volta"}</small>`;
+    const preco = x.real ? `<b>${brl(x.menor)}</b><small>ida · média ${brl(x.mediana)}</small>${gBullet(x.menor, x.mediana, x.d >= .4 ? GC.verde : x.d >= .2 ? GC.azul : GC.ambar)}` : `<b>${milN((x.ida || x.volta).milhas)}</b><small>milhas + ${brl((x.ida || x.volta).taxa)} · ${x.ida ? "ida" : "volta"}</small>`;
     const extra = x.real ? [x.menor_volta ? `volta ${brl(x.menor_volta)}` : "", x.melhor_mes ? `melhor mês: ${MESES[+x.melhor_mes.slice(5, 7) - 1]}` : ""].filter(Boolean).join(" · ")
       : (x.ida && x.volta ? `volta ${milN(x.volta.milhas)} + ${brl(x.volta.taxa)}` : "");
     return `<article class="dest ${aberto ? "aberto" : ""}" id="${real ? "cal-" : "mcal-"}${x.k}">
@@ -171,7 +181,7 @@ function blocoDestinos(moeda) {
         ${x.d > 0 ? `<span class="badge ${x.d >= .2 ? "pos" : ""}">−${pct(x.d)}</span>` : `<span></span>`}
         <span class="dest-x sub">${extra}</span>
       </button>
-      ${aberto ? `<div class="dest-c">${x.real ? calHTML(S.cal[x.k], x) + `<div class="al-acts" style="margin-top:var(--space-3)"><button class="bt sm" data-act="buscarrota" data-iata="${x.k}">${ic("refresh")}Buscar agora</button>${x.foco ? "" : `<button class="bt sm" data-act="focodest" data-iata="${x.k}">${ic("plane")}Colocar em foco</button>`}</div>` : calMilhas(x.r, x.nome, moeda)}</div>` : ""}
+      ${aberto ? `<div class="dest-c">${x.real ? linhaReal(S.cal[x.k], x) + calHTML(S.cal[x.k], x) + `<div class="al-acts" style="margin-top:var(--space-3)"><button class="bt sm" data-act="buscarrota" data-iata="${x.k}">${ic("refresh")}Buscar agora</button>${x.foco ? "" : `<button class="bt sm" data-act="focodest" data-iata="${x.k}">${ic("plane")}Colocar em foco</button>`}</div>` : calMilhas(x.r, x.nome, moeda)}</div>` : ""}
     </article>`;
   };
   const stat = (n, t, dest = false) => `<div class="mv-s ${dest ? "dest" : ""}"><b>${n}</b><span>${t}</span></div>`;

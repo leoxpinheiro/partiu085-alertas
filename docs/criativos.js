@@ -16,6 +16,7 @@ const TEMAS = {
 };
 const FMT = { stories: [1080, 1920], feed: [1080, 1350], quadrado: [1080, 1080] };
 const TPLS = [
+  ["livre", "Da minha ideia, print ou texto"],
   ["promo", "Promoção do radar"], ["carrossel", "Carrossel: top da semana"], ["destino", "Destino em destaque"],
   ["frase", "Frase da marca"], ["beneficios", "Lista de benefícios"], ["dica", "Dica de milhas"], ["pergunta", "Pergunta (engajamento)"],
 ];
@@ -51,6 +52,7 @@ const PERGUNTAS = [
 ];
 const BENEFICIOS = ["Saindo de Fortaleza (FOR)", "Alertas exclusivos", "Emissões com milhas", "Ofertas que cabem no bolso", "Destinos nacionais", "Destinos internacionais"];
 
+const LIVRE = { img: null, layout: "print" };
 const CR = { tpl: "promo", fmt: "stories", tema: "azul", id: "", hashId: "", datas: true, txt: {}, mascote: true };
 const IMGS = {};
 function img(n) {
@@ -289,6 +291,51 @@ function mDestino(c, W, H, t, d) {
   cta(c, W, H, t, "Receba alertas: " + linkGrupo().replace(/^https?:\/\//, ""));
 }
 
+/* ---------------- do zero: ideia, texto ou print */
+function partesIdeia(x) {
+  const linhas = String(x.ideia || "").split("\n").map(l => l.trim()).filter(Boolean);
+  const preco = (String(x.ideia || "").match(/R\$\s*[\d.]+(?:,\d{2})?/) || [""])[0];
+  let titulo = linhas[0] || "Partiu 085", resto = linhas.slice(1).join(" ");
+  if (titulo.length > 70 && !resto) { resto = titulo; titulo = "O RADAR APITOU"; }
+  return { titulo, resto, preco: preco && !titulo.includes(preco) ? preco : "" };
+}
+function mLivre(c, W, H, t, x) {
+  fundo(c, W, H, t);
+  const p = partesIdeia(x), alto = H > 1500, im = LIVRE.img;
+  let y = alto ? 170 : 120;
+  if (LIVRE.layout === "texto" || !im) {
+    y = bloco(c, p.titulo.toUpperCase(), W / 2, y + 60, W - 200, alto ? 120 : 100, MARCA.titulo, t.ink, "center", 400, 1.02, 5) + 40;
+    if (p.resto) y = bloco(c, p.resto, W / 2, y + 50, W - 200, alto ? 60 : 50, MARCA.script, t.acc === MARCA.navy ? MARCA.navy : MARCA.amarelo, "center", 400, 1.2, 4) + 40;
+    if (p.preco) { pil(c, p.preco, W / 2, y + 30, 54, t.acc, t.accInk, 40, 110, MARCA.titulo, 400, "center"); y += 160; }
+    if (CR.mascote) desenhaImg(c, "mascote", W / 2, y + 40, alto ? 420 : 300);
+  } else {
+    y = bloco(c, p.titulo.toUpperCase(), W / 2, y + 40, W - 180, alto ? 92 : 78, MARCA.titulo, t.ink, "center", 400, 1.02, 3) + 50;
+    const mw = W - 200, mh = alto ? H * .5 : H * .42, k = Math.min(mw / im.naturalWidth, mh / im.naturalHeight);
+    const iw = im.naturalWidth * k, ih = im.naturalHeight * k, ix = (W - iw) / 2;
+    c.save(); c.shadowColor = "rgba(0,0,0,.25)"; c.shadowBlur = 40; c.fillStyle = "#fff"; rr(c, ix - 18, y - 18, iw + 36, ih + 36, 40); c.fill(); c.restore();
+    c.save(); rr(c, ix, y, iw, ih, 26); c.clip(); c.drawImage(im, ix, y, iw, ih); c.restore();
+    y += ih + 70;
+    if (p.preco) { pil(c, p.preco, W / 2, y - 20, 46, t.acc, t.accInk, 36, 96, MARCA.titulo, 400, "center"); y += 110; }
+    if (p.resto) bloco(c, p.resto, W / 2, y + 20, W - 200, 34, MARCA.corpo, t.ink, "center", 700, 1.3, 4);
+  }
+  cta(c, W, H, t, "Receba alertas: " + linkGrupo().replace(/^https?:\/\//, ""));
+}
+function mFoto(c, W, H, t, x) {
+  const im = LIVRE.img, p = partesIdeia(x);
+  c.fillStyle = MARCA.navy; c.fillRect(0, 0, W, H);
+  if (im) { const k = Math.max(W / im.naturalWidth, H / im.naturalHeight), iw = im.naturalWidth * k, ih = im.naturalHeight * k; c.drawImage(im, (W - iw) / 2, (H - ih) / 2, iw, ih); }
+  const g = c.createLinearGradient(0, H * .35, 0, H); g.addColorStop(0, "rgba(15,42,71,0)"); g.addColorStop(.55, "rgba(15,42,71,.82)"); g.addColorStop(1, "rgba(15,42,71,.96)");
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  desenhaImg(c, "logo", 160, 60, 220);
+  let y = H - 300 - (p.resto ? 120 : 0) - (p.preco ? 110 : 0);
+  const L = quebrar(c, p.titulo.toUpperCase(), W - 160, 104, MARCA.titulo).slice(0, 3); y -= (L.length - 1) * 106;
+  L.forEach((l, i) => tx(c, l, 80, y + i * 106, 104, MARCA.titulo, "#fff", "left"));
+  y += (L.length - 1) * 106 + 40;
+  if (p.preco) { pil(c, p.preco, 80, y, 46, MARCA.amarelo, MARCA.navy, 36, 96, MARCA.titulo); y += 130; }
+  if (p.resto) bloco(c, p.resto, 80, y + 30, W - 160, 34, MARCA.corpo, "#fff", "left", 600, 1.3, 3);
+  cta(c, W, H, TEMAS.azul, "Receba alertas: " + linkGrupo().replace(/^https?:\/\//, ""));
+}
+
 /* compõe: fundo + miolo ampliado e centralizado no espaço livre + chamada no rodapé */
 function compor(c, W, H, t, desenhar) {
   fundo(c, W, H, t);
@@ -326,12 +373,17 @@ function legendaCR(a) {
   if (CR.tpl === "frase") return `${T.titulo || ""} — ${T.destaque || ""}\n\n${T.rodape || ass}\n🔔 Ativa as notificações e não perde o próximo alerta!\n\n#partiu085 #viagem #fortaleza #ceara`;
   if (CR.tpl === "beneficios") return `A gente encontra, você embarca. 🌍\nDo 085 pra onde você quiser, com alertas, milhas e passagens que cabem no bolso.\n\n${String(T.lista || "").split("\n").filter(Boolean).map(l => "✈️ " + l).join("\n")}\n\nSegue o perfil e compartilha com quem também ama viajar!\n\n#partiu085 #viagem #fortaleza`;
   if (CR.tpl === "dica") return `💳 ${T.destaque || ""}\n${T.texto || ""}\n\nPlanejamento é o segredo pra multiplicar suas milhas e viajar mais!\nSalva o post pra lembrar depois! 📌\n\n#partiu085 #milhas #dicasdeviagem`;
+  if (CR.tpl === "livre") { const p = partesIdeia(T); return `${p.titulo}${p.resto ? "\n" + p.resto : ""}\n\n${ass}\n✈️ Receba alertas no WhatsApp: ${linkGrupo()}\n\n#partiu085 #passagensbaratas #fortaleza #viagem`; }
   if (CR.tpl === "pergunta") return `${T.titulo || ""} 🌎\nComenta aqui e marca aquele parceiro de viagem que iria junto contigo!\n\n#partiu085 #viagem #fortaleza`;
   return "";
 }
 function campos() {
   const T = CR.txt, f = (k, l, area = false) => `<div class="field"><label>${l}</label>${area ? `<textarea data-crt="${k}" style="min-height:140px">${esc(T[k] || "")}</textarea>` : `<input data-crt="${k}" value="${esc(T[k] || "")}">`}</div>`;
   const sorteia = `<button class="bt sm ghost" data-act="crsortear">${ic("refresh")}Sortear outro texto</button>`;
+  if (CR.tpl === "livre") return `<div class="field"><label>Sua ideia ou texto</label><textarea data-crt="ideia" style="min-height:140px" placeholder="1ª linha vira o título. O resto vira o texto. Se tiver preço (R$ 399), ele ganha destaque.">${esc(T.ideia || "")}</textarea></div>
+    <div class="field"><label>Print ou foto (opcional)</label><label class="bt upl">${ic("image")}${LIVRE.img ? "Trocar imagem" : "Escolher imagem"}<input type="file" id="cr-img" accept="image/*" hidden></label>
+      ${LIVRE.img ? `<button class="bt sm ghost danger" data-act="crsemimg">${ic("x")}Tirar imagem</button>` : ""}<small>A imagem fica só no seu aparelho, não vai pro site.</small></div>
+    <div class="field"><label>Como montar</label><div class="presets" style="margin-top:0">${[["print", "Print em destaque"], ["foto", "Foto de fundo"], ["texto", "Só texto"]].map(([v, n]) => `<button class="chip ${LIVRE.layout === v ? "on" : ""}" data-act="crlay" data-v="${v}">${n}</button>`).join("")}</div></div>`;
   if (CR.tpl === "frase") return f("titulo", "Frase de cima") + f("destaque", "Frase em letra cursiva") + f("rodape", "Frase de baixo") + `<div class="cr-frases">${SLOGANS.concat(ASSINATURAS).slice(0, 22).map(s => `<button class="chip" data-act="crfrase" data-t="${esc(s)}">${esc(s.length > 48 ? s.slice(0, 46) + "…" : s)}</button>`).join("")}</div>` + sorteia;
   if (CR.tpl === "beneficios") return f("titulo", "Título") + f("destaque", "Letra cursiva") + f("lista", "Itens (um por linha)", true);
   if (CR.tpl === "dica") return f("destaque", "Dica (grande)") + f("texto", "Explicação") + sorteia;
@@ -376,9 +428,10 @@ async function desenharCriativo() {
     telas.push(c => compor(c, W, H, t, o => mFinal(o, W, H, t)));
   } else {
     const a = S.alertas.find(x => x.id === CR.id) || S.alertas[0];
-    const fn = { promo: c => a && mPromo(c, W, H, t, a), frase: c => mFrase(c, W, H, t, X), beneficios: c => mBeneficios(c, W, H, t, X),
+    if (CR.tpl === "livre" && LIVRE.layout === "foto" && LIVRE.img) { telas.push(c => mFoto(c, W, H, t, X)); }
+    const fn = { livre: c => mLivre(c, W, H, t, X), promo: c => a && mPromo(c, W, H, t, a), frase: c => mFrase(c, W, H, t, X), beneficios: c => mBeneficios(c, W, H, t, X),
       dica: c => mDica(c, W, H, t, X), pergunta: c => mPergunta(c, W, H, t, X), destino: c => mDestino(c, W, H, t, destinoCR()) }[CR.tpl];
-    telas.push(c => compor(c, W, H, t, fn));
+    if (!telas.length) telas.push(c => compor(c, W, H, t, fn));
   }
   box.innerHTML = "";
   telas.forEach((fn, i) => { const cv = document.createElement("canvas"); cv.width = W; cv.height = H; cv.dataset.n = i + 1; try { fn(cv.getContext("2d")); } catch (e) { console.error(e); } box.appendChild(cv); });
@@ -399,6 +452,8 @@ document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act;
   if (act === "cr") { CR[b.dataset.k] = b.dataset.v; render(); }
+  else if (act === "crlay") { LIVRE.layout = b.dataset.v; render(); }
+  else if (act === "crsemimg") { LIVRE.img = null; render(); }
   else if (act === "crtpl") { CR.tpl = b.dataset.v; CR.txt = txtPadrao(CR.tpl); render(); }
   else if (act === "crsortear") { CR.txt = txtPadrao(CR.tpl); render(); }
   else if (act === "crfrase") { const [p1, p2] = b.dataset.t.split(" — "); if (p2) { CR.txt.titulo = p1; CR.txt.destaque = p2; } else CR.txt.rodape = p1; render(); }
@@ -407,6 +462,9 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("change", e => {
   if (e.target.id === "cr-alerta") { CR.id = e.target.value; render(); }
+  else if (e.target.id === "cr-img" && e.target.files[0]) {
+    const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => { LIVRE.img = im; if (LIVRE.layout === "texto") LIVRE.layout = "print"; render(); }; im.src = r.result; }; r.readAsDataURL(e.target.files[0]);
+  }
   else if (e.target.id === "cr-dest") { CR.dest = e.target.value; render(); }
   else if (e.target.dataset.act === "crdatas") { CR.datas = e.target.checked; desenharCriativo(); }
   else if (e.target.dataset.act === "crmascote") { CR.mascote = e.target.checked; desenharCriativo(); }

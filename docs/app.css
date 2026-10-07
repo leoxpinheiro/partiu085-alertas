@@ -449,3 +449,6 @@ body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
 .conv .texto{max-height:none}
 @media (max-width:900px){.hist-det{grid-template-columns:1fr}.mk-post{grid-template-columns:1fr}}
 @media (max-width:1179px){.cr-prev{order:-1}}
+.upl{cursor:pointer;width:fit-content}
+.ideia-card textarea{border:0;border-radius:var(--radius-inner);background:var(--tile);box-shadow:var(--shadow-xs);padding:var(--space-4);font:inherit;resize:vertical;outline:none}
+.ideia-card h3{display:flex;align-items:center;gap:var(--space-2)}

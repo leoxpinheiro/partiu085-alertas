@@ -81,6 +81,10 @@ function pMarketing() {
       ${kpi("Próximo post", prox[0] ? NOME_DIA[diaSem(prox[0].data)] : "–", prox[0] ? esc(prox[0].titulo) : "Gere a próxima semana", false, "image")}
       ${kpi("Promoções desta semana", topSemana().length, "viram carrossel e stories", false, "bell")}
     </div>
+    <div class="card ideia-card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>${ic("zap")} Tem uma ideia, um print ou um texto?</h3>
+      <div class="desc">Cola aqui que eu monto o banner na identidade do 085 — stories, feed ou quadrado.</div></div></div>
+      <textarea id="mk-ideia" placeholder="Ex.: Gente, Recife a partir de R$ 379! Corre que acaba." style="width:100%;min-height:90px"></textarea>
+      <div class="al-acts" style="margin-top:var(--space-3)"><button class="bt pri" data-act="mkideia">${ic("image")}Transformar em banner</button><span class="sub">Na próxima tela você pode anexar um print ou foto.</span></div></div>
     <div class="grid two">
       <div class="card"><div class="card-h"><div><h3>Calendário</h3><div class="desc">Padrão azul → amarelo. Clique em “Criar arte” e a arte abre pronta.</div></div></div>
         <div class="mk-lista">${posts.map(p => `<article class="mk-post ${p.feito ? "feito" : ""} ${p.data === hoje ? "hoje" : ""}">
@@ -109,6 +113,7 @@ async function salvarMK() {
 document.addEventListener("click", async e => {
   const b = e.target.closest("[data-act]"); if (!b || !b.dataset.act.startsWith("mk")) return;
   const act = b.dataset.act, P = id => MK.dados.posts.find(p => p.id === id);
+  if (act === "mkideia") { CR.tpl = "livre"; CR.txt = { ideia: ($("#mk-ideia") || {}).value || "" }; location.hash = "#criativos"; return; }
   if (act === "mkarte") {
     const p = P(b.dataset.id);
     CR.tpl = p.tpl; CR.tema = p.tema; CR.txt = { ...(p.txt || {}) }; CR.fmt = "feed";

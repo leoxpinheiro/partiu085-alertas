@@ -9,7 +9,7 @@ const S = {
   alertas: [], rotas: [], ajustes: {}, status: { rotas: {} }, hist: {}, rodadas: [],
   rotasSujo: false, ajustesSujo: false,
   F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "" },
-  marcados: {},
+  marcados: {}, grupos: null, gruposSujo: false, rodando: false,
   R: { ordem: "az", tipo: "" }, D: { ordem: "ofertas", tipo: "", q: "", sel: "" }, dashOrd: "ofertas", cal: {},
   histRota: "", conv: null,
 };
@@ -92,6 +92,7 @@ async function salvarArquivo(path, obj, msg) {
 }
 async function rodarRadar(rotas = "") {
   if (!token()) { toast("Configure o token do GitHub em Ajustes primeiro."); location.hash = "#ajustes"; return; }
+  document.body.classList.add("voando");
   await gh("/actions/workflows/alertas.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { rotas } }) });
   toast(rotas ? `Buscando ${rotas} agora… os alertas aparecem em ~3 min.` : "Rodada completa iniciada… leva ~10 min.", 4200);
   setTimeout(checarRodando, 4000);
@@ -99,13 +100,15 @@ async function rodarRadar(rotas = "") {
 async function rodarTurbo() {
   if (!token()) { toast("Configure o token do GitHub em Ajustes primeiro."); location.hash = "#ajustes"; return; }
   await gh("/actions/workflows/varredura.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { robos: "8" } }) });
+  document.body.classList.add("voando"); setTimeout(checarRodando, 5000);
   toast("Varredura turbo iniciada: 8 robôs varrendo todas as rotas (~25 min). Não gera alertas, monta a base de preços.", 6000);
 }
 async function checarRodando() {
   try {
     const r = await fetch(API + "/actions/runs?per_page=3", { headers: { Accept: "application/vnd.github+json" } }).then(r => r.json());
-    const rodando = (r.workflow_runs || []).some(w => w.status !== "completed" && w.name.startsWith("Alertas"));
-    const p = $("#pulse"); if (p) p.innerHTML = rodando ? `<span class="dot run"></span>Varrendo agora…` : `<span class="dot"></span>Última varredura ${haQuanto(S.ultima)} · roda a cada 3h`;
+    const rodando = (r.workflow_runs || []).some(w => w.status !== "completed" && /^(Alertas|Varredura)/.test(w.name));
+    S.rodando = rodando; document.body.classList.toggle("voando", rodando);
+    const p = $("#pulse"); if (p) p.innerHTML = rodando ? `<span class="aviaozinho">${ic("plane", "i sm")}</span>Varrendo os céus…` : `<span class="dot"></span>Última varredura ${haQuanto(S.ultima)} · roda a cada 3h`;
     if (rodando) setTimeout(checarRodando, 30000);
   } catch (e) { }
 }
@@ -130,9 +133,9 @@ async function getJSON(f, padrao) {
   try { const r = await fetch(f + "?t=" + Date.now()); if (!r.ok) throw 0; return await r.json(); } catch (e) { return padrao; }
 }
 async function carregar() {
-  const [a, r, aj, st, h, rd, mk] = await Promise.all([
+  const [a, r, aj, st, h, rd, mk, gp] = await Promise.all([
     getJSON("alerts.json", { alertas: [] }), getJSON("rotas.json", []), getJSON("ajustes.json", {}),
-    getJSON("status.json", { rotas: {} }), getJSON("historico.json", {}), getJSON("rodadas.json", []), getJSON("marcados.json", {}),
+    getJSON("status.json", { rotas: {} }), getJSON("historico.json", {}), getJSON("rodadas.json", []), getJSON("marcados.json", {}), getJSON("grupos.json", null),
   ]);
   S.alertas = (a.alertas || []).map(x => ({ ...x, ida: x.ida || (x.datas && x.datas[0] && x.datas[0].ida), volta: x.volta || (x.datas && x.datas[0] && x.datas[0].volta) }))
     .sort((x, y) => y.criado.localeCompare(x.criado));
@@ -141,6 +144,7 @@ async function carregar() {
   S.status = st || { rotas: {} }; S.hist = h || {}; S.rodadas = rd || [];
   let local = {}; try { local = JSON.parse(load("p085_marcados") || "{}"); } catch (e) { }
   S.marcados = { ...(mk || {}), ...local };
+  if (!S.gruposSujo) S.grupos = gp || GRUPOS_PADRAO.map(g => ({ ...g }));
   S.ultima = S.status.ultima_rodada || a.atualizado;
 }
 
@@ -149,24 +153,24 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["destinos", "globe", "Destinos"], ["rotas", "plane", "Rotas"],
-  ["historico", "chart", "Histórico"], ["criativos", "image", "Criativos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["destinos", "globe", "Destinos"], ["rotas", "plane", "Rotas"],
+  ["grupos", "users", "Grupos"], ["historico", "chart", "Histórico"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
   const hoje = S.alertas.filter(a => a.criado.slice(0, 10) === hojeISO()).length;
-  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 5 ? `<span class="sep"></span>` : "") +
+  $("#rail").innerHTML = PAGS.map(([k, i, n], idx) => (idx === 6 ? `<span class="sep"></span>` : "") +
     `<a href="#${k}" class="${pag === k ? "on" : ""}" title="${n}" aria-label="${n}">${ic(i)}${k === "alertas" && hoje ? `<b class="cnt">${hoje}</b>` : ""}</a>`).join("");
-  $("#tabs").innerHTML = PAGS.slice(0, 5).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
+  $("#tabs").innerHTML = PAGS.slice(0, 6).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
-    [PAGS[2], PAGS[7]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
+    [PAGS[2], PAGS[5]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
   $("#more").innerHTML = PAGS.slice(3).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
   return pag;
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
@@ -218,6 +222,7 @@ function cardAlerta(a, compacto = false) {
     <div class="tags">
       <span class="tag ${k}">${ktxt} · −${pct(a.desconto)} ↘</span>
       <span class="tag">${esc(nomeCia(a.cia_nome))}</span><span class="tag">${paradasTxt(a.escalas)}</span>
+      ${a.vip ? `<span class="tag vip-t">${ic("star", "i sm")}Pedido VIP${a.vip_nome ? " · " + esc(a.vip_nome) : ""}</span>` : ""}
       ${a.telegram ? `<span class="tag">${ic("check", "i sm")}Telegram</span>` : ""}
       ${a.conferido ? (a.conferido.status === "valendo" ? `<span class="tag ok-t">${ic("check", "i sm")}Ainda valendo · conferido ${haQuanto(a.conferido.quando)}</span>` : `<span class="tag neg-t">Subiu para ${brl(a.conferido.preco)} · ${haQuanto(a.conferido.quando)}</span>`) : ""}
     </div>
@@ -360,6 +365,70 @@ function pDestinos() {
     </article>`).join("")}</div>` : `<div class="card vazio">Nenhum destino com base ainda. Rode a varredura turbo.</div>`}`;
 }
 
+/* ------------------------------------------------------------ Grupos e links */
+const GRUPOS_PADRAO = [
+  { id: "gratis", nome: "Partiu085 · Alertas grátis", desc: "Promoções de passagens saindo de Fortaleza, todos os dias.", link: "https://bit.ly/radar085", preco: "", ativo: true },
+  { id: "vip", nome: "Partiu085 · VIP", desc: "Todos os alertas na hora, datas completas e pedidos de rota.", link: "", preco: "R$ 14,90/mês", ativo: true },
+  { id: "milhas", nome: "Partiu085 · Milhas", desc: "Milhas baratas, bônus de transferência (Livelo, Esfera) e oportunidades.", link: "", preco: "", ativo: true },
+  { id: "comunidade", nome: "Partiu085 · Comunidade", desc: "Troca de experiências, dicas de viagem e conversa entre viajantes.", link: "", preco: "", ativo: true },
+];
+function conviteGrupo(g) {
+  return `✈️ *${g.nome}*\n${g.desc}${g.preco ? `\n💳 ${g.preco}` : ""}\n\n👉 Entre aqui: ${g.link || "(link do grupo)"}`;
+}
+function pGrupos() {
+  const G = S.grupos || [];
+  const bio = location.origin + location.pathname.replace(/index\.html$/, "") + "links.html";
+  return head("Grupos e links", "Seus grupos, links de convite e a página de links para a bio",
+    `${S.gruposSujo ? `<button class="bt pri" data-act="salvargrupos">${ic("save")}Salvar grupos</button>` : ""}`) +
+    `<div class="card bio-card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Página de links (bio do Instagram)</h3>
+      <div class="desc">Uma página com todos os grupos ativos. Coloque este link na bio do @partiu.085.</div></div></div>
+      <div class="bio-l"><code>${esc(bio)}</code><button class="bt sm" data-act="copiartxt" data-t="${esc(bio)}">${ic("copy")}Copiar link</button><a class="bt sm" href="links.html" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm" data-act="qr" data-t="${esc(bio)}" data-n="pagina-de-links">QR code</button></div></div>
+    <div class="grupos">${G.map((g, i) => `<article class="card grupo ${g.ativo === false ? "off" : ""}">
+      <div class="card-h"><div><span class="micro">Grupo ${i + 1}${g.id === "vip" ? " · pago" : ""}</span><h3>${esc(g.nome)}</h3></div>
+        <label class="sw" title="Mostrar na página de links"><input type="checkbox" data-g="${i}" data-c="ativo" ${g.ativo !== false ? "checked" : ""}><span></span></label></div>
+      <div class="form" style="grid-template-columns:1fr">
+        <div class="field"><label>Nome</label><input data-g="${i}" data-c="nome" value="${esc(g.nome)}"></div>
+        <div class="field"><label>Descrição</label><input data-g="${i}" data-c="desc" value="${esc(g.desc)}"></div>
+        <div class="field"><label>Link de convite</label><input data-g="${i}" data-c="link" value="${esc(g.link)}" placeholder="https://chat.whatsapp.com/…"></div>
+        ${g.id === "vip" ? `<div class="field"><label>Preço</label><input data-g="${i}" data-c="preco" value="${esc(g.preco)}" placeholder="R$ 14,90/mês"></div>` : ""}
+      </div>
+      <div class="al-acts" style="margin-top:var(--space-4)">
+        <button class="bt sm" data-act="copiartxt" data-t="${esc(g.link)}" ${g.link ? "" : "disabled"}>${ic("copy")}Copiar link</button>
+        <button class="bt sm" data-act="copiartxt" data-t="${esc(conviteGrupo(g))}">${ic("send")}Copiar convite</button>
+        <button class="bt sm" data-act="qr" data-t="${esc(g.link)}" data-n="${esc(g.id)}" ${g.link ? "" : "disabled"}>QR code</button>
+        ${g.link ? `<a class="bt sm ghost" href="${esc(g.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>` : ""}
+      </div></article>`).join("")}</div>
+    <div id="qr-box"></div>`;
+}
+function mostrarQR(texto, nome) {
+  if (!window.QRious) { toast("Gerador de QR ainda carregando, tente de novo."); return; }
+  const c = document.createElement("canvas");
+  new QRious({ element: c, value: texto, size: 720, padding: 40, background: "#ffffff", foreground: "#141414", level: "M" });
+  $("#qr-box").innerHTML = `<div class="card qr-card"><div class="card-h"><div><h3>QR code</h3><div class="desc">${esc(texto)}</div></div><button class="bt sm ghost" data-act="fecharqr">${ic("x")}</button></div></div>`;
+  $("#qr-box .qr-card").appendChild(c);
+  const a = document.createElement("a"); a.className = "bt pri"; a.textContent = "Baixar QR code"; a.download = `qr-${nome || "partiu085"}.png`; a.href = c.toDataURL("image/png");
+  $("#qr-box .qr-card").appendChild(a);
+  $("#qr-box").scrollIntoView({ behavior: "smooth" });
+}
+
+/* ------------------------------------------------------------ Pedidos VIP */
+function pedidosVip() {
+  const vips = S.rotas.map((r, i) => [r, i]).filter(([r]) => r.vip);
+  return `<div class="card vip-card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>${ic("star")} Pedidos VIP</h3>
+    <div class="desc">Rota que um assinante pediu. Ela entra em toda rodada, avisa com desconto menor (${Math.round((S.ajustes.vip_desconto || .12) * 100)}%) ou quando chegar no preço-alvo, e não fica em descanso.</div></div></div>
+    ${vips.length ? `<div class="rows">${vips.map(([r, i]) => { const s = (S.status.rotas || {})[r.iata] || {}; return `<div class="row">
+      <span class="av">${esc(r.iata)}</span>
+      <span class="t"><b>${esc(r.nome)}</b><span class="sub">Pedido de ${esc(r.vip_nome || "assinante")} · agora a partir de ${s.menor ? brl(s.menor) : "–"} o trecho</span></span>
+      <label class="field mini-f"><span class="sub">Alvo R$</span><input class="mini" type="number" data-rota="${i}" data-campo="vip_alvo" value="${r.vip_alvo || ""}" placeholder="opcional"></label>
+      <button class="bt sm ghost danger" data-act="tirarvip" data-i="${i}" title="Encerrar pedido">${ic("x")}</button></div>`; }).join("")}</div>` : `<div class="vazio" style="padding:var(--space-3) 0">Nenhum pedido ainda.</div>`}
+    <div class="form" style="margin-top:var(--space-4)">
+      <div class="field"><label>Destino (IATA)</label><input id="vp-iata" maxlength="3" placeholder="ex.: LIS" style="text-transform:uppercase"></div>
+      <div class="field"><label>Quem pediu</label><input id="vp-nome" placeholder="ex.: Ana (VIP)"></div>
+      <div class="field"><label>Preço-alvo por trecho (R$)</label><input id="vp-alvo" type="number" placeholder="opcional"></div>
+      <div class="field"><button class="bt pri" data-act="addvip">${ic("star")}Adicionar pedido</button></div>
+    </div></div>`;
+}
+
 /* ------------------------------------------------------------ Rotas */
 function pRotas() {
   const st = S.status.rotas || {};
@@ -390,6 +459,7 @@ function pRotas() {
     `${S.rotasSujo ? `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>` : ""}<button class="bt" data-act="turbo">${ic("zap")}Varredura turbo</button><button class="bt" data-act="rodar">${ic("play")}Rodar radar agora</button>`) +
     (!token() ? `<div class="aviso warn"><span>${ic("key")} Para salvar rotas e rodar o radar daqui, configure seu token do GitHub.</span><a class="bt sm" href="#ajustes">Configurar</a></div>` : "") +
     (S.rotasSujo ? `<div class="aviso warn"><span>Você tem alterações não salvas.</span><button class="bt sm pri" data-act="salvarrotas">Salvar agora</button></div>` : "") +
+    pedidosVip() +
     `<div class="card" style="margin-bottom:14px"><h3>Cadastrar trecho</h3><div class="desc">Viu passagem barata em outro canal? Cadastre o destino e marque “foco” — ele passa a ser varrido em toda rodada.</div>
       <div class="form" id="form-rota">
         <div class="field"><label>Destino (código IATA)</label><input id="nr-iata" maxlength="3" placeholder="ex.: LIS" style="text-transform:uppercase"></div>
@@ -602,7 +672,22 @@ document.addEventListener("click", async e => {
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
     else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }
-    else if (act === "recarregar") { await carregar(); render(); toast("✓ Atualizado"); }
+    else if (act === "recarregar") { document.body.classList.add("voando"); await carregar(); render(); setTimeout(() => { if (!S.rodando) document.body.classList.remove("voando"); }, 900); toast("Atualizado."); }
+    else if (act === "addvip") {
+      const iata = $("#vp-iata").value.toUpperCase().trim();
+      if (!addRota(iata, { foco: true })) return;
+      const r = S.rotas.find(x => x.iata === iata); r.vip = true; r.vip_nome = $("#vp-nome").value.trim(); r.vip_alvo = +$("#vp-alvo").value || null;
+      await salvarRotas();
+    }
+    else if (act === "tirarvip") { const r = S.rotas[+b.dataset.i]; if (confirm(`Encerrar o pedido VIP de ${r.nome}?`)) { r.vip = false; r.vip_nome = ""; r.vip_alvo = null; S.rotasSujo = true; await salvarRotas(); } }
+    else if (act === "copiartxt") { await copiar(b.dataset.t); toast("Copiado."); }
+    else if (act === "qr") { mostrarQR(b.dataset.t, b.dataset.n); }
+    else if (act === "fecharqr") { $("#qr-box").innerHTML = ""; }
+    else if (act === "salvargrupos") {
+      b.disabled = true;
+      try { await salvarArquivo("docs/grupos.json", S.grupos, "Painel: atualiza grupos"); S.gruposSujo = false; toast("Grupos salvos. A página de links atualiza em ~1 min."); render(); }
+      catch (err) { toast("Não salvou: " + err.message, 5000); b.disabled = false; }
+    }
     else if (act === "turbo") { b.disabled = true; await rodarTurbo(); b.disabled = false; }
     else if (act === "pill") {
       const g = b.dataset.g, v = b.dataset.v;
@@ -645,6 +730,9 @@ document.addEventListener("input", e => {
     S.F[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value;
     if (el.type === "search" || el.type === "number") { clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-f="${el.dataset.f}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250); }
     else render();
+  } else if (el.dataset.g !== undefined && el.dataset.c) {
+    const g = S.grupos[+el.dataset.g]; g[el.dataset.c] = el.type === "checkbox" ? el.checked : el.value; S.gruposSujo = true;
+    const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvargrupos"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvargrupos">Salvar grupos</button>`);
   } else if (el.dataset.d !== undefined) {
     S.D[el.dataset.d] = el.value; clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-d="${el.dataset.d}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250);
   } else if (el.dataset.rota !== undefined) {

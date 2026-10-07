@@ -14,13 +14,14 @@
   --hatch:rgba(20,20,20,.09);
 }
 [data-theme="dark"]{
-  --ink:#F4F5F6; --ink-hover:#DADBDE; --on-ink:#121314; --white:#27282B;
-  --canvas:#121314; --sage:#121314; --card:#1A1B1D; --raised:#222326; --chip:#27282B; --muted:#2E3033; --border:#2E3033;
-  --text-primary:#F4F5F6; --text-body:#D2D3D6; --text-secondary:#B4B5BA; --text-tertiary:#9C9DA2; --text-disabled:#5E5F63;
-  --positive-text:#5BD07F; --negative-text:#FF7A52; --warning-text:#F0C950;
-  --glass:rgba(26,27,29,.72); --glass-line:rgba(255,255,255,.06); --tile:#27282B;
-  --gradient-app:radial-gradient(1000px 640px at 0% 100%, rgba(194,248,108,.10), transparent 62%), var(--canvas);
-  --hatch:rgba(255,255,255,.10);
+  --ink:#F4F5F6; --ink-hover:#DADBDE; --on-ink:#0B1622; --white:#16283A;
+  --canvas:#0B1622; --sage:#0B1622; --card:#12212F; --raised:#1B2E42; --chip:#1D3247; --muted:#24394F; --border:#2A4259;
+  --text-primary:#F2F6FA; --text-body:#C9D6E2; --text-secondary:#A9BACB; --text-tertiary:#8EA3B8; --text-disabled:#566B80;
+  --positive-text:#6BE08F; --negative-text:#FF8A66; --warning-text:#F0C950; --sky:#3FB3FF;
+  --glass:rgba(18,33,47,.74); --glass-line:rgba(130,180,230,.10); --tile:#16283A;
+  --gradient-app:radial-gradient(900px 600px at 0% 100%, rgba(194,248,108,.16), transparent 62%),
+                 radial-gradient(900px 640px at 100% 0%, rgba(0,155,255,.16), transparent 60%), var(--canvas);
+  --hatch:rgba(130,180,230,.16);
 }
 :root{
   --radius-pill:999px; --radius-card:28px; --radius-inner:20px; --radius-md:16px; --radius-sm:10px;
@@ -347,3 +348,52 @@ tr.off td{opacity:.45}
   .cal-2{grid-template-columns:1fr}
 }
 .dest-h .badge{justify-self:end}@media (max-width:900px){.dest-h .badge{justify-self:start}}
+
+
+/* tema escuro com mais cor */
+[data-theme="dark"] .rail a.on,[data-theme="dark"] .tabs a.on,[data-theme="dark"] .pill.on,[data-theme="dark"] .more-m a.on,[data-theme="dark"] .bottom a.on{background:var(--lime-300);color:#141414}
+[data-theme="dark"] .bt.pri,[data-theme="dark"] .bt.zap{background:var(--sky);color:#06121C}
+[data-theme="dark"] .bt.pri:hover,[data-theme="dark"] .bt.zap:hover{background:#6CC6FF}
+[data-theme="dark"] .prog i{background:linear-gradient(90deg,var(--sky),#20F0DF)}
+[data-theme="dark"] .col .bar{background:#1F3A55}
+[data-theme="dark"] .col.sel .bar{background:var(--lime-300)}
+[data-theme="dark"] .tag.imperdivel{background:var(--lime-300);color:#141414}
+[data-theme="dark"] .tag.info{color:var(--sky)}
+[data-theme="dark"] .kpis .card:nth-child(2){background:linear-gradient(160deg,rgba(0,155,255,.22),var(--glass) 60%)}
+[data-theme="dark"] .kpis .card:nth-child(3){background:linear-gradient(160deg,rgba(32,240,223,.16),var(--glass) 60%)}
+[data-theme="dark"] .dest.aberto{box-shadow:inset 0 0 0 2px var(--sky)}
+[data-theme="dark"] .mark{background:#16283A}
+[data-theme="dark"] .datas span.main{background:var(--sky);color:#06121C}
+
+/* avião voando enquanto o radar varre */
+.voo{position:fixed;left:0;right:0;top:0;height:3px;z-index:40;pointer-events:none;opacity:0;transition:opacity .3s var(--ease)}
+body.voando .voo{opacity:1}
+.voo .rastro{position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,transparent,var(--lime-300) 40%,var(--sky));transform-origin:left;animation:rastro 2.4s var(--ease) infinite}
+.voo .aviao{position:absolute;top:-8px;width:20px;height:20px;color:var(--ink);transform:rotate(45deg);animation:voa 2.4s var(--ease) infinite}
+@keyframes voa{0%{left:-24px}100%{left:calc(100% + 24px)}}
+@keyframes rastro{0%{transform:scaleX(0);opacity:1}80%{opacity:1}100%{transform:scaleX(1);opacity:0}}
+.aviaozinho{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--lime-300);color:#141414;animation:bob 1.2s ease-in-out infinite}
+.aviaozinho svg{transform:rotate(45deg)}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+body.voando .top-r .run svg{animation:bob 1.2s ease-in-out infinite}
+.carregando{display:flex;flex-direction:column;align-items:center;gap:var(--space-3);padding:120px 0;color:var(--text-secondary);font-weight:500}
+.carregando svg{width:34px;height:34px;transform:rotate(45deg);animation:pousa 1.6s ease-in-out infinite}
+@keyframes pousa{0%,100%{transform:rotate(45deg) translate(0,0)}50%{transform:rotate(45deg) translate(8px,-8px)}}
+
+/* pedidos VIP */
+.vip-card{background:linear-gradient(150deg,rgba(194,248,108,.30),var(--glass) 55%)}
+.vip-card h3{display:flex;align-items:center;gap:var(--space-2)}
+.vip-card .row .t .sub{display:block}
+.mini-f{flex-direction:row;align-items:center;gap:6px}
+.tag.vip-t{background:var(--lime-300);color:#141414;font-weight:600}
+
+/* grupos */
+.grupos{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-4)}
+.grupo .micro{display:block;font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em}
+.grupo.off{opacity:.55}
+.bio-l{display:flex;flex-wrap:wrap;gap:var(--space-2);align-items:center}
+.bio-l code{flex:1;min-width:220px;padding:10px 16px;border-radius:var(--radius-pill);background:var(--tile);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qr-card{margin-top:var(--space-4);display:flex;flex-direction:column;align-items:center;gap:var(--space-4)}
+.qr-card .card-h{width:100%}
+.qr-card canvas{width:260px;height:260px;border-radius:var(--radius-inner)}
+@media (prefers-reduced-motion:reduce){.voo .aviao,.voo .rastro,.aviaozinho,.carregando svg{animation:none!important}}

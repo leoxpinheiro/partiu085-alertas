@@ -1,6 +1,191 @@
 {
- "atualizado": "2026-10-06T21:14-03:00",
+ "atualizado": "2026-10-06T21:46-03:00",
  "alertas": [
+  {
+   "id": "FOR-POA-2026-12-08-1791333960",
+   "criado": "2026-10-06T21:46-03:00",
+   "rota": "FOR-POA",
+   "destino": "POA",
+   "destino_nome": "Porto Alegre",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 570,
+   "preco_volta": 1104,
+   "preco_tipico": 1205,
+   "desconto": 0.527,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2026-12-08",
+   "volta": "2026-12-10",
+   "datas_ida": [
+    {
+     "dia": "2026-12-08",
+     "preco": 570
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-12-10",
+     "preco": 1104
+    },
+    {
+     "dia": "2026-12-11",
+     "preco": 1104
+    },
+    {
+     "dia": "2026-12-12",
+     "preco": 1104
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "08"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "10",
+      "11",
+      "12"
+     ]
+    }
+   ],
+   "meses": [
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMDhqBRIDRk9ScgUSA1BPQUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0812POA10121?marker=677880",
+   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Porto Alegre (POA)\n💰 A partir de *R$ 570* o trecho\n🔥 IMPERDÍVEL · 53% abaixo da média\n🛫 Gol · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 08\n\n*Datas de volta:*\nDezembro 2026: 10, 11, 12\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-CWB-2026-11-11-1791333961",
+   "criado": "2026-10-06T21:46-03:00",
+   "rota": "FOR-CWB",
+   "destino": "CWB",
+   "destino_nome": "Curitiba",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 506,
+   "preco_volta": 544,
+   "preco_tipico": 929,
+   "desconto": 0.455,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2026-11-11",
+   "volta": "2026-11-14",
+   "datas_ida": [
+    {
+     "dia": "2026-11-11",
+     "preco": 506
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-13",
+     "preco": 580
+    },
+    {
+     "dia": "2026-11-14",
+     "preco": 544
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "11"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "13",
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTFqBRIDRk9ScgUSA0NXQkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1111CWB14111?marker=677880",
+   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Curitiba (CWB)\n💰 A partir de *R$ 506* o trecho\n🔥 IMPERDÍVEL · 46% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 11\n\n*Datas de volta:*\nNovembro 2026: 13, 14\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-FLN-2026-12-08-1791333961",
+   "criado": "2026-10-06T21:46-03:00",
+   "rota": "FOR-FLN",
+   "destino": "FLN",
+   "destino_nome": "Florianópolis",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 588,
+   "preco_volta": 1007,
+   "preco_tipico": 1043,
+   "desconto": 0.436,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2026-12-08",
+   "volta": "2026-12-11",
+   "datas_ida": [
+    {
+     "dia": "2026-12-08",
+     "preco": 588
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 620
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-12-11",
+     "preco": 1007
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "08",
+      "09"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "11"
+     ]
+    }
+   ],
+   "meses": [
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMDhqBRIDRk9ScgUSA0ZMTkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0812FLN11121?marker=677880",
+   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Florianópolis (FLN)\n💰 A partir de *R$ 588* o trecho\n🔥 IMPERDÍVEL · 44% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 08, 09\n\n*Datas de volta:*\nDezembro 2026: 11\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-REC-2026-11-04-1791332078",
    "criado": "2026-10-06T21:14-03:00",

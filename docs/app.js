@@ -141,6 +141,7 @@ async function carregar() {
     .sort((x, y) => y.criado.localeCompare(x.criado));
   if (!S.rotasSujo) S.rotas = r;
   if (!S.ajustesSujo) S.ajustes = aj;
+  S.H = S.H || { ordem: "queda", aberto: "" };
   S.status = st || { rotas: {} }; S.hist = h || {}; S.rodadas = rd || [];
   let local = {}; try { local = JSON.parse(load("p085_marcados") || "{}"); } catch (e) { }
   S.marcados = { ...(mk || {}), ...local };
@@ -153,8 +154,8 @@ const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="
 
 /* ------------------------------------------------------------ navegação */
 const PAGS = [
-  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["destinos", "globe", "Destinos"], ["rotas", "plane", "Rotas"],
-  ["grupos", "users", "Grupos"], ["historico", "chart", "Histórico"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
+  ["dashboard", "grid", "Dashboard"], ["alertas", "bell", "Alertas"], ["criativos", "image", "Criativos"], ["marketing", "calendar", "Marketing"], ["destinos", "globe", "Destinos"], ["historico", "chart", "Histórico"],
+  ["rotas", "plane", "Rotas"], ["grupos", "users", "Grupos"], ["converter", "swap", "Converter"], ["ajustes", "gear", "Ajustes"],
 ];
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0];
@@ -164,13 +165,13 @@ function navs() {
   $("#tabs").innerHTML = PAGS.slice(0, 6).map(([k, , n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${n}</a>`).join("");
   $("#bottom").innerHTML = [PAGS[0], PAGS[1]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("") +
     `<button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>` +
-    [PAGS[2], PAGS[5]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
-  $("#more").innerHTML = PAGS.slice(3).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
+    [PAGS[2], PAGS[3]].map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}" aria-label="${n}">${ic(i)}</a>`).join("");
+  $("#more").innerHTML = PAGS.slice(4).map(([k, i, n]) => `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}${n}</a>`).join("");
   return pag;
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   window.scrollTo(0, 0);
@@ -495,20 +496,65 @@ async function salvarRotas() {
 }
 
 /* ------------------------------------------------------------ Histórico */
+function sparkline(serie, w = 120, h = 34) {
+  if (!serie || serie.length < 2) return `<span class="sub">–</span>`;
+  const v = serie.map(p => p.minimo), lo = Math.min(...v), hi = Math.max(...v), rg = hi - lo || 1;
+  const pts = v.map((x, i) => `${(i / (v.length - 1) * (w - 6) + 3).toFixed(1)},${(h - 4 - (x - lo) / rg * (h - 8)).toFixed(1)}`).join(" ");
+  const ult = pts.split(" ").pop().split(",");
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" aria-hidden="true"><polyline points="${pts}"/><circle cx="${ult[0]}" cy="${ult[1]}" r="3.5"/></svg>`;
+}
+function linhasHist() {
+  const st = S.status.rotas || {};
+  return Object.keys(S.hist).filter(k => k.startsWith(ORIGEM + "-")).map(k => {
+    const iata = k.split("-")[1], serie = (S.hist[k] || []).slice(-30), r = S.rotas.find(x => x.iata === iata) || {}, s = st[iata] || {};
+    const hoje = serie[serie.length - 1] || {}, ontem = serie[serie.length - 2];
+    const var1 = ontem ? hoje.minimo / ontem.minimo - 1 : null;
+    const min30 = serie.length ? Math.min(...serie.map(p => p.minimo)) : null;
+    return { k, iata, nome: r.nome || s.nome || IATA[iata] || iata, tipo: r.tipo || s.tipo, serie, hoje, var1, min30, dias: serie.length,
+      abaixo: hoje.mediana ? 1 - hoje.minimo / hoje.mediana : 0, melhor_mes: s.melhor_mes, volta: st[iata] && st[iata].menor_volta };
+  }).filter(x => x.hoje.minimo);
+}
 function pHist() {
-  const keys = Object.keys(S.hist).sort();
-  if (!S.histRota || !S.hist[S.histRota]) S.histRota = keys[0] || "";
-  const serie = (S.hist[S.histRota] || []).slice(-60);
-  const nome = k => { const i = k.split("-")[1]; return `${i} · ${(S.rotas.find(r => r.iata === i) || {}).nome || IATA[i] || ""}`; };
-  return head("Histórico de preços", "Como o preço de cada rota se comporta dia a dia (ida e volta)") +
-    `<div class="filtros"><select data-act="histsel" style="min-width:240px">${keys.map(k => `<option value="${k}" ${k === S.histRota ? "selected" : ""}>${esc(nome(k))}</option>`).join("")}</select>
-      <span style="font-size:12.5px;color:var(--text-tertiary)">${serie.length} dia${serie.length === 1 ? "" : "s"} de histórico</span></div>
-    <div class="card linechart">${serie.length >= 2 ? linha(serie) : `<div class="vazio">${serie.length ? `Hoje: menor ${brl(serie[0].minimo)} · média ${brl(serie[0].mediana)}.<br>` : ""}O gráfico aparece a partir do 2º dia de varredura dessa rota.</div>`}
-      <div class="legend"><span><i style="background:var(--ink)"></i>Menor preço do dia</span><span><i style="background:var(--text-disabled)"></i>Preço médio (mediana)</span></div></div>
-    <div class="sec-gap"></div>
-    <div class="tbl-wrap"><table><thead><tr><th>Dia</th><th class="num">Menor</th><th class="num">Média</th><th class="num">Diferença</th></tr></thead><tbody>
-    ${serie.slice().reverse().map(p => `<tr><td>${dmy(p.dia)}</td><td class="num">${brl(p.minimo)}</td><td class="num">${brl(p.mediana)}</td><td class="num">−${pct(1 - p.minimo / p.mediana)}</td></tr>`).join("") || `<tr><td colspan="4" class="vazio">Sem histórico.</td></tr>`}
-    </tbody></table></div>`;
+  const L = linhasHist(), H = S.H || (S.H = { ordem: "queda", aberto: "" });
+  const comVar = L.filter(x => x.var1 !== null);
+  const caiu = comVar.slice().sort((a, b) => a.var1 - b.var1)[0], subiu = comVar.filter(x => x.var1 > .03).length, desceram = comVar.filter(x => x.var1 < -.03).length;
+  const barato = L.slice().sort((a, b) => a.hoje.minimo - b.hoje.minimo)[0];
+  const ord = { queda: (a, b) => (a.var1 ?? 0) - (b.var1 ?? 0), preco: (a, b) => a.hoje.minimo - b.hoje.minimo, abaixo: (a, b) => b.abaixo - a.abaixo, az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR") }[H.ordem];
+  const lista = L.slice().sort(ord);
+  const varTag = v => v === null ? `<span class="sub">1º dia</span>` : `<span class="badge ${v < -.005 ? "pos" : v > .005 ? "neg" : ""}">${v < 0 ? "−" : "+"}${Math.abs(v * 100).toFixed(0)}% ${v < -.005 ? "↘" : v > .005 ? "↗" : "→"}</span>`;
+  const dias = Math.max(0, ...L.map(x => x.dias));
+  return head("Histórico de preços", "Como os preços saindo de Fortaleza estão se mexendo — o menor preço de cada dia (só ida, por trecho)") +
+    `<div class="grid kpis">
+      ${kpi("Maior queda desde ontem", caiu && caiu.var1 < 0 ? "−" + Math.abs(caiu.var1 * 100).toFixed(0) + "%" : "–", caiu && caiu.var1 < 0 ? `${esc(caiu.nome)}: ${brl(caiu.hoje.minimo)} o trecho` : "Aparece a partir do 2º dia de varredura", true, "downr")}
+      ${kpi("Mais barato agora", barato ? brl(barato.hoje.minimo) : "–", barato ? `${esc(barato.nome)} · o trecho` : "", false, "plane")}
+      ${kpi("Movimento do dia", comVar.length ? `${desceram}<small> caíram</small>` : "–", comVar.length ? `${subiu} subiram · ${comVar.length - desceram - subiu} estáveis` : `${dias} dia${dias === 1 ? "" : "s"} de histórico até agora`, false, "chart")}
+    </div>
+    <div class="aviso"><span>${ic("chart")} <b>Como ler:</b> “Menor hoje” é a passagem mais barata encontrada para os próximos 3 meses. “Abaixo da média” compara com o preço comum da rota. A linha mostra os últimos 30 dias.</span></div>
+    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("hist", H.ordem, [["queda", "Maiores quedas"], ["abaixo", "Mais abaixo da média"], ["preco", "Menor valor"], ["az", "A–Z"]])}</div>
+    ${lista.length ? `<div class="tbl-wrap"><table class="hist-t"><thead><tr><th>Destino</th><th class="num">Menor hoje</th><th class="num">vs. ontem</th><th class="num">Abaixo da média</th><th>Últimos 30 dias</th><th class="num">Menor em 30 dias</th><th>Melhor mês</th></tr></thead><tbody>
+      ${lista.map(x => `<tr class="clic ${H.aberto === x.k ? "aberto" : ""}" data-act="histabrir" data-k="${x.k}">
+        <td data-l="Destino"><span><span class="iata">${x.iata}</span> ${esc(x.nome)}</span></td>
+        <td class="num" data-l="Menor hoje"><b>${brl(x.hoje.minimo)}</b></td>
+        <td class="num" data-l="vs. ontem">${varTag(x.var1)}</td>
+        <td class="num" data-l="Abaixo da média">−${pct(x.abaixo)}</td>
+        <td data-l="30 dias">${sparkline(x.serie)}</td>
+        <td class="num" data-l="Menor em 30 dias">${brl(x.min30)}</td>
+        <td data-l="Melhor mês">${x.melhor_mes ? MESES[+x.melhor_mes.slice(5, 7) - 1] + "/" + x.melhor_mes.slice(2, 4) : "–"}</td></tr>
+        ${H.aberto === x.k ? `<tr class="det"><td colspan="7">${detalheHist(x)}</td></tr>` : ""}`).join("")}
+    </tbody></table></div>` : `<div class="card vazio">Ainda sem histórico. Rode a varredura turbo em Destinos.</div>`}`;
+}
+function detalheHist(x) {
+  const c = S.cal[x.iata];
+  let meses = "";
+  if (c && c.ida) {
+    const pm = {}; c.ida.forEach(d => { const m = d.dia.slice(0, 7); pm[m] = Math.min(d.preco, pm[m] || 1e9); });
+    const ms = Object.entries(pm).sort(), mx = Math.max(...ms.map(m => m[1])), mn = Math.min(...ms.map(m => m[1]));
+    meses = `<div class="hm"><b>Menor preço por mês (ida)</b>${ms.map(([m, p]) => `<div class="hm-r"><span>${MESES[+m.slice(5, 7) - 1]}/${m.slice(2, 4)}</span><span class="hm-b"><i class="${p === mn ? "best" : ""}" style="width:${Math.max(8, p / mx * 100)}%"></i></span><b>${brl(p)}</b></div>`).join("")}</div>`;
+  }
+  return `<div class="hist-det"><div class="linechart">${x.serie.length >= 2 ? linha(x.serie) : `<div class="vazio">O gráfico de linha aparece a partir do 2º dia. Hoje: menor ${brl(x.hoje.minimo)} · média ${brl(x.hoje.mediana)}.</div>`}
+      <div class="legend"><span><i style="background:var(--ink)"></i>Menor preço do dia</span><span><i style="background:var(--text-disabled)"></i>Preço médio</span></div></div>
+    <div>${meses || `<div class="vazio">Calendário carregando…</div>`}
+      <div class="al-acts" style="margin-top:var(--space-3)"><a class="bt sm" href="#destinos" data-act="histcal" data-k="${x.iata}">${ic("globe")}Ver calendário dia a dia</a><button class="bt sm" data-act="buscarrota" data-iata="${x.iata}">${ic("refresh")}Buscar agora</button></div></div></div>`;
 }
 function linha(serie) {
   const W = 720, H = 240, P = { l: 56, r: 20, t: 16, b: 28 };
@@ -546,74 +592,109 @@ function secoesDatas(txt) {
   });
   return res;
 }
-function extrair(txt) {
-  const out = { origem: ORIGEM, destino: "", preco: "", media: "", ida: "", volta: "", idas: "", voltas: "", cia: "", link: "", milhas: "", programa: "" };
-  const iatas = (txt.match(/\b[A-Z]{3}\b/g) || []).filter(c => IATA[c] || c === ORIGEM || /^[A-Z]{3}$/.test(c)).filter(c => !["BRL", "USD", "EUR", "VIP", "PIX"].includes(c));
-  const dest = iatas.find(c => c !== ORIGEM); if (dest) out.destino = dest;
-  if (iatas[0] && iatas[0] !== dest) out.origem = iatas[0];
-  const precos = [...txt.matchAll(/R\$\s*([\d.]+(?:,\d{2})?)/g)].map(m => +m[1].replace(/\./g, "").replace(",", "."));
-  if (precos[0]) out.preco = Math.round(precos[0]);
-  const mm = txt.match(/m[ée]dia[^\d]*R?\$?\s*([\d.]+(?:,\d{2})?)/i); if (mm) out.media = Math.round(+mm[1].replace(/\./g, "").replace(",", "."));
-  const ano = new Date().getFullYear();
-  const datas = [...txt.matchAll(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/g)].map(m => {
-    let y = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : ano; const d = `${y}-${String(m[2]).padStart(2, "0")}-${String(m[1]).padStart(2, "0")}`;
-    if (!m[3] && d < hojeISO()) y++; return `${y}-${String(m[2]).padStart(2, "0")}-${String(m[1]).padStart(2, "0")}`;
-  });
-  out.ida = datas[0] || ""; out.volta = datas[1] || "";
-  const blocos = secoesDatas(txt);
-  if (blocos.ida.length) { out.idas = blocos.ida.join(", "); out.ida = blocos.ida[0]; }
-  if (blocos.volta.length) { out.voltas = blocos.volta.join(", "); out.volta = blocos.volta[0]; }
-  if (!out.idas && out.ida) out.idas = out.ida;
-  if (!out.voltas && out.volta) out.voltas = out.volta;
-  out.cia = CIAS_CONHECIDAS.find(c => new RegExp("\\b" + c + "\\b", "i").test(txt)) || "";
-  if (out.cia === "GOL") out.cia = "Gol";
-  const l = txt.match(/https?:\/\/\S+/); if (l) out.link = l[0];
-  const mi = txt.match(/(\d+(?:[.,]\d+)?\s*(?:k|mil)?)\s*(?:milhas|pontos)/i); if (mi) out.milhas = mi[1].replace(/\s+/g, "").replace(/mil$/i, "K").replace(/k$/, "K");
-  const pg = txt.match(/\b(TudoAzul|Azul Fidelidade|Smiles|LATAM Pass|TAP Miles&Go|Livelo|Esfera)\b/i); if (pg) out.programa = pg[1];
-  return out;
-}
 function agrupaMes(lista) {
   const M = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
   const g = {}; lista.filter(Boolean).sort().forEach(d => { const k = `${M[+d.slice(5, 7) - 1]} ${d.slice(0, 4)}`; (g[k] = g[k] || []).push(d.slice(8, 10)); });
   return Object.entries(g).map(([m, ds]) => `${m}: ${ds.join(", ")}`);
 }
-function textoConvertido(c) {
-  const aj = S.ajustes || {};
-  const nome = (S.rotas.find(r => r.iata === c.destino) || {}).nome || IATA[c.destino] || c.destino;
-  const L = ["🚨 *O RADAR APITOU*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, c.milhas ? `💰 A partir de *${c.milhas} milhas* o trecho` : `💰 A partir de *${brl(c.preco)}* o trecho`];
-  if (c.programa) L.push(`🎟️ Programa: ${c.programa}`);
-  if (c.media && c.preco) { const d = 1 - c.preco / c.media; if (d > 0) L.push(`${d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : "✅ BOA OPORTUNIDADE"} · ${Math.round(d * 100)}% abaixo da média`); }
-  if (c.cia) L.push(`🛫 ${c.cia}`);
-  const idas = String(c.idas || c.ida || "").split(/[\s,;]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
-  const voltas = String(c.voltas || c.volta || "").split(/[\s,;]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x));
-  if (idas.length) L.push("", "*Datas de ida:*", ...agrupaMes(idas));
-  if (voltas.length) L.push("", "*Datas de volta:*", ...agrupaMes(voltas));
-  L.push("", "⚠️ Preço pode mudar a qualquer momento.");
-  if (aj.mostrar_link && c.link) L.push(`🔗 ${c.link}`);
-  if (aj.linha_premium) L.push("⭐ Você recebeu em primeira mão por ser Premium.");
-  const rod = [aj.link_whatsapp ? `✈️ Receba alertas no WhatsApp: ${aj.link_whatsapp}` : "", aj.assinatura || ""].filter(Boolean);
-  if (rod.length) L.push("", ...rod);
-  return L.join("\n");
+const PROGRAMAS = ["Livelo", "Esfera", "Smiles", "TudoAzul", "Azul Fidelidade", "LATAM Pass", "TAP Miles&Go", "Iupp", "Átomos", "KM de Vantagens", "Dotz", "AAdvantage", "Flying Blue", "Iberia Plus", "Avios"];
+function achaCidades(txt) {
+  const achados = [];
+  const t = txt.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  Object.entries(IATA).forEach(([k, n]) => { const base = n.split(" (")[0].normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); const i = t.indexOf(base); if (i >= 0 && base.length > 3) achados.push([i, k]); });
+  (txt.match(/\b[A-Z]{3}\b/g) || []).forEach(c => { if (IATA[c] || c === ORIGEM) achados.push([txt.indexOf(c), c]); });
+  return [...new Map(achados.sort((a, b) => a[0] - b[0]).map(([, k]) => [k, k])).keys()];
 }
+function extrair(txt) {
+  const o = { tipo: "passagem", origem: ORIGEM, destino: "", preco: "", media: "", milhas: "", taxas: "", programa: "", de: "", para: "", bonus: "", validade: "", idas: "", voltas: "", cia: "", link: "" };
+  const low = txt.toLowerCase();
+  const progs = PROGRAMAS.filter(p => new RegExp(p.replace(/[&]/g, "\\$&"), "i").test(txt));
+  if (/b[oô]nus|bonifica/i.test(txt) && /transfer|%/.test(low)) {
+    o.tipo = "bonus"; o.de = progs[0] || ""; o.para = progs[1] || "";
+    const b = txt.match(/(?:at[ée]\s*)?(\d{2,3})\s*%/i); if (b) o.bonus = b[0].replace(/\s+/g, " ");
+    const v = txt.match(/(?:at[ée]|v[áa]lid[oa] at[ée]|termina|encerra)[^0-9]{0,15}(\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)/i); if (v) o.validade = v[1];
+  } else if (/milhas|pontos|\b\d+\s*k\b/i.test(txt) && !/R\$\s*[\d.]+,\d{2}\s*(?:ida|o trecho)/i.test(txt)) {
+    o.tipo = "milhas"; o.programa = progs[0] || "";
+    const mi = txt.match(/(\d+(?:[.,]\d+)?\s*(?:k|mil)?)\s*(?:milhas|pontos)/i) || txt.match(/(\d+\s*k)\b/i);
+    if (mi) o.milhas = mi[1].replace(/\s+/g, "").replace(/mil$/i, "K").replace(/k$/, "K");
+    const tx = txt.match(/taxas?[^R]{0,20}R\$\s*([\d.]+(?:,\d{2})?)/i); if (tx) o.taxas = tx[1];
+  }
+  const cid = achaCidades(txt);
+  const dests = cid.filter(c => c !== ORIGEM); if (dests[0]) o.destino = dests[0];
+  if (cid[0] && cid[0] !== ORIGEM && cid.includes(ORIGEM)) { /* origem continua FOR */ }
+  const precos = [...txt.matchAll(/R\$\s*([\d.]+(?:,\d{1,2})?)/g)].map(m => +m[1].replace(/\./g, "").replace(",", "."));
+  if (o.tipo === "passagem" && precos[0]) o.preco = Math.round(precos[0]);
+  const mm = txt.match(/m[ée]dia[^\d]*R?\$?\s*([\d.]+(?:,\d{2})?)/i); if (mm) o.media = Math.round(+mm[1].replace(/\./g, "").replace(",", "."));
+  const sec = secoesDatas(txt);
+  if (sec.ida.length) o.idas = sec.ida.join(", ");
+  if (sec.volta.length) o.voltas = sec.volta.join(", ");
+  if (!o.idas) {
+    const ano = new Date().getFullYear();
+    const ds = [...txt.matchAll(/\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/g)].map(m => { let y = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : ano; let d = `${y}-${String(m[2]).padStart(2, "0")}-${String(m[1]).padStart(2, "0")}`; if (!m[3] && d < hojeISO()) d = `${y + 1}${d.slice(4)}`; return d; });
+    if (ds[0] && o.tipo !== "bonus") o.idas = ds[0]; if (ds[1] && o.tipo !== "bonus") o.voltas = ds[1];
+  }
+  o.cia = CIAS_CONHECIDAS.find(c => new RegExp("\\b" + c + "\\b", "i").test(txt)) || ""; if (o.cia === "GOL") o.cia = "Gol";
+  const l = txt.match(/https?:\/\/\S+/); if (l) o.link = l[0];
+  o.trecho = /trecho|s[óo] ida/i.test(txt) || !/ida e volta/i.test(txt);
+  return o;
+}
+function listaDatas(v) { return String(v || "").split(/[\s,;]+/).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x)); }
+function grupoLink(id) { const g = (S.grupos || []).find(x => x.id === id && x.link); return g ? g.link : ((S.ajustes || {}).link_whatsapp || "https://bit.ly/radar085"); }
+function convTextos(c) {
+  const nome = c.destino ? ((S.rotas.find(r => r.iata === c.destino) || {}).nome || IATA[c.destino] || c.destino) : "";
+  const idas = listaDatas(c.idas), voltas = listaDatas(c.voltas);
+  const d = c.media && c.preco ? 1 - c.preco / c.media : 0;
+  const classe = d >= .4 ? "🔥 IMPERDÍVEL" : d >= .3 ? "⭐ ÓTIMA OPORTUNIDADE" : d > 0 ? "✅ BOA OPORTUNIDADE" : "";
+  const datas = [...(idas.length ? ["", "*Datas de ida:*", ...agrupaMes(idas)] : []), ...(voltas.length ? ["", "*Datas de volta:*", ...agrupaMes(voltas)] : [])];
+  const fim = ["", "✈️ Receba alertas no WhatsApp: " + grupoLink("gratis")];
+  const ass = ASSINATURAS[new Date().getDate() % ASSINATURAS.length];
+  if (c.tipo === "bonus") {
+    const rota = [c.de, c.para].filter(Boolean).join(" → ");
+    return {
+      grupo: ["💳 *BÔNUS DE TRANSFERÊNCIA*", "", rota ? `🔁 ${rota}` : "", c.bonus ? `🎁 ${/at/i.test(c.bonus) ? c.bonus : "Até " + c.bonus} de bônus` : "", c.validade ? `⏳ Válido até ${c.validade}` : "", "", "💡 Dica do 085: só transfira se já tiver um destino em mente — milha parada perde valor.", c.link ? `🔗 ${c.link}` : "", "", "✈️ Mais oportunidades de milhas: " + grupoLink("milhas")].filter((x, i, a) => x !== "" || a[i - 1] !== "").join("\n"),
+      insta: `💳 Bônus de transferência no ar${rota ? `: ${rota}` : ""}!\n${c.bonus ? `Até ${c.bonus.replace(/at[ée]\s*/i, "")} de bônus` : ""}${c.validade ? ` até ${c.validade}` : ""}.\n\nNo 085 a regra é clara: transfere só com destino em mente. 😉\n${ass}\n\n#partiu085 #milhas #${(c.de || "milhas").toLowerCase().replace(/\s/g, "")}`,
+      stories: `💳 BÔNUS ${c.bonus ? c.bonus.toUpperCase() : ""}\n${rota}\n${c.validade ? "até " + c.validade : ""}\nLink no grupo de milhas 👆`,
+    };
+  }
+  if (c.tipo === "milhas") {
+    return {
+      grupo: ["🚨 *O RADAR APITOU — MILHAS*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, `🎟️ A partir de *${c.milhas || "?"} milhas* o trecho${c.programa ? ` · ${c.programa}` : ""}`, c.taxas ? `💸 + taxas de R$ ${c.taxas}` : "", ...datas, "", "⚠️ Disponibilidade pode acabar a qualquer momento.", ...fim].filter((x, i, a) => !(x === "" && a[i - 1] === "")).join("\n"),
+      insta: `🎟️ ${nome} a partir de ${c.milhas} milhas o trecho saindo de Fortaleza${c.programa ? ` (${c.programa})` : ""}!\n${idas.length ? `Datas em ${[...new Set(idas.map(x => MESES[+x.slice(5, 7) - 1]))].join(", ")}.` : ""}\n\n${ass}\n✈️ Receba alertas no WhatsApp: ${grupoLink("gratis")}\n\n#partiu085 #milhas #${(nome || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")}`,
+      stories: `✈️ FOR → ${c.destino}\n🎟️ ${c.milhas} milhas\n${c.programa}\nCorre que acaba! Link no grupo 👆`,
+    };
+  }
+  return {
+    grupo: ["🚨 *O RADAR APITOU*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, `💰 A partir de *${brl(c.preco)}* ${c.trecho ? "o trecho" : "ida e volta"}`, classe ? `${classe} · ${Math.round(d * 100)}% abaixo da média` : "", c.cia ? `🛫 ${c.cia}` : "", ...datas, "", "⚠️ Preço pode mudar a qualquer momento.", ...fim].filter((x, i, a) => !(x === "" && a[i - 1] === "") && x !== null).join("\n"),
+    insta: `🚨 ${nome} a partir de ${brl(c.preco)} ${c.trecho ? "o trecho" : "ida e volta"} saindo de Fortaleza!${c.cia ? `\nVoando de ${c.cia}.` : ""}${idas.length ? `\nDatas em ${[...new Set(idas.map(x => MESES[+x.slice(5, 7) - 1]))].join(", ")}.` : ""}\n\n${ass}\nPreço pode mudar a qualquer momento.\n✈️ Receba alertas no WhatsApp: ${grupoLink("gratis")}\n\n#partiu085 #passagensbaratas #${(nome || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")}`,
+    stories: `🚨 FOR → ${c.destino}\n${brl(c.preco)} ${c.trecho ? "o trecho" : "ida e volta"}\nCorre que acaba! Link no grupo 👆`,
+  };
+}
+function textoConvertido(c) { return convTextos(c).grupo; }
 function pConv() {
   const c = S.conv;
   const campo = (k, lbl, tipo = "text") => `<div class="field"><label>${lbl}</label><input type="${tipo}" data-conv="${k}" value="${esc(c ? c[k] : "")}"></div>`;
-  return head("Converter texto", "Cole um alerta de outro canal e transforme no padrão Partiu085") +
-    `<div class="grid two">
-      <div class="card"><h3>1. Cole o texto original</h3><div class="desc">De outro grupo, canal ou site — eu puxo destino, preço, datas, companhia e link.</div>
-        <div class="field"><textarea id="conv-in" placeholder="Cole aqui…">${esc(S.convIn || "")}</textarea></div>
-        <div style="margin-top:10px;display:flex;gap:8px"><button class="bt pri" data-act="converter">Converter</button></div>
-        ${c ? `<div class="sec-gap"></div><h3>2. Confira os dados</h3><div class="form" style="margin-top:10px">
-          ${campo("origem", "Origem")}${campo("destino", "Destino")}${campo("preco", "Preço R$", "number")}${campo("milhas", "Milhas (ex.: 20K)")}${campo("programa", "Programa de milhas")}${campo("media", "Média R$", "number")}
-          ${campo("idas", "Datas de ida (AAAA-MM-DD, separadas por vírgula)")}${campo("voltas", "Datas de volta")}${campo("cia", "Companhia")}${campo("link", "Link")}
+  const T = c ? convTextos(c) : null;
+  const tipoNome = { passagem: "Passagem em dinheiro", milhas: "Passagem com milhas", bonus: "Bônus de transferência" };
+  return head("Converter texto", "Cole qualquer oferta de outro canal — o 085 reescreve na nossa linguagem, pro grupo, pro Instagram e pros stories") +
+    `<div class="grid two conv">
+      <div class="card"><h3>1. Cole o texto original</h3><div class="desc">Passagem em dinheiro, passagem com milhas ou bônus de transferência (Livelo, Esfera…).</div>
+        <div class="field"><textarea id="conv-in" placeholder="Cole aqui…" style="min-height:220px">${esc(S.convIn || "")}</textarea></div>
+        <div class="al-acts" style="margin-top:var(--space-3)"><button class="bt pri lg" data-act="converter">${ic("zap")}Converter pro jeito 085</button></div>
+        ${c ? `<div class="sec-gap"></div><h3>2. Confira o que eu entendi</h3>
+          <div class="presets" style="margin-top:var(--space-2)">${Object.entries(tipoNome).map(([k, t]) => `<button class="chip ${c.tipo === k ? "on" : ""}" data-act="convtipo" data-v="${k}">${t}</button>`).join("")}</div>
+          <div class="form" style="margin-top:var(--space-3)">
+          ${c.tipo === "bonus" ? campo("de", "De (programa)") + campo("para", "Para (programa)") + campo("bonus", "Bônus (ex.: 100%)") + campo("validade", "Válido até") :
+            campo("destino", "Destino (IATA)") + (c.tipo === "milhas" ? campo("milhas", "Milhas (ex.: 20K)") + campo("programa", "Programa") + campo("taxas", "Taxas R$") : campo("preco", "Preço R$", "number") + campo("media", "Média R$ (opcional)", "number")) +
+            campo("idas", "Datas de ida (AAAA-MM-DD, vírgula)") + campo("voltas", "Datas de volta") + campo("cia", "Companhia")}
+          ${campo("link", "Link (opcional)")}
         </div>` : ""}
       </div>
-      <div class="card"><h3>${c ? "3. Texto pronto" : "Resultado"}</h3><div class="desc">No formato do seu radar</div>
-        ${c ? `<div class="texto" id="conv-out">${esc(textoConvertido(c))}</div>
-        <div class="al-acts" style="margin-top:10px"><button class="bt" data-act="convcopiar">${ic("copy")}Copiar</button>
-          <a class="bt zap" id="conv-zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(textoConvertido(c))}">WhatsApp</a>
-          ${c.destino ? `<button class="bt" data-act="convrota">${ic("plane")}Vigiar ${esc(c.destino)} no radar</button>` : ""}</div>` : `<div class="vazio">O texto convertido aparece aqui.</div>`}
-      </div></div>`;
+      <div>${T ? [["grupo", "Pro grupo (WhatsApp/Telegram)"], ["insta", "Legenda do Instagram"], ["stories", "Texto curto pros stories"]].map(([k, t]) => `
+        <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>${t}</h3></div><div class="acts"><button class="bt sm" data-act="convcopiar" data-k="${k}">${ic("copy")}Copiar</button>${k === "grupo" ? `<a class="bt sm zap" id="conv-zap" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(T.grupo)}">${ic("send")}WhatsApp</a>` : ""}</div></div>
+        <div class="texto" id="conv-${k}">${esc(T[k])}</div></div>`).join("") +
+        `<div class="al-acts">${c.tipo !== "bonus" && c.destino ? `<button class="bt" data-act="convrota">${ic("plane")}Vigiar ${esc(c.destino)} no radar</button>` : ""}${c.tipo === "passagem" && c.preco && c.destino ? `<button class="bt pri" data-act="convarte">${ic("image")}Criar arte desta oferta</button>` : ""}</div>`
+        : `<div class="card vazio">Os três textos prontos aparecem aqui.</div>`}</div>
+    </div>`;
 }
 
 /* ------------------------------------------------------------ Ajustes */
@@ -692,9 +773,11 @@ document.addEventListener("click", async e => {
     else if (act === "pill") {
       const g = b.dataset.g, v = b.dataset.v;
       if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
-      else if (g === "dash") S.dashOrd = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
+      else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
       render(); return;
     }
+    else if (act === "histabrir") { const k = b.dataset.k; S.H.aberto = S.H.aberto === k ? "" : k; if (S.H.aberto) await carregarCal(k.split("-")[1]); render(); return; }
+    else if (act === "histcal") { S.D.sel = b.dataset.k; await carregarCal(b.dataset.k); }
     else if (act === "abrirdest") { S.D.sel = S.D.sel === b.dataset.iata ? "" : b.dataset.iata; if (S.D.sel) await carregarCal(S.D.sel); render(); setTimeout(() => { const el = document.getElementById("cal-" + S.D.sel); if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 50); return; }
     else if (act === "focodest") { addRota(b.dataset.iata, { foco: true }); await salvarRotas(); }
     else if (act === "rodar") { b.disabled = true; await rodarRadar(""); b.disabled = false; }
@@ -720,7 +803,16 @@ document.addEventListener("click", async e => {
     }
     else if (act === "sairtoken") { store("p085_token", ""); render(); }
     else if (act === "converter") { S.convIn = $("#conv-in").value; S.conv = extrair(S.convIn); render(); }
-    else if (act === "convcopiar") { await copiar(textoConvertido(S.conv)); toast("✓ Texto copiado"); }
+    else if (act === "convcopiar") { await copiar(convTextos(S.conv)[b.dataset.k || "grupo"]); toast("Copiado."); }
+    else if (act === "convtipo") { S.conv.tipo = b.dataset.v; render(); }
+    else if (act === "convarte") {
+      const c = S.conv, idas = listaDatas(c.idas), voltas = listaDatas(c.voltas), d = c.media ? Math.max(0, 1 - c.preco / c.media) : 0;
+      const pm = l => { const g = {}; l.forEach(x => { const k = `${["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][+x.slice(5, 7) - 1]} ${x.slice(0, 4)}`; (g[k] = g[k] || []).push(x.slice(8, 10)); }); return Object.entries(g).map(([mes, dias]) => ({ mes, dias })); };
+      const a = { id: "conv-" + Date.now(), criado: new Date(Date.now() - 3 * 36e5).toISOString().slice(0, 16) + "-03:00", destino: c.destino, destino_nome: (S.rotas.find(r => r.iata === c.destino) || {}).nome || IATA[c.destino] || c.destino,
+        tipo: INTL.has(c.destino) ? "internacional" : "nacional", modo: c.trecho ? "trecho" : "rt", preco: +c.preco, preco_tipico: +c.media || +c.preco, desconto: d, classe: d >= .4 ? "imperdivel" : d >= .3 ? "otima" : "boa",
+        cia_nome: c.cia, escalas: null, ida: idas[0] || "", volta: voltas[0] || "", datas_ida: idas.map(x => ({ dia: x })), datas_volta: voltas.map(x => ({ dia: x })), ida_meses: pm(idas), volta_meses: pm(voltas), datas: [], texto: convTextos(c).grupo, convertido: true };
+      S.alertas.unshift(a); CR.id = a.id; CR.tpl = "promo"; location.hash = "#criativos";
+    }
     else if (act === "convrota") { addRota(S.conv.destino, { foco: true }); toast(`${S.conv.destino} em foco — salve em Rotas.`); location.hash = "#rotas"; }
   } catch (err) { toast("Erro: " + err.message, 5000); b.disabled = false; }
 });
@@ -733,6 +825,10 @@ document.addEventListener("input", e => {
   } else if (el.dataset.g !== undefined && el.dataset.c) {
     const g = S.grupos[+el.dataset.g]; g[el.dataset.c] = el.type === "checkbox" ? el.checked : el.value; S.gruposSujo = true;
     const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvargrupos"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvargrupos">Salvar grupos</button>`);
+  } else if (el.dataset.conv !== undefined) {
+    S.conv[el.dataset.conv] = el.type === "number" ? (+el.value || "") : el.value;
+    const T = convTextos(S.conv); ["grupo", "insta", "stories"].forEach(k => { const n = $("#conv-" + k); if (n) n.textContent = T[k]; });
+    const z = $("#conv-zap"); if (z) z.href = "https://wa.me/?text=" + encodeURIComponent(T.grupo);
   } else if (el.dataset.d !== undefined) {
     S.D[el.dataset.d] = el.value; clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-d="${el.dataset.d}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250);
   } else if (el.dataset.rota !== undefined) {
@@ -745,7 +841,7 @@ document.addEventListener("input", e => {
     S.ajustes[k] = el.type === "checkbox" ? el.checked : el.type === "number" ? (el.value === "" ? null : +el.value) : el.value;
     S.ajustesSujo = true;
     const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarajustes"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarajustes">${ic("save")}Salvar ajustes</button>`);
-  } else if (el.dataset.conv !== undefined) {
+  } else if (el.dataset.conv !== undefined && false) {
     S.conv[el.dataset.conv] = el.type === "number" ? (+el.value || "") : el.value;
     $("#conv-out").textContent = textoConvertido(S.conv);
     $("#conv-zap").href = "https://wa.me/?text=" + encodeURIComponent(textoConvertido(S.conv));

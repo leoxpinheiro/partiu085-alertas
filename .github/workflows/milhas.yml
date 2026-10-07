@@ -1,0 +1,55 @@
+name: Milhas Partiu085
+
+on:
+  workflow_dispatch:
+    inputs:
+      sondar:
+        description: "Só testar as fontes (não salva)"
+        required: false
+        default: "nao"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: alertas
+  cancel-in-progress: false
+
+jobs:
+  milhas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Sondar fontes
+        if: github.event.inputs.sondar == 'sim'
+        run: |
+          python engine/milhas.py --sondar
+          echo "---- Smiles (teste de acesso)"
+          D=$(date -d '+40 days' +%F)
+          curl -s -o /tmp/s.json -w "HTTP %{http_code}\n" -m 25 \
+            -H "x-api-key: aJqPU7xNHl9qN3NVZnPaJ208aPo2Bh2p2ZV844tw" -H "region: BRASIL" -H "channel: WEB" \
+            -H "origin: https://www.smiles.com.br" -H "referer: https://www.smiles.com.br/" \
+            -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36" \
+            "https://api-air-flightsearch-green.smiles.com.br/v1/airlines/search?cabinType=all&originAirportCode=FOR&destinationAirportCode=GRU&departureDate=$D&memberNumber=&adults=1&children=0&infants=0&forceCongener=false" || true
+          head -c 400 /tmp/s.json; echo
+      - name: Atualizar milhas
+        if: github.event.inputs.sondar != 'sim'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_MILHAS: ${{ secrets.TELEGRAM_CHAT_MILHAS }}
+        run: python engine/milhas.py
+      - name: Salvar
+        if: github.event.inputs.sondar != 'sim'
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/milhas.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Milhas $(TZ=America/Fortaleza date '+%d/%m %H:%M')"
+          for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done
+          exit 1

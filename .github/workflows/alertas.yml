@@ -33,6 +33,12 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ROTAS_AGORA: ${{ github.event.inputs.rotas }}
         run: python engine/run.py
+      - name: Radar de milhas
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_MILHAS: ${{ secrets.TELEGRAM_CHAT_MILHAS }}
+        run: python engine/milhas.py
       - name: Salvar resultados
         run: |
           git config user.name "partiu085-bot"

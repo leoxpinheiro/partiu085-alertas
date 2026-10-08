@@ -352,8 +352,9 @@ function cardAlerta(a, compacto = false) {
 /* ------------------------------------------------------------ Dashboard */
 const POPULARES = new Set(["SAO", "RIO", "BSB", "REC", "SSA", "NAT", "LIS", "BHZ", "MCZ", "JPA", "POA", "CWB", "FLN", "BUE", "MIA", "ORL", "SCL", "MVD", "PAR", "MAD"]);
 /* nota da oferta: desconto vale mais; recorde, preço reconferido e destino popular somam */
-const TETO_IV = { "Nordeste": 850, "Sudeste e Sul": 1100, "Centro-Oeste e Norte": 1100, "América do Sul": 2400, "Caribe e América do Norte": 3300, "Europa e África": 3600 };
-function tetoIV(k, tipo) { const T = { ...TETO_IV, ...((S.ajustes || {}).teto_ida_volta || {}) }, r = regiaoDe(k); return T[r] || (tipo === "internacional" ? T["Europa e África"] : T["Sudeste e Sul"]); }
+const TETO_IV = { "Nordeste": 1100, "Sudeste e Sul": 1500, "Centro-Oeste e Norte": 1500, "América do Sul": 3000, "Caribe e América do Norte": 4200, "Europa e África": 4500 };
+/* o robô calcula o teto de cada rota (começa alto e vai baixando com os dados) e publica em status.json */
+function tetoIV(k, tipo) { const tv = (S.status || {}).tetos_iv; if (tv && tv[k]) return tv[k]; const T = { ...TETO_IV, ...((S.ajustes || {}).teto_ida_volta || {}) }, r = regiaoDe(k); return T[r] || (tipo === "internacional" ? T["Europa e África"] : T["Sudeste e Sul"]); }
 /* a ida e volta também tem que estar barata (senão "Barcelona por R$ 4.880" parece promoção) */
 function ivBarato(a) { return !a.preco_volta || a.vip || a.preco + a.preco_volta <= tetoIV(a.destino, a.tipo); }
 function notaAlerta(a) { return (a.desconto || 0) + (a.recorde ? .15 : 0) + (a.conferido && a.conferido.status === "valendo" ? .08 : 0) + (POPULARES.has(a.destino) ? .06 : 0) + (a.modo === "trecho" && a.escalas === 0 ? .03 : 0); }

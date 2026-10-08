@@ -204,8 +204,15 @@ def dados_falsos(r: dict, sentido: str) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------- lógica
-TETO_IDA_VOLTA = {"Nordeste": 850, "Sudeste e Sul": 1100, "Centro-Oeste e Norte": 1100, "América do Sul": 2400,
-                  "Caribe e América do Norte": 3300, "Europa e África": 3600}
+# Teto de ida e volta: começa mais alto (pouca informação) e vai baixando sozinho conforme o radar
+# junta preços de cada rota, até o "piso" da região. Assim não fica sem alerta no começo
+# e, com o tempo, só passa o que é barato de verdade pra aquela rota.
+TETO_INICIAL = {"Nordeste": 1100, "Sudeste e Sul": 1500, "Centro-Oeste e Norte": 1500, "América do Sul": 3000,
+                "Caribe e América do Norte": 4200, "Europa e África": 4500}
+TETO_PISO = {"Nordeste": 600, "Sudeste e Sul": 800, "Centro-Oeste e Norte": 900, "América do Sul": 1800,
+             "Caribe e América do Norte": 2500, "Europa e África": 2800}
+DIAS_PRA_APRENDER = 30
+_HIST_TETO: dict = {}
 
 
 def regiao(iata: str) -> str:
@@ -213,13 +220,19 @@ def regiao(iata: str) -> str:
     return next((n for n, ks in regs.items() if iata in ks), "")
 
 
-def teto_ida_volta(iata: str, tipo: str, aj: dict) -> float:
-    """Preço máximo de ida+volta pra chamar de promoção. Sem isso, 'Barcelona R$ 4.880' passava por estar abaixo da média."""
-    tetos = {**TETO_IDA_VOLTA, **(aj.get("teto_ida_volta") or {})}
-    reg = regiao(iata)
-    if reg in tetos:
-        return float(tetos[reg])
-    return float(tetos["Sudeste e Sul"] if tipo == "nacional" else tetos["Europa e África"])
+def teto_ida_volta(iata: str, tipo: str, aj: dict, hist: dict | None = None) -> float:
+    reg = regiao(iata) or ("Sudeste e Sul" if tipo == "nacional" else "Europa e África")
+    ini = float({**TETO_INICIAL, **(aj.get("teto_inicial") or {})}.get(reg, 4500))
+    piso = float({**TETO_PISO, **(aj.get("teto_piso") or {})}.get(reg, 800))
+    h = hist if hist is not None else _HIST_TETO
+    ida = {x["dia"]: x["minimo"] for x in h.get(f"{C.ORIGEM}-{iata}", [])}
+    volta = {x["dia"]: x["minimo"] for x in h.get(f"{iata}-{C.ORIGEM}", [])}
+    rts = sorted(ida[d] + volta[d] for d in ida if d in volta)
+    if not rts:
+        return ini
+    aprendido = statistics.median(rts) * 1.05  # o "melhor preço normal" da rota, com 5% de folga
+    peso = min(1.0, len(rts) / DIAS_PRA_APRENDER)
+    return round(max(piso, min(ini, ini * (1 - peso) + aprendido * peso)))
 
 
 def tipico(chave: str, dias: list[dict], hist: dict) -> float | None:
@@ -516,6 +529,7 @@ def rodada() -> None:
     rotas = carregar_rotas()
     aj = carregar_ajustes()
     hist = ler_json(HIST_FILE, {})
+    _HIST_TETO.clear(); _HIST_TETO.update(hist)
     enviados = ler_json(SENT_FILE, [])
     salvos = ler_json(ALERTS_FILE, {"alertas": []}).get("alertas", [])
     hoje = agora().date().isoformat()
@@ -687,6 +701,7 @@ def rodada() -> None:
     status.setdefault("rotas", {}).update(resumo)
     status["ultima_rodada"] = agora().isoformat(timespec="minutes")
     status["modo"] = "trecho"
+    status["tetos_iv"] = {r["iata"]: teto_ida_volta(r["iata"], r["tipo"], aj, hist) for r in rotas}
     salvar_json(STATUS_FILE, status)
     try:
         postar_top5(aj)

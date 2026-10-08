@@ -118,11 +118,11 @@ async function creditoFoto(iata) { if (!FOTOS.cred) FOTOS.cred = await getJSON("
 function caber(c, txt, max, min, larg, fonte) { let t = max; c.font = fonte(t); while (c.measureText(txt).width > larg && t > min) { t -= 4; c.font = fonte(t); } return t; }
 
 async function desenharResgate(cv, r) {
-  const W = 1080, H = 1350, c = cv.getContext("2d"); cv.width = W; cv.height = H;
+  const W = 1080, H = 1080, c = cv.getContext("2d"); cv.width = W; cv.height = H;
   try { await Promise.all([document.fonts.load('120px "Anton"'), document.fonts.load('700 40px "Plus Jakarta Sans"'), document.fonts.load('500 40px "Plus Jakarta Sans"')]); } catch (e) { }
   const NAVY = "#0F2A47", AM = MARCA.amarelo, J = MARCA.corpo, A = MARCA.titulo;
   const cor = r.cor || COR_PROG_IMG[r.prog] || AM;
-  const FH = 740; // altura da foto
+  const FH = 560; // altura da foto
   c.fillStyle = NAVY; c.fillRect(0, 0, W, H);
   // ---- foto (ou fundo da marca)
   const foto = await fotoDestino(r.iata);
@@ -137,47 +137,50 @@ async function desenharResgate(cv, r) {
   g = c.createLinearGradient(0, FH - 430, 0, FH); g.addColorStop(0, "rgba(15,42,71,0)"); g.addColorStop(.75, "rgba(15,42,71,.88)"); g.addColorStop(1, NAVY); c.fillStyle = g; c.fillRect(0, FH - 430, W, 432);
   // ---- topo: marca + etiqueta
   c.textBaseline = "middle";
-  const ico = img("icone"); if (ico.complete && ico.naturalWidth) { c.save(); rr(c, 60, 52, 76, 76, 20); c.clip(); c.drawImage(ico, 60, 52, 76, 76); c.restore(); }
-  c.fillStyle = "#fff"; c.font = `44px ${A}`; c.fillText("PARTIU 085", 152, 80); c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.85)"; c.fillText("alertas de passagens", 154, 116);
+  const ico = img("icone");
+  c.beginPath(); c.arc(106, 100, 50, 0, Math.PI * 2); c.fillStyle = AM; c.fill();
+  if (ico.complete && ico.naturalWidth) { c.save(); c.beginPath(); c.arc(106, 100, 44, 0, Math.PI * 2); c.clip(); c.drawImage(ico, 62, 56, 88, 88); c.restore(); }
+  c.fillStyle = "#fff"; c.shadowColor = "rgba(0,0,0,.35)"; c.shadowBlur = 10; c.font = `46px ${A}`; c.fillText("PARTIU 085", 172, 88);
+  c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.92)"; c.fillText("@partiu.085", 174, 124); c.shadowBlur = 0;
   const et = (r.pill || r.prog || "MILHAS").toUpperCase(); c.font = `800 26px ${J}`; const ew = c.measureText(et).width + 48;
-  rr(c, W - 60 - ew, 60, ew, 56, 28); c.fillStyle = cor; c.fill(); c.fillStyle = "#fff"; c.textAlign = "center"; c.fillText(et, W - 60 - ew / 2, 89); c.textAlign = "left";
+  rr(c, W - 60 - ew, 72, ew, 56, 28); c.fillStyle = cor; c.fill(); c.fillStyle = "#fff"; c.textAlign = "center"; c.fillText(et, W - 60 - ew / 2, 101); c.textAlign = "left";
   // ---- destino sobre a foto
   c.textBaseline = "alphabetic";
-  c.font = `800 28px ${J}`; c.fillStyle = AM; c.fillText(`SAINDO DE FORTALEZA ✈${r.internacional ? "  ·  INTERNACIONAL" : ""}`, 64, FH - 172);
   const nome = (r.nome || r.iata || "").toUpperCase();
-  const tn = caber(c, nome, 170, 80, W - 128, t => `${t}px ${A}`);
-  c.fillStyle = "#fff"; c.shadowColor = "rgba(0,0,0,.35)"; c.shadowBlur = 18; c.fillText(nome, 60, FH - 30); c.shadowBlur = 0;
+  const tn = caber(c, nome, 150, 76, W - 128, t => `${t}px ${A}`);
+  c.fillStyle = "#fff"; c.shadowColor = "rgba(0,0,0,.35)"; c.shadowBlur = 18; c.fillText(nome, 60, FH - 24); c.shadowBlur = 0;
+  c.font = `800 26px ${J}`; c.fillStyle = AM; c.fillText(`SAINDO DE FORTALEZA ✈${r.internacional ? "  ·  INTERNACIONAL" : ""}`, 64, FH - 24 - tn * 0.98 - 18);
   // crédito da foto
   const cr = foto ? await creditoFoto(r.iata) : null;
-  if (cr) { c.font = `500 15px ${J}`; c.fillStyle = "rgba(255,255,255,.55)"; c.textAlign = "right"; c.fillText(`Foto: ${(cr.autor || "Wikimedia Commons").slice(0, 40)}${cr.licenca ? " · " + cr.licenca : ""}`, W - 60, 160); c.textAlign = "left"; }
+  if (cr) { c.font = `500 15px ${J}`; c.fillStyle = "rgba(255,255,255,.55)"; c.textAlign = "right"; c.fillText(`Foto: ${(cr.autor || "Wikimedia Commons").slice(0, 40)}${cr.licenca ? " · " + cr.licenca : ""}`, W - 60, 156); c.textAlign = "left"; }
   // ---- preço
   const milhas = !!r.milhas && !r.big;
   const big = milhas ? milN(r.milhas) : r.big;
-  const y0 = FH + 64;
+  const y0 = FH + 56;
   c.font = `600 28px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("a partir de", 64, y0);
-  const tb = caber(c, big, 150, 90, 560, t => `${t}px ${A}`); c.fillStyle = AM; c.fillText(big, 60, y0 + tb * .92);
+  const tb = caber(c, big, 128, 80, 560, t => `${t}px ${A}`); c.fillStyle = AM; c.fillText(big, 60, y0 + tb * .92);
   const yb = y0 + tb * .92;
   c.font = `700 30px ${J}`; c.fillStyle = "#fff"; c.fillText(milhas ? `milhas ${r.taxa ? "+ R$ " + milN(r.taxa) : "+ taxas"} · o trecho` : "o trecho", 64, yb + 46);
   // caixa à direita
-  const bx = 660, by = y0 - 34, bw = W - 60 - bx, bh = 210;
+  const bx = 660, by = y0 - 30, bw = W - 60 - bx, bh = 186;
   rr(c, bx, by, bw, bh, 28); c.fillStyle = "rgba(255,255,255,.1)"; c.fill(); c.strokeStyle = "rgba(255,255,255,.18)"; c.lineWidth = 2; c.stroke();
   c.textAlign = "center"; const cx = bx + bw / 2;
   if (milhas) {
     c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("PROGRAMA", cx, by + 52);
-    const tp = caber(c, r.prog || "", 52, 30, bw - 40, t => `${t}px ${A}`); c.fillStyle = cor === AM ? "#fff" : "#fff"; c.fillText(r.prog || "", cx, by + 52 + tp + 10);
-    c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText(r.classe || "Econômica", cx, by + bh - 30);
+    const tp = caber(c, r.prog || "", 52, 30, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(r.prog || "", cx, by + 50 + tp);
+    c.font = `600 20px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText(r.classe || "Econômica", cx, by + bh - 24);
   } else if (r.idaVolta) {
     c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("IDA E VOLTA", cx, by + 52);
-    const tv = caber(c, brl(r.idaVolta), 80, 44, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(brl(r.idaVolta), cx, by + 52 + tv + 6);
-    c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText("a partir de, somando os trechos", cx, by + bh - 28);
+    const tv = caber(c, brl(r.idaVolta), 68, 40, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(brl(r.idaVolta), cx, by + 50 + tv);
+    c.font = `600 20px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("somando ida + volta", cx, by + bh - 24);
   }
   c.textAlign = "left";
   // ---- datas
-  const yd = Math.max(yb + 110, by + bh + 60);
+  const yd = Math.max(yb + 96, by + bh + 52);
   const coluna = (titulo, dias, x, w) => {
     c.font = `800 24px ${J}`; c.fillStyle = AM; c.fillText(titulo, x, yd);
     let yy = yd + 44, resto = 0;
-    const meses = porMesIso(dias), cabe = Math.max(1, Math.floor((H - 140 - yy) / 42) + 1), mostra = meses.length > cabe ? cabe - 1 : meses.length;
+    const meses = porMesIso(dias), cabe = Math.max(1, Math.floor((H - 44 - yy) / 42) + 1), mostra = meses.length > cabe ? cabe - 1 : meses.length;
     meses.forEach((gm, i) => {
       if (i >= mostra) { resto += gm.dias.length; return; }
       const [mes, ano] = gm.mes.split(" "); const rot = `${mes.slice(0, 3).toUpperCase()}/${(ano || "").slice(2)}`;
@@ -190,10 +193,6 @@ async function desenharResgate(cv, r) {
   };
   coluna("✈ IDA", r.idas || [], 64, 470);
   if ((r.voltas || []).length) coluna("↩ VOLTA", r.voltas, 564, 470);
-  // ---- rodapé
-  rr(c, 60, H - 104, W - 120, 64, 32); c.fillStyle = AM; c.fill();
-  c.fillStyle = NAVY; c.font = `800 26px ${J}`; c.textAlign = "center"; c.textBaseline = "middle";
-  c.fillText(`Receba alertas grátis: ${((S.ajustes || {}).link_whatsapp_milhas && milhas ? S.ajustes.link_whatsapp_milhas : (S.ajustes || {}).link_whatsapp || "bit.ly/radar085").replace(/^https?:\/\//, "")}`, W / 2, H - 71);
   c.textAlign = "left"; c.textBaseline = "alphabetic";
 }
 

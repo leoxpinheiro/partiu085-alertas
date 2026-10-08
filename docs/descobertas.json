@@ -1,0 +1,368 @@
+{
+ "atualizado": "2026-10-08T22:24+00:00",
+ "pistas": [
+  "BEL",
+  "BSB",
+  "BUE",
+  "CWB",
+  "FLN",
+  "LIS",
+  "MAD",
+  "POA",
+  "REC",
+  "RIO",
+  "SAO",
+  "THE"
+ ],
+ "blogs": [],
+ "destinos": [
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 415,
+    "ida": "2026-10-23",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-08T18:32:55Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
+   "pista": true
+  },
+  {
+   "iata": "BEL",
+   "ow": {
+    "preco": 563,
+    "ida": "2026-10-16",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-06T10:23:15Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
+   "pista": true
+  },
+  {
+   "iata": "FLN",
+   "ow": {
+    "preco": 618,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-05T18:33:09Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
+   "pista": true
+  },
+  {
+   "iata": "THE",
+   "ow": {
+    "preco": 641,
+    "ida": "2026-10-21",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-06T05:02:11Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
+   "pista": true
+  },
+  {
+   "iata": "CWB",
+   "rt": {
+    "preco": 893,
+    "ida": "2026-12-10",
+    "volta": "2027-01-29",
+    "paradas": 2,
+    "visto": "2026-10-08T07:47:08Z"
+   },
+   "ow": {
+    "preco": 411,
+    "ida": "2026-12-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-06T15:11:36Z"
+   },
+   "rastreada": true,
+   "nome": "Curitiba",
+   "pista": true
+  },
+  {
+   "iata": "RIO",
+   "rt": {
+    "preco": 1217,
+    "ida": "2026-11-30",
+    "volta": "2026-12-04",
+    "paradas": 1,
+    "visto": "2026-10-06T23:38:46Z"
+   },
+   "ow": {
+    "preco": 641,
+    "ida": "2026-11-08",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-05T11:55:51Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 1266,
+    "ida": "2026-11-13",
+    "volta": "2026-11-15",
+    "paradas": 1,
+    "visto": "2026-10-06T11:46:38Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
+   "pista": true
+  },
+  {
+   "iata": "SLZ",
+   "rt": {
+    "preco": 1316,
+    "ida": "2026-12-16",
+    "volta": "2026-12-31",
+    "paradas": 1,
+    "visto": "2026-10-06T22:43:18Z"
+   },
+   "rastreada": true,
+   "nome": "São Luís",
+   "pista": false
+  },
+  {
+   "iata": "STM",
+   "ow": {
+    "preco": 1495,
+    "ida": "2026-12-21",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-08T13:37:30Z"
+   },
+   "rastreada": false,
+   "nome": "STM",
+   "pista": false
+  },
+  {
+   "iata": "SAO",
+   "rt": {
+    "preco": 1528,
+    "ida": "2026-12-08",
+    "volta": "2026-12-16",
+    "paradas": 0,
+    "visto": "2026-10-06T19:56:24Z"
+   },
+   "ow": {
+    "preco": 535,
+    "ida": "2026-12-12",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-05T00:16:41Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
+  },
+  {
+   "iata": "POA",
+   "rt": {
+    "preco": 1637,
+    "ida": "2026-11-28",
+    "volta": "2026-11-30",
+    "paradas": 2,
+    "visto": "2026-10-07T22:49:08Z"
+   },
+   "ow": {
+    "preco": 613,
+    "ida": "2026-12-01",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-07T22:47:08Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
+   "pista": true
+  },
+  {
+   "iata": "MAD",
+   "ow": {
+    "preco": 1773,
+    "ida": "2026-11-18",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-06T03:03:58Z"
+   },
+   "rastreada": true,
+   "nome": "Madri",
+   "pista": true
+  },
+  {
+   "iata": "PNZ",
+   "rt": {
+    "preco": 2362,
+    "ida": "2026-10-15",
+    "volta": "2026-10-17",
+    "paradas": 2,
+    "visto": "2026-10-08T02:16:28Z"
+   },
+   "rastreada": false,
+   "nome": "PNZ",
+   "pista": false
+  },
+  {
+   "iata": "BUE",
+   "rt": {
+    "preco": 2656,
+    "ida": "2026-12-09",
+    "volta": "2026-12-16",
+    "paradas": 1,
+    "visto": "2026-10-06T16:45:50Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
+  },
+  {
+   "iata": "PHX",
+   "ow": {
+    "preco": 3022,
+    "ida": "2027-02-18",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-07T12:14:58Z"
+   },
+   "rastreada": false,
+   "nome": "PHX",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "ow": {
+    "preco": 3052,
+    "ida": "2026-12-09",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-06T03:37:03Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
+   "pista": false
+  },
+  {
+   "iata": "CMN",
+   "ow": {
+    "preco": 3068,
+    "ida": "2027-02-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-05T05:59:32Z"
+   },
+   "rastreada": false,
+   "nome": "CMN",
+   "pista": false
+  },
+  {
+   "iata": "SCL",
+   "rt": {
+    "preco": 3440,
+    "ida": "2026-10-10",
+    "volta": "2026-10-18",
+    "paradas": 1,
+    "visto": "2026-10-05T18:59:16Z"
+   },
+   "ow": {
+    "preco": 1032,
+    "ida": "2027-03-13",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-06T01:05:03Z"
+   },
+   "rastreada": true,
+   "nome": "Santiago",
+   "pista": false
+  },
+  {
+   "iata": "LIS",
+   "rt": {
+    "preco": 5491,
+    "ida": "2026-10-12",
+    "volta": "2026-10-26",
+    "paradas": 2,
+    "visto": "2026-10-08T00:31:14Z"
+   },
+   "ow": {
+    "preco": 1638,
+    "ida": "2026-11-20",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-08T18:29:02Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": true
+  },
+  {
+   "iata": "LED",
+   "ow": {
+    "preco": 5799,
+    "ida": "2026-12-19",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-06T23:17:00Z"
+   },
+   "rastreada": false,
+   "nome": "LED",
+   "pista": false
+  },
+  {
+   "iata": "ATL",
+   "rt": {
+    "preco": 5858,
+    "ida": "2026-11-02",
+    "volta": "2026-11-05",
+    "paradas": 3,
+    "visto": "2026-10-06T20:07:28Z"
+   },
+   "rastreada": false,
+   "nome": "ATL",
+   "pista": false
+  },
+  {
+   "iata": "TAS",
+   "rt": {
+    "preco": 8985,
+    "ida": "2026-12-28",
+    "volta": "2027-01-11",
+    "paradas": 2,
+    "visto": "2026-10-05T05:24:55Z"
+   },
+   "rastreada": false,
+   "nome": "TAS",
+   "pista": false
+  },
+  {
+   "iata": "TYO",
+   "rt": {
+    "preco": 9360,
+    "ida": "2027-09-02",
+    "volta": "2027-09-27",
+    "paradas": 2,
+    "visto": "2026-10-08T18:28:43Z"
+   },
+   "ow": {
+    "preco": 5951,
+    "ida": "2027-09-23",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-08T18:29:36Z"
+   },
+   "rastreada": false,
+   "nome": "TYO",
+   "pista": false
+  }
+ ]
+}

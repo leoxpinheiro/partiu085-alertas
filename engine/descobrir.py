@@ -101,8 +101,9 @@ def noticias() -> None:
     from email.utils import parsedate_to_datetime
     itens, vistos = [], set()
     lim = datetime.now(timezone.utc) - timedelta(days=10)
-    for q in NOTICIAS_Q:
-        url = "https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:10d")
+    urls = ["https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:10d") for q in NOTICIAS_Q]
+    urls += ["https://aeroin.net/feed/", "https://www.aeroflap.com.br/feed/", "https://passageirodeprimeira.com/feed/", "https://www.melhoresdestinos.com.br/feed"]
+    for url in urls:
         try:
             x = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
         except Exception as e:  # noqa: BLE001
@@ -110,13 +111,13 @@ def noticias() -> None:
             continue
         for item in re.findall(r"<item>(.*?)</item>", x, re.S)[:25]:
             g = lambda t: html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", (re.search(rf"<{t}[^>]*>(.*?)</{t}>", item, re.S) or [None, ""])[1])).strip()
-            tit, link, fonte = g("title"), g("link"), g("source")
+            tit, link, fonte = g("title"), g("link"), g("source") or url.split("/")[2].replace("www.", "")
             try:
                 dt = parsedate_to_datetime(g("pubDate"))
             except Exception:  # noqa: BLE001
                 continue
             tl = sem_acento(tit)
-            if dt < lim or "fortaleza" not in tl or not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
+            if dt < lim or not re.search(r"fortaleza|ceara|nordeste", tl) or not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
                 continue
             chave = re.sub(r"\W+", "", tit.lower())[:60]
             if chave in vistos:

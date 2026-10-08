@@ -115,7 +115,8 @@ def noticias() -> None:
                 dt = parsedate_to_datetime(g("pubDate"))
             except Exception:  # noqa: BLE001
                 continue
-            if dt < lim or "fortaleza" not in tit.lower():
+            tl = sem_acento(tit)
+            if dt < lim or "fortaleza" not in tl or not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
                 continue
             chave = re.sub(r"\W+", "", tit.lower())[:60]
             if chave in vistos:

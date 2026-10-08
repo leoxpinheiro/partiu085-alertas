@@ -13,17 +13,17 @@ CRED = DIR / "creditos.json"
 UA = {"User-Agent": "Partiu085-radar/1.0 (https://leoxpinheiro.github.io/partiu085-alertas; contato via GitHub)"}
 # página da Wikipedia (pt ou en) cuja foto principal é bonita para cada destino
 PAGINA = {
-    "SAO": "en:Paulista Avenue", "RIO": "pt:Pão de Açúcar (Rio de Janeiro)", "BSB": "pt:Congresso Nacional do Brasil", "BHZ": "en:Pampulha Modern Ensemble",
+    "SAO": "en:Paulista Avenue", "RIO": "pt:Pão de Açúcar (Rio de Janeiro)", "BSB": "en:Cathedral of Brasília", "BHZ": "en:Pampulha Modern Ensemble",
     "CNF": "en:Pampulha Modern Ensemble", "SSA": "pt:Elevador Lacerda", "REC": "pt:Praia de Boa Viagem", "NAT": "pt:Ponta Negra (Natal)",
-    "JPA": "en:João Pessoa", "MCZ": "pt:Pajuçara", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "en:Teresina",
+    "JPA": "pt:Praia de Tambaú", "MCZ": "pt:Maceió", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "pt:Ponte Estaiada Mestre João Isidoro França",
     "BEL": "pt:Estação das Docas", "MAO": "pt:Teatro Amazonas", "POA": "en:Porto Alegre", "CWB": "pt:Jardim Botânico de Curitiba",
     "FLN": "pt:Ponte Hercílio Luz", "VIX": "pt:Terceira Ponte", "GYN": "en:Goiânia", "IGU": "pt:Cataratas do Iguaçu",
     "FEN": "pt:Baía do Sancho", "JDO": "pt:Estátua do Padre Cícero", "VCP": "en:Campinas", "CGB": "en:Cuiabá", "CGR": "en:Campo Grande",
     "NVT": "pt:Balneário Camboriú", "BPS": "en:Porto Seguro", "PMW": "en:Palmas, Tocantins", "UDI": "en:Uberlândia",
-    "LIS": "en:Belém Tower", "OPO": "en:Ribeira (Porto)", "MAD": "en:Plaza Mayor, Madrid", "PAR": "en:Eiffel Tower", "ROM": "en:Colosseum",
+    "LIS": "en:Belém Tower", "OPO": "en:Dom Luís I Bridge", "MAD": "en:Plaza Mayor, Madrid", "PAR": "en:Eiffel Tower", "ROM": "en:Colosseum",
     "LON": "en:Tower Bridge", "AMS": "en:Canals of Amsterdam", "MIA": "en:South Beach", "ORL": "en:Orlando, Florida", "NYC": "en:Lower Manhattan",
-    "BUE": "en:Obelisco de Buenos Aires", "SCL": "en:Santiago", "LIM": "en:Miraflores District, Lima", "BOG": "en:Bogotá", "CTG": "en:Cartagena, Colombia",
-    "PTY": "en:Panama City", "CUN": "en:Cancún", "MVD": "en:Montevideo", "SID": "en:Sal, Cape Verde", "BCN": "en:Sagrada Família",
+    "BUE": "en:Obelisco de Buenos Aires", "SCL": "en:Santiago", "LIM": "en:Miraflores District, Lima", "BOG": "en:Bogotá", "CTG": "en:Walled City of Cartagena",
+    "PTY": "en:Cinta Costera", "CUN": "en:Cancún", "MVD": "en:Montevideo", "SID": "en:Santa Maria, Cape Verde", "BCN": "en:Sagrada Família",
     "MIL": "en:Milan Cathedral", "FRA": "en:Frankfurt", "PUJ": "en:Punta Cana", "MDE": "en:Medellín", "SDQ": "en:Ciudad Colonial (Santo Domingo)",
 }
 

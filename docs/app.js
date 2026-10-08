@@ -770,7 +770,7 @@ function convTextos(c) {
     };
   }
   return {
-    grupo: ["🚨 *O RADAR APITOU*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, `💰 A partir de *${brl(c.preco)}* ${c.trecho ? "o trecho" : "ida e volta"}`, classe ? `${classe} · ${Math.round(d * 100)}% abaixo da média` : "", c.cia ? `🛫 ${c.cia}` : "", ...datas, "", "⚠️ Preço pode mudar a qualquer momento.", ...fim].filter((x, i, a) => !(x === "" && a[i - 1] === "") && x !== null).join("\n"),
+    grupo: ["🚨 *O RADAR APITOU*", "", `✈️ Fortaleza (${c.origem}) → ${nome} (${c.destino})`, `💰 A partir de *${brl(c.preco)}* ${c.trecho ? "o trecho" : "ida e volta"}`, classe || "", c.cia ? `🛫 ${c.cia}` : "", ...datas, "", "⚠️ Preço pode mudar a qualquer momento.", ...fim].filter((x, i, a) => !(x === "" && a[i - 1] === "") && x !== null).join("\n"),
     insta: `🚨 ${nome} a partir de ${brl(c.preco)} ${c.trecho ? "o trecho" : "ida e volta"} saindo de Fortaleza!${c.cia ? `\nVoando de ${c.cia}.` : ""}${idas.length ? `\nDatas em ${[...new Set(idas.map(x => MESES[+x.slice(5, 7) - 1]))].join(", ")}.` : ""}\n\n${ass}\nPreço pode mudar a qualquer momento.\n✈️ Receba alertas no WhatsApp: ${grupoLink("gratis")}\n\n#partiu085 #passagensbaratas #${(nome || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")}`,
     stories: `🚨 FOR → ${c.destino}\n${brl(c.preco)} ${c.trecho ? "o trecho" : "ida e volta"}\nCorre que acaba! Link no grupo 👆`,
   };

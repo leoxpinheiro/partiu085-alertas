@@ -160,7 +160,7 @@ function montarTextoDinheiro(a) {
   const curto = g => { const [n, y] = g.mes.split(" "); return y ? `${n}/${y.slice(2)}` : n; };
   const L = ["🚨 *O RADAR APITOU!*", "", `✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`, `💰 *${brl(a.preco)}* o trecho`];
   if (a.preco_volta) L.push(`🔁 Ida e volta a partir de *${brl(a.preco + a.preco_volta)}*`);
-  L.push(`${rot[0]} *${rot[1]}* · ${Math.round(a.desconto * 100)}% abaixo da média`);
+  L.push(`${rot[0]} *${rot[1]}*`);
   L.push(`🛫 ${a.cia_nome || "—"}${paradas ? " · " + paradas : ""}`);
   if (a.recorde && a.base) L.push(`📉 _Menor preço que já vimos nesse trecho (${a.base.dias} dias de pesquisa)_`);
   if (a.vip) L.push("🎯 _Rota acompanhada a pedido dos assinantes VIP_");

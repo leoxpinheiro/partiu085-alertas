@@ -205,7 +205,7 @@ function cardDeAlerta(x) {
     const k = x.classe || "boa";
     return { pill: { imperdivel: "Imperdível", otima: "Ótima oportunidade", boa: "Boa oportunidade" }[k], cor: { imperdivel: "#16A34A", otima: "#2563EB", boa: "#D97706" }[k],
       script: "passagem barata saindo do 085", origem: "FOR", nome: x.destino_nome, iata: x.destino, internacional: x.tipo === "internacional",
-      big: brl(x.preco), sub: `o trecho${x.preco_volta ? ` · ida e volta a partir de ${brl(x.preco + x.preco_volta)}` : ""} · −${pct(x.desconto)}`,
+      big: brl(x.preco), sub: `o trecho${x.preco_volta ? ` · ida e volta a partir de ${brl(x.preco + x.preco_volta)}` : ""}`,
       idas: (x.datas_ida || []).map(d => d.dia).length ? x.datas_ida.map(d => d.dia) : isoDeMeses(x.ida_meses), voltas: (x.datas_volta || []).map(d => d.dia).length ? x.datas_volta.map(d => d.dia) : isoDeMeses(x.volta_meses) };
   }
   if (x.busca_propria) return { prog: x.para, origem: "FOR", nome: x.destino, iata: x.iata, internacional: x.internacional || INTL.has(x.iata), milhas: x.milhas, taxa: x.taxa, classe: x.classe || "Econômica",

@@ -8,7 +8,7 @@ const API = "https://api.github.com/repos/" + REPO;
 const S = {
   alertas: [], rotas: [], ajustes: {}, status: { rotas: {} }, hist: {}, rodadas: [],
   rotasSujo: false, ajustesSujo: false,
-  F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "" },
+  F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "", aba: "enviar", reg: "" },
   marcados: {}, grupos: null, gruposSujo: false, rodando: false,
   R: { ordem: "az", tipo: "" }, D: { ordem: "ofertas", tipo: "", q: "", sel: "", reg: "", ate: "" }, dashOrd: "ofertas", cal: {},
   histRota: "", conv: null,
@@ -291,22 +291,29 @@ function resumoDatas(meses, max = 6) {
 }
 function linhaAlerta(a) {
   ENV_REG[a.id] = a;
-  const k = a.classe || "boa", env = enviado(a), aberto = S.alAberto === a.id, trecho = a.modo === "trecho";
-  const ida = trecho ? resumoDatas(a.ida_meses) : (a.datas || []).slice(0, 4).map(d => dm(d.ida)).join(", ");
-  const volta = trecho ? resumoDatas(a.volta_meses, 4) : "";
-  const subiu = a.conferido && a.conferido.status === "subiu";
-  return `<article class="al-row ${k} ${env ? "enviado" : ""} ${subiu ? "subiu" : ""} ${aberto ? "aberto" : ""}" data-id="${esc(a.id)}">
-    <div class="alr">
-      <button class="alr-dest" data-act="alabrir" data-id="${esc(a.id)}" title="Ver detalhes"><span class="rt">FOR → ${esc(a.destino)}${a.vip ? " · ⭐ VIP" : ""}</span><b>${esc(a.destino_nome)}</b></button>
-      <div class="alr-preco"><b>${brl(a.preco)}</b><small>${trecho ? "o trecho" : "ida e volta"} · média ${brl(a.preco_tipico)}</small></div>
-      <span class="tag ${k}">−${pct(a.desconto)}</span>
-      <div class="alr-info"><span>${a.conferido && a.conferido.status === "subiu" ? `<b class="neg">subiu p/ ${brl(a.conferido.preco)}</b> · ` : a.conferido && a.conferido.status === "valendo" ? `<b class="pos">✓ ainda valendo</b> · ` : ""}${ivBarato(a) ? "" : `<b class="neg">ida e volta caro</b> · `}${a.recorde ? "📉 menor já visto · " : ""}${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
-      <div class="alr-acts">
-        <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}" title="Copiar texto">${ic("copy")}<span>Copiar</span></button>
-        <button class="bt sm zap" data-act="envabrir" data-id="${esc(a.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
-        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? (S.marcados[a.id] === "descartado" ? "Descartado" : "Enviado") : "Marcar"}</span></button>
-        ${(Date.now() - new Date(a.criado).getTime()) > 6 * 36e5 && !env ? `<button class="bt sm ghost" data-act="buscarrota" data-iata="${esc(a.destino)}" title="Buscar o preço de novo agora">${ic("refresh")}</button>` : ""}
-        <button class="bt sm ghost alr-x" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">${aberto ? "▴" : "▾"}</button>
+  const k = a.classe || "boa", env = enviado(a), aberto = S.alAberto === a.id, trecho = a.modo === "trecho", sit = situacao(a);
+  const ida = trecho ? resumoDatas(a.ida_meses, 4) : (a.datas || []).slice(0, 4).map(d => dm(d.ida)).join(", ");
+  const volta = trecho ? resumoDatas(a.volta_meses, 3) : "";
+  const rf = refDe(a.destino), c = a.conferido || {};
+  const estado = S.marcados[a.id] === "descartado" ? `<span class="st cinza">tirado da fila</span>`
+    : env ? `<span class="st verde">${ic("check", "i sm")}enviado ${new Date(S.marcados[a.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</span>`
+    : c.status === "subiu" ? `<span class="st vermelho">subiu p/ ${brl(c.preco)}</span>`
+    : !ivBarato(a) ? `<span class="st ambar">ida e volta caro</span>`
+    : c.status === "valendo" ? `<span class="st verde">✓ conferido ${haQuanto(c.quando)}</span>` : `<span class="st">achado ${haQuanto(a.criado)}</span>`;
+  return `<article class="al-row al2 ${k} ${sit} ${aberto ? "aberto" : ""}" data-id="${esc(a.id)}">
+    <div class="a2">
+      <button class="a2-foto" data-act="alabrir" data-id="${esc(a.id)}" style="background-image:url(fotos/${esc(a.destino)}.jpg)" title="Ver detalhes"></button>
+      <button class="a2-dest" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">
+        <b>${esc(a.destino_nome)}</b><small>${a.destino}${rf && rf.texto ? ` · ${esc(rf.texto)}` : a.tipo === "internacional" ? " · internacional" : ""}${a.vip ? " · ⭐ VIP" : ""}</small></button>
+      <div class="a2-preco"><b>${brl(a.preco)}</b><small>${trecho ? `o trecho${a.preco_volta ? ` · ida e volta <b>${brl(a.preco + a.preco_volta)}</b>` : ""}` : "ida e volta"}</small></div>
+      <div class="a2-q"><span class="tag ${k}">${CLASSE_NOME[k]} −${pct(a.desconto)}</span>${a.recorde ? `<span class="tag ok-t" title="Menor preço que já vimos nessa rota">📉 recorde</span>` : ""}</div>
+      <div class="a2-info"><span>${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)} ${estado}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
+      <div class="a2-acts">
+        ${sit === "fora" && !env ? "" : `<button class="bt sm ${env ? "ghost" : "zap"}" data-act="envabrir" data-id="${esc(a.id)}" title="Abrir imagem + texto pra mandar">${ic("image")}<span>${env ? "Reenviar" : "Enviar"}</span></button>`}
+        <button class="bt sm ghost ic-only" data-act="copiar" data-id="${esc(a.id)}" title="Copiar só o texto">${ic("copy")}</button>
+        <button class="bt sm ghost ic-only ${env ? "ok" : ""}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Desmarcar enviado" : "Marcar como enviado sem abrir"}">${ic(env ? "check" : "circle")}</button>
+        ${(Date.now() - new Date(a.criado).getTime()) > 6 * 36e5 && !env ? `<button class="bt sm ghost ic-only" data-act="buscarrota" data-iata="${esc(a.destino)}" title="Buscar o preço de novo agora">${ic("refresh")}</button>` : ""}
+        <button class="bt sm ghost ic-only alr-x" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">${aberto ? "▴" : "▾"}</button>
       </div>
     </div>
     ${aberto ? `<div class="alr-c">${cardAlerta(a)}</div>` : ""}
@@ -406,6 +413,13 @@ function pDash() {
 
 /* ------------------------------------------------------------ Alertas */
 function diasIda(a) { return a.datas_ida ? a.datas_ida.map(d => d.dia) : (a.datas || []).map(d => d.ida); }
+/* em que aba o alerta mora: pra enviar, enviado ou fora (preço subiu, ida e volta caro ou descartado) */
+function situacao(a) {
+  if (S.marcados[a.id] === "descartado") return "fora";
+  if (enviado(a)) return "enviados";
+  if ((a.conferido && a.conferido.status === "subiu") || !ivBarato(a)) return "fora";
+  return "enviar";
+}
 function filtrar() {
   const F = S.F, h = hojeISO();
   let L = S.alertas.filter(a => {
@@ -417,8 +431,8 @@ function filtrar() {
     if (F.mes && !diasIda(a).some(d => d.slice(0, 7) === F.mes)) return false;
     if (F.max && a.preco > +F.max) return false;
     if (F.direto && a.escalas !== 0) return false;
-    if (F.env === "nao" && enviado(a)) return false;
-    if (F.env === "sim" && !enviado(a)) return false;
+    if (F.reg && regiaoDe(a.destino) !== F.reg) return false;
+    if (F.aba && F.aba !== "todos" && situacao(a) !== F.aba) return false;
     return true;
   });
   const ord = { recentes: (x, y) => y.criado.localeCompare(x.criado), preco: (x, y) => x.preco - y.preco, desconto: (x, y) => y.desconto - x.desconto, ida: (x, y) => (x.ida || "").localeCompare(y.ida || ""), az: (x, y) => x.destino_nome.localeCompare(y.destino_nome, "pt-BR") || y.criado.localeCompare(x.criado) }[F.ordem];
@@ -440,25 +454,51 @@ function pAlertas() {
   const F = S.F;
   const cias = [...new Set(S.alertas.map(a => a.cia_nome).filter(Boolean))].sort();
   const meses = [...new Set(S.alertas.flatMap(a => diasIda(a).map(d => d.slice(0, 7))))].sort();
+  const aba = F.aba || "enviar"; F.aba = aba;
+  const base = (() => { const sv = F.aba; F.aba = "todos"; const r = filtrar(); F.aba = sv; return r; })();
+  const n = k => k === "todos" ? base.length : base.filter(a => situacao(a) === k).length;
   const L = filtrar();
   const opt = (v, t, sel) => `<option value="${esc(v)}" ${sel === v ? "selected" : ""}>${esc(t)}</option>`;
-  return head("Alertas em dinheiro", "Promoções em reais que o radar achou saindo de Fortaleza. Copie ou mande no WhatsApp: o quadro fica verde quando enviado.",
-    `<button class="bt" data-act="copiarvisiveis">${ic("copy")}Copiar todos visíveis</button>`) +
-    `<div class="filtros" id="filtros">
-      <input class="busca" type="search" placeholder="Buscar destino ou companhia…" data-f="q" value="${esc(F.q)}">
-      <select data-f="dias">${opt("1", "Hoje", F.dias)}${opt("7", "7 dias", F.dias)}${opt("30", "30 dias", F.dias)}${opt("", "Tudo", F.dias)}</select>
-      <select data-f="tipo">${opt("", "Nacional + internacional", F.tipo)}${opt("nacional", "Nacional", F.tipo)}${opt("internacional", "Internacional", F.tipo)}</select>
-      <select data-f="classe">${opt("", "Todas as classes", F.classe)}${opt("imperdivel", "Imperdível", F.classe)}${opt("otima", "Ótima", F.classe)}${opt("boa", "Boa", F.classe)}</select>
-      <select data-f="cia">${opt("", "Todas as cias", F.cia)}${cias.map(c => opt(c, c, F.cia)).join("")}</select>
-      <select data-f="mes">${opt("", "Qualquer mês", F.mes)}${meses.map(m => opt(m, MESES[+m.slice(5, 7) - 1] + "/" + m.slice(2, 4), F.mes)).join("")}</select>
-      <input type="number" inputmode="numeric" placeholder="Até R$" data-f="max" value="${esc(F.max)}" style="width:100px">
-      <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label>
-      <select data-f="env">${opt("", "Enviados e não enviados", F.env)}${opt("nao", "Só não enviados", F.env)}${opt("sim", "Só enviados", F.env)}</select>
+  const ativos = [
+    F.dias !== "30" && ["dias", { "1": "Hoje", "7": "7 dias", "": "Todo o período" }[F.dias]],
+    F.tipo && ["tipo", F.tipo === "nacional" ? "Nacional" : "Internacional"], F.reg && ["reg", F.reg],
+    F.classe && ["classe", CLASSE_NOME[F.classe]], F.cia && ["cia", F.cia], F.mes && ["mes", `ida em ${MESES[+F.mes.slice(5, 7) - 1]}`],
+    F.max && ["max", `até ${brl(+F.max)}`], F.direto && ["direto", "só direto"]].filter(Boolean);
+  const abas = [["enviar", "Pra enviar", "a fila de trabalho"], ["enviados", "Enviados", "já foram pro grupo"], ["fora", "Fora", "subiu, ida e volta caro ou tirado"], ["todos", "Todos", "tudo do período"]];
+  // agrupar por dia quando a ordem é "mais recentes"
+  const h = hojeISO(), rotDia = d => d === h ? "Hoje" : d === diaMenos(h, 1) ? "Ontem" : new Date(d + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" });
+  let lista = "";
+  if (!L.length) lista = `<div class="card vazio">${aba === "enviar" && !ativos.length && !F.q ? "🎉 Nada pendente. Os próximos alertas aparecem aqui sozinhos." : "Nenhum alerta com esses filtros."}</div>`;
+  else if (ALV === "quadros") lista = `<div class="alertas compacto">${L.map(a => cardAlerta(a, true)).join("")}</div>`;
+  else if (F.ordem === "recentes") { const g = {}; L.forEach(a => (g[a.criado.slice(0, 10)] = g[a.criado.slice(0, 10)] || []).push(a));
+    lista = Object.keys(g).sort().reverse().map(d => `<div class="a2-dia"><span>${rotDia(d)}</span><small>${g[d].length} alerta${g[d].length > 1 ? "s" : ""}</small></div><div class="al-lista">${g[d].map(linhaAlerta).join("")}</div>`).join(""); }
+  else lista = `<div class="al-lista">${L.map(linhaAlerta).join("")}</div>`;
+  const imp = L.filter(a => a.classe === "imperdivel").length, barato = L.slice().sort((x, y) => x.preco - y.preco)[0];
+  return head("Alertas em dinheiro", "Tudo que o radar achou saindo de Fortaleza. Trabalhe pela aba <b>Pra enviar</b>: o botão Enviar abre a imagem e o texto prontos.",
+    `<a class="bt pri" href="#enviar">${ic("send")}Modo envio</a>`) +
+    `<div class="a2-abas">${abas.map(([k, t, d]) => `<button class="a2-aba ${aba === k ? "on" : ""} ${k}" data-act="pill" data-g="aba" data-v="${k}"><b>${n(k)}</b><span>${t}</span><small>${d}</small></button>`).join("")}</div>
+    <div class="a2-bar">
+      <input class="busca" type="search" placeholder="Buscar cidade, código ou companhia…" data-f="q" value="${esc(F.q)}">
+      <button class="bt ${S.filtrosAbertos || ativos.length ? "pri" : ""}" data-act="filtrosab">${ic("filter")}Filtros${ativos.length ? ` · ${ativos.length}` : ""}</button>
+      <select data-f="ordem" title="Ordem">${opt("recentes", "Mais recentes (por dia)", F.ordem)}${opt("desconto", "Melhores ofertas", F.ordem)}${opt("preco", "Menor preço", F.ordem)}${opt("ida", "Data de ida", F.ordem)}${opt("az", "A–Z", F.ordem)}</select>
+      ${pills("alvista", ALV, [["lista", "☰"], ["quadros", "▦"]])}
     </div>
-    ${painelAlertas(L)}
-    <div class="ordbar">${pills("alvista", ALV, [["lista", "☰ Lista"], ["quadros", "▦ Quadros"]])}<span class="ord-l">Ordenar</span>${pills("alertas", F.ordem, [["recentes", "Mais recentes"], ["desconto", "Melhores ofertas"], ["preco", "Menor valor"], ["az", "A–Z"], ["ida", "Data de ida"]])}</div>
-    <div class="resultado"><span>${L.length} alerta${L.length === 1 ? "" : "s"}</span>${Object.values(F).some((v, i) => v && !["recentes", "30"].includes(v)) ? `<a href="#" data-act="limpar">Limpar filtros</a>` : ""}</div>
-    ${L.length ? (ALV === "lista" ? `<div class="al-lista">${L.map(linhaAlerta).join("")}</div>` : `<div class="alertas compacto">${L.map(a => cardAlerta(a, true)).join("")}</div>`) : `<div class="card vazio">Nenhum alerta com esses filtros.</div>`}`;
+    ${S.filtrosAbertos ? `<div class="card a2-filtros">
+      <div class="a2-f"><span class="micro">Período</span>${pills("fdias", F.dias, [["1", "Hoje"], ["7", "7 dias"], ["30", "30 dias"], ["", "Tudo"]])}</div>
+      <div class="a2-f"><span class="micro">Tipo</span>${pills("ftipo", F.tipo, [["", "Todos"], ["nacional", "Nacional"], ["internacional", "Internacional"]])}</div>
+      <div class="a2-f"><span class="micro">Região</span>${pills("freg", F.reg || "", [["", "Todas"]].concat(Object.keys((S.ref || {}).regioes || {}).map(x => [x, x])))}</div>
+      <div class="a2-f"><span class="micro">Qualidade</span>${pills("fclasse", F.classe, [["", "Todas"], ["imperdivel", "Imperdível"], ["otima", "Ótima"], ["boa", "Boa"]])}</div>
+      <div class="a2-f"><span class="micro">Mais</span>
+        <select data-f="cia">${opt("", "Qualquer companhia", F.cia)}${cias.map(c => opt(c, c, F.cia)).join("")}</select>
+        <select data-f="mes">${opt("", "Qualquer mês de ida", F.mes)}${meses.map(m => opt(m, "Ida em " + MESES[+m.slice(5, 7) - 1] + "/" + m.slice(2, 4), F.mes)).join("")}</select>
+        <input type="number" inputmode="numeric" placeholder="Trecho até R$" data-f="max" value="${esc(F.max)}" style="width:150px">
+        <label class="chk"><input type="checkbox" data-f="direto" ${F.direto ? "checked" : ""}> Só voo direto</label></div>
+    </div>` : ""}
+    ${ativos.length ? `<div class="a2-chips">${ativos.map(([k, t]) => `<button class="a2-chip" data-act="fx" data-k="${k}">${esc(t)} ✕</button>`).join("")}<button class="lnk" data-act="limpar">limpar tudo</button></div>` : ""}
+    <div class="a2-resumo"><span><b>${L.length}</b> alerta${L.length === 1 ? "" : "s"}${imp ? ` · <b>${imp}</b> imperdíve${imp > 1 ? "is" : "l"}` : ""}${barato ? ` · mais barato: <b>${esc(barato.destino_nome)} ${brl(barato.preco)}</b>` : ""}</span>
+      <button class="lnk" data-act="graficosab">${S.graficosAbertos ? "esconder gráficos" : "ver gráficos"}</button></div>
+    ${S.graficosAbertos ? painelAlertas(L) : ""}
+    ${lista}`;
 }
 
 /* ------------------------------------------------------------ Destinos (base de preços + calendário) */
@@ -900,7 +940,10 @@ document.addEventListener("click", async e => {
     else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast(`Copiado: ${A(b.dataset.id).destino_nome} · ${brl(A(b.dataset.id).preco)} — marcado como enviado.`, 3500); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }
-    else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30" }; render(); }
+    else if (act === "limpar") { S.F = { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: S.F.ordem, dias: "30", env: "", aba: S.F.aba, reg: "" }; render(); }
+    else if (act === "fx") { const k = b.dataset.k; S.F[k] = k === "direto" ? false : k === "dias" ? "" : ""; render(); }
+    else if (act === "filtrosab") { S.filtrosAbertos = !S.filtrosAbertos; render(); }
+    else if (act === "graficosab") { S.graficosAbertos = !S.graficosAbertos; render(); }
     else if (act === "recarregar") { document.body.classList.add("voando"); await carregar(); render(); setTimeout(() => { if (!S.rodando) document.body.classList.remove("voando"); }, 900); toast("Atualizado."); }
     else if (act === "addvip") {
       const iata = $("#vp-iata").value.toUpperCase().trim();
@@ -921,7 +964,7 @@ document.addEventListener("click", async e => {
     else if (act === "pill") {
       const g = b.dataset.g, v = b.dataset.v;
       if (g === "convmodo") { S.convModo = v; }
-      else if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
+      else if (g === "aba") S.F.aba = v; else if (g === "fdias") S.F.dias = v; else if (g === "ftipo") S.F.tipo = v; else if (g === "freg") S.F.reg = v; else if (g === "fclasse") S.F.classe = v; else if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
       else if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
       else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v; else if (g === "destreg") S.D.reg = v; else if (g === "destlimpa") { S.D.reg = ""; S.D.ate = ""; S.D.q = ""; } else if (g === "destate") S.D.ate = v;
       render(); return;

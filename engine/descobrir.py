@@ -51,6 +51,46 @@ def dia(x: str) -> str:
     return (x or "")[:10]
 
 
+BLOGS = [
+    ("Melhores Destinos", "https://www.melhoresdestinos.com.br/feed"),
+    ("Passagens Imperdíveis", "https://www.passagensimperdiveis.com.br/feed/"),
+    ("Google Notícias", "https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=passagens+saindo+de+Fortaleza+when:3d"),
+]
+
+
+def sem_acento(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t.lower()) if unicodedata.category(c) != "Mn")
+
+
+def pistas_blogs(rotas: dict) -> list[dict]:
+    """Promoções em dinheiro publicadas em blogs que citam Fortaleza: viram pista pra o robô conferir no Google."""
+    import html
+    import re
+    nomes = {sem_acento(r["nome"]): k for k, r in rotas.items()}
+    achou = []
+    for fonte, url in BLOGS:
+        try:
+            x = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
+        except Exception as e:  # noqa: BLE001
+            print(f"! blog {fonte}: {e}")
+            continue
+        for item in re.findall(r"<item>(.*?)</item>", x, re.S)[:40]:
+            tit = html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", (re.search(r"<title>(.*?)</title>", item, re.S) or [None, ""])[1]))
+            corpo = sem_acento(tit + " " + html.unescape(re.sub(r"<[^>]+>", " ", (re.search(r"<description>(.*?)</description>", item, re.S) or [None, ""])[1])))
+            if "fortaleza" not in corpo or "milhas" in sem_acento(tit) or "r$" not in corpo:
+                continue
+            for nome, k in nomes.items():
+                if nome != "fortaleza" and re.search(r"\b" + re.escape(nome) + r"\b", sem_acento(tit)):
+                    achou.append({"iata": k, "fonte": fonte, "titulo": tit.strip()[:160]})
+    vistos, out = set(), []
+    for a in achou:
+        if a["iata"] not in vistos:
+            vistos.add(a["iata"])
+            out.append(a)
+    return out
+
+
 def descobrir() -> dict:
     """Junta os menores preços (ida e volta e só ida) por destino e marca as 'pistas':
     rotas que estão baratas segundo o Aviasales e que o robô deve confirmar no Google na próxima rodada."""
@@ -102,7 +142,11 @@ def descobrir() -> dict:
         m["pista"] = boa
         if boa:
             pistas.append(d)
-    saida = {"atualizado": agora.isoformat(timespec="minutes"), "pistas": sorted(pistas),
+    blog = pistas_blogs(rotas)
+    for b in blog:
+        if b["iata"] not in pistas:
+            pistas.append(b["iata"])
+    saida = {"atualizado": agora.isoformat(timespec="minutes"), "pistas": sorted(pistas), "blogs": blog,
              "destinos": sorted(melhor.values(), key=lambda m: (m.get("rt") or m.get("ow") or {}).get("preco", 1e9))}
     (DOCS / "descobertas.json").write_text(json.dumps(saida, ensure_ascii=False, indent=1), "utf-8")
     print(f"Travelpayouts: {len(melhor)} destinos com preço recente · pistas pra confirmar: {', '.join(pistas) or 'nenhuma'}")
@@ -110,6 +154,9 @@ def descobrir() -> dict:
 
 
 if __name__ == "__main__":
+    if "--blogs" in sys.argv:
+        print(json.dumps(pistas_blogs({r["iata"]: r for r in json.loads((DOCS / "rotas.json").read_text("utf-8"))}), ensure_ascii=False, indent=1))
+        sys.exit(0)
     if not TOKEN:
         print("sem TRAVELPAYOUTS_TOKEN")
         sys.exit(0)

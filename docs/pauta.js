@@ -1,268 +1,365 @@
-/* Partiu 085 — Pauta do dia (Instagram): opções de post prontas, feitas com os dados do radar
-   (promoções de milhas lidas dos blogs, preços saindo de Fortaleza, alertas da semana) + campanha de lançamento.
-   Usa a identidade do Criar arte (MARCA, TEMAS, fundo, titulos, bloco, pil, cta, desenhaImg). */
+/* Partiu 085 — Pauta do Instagram: posts prontos com os dados do radar, num layout editorial.
+   Stories = o que é do dia (top 5, radar de milhas, achado de hoje, chamada pro grupo).
+   Feed = o que tem valor duradouro (oportunidade rara, resumo da semana, bônus forte, quanto custa, guias).
+   Usa MARCA/img/caber/quebrar/rr/aviao/desenhaImg do Criar arte e as fotos reais das cidades (fotos/IATA.jpg). */
 "use strict";
-const PA = { aba: "hoje", feitos: {} };
-const PW = 1080, PH = 1350, SW = 1080, SH = 1920;
+const PA = { aba: "hoje" };
+const PW = 1080, PH = 1350, SW = 1080, SH = 1920, M = 90;
+const COR = { navy: "#0B2440", am: "#F5C531", creme: "#F6F1E4", tinta: "#0F2A47", cinza: "rgba(255,255,255,.62)", linha: "rgba(255,255,255,.14)" };
 const HASH = "#fortaleza #ceara #passagensbaratas #promocaodepassagem #milhas #viagem #partiu085";
 
-/* ---------- biblioteca de conteúdo educativo (sem dado inventado: só conceito) */
+/* ---------- guias (só conceito, sem número inventado) */
 const EDU = [
-  { id: "milhas-pontos", capa: ["MILHAS", "ou", "PONTOS?"], sub: "a diferença que muda o jeito de viajar", slides: [
-    ["PONTOS", "São os do cartão de crédito e de programas como Livelo e Esfera. Sozinhos, eles não viram passagem."],
-    ["MILHAS", "São dos programas das companhias: Smiles (GOL), LATAM Pass e Azul Fidelidade. É com elas que você emite a passagem."],
-    ["O PULO DO GATO", "Você transfere os pontos pro programa de milhas. Quando tem promoção de bônus, cada ponto vira mais de uma milha."]] },
-  { id: "bonificada", capa: ["TRANSFERÊNCIA", "bonificada", "COMO FUNCIONA"], sub: "o jeito mais barato de juntar milhas", slides: [
-    ["1. JUNTE PONTOS", "Cartão de crédito, Livelo, Esfera… os pontos ficam parados lá esperando."],
-    ["2. ESPERE O BÔNUS", "De tempos em tempos os programas dão bônus na transferência: 50%, 80%, até 100% ou mais."],
-    ["3. TRANSFIRA", "Com 100% de bônus, 10.000 pontos viram 20.000 milhas. A gente avisa aqui quando aparece."]] },
-  { id: "erros", capa: ["5 ERROS", "que fazem você", "PAGAR CARO"], sub: "na passagem saindo de Fortaleza", slides: [
-    ["1. COMPRAR EM CIMA DA HORA", "Perto da data, o preço costuma subir. Promoção boa aparece com antecedência."],
-    ["2. OLHAR SÓ UMA DATA", "Mudar um ou dois dias pode cortar o preço pela metade. Compare o calendário."],
-    ["3. NÃO SEPARAR IDA E VOLTA", "Às vezes a ida está barata numa companhia e a volta em outra."],
-    ["4. DEMORAR PRA DECIDIR", "Preço de promoção dura horas. Quem tem alerta ligado sai na frente."],
-    ["5. NÃO TER ALERTA", "O radar do Partiu 085 olha os preços o dia todo e te avisa no grupo grátis."]] },
-  { id: "trecho", capa: ["TRECHO", "ou", "IDA E VOLTA?"], sub: "por que a gente mostra os dois", slides: [
-    ["TRECHO", "É o preço de um lado só: só a ida ou só a volta."],
-    ["IDA E VOLTA", "É a soma dos dois. É ele que diz se a viagem está barata de verdade."],
-    ["NO PARTIU 085", "Todo alerta mostra o trecho e a ida e volta, pra você não cair em preço que parece barato e não é."]] },
-  { id: "alerta", capa: ["COMO", "aproveitar", "UM ALERTA"], sub: "em 3 passos", slides: [
-    ["1. ATIVE A NOTIFICAÇÃO", "Promoção boa some rápido. Deixe o grupo com notificação ligada."],
-    ["2. CONFIRA AS DATAS", "O alerta traz os dias mais baratos de ida e de volta. Escolha os que encaixam."],
-    ["3. COMPRE NO SITE DA CIA", "Pesquise as datas e compre direto. O preço pode mudar a qualquer momento."]] },
-  { id: "aeroporto", capa: ["CHECKLIST", "antes de ir pro", "AEROPORTO"], sub: "salva pra não esquecer", slides: [
-    ["DOCUMENTO", "RG ou CNH dentro da validade. Viagem internacional: passaporte e o que o destino pedir."],
-    ["CHECK-IN ONLINE", "Faça pelo app da companhia e já deixe o cartão de embarque no celular."],
-    ["CHEGUE COM FOLGA", "As companhias costumam recomendar chegar 2h antes em voo nacional e 3h antes no internacional."]] },
-  { id: "clube", capa: ["CLUBE DE", "milhas", "VALE A PENA?"], sub: "faça essa conta antes de assinar", slides: [
-    ["O QUE É", "Você paga um valor por mês e recebe milhas todo mês, além de vantagens no programa."],
-    ["QUANDO VALE", "Se você viaja e usa as milhas com frequência, e aproveita as promoções exclusivas de quem é assinante."],
-    ["QUANDO NÃO VALE", "Se as milhas ficam paradas e vencem. Milha boa é milha usada."]] },
-  { id: "tarifa", capa: ["TARIFA", "light", "O QUE É?"], sub: "a mais barata nem sempre é a melhor", slides: [
-    ["TARIFA LIGHT", "Geralmente é a mais barata e não inclui bagagem despachada. Cada companhia tem suas regras."],
-    ["FAÇA A CONTA", "Se for despachar mala, some o preço da bagagem e compare com a tarifa seguinte."],
-    ["NOS ALERTAS", "O preço que a gente mostra é a tarifa mais barata encontrada. Confira o que ela inclui na hora de comprar."]] },
+  { id: "milhas-pontos", cat: "MILHAS", capa: "Milhas ou pontos: qual a diferença?", sub: "O básico que muda o jeito de viajar.", slides: [
+    ["Pontos", "São os do cartão de crédito e de programas como Livelo e Esfera. Sozinhos, eles não viram passagem."],
+    ["Milhas", "São dos programas das companhias: Smiles, LATAM Pass e Azul Fidelidade. É com elas que você emite a passagem."],
+    ["O pulo do gato", "Você transfere os pontos pro programa de milhas. Com bônus na transferência, cada ponto vira mais de uma milha."]] },
+  { id: "bonificada", cat: "MILHAS", capa: "Transferência bonificada, sem complicação", sub: "O jeito mais barato de juntar milhas.", slides: [
+    ["Junte pontos", "Cartão de crédito, Livelo, Esfera: os pontos ficam guardados esperando a hora certa."],
+    ["Espere o bônus", "De tempos em tempos os programas dão bônus na transferência: 50%, 80%, 100% ou mais."],
+    ["Transfira", "Com 100% de bônus, 10.000 pontos viram 20.000 milhas. A gente avisa aqui quando aparece."]] },
+  { id: "emitir", cat: "MILHAS", capa: "Como emitir passagem com milhas", sub: "Em 4 passos.", slides: [
+    ["Escolha o programa", "Veja em qual programa você tem milhas: Smiles, LATAM Pass ou Azul Fidelidade."],
+    ["Pesquise as datas", "No site ou app do programa, marque a opção de pagar com milhas e compare o calendário."],
+    ["Confira as taxas", "Além das milhas, sempre tem taxa de embarque em dinheiro. Veja o total antes de fechar."],
+    ["Emita e confira", "Depois de emitir, confira nome, datas e o localizador no e-mail da companhia."]] },
+  { id: "clube", cat: "MILHAS", capa: "Clube de milhas vale a pena?", sub: "Faça essa conta antes de assinar.", slides: [
+    ["O que é", "Você paga um valor por mês e recebe milhas todo mês, além de vantagens no programa."],
+    ["Quando vale", "Se você usa as milhas com frequência e aproveita as promoções exclusivas de quem é assinante."],
+    ["Quando não vale", "Se as milhas ficam paradas até vencer. Milha boa é milha usada."]] },
+  { id: "habitos", cat: "VIAGEM", capa: "5 hábitos de quem paga barato na passagem", sub: "Saindo de Fortaleza ou de qualquer lugar.", slides: [
+    ["Ser flexível", "Mudar a viagem um ou dois dias pode cortar o preço pela metade. Olhe o calendário inteiro."],
+    ["Comparar ida e volta", "Às vezes a ida está barata numa companhia e a volta em outra. Vale olhar separado."],
+    ["Comprar com antecedência", "Perto da data o preço costuma subir. Promoção boa aparece antes."],
+    ["Decidir rápido", "Preço de promoção dura horas. Quem tem alerta ligado sai na frente."],
+    ["Ter um radar", "O Partiu 085 olha os preços o dia todo e avisa no grupo grátis."]] },
+  { id: "trecho", cat: "VIAGEM", capa: "Trecho ou ida e volta?", sub: "Por que a gente sempre mostra os dois.", slides: [
+    ["Trecho", "É o preço de um lado só: só a ida ou só a volta."],
+    ["Ida e volta", "É a soma dos dois. É ela que diz se a viagem está barata de verdade."],
+    ["No Partiu 085", "Todo alerta traz o trecho e a ida e volta, pra você não cair em preço que só parece barato."]] },
+  { id: "tarifa", cat: "VIAGEM", capa: "Tarifa light: o que você está comprando", sub: "A mais barata nem sempre sai mais barata.", slides: [
+    ["O que é", "Geralmente é a tarifa mais em conta e não inclui bagagem despachada. Cada companhia tem suas regras."],
+    ["Faça a conta", "Se for despachar mala, some o valor da bagagem e compare com a tarifa seguinte."],
+    ["Nos nossos alertas", "Mostramos a tarifa mais barata encontrada. Confira o que ela inclui na hora de comprar."]] },
+  { id: "conexao", cat: "VIAGEM", capa: "Conexão: o que ninguém te conta", sub: "Pra não perder o segundo voo.", slides: [
+    ["Mesma reserva", "Com os dois voos na mesma reserva, a companhia é responsável se o primeiro atrasar."],
+    ["Bilhetes separados", "Comprando separado, o risco é seu. Deixe bastante tempo entre um voo e outro."],
+    ["Bagagem", "Na mesma reserva, a mala costuma ir direto ao destino final. Confirme no balcão do check-in."]] },
+  { id: "mercosul", cat: "VIAGEM", capa: "Argentina, Chile, Uruguai… dá pra ir só com RG?", sub: "O que saber antes de embarcar.", slides: [
+    ["Pode, em geral", "Brasileiros costumam entrar em países do Mercosul e associados com o RG, em vez do passaporte."],
+    ["Mas atenção", "O documento precisa estar em bom estado e dentro das regras de validade. CNH não vale."],
+    ["Confira sempre", "As regras mudam. Antes de viajar, confira no site do Itamaraty e da companhia aérea."]] },
+  { id: "aeroporto", cat: "AEROPORTO", capa: "Checklist antes de ir pro aeroporto", sub: "Salva pra não esquecer nada.", slides: [
+    ["Documento", "RG ou CNH válidos no voo nacional. Internacional: passaporte e o que o destino pedir."],
+    ["Check-in online", "Faça pelo app da companhia e deixe o cartão de embarque salvo no celular."],
+    ["Chegue com folga", "As companhias costumam recomendar 2h antes no voo nacional e 3h antes no internacional."]] },
+  { id: "bagagem", cat: "AEROPORTO", capa: "Bagagem de mão: confira antes de fechar a mala", sub: "Evite surpresa no portão de embarque.", slides: [
+    ["Peso e medida", "Cada companhia tem seu limite de peso e tamanho. Confira no site antes de viajar."],
+    ["Líquidos", "Em voo internacional, líquidos na mão vão em frascos pequenos, dentro de um saquinho transparente."],
+    ["Item pessoal", "Além da mala de mão, normalmente dá pra levar uma bolsa ou mochila pequena embaixo do assento."]] },
 ];
+const CAT_EDU = { MILHAS: "Milhas", VIAGEM: "Viagem", AEROPORTO: "Aeroporto" };
 const DESTINOS_PAUTA = ["SAO", "LIS", "RIO", "REC", "BUE", "SSA", "SCL", "BSB", "MIA", "POA", "ORL", "CWB", "MAD", "NAT", "PAR", "FLN"];
 
 /* ---------- utilidades */
-const nDia = () => Math.floor(Date.now() / 864e5);
-const dmCurto = iso => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
-function legenda(corpo) { return `${corpo}\n\n🔔 Grupo GRÁTIS de alertas de passagem saindo de Fortaleza: link na bio\n📲 ${linkGrupo()}\n\n${HASH}`; }
-function topo(c, W, t, etiqueta) {
-  c.save();
-  const ico = img("icone");
-  c.beginPath(); c.arc(100, 96, 44, 0, 7); c.fillStyle = MARCA.amarelo; c.fill();
-  if (ico.complete && ico.naturalWidth) { c.beginPath(); c.arc(100, 96, 39, 0, 7); c.clip(); c.drawImage(ico, 61, 57, 78, 78); }
-  c.restore();
-  tx(c, "PARTIU 085", 160, 96, 40, MARCA.titulo, t.ink); tx(c, "@partiu.085", 162, 126, 21, MARCA.corpo, t.sub, "left", 700);
-  if (etiqueta) { const w = larg(c, etiqueta, 24, MARCA.corpo, 800) + 52; c.fillStyle = t.acc; rr(c, W - 70 - w, 70, w, 52, 26); c.fill(); tx(c, etiqueta, W - 70 - w / 2, 105, 24, MARCA.corpo, t.accInk, "center", 800); }
-}
-function rodape(c, W, H, t, texto) { cta(c, W, H, t, texto || "Alertas grátis saindo de Fortaleza · link na bio"); }
-function cartao(c, x, y, w, h, t) { c.save(); c.shadowColor = "rgba(0,0,0,.18)"; c.shadowBlur = 28; c.fillStyle = t.card; rr(c, x, y, w, h, 36); c.fill(); c.restore(); }
+const nDia = () => Math.floor((Date.now() - 3 * 36e5) / 864e5);
+const MESC = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+const dataCurta = iso => `${iso.slice(8, 10)} ${MESC[+iso.slice(5, 7) - 1]}`;
+function legenda(corpo) { return `${corpo}\n\n🔔 Grupo GRÁTIS de alertas de passagem saindo de Fortaleza: link na bio\n\n${HASH}`; }
 function curto(t, n = 70) { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1).replace(/[\s,.;:-]+\S*$/, "") + "…" : t; }
-
-/* ---------- geradores: cada um devolve {id, tipo, titulo, porque, fmt, telas:[fn(c)], legenda} ou null */
+function T(c, t, x, y, size, fam, cor, al = "left", peso = 400, ls = 0) { c.font = `${peso} ${size}px ${fam}`; c.fillStyle = cor; c.textAlign = al; c.textBaseline = "alphabetic"; if ("letterSpacing" in c) c.letterSpacing = ls + "px"; c.fillText(t, x, y); if ("letterSpacing" in c) c.letterSpacing = "0px"; }
+function paragrafo(c, t, x, y, w, size, fam, cor, peso = 400, lh = 1.12, max = 8) { const L = quebrar(c, t, w, size, fam, peso).slice(0, max); L.forEach((l, i) => T(c, l, x, y + i * size * lh, size, fam, cor, "left", peso)); return y + L.length * size * lh; }
+function kicker(c, t, x, y, cor = COR.am, al = "left") { T(c, t.toUpperCase(), x, y, 24, MARCA.corpo, cor, al, 800, 4); }
+const FOTOS_P = {};
+function fotoPronta(iata) {
+  if (!iata) return Promise.resolve(null);
+  if (!FOTOS_P[iata]) FOTOS_P[iata] = new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = `fotos/${iata}.jpg`; });
+  return FOTOS_P[iata];
+}
+function grao(c, W, H, a, cor = "#fff") { c.save(); c.globalAlpha = a; c.fillStyle = cor; for (let i = 0; i < 1400; i++) c.fillRect((i * 7919) % W, (i * 104729) % H, 2, 2); c.restore(); }
+function bgNavy(c, W, H) {
+  const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#0E2C4F"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  const r = c.createRadialGradient(W * .85, H * .08, 10, W * .85, H * .08, W * .9); r.addColorStop(0, "rgba(245,197,49,.16)"); r.addColorStop(1, "rgba(245,197,49,0)"); c.fillStyle = r; c.fillRect(0, 0, W, H);
+  grao(c, W, H, .035);
+}
+function bgCreme(c, W, H) { c.fillStyle = COR.creme; c.fillRect(0, 0, W, H); grao(c, W, H, .03, "#0F2A47"); }
+function bgFoto(c, W, H, im, ate = .6) {
+  c.fillStyle = COR.navy; c.fillRect(0, 0, W, H);
+  if (im) { const fh = H * ate + 220, s = Math.max(W / im.naturalWidth, fh / im.naturalHeight); c.drawImage(im, (W - im.naturalWidth * s) / 2, 0, im.naturalWidth * s, im.naturalHeight * s); }
+  else bgNavy(c, W, H);
+  let g = c.createLinearGradient(0, 0, 0, 320); g.addColorStop(0, "rgba(8,22,40,.65)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, W, 320);
+  g = c.createLinearGradient(0, H * ate - 460, 0, H * ate + 220); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.65, "rgba(11,36,64,.93)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, H * ate - 460, W, H);
+}
+function marca(c, W, escuro = true, dir = "") {
+  const ico = img("icone");
+  c.save(); c.beginPath(); c.arc(M + 26, 96, 26, 0, 7); c.fillStyle = COR.am; c.fill();
+  if (ico.complete && ico.naturalWidth) { c.beginPath(); c.arc(M + 26, 96, 23, 0, 7); c.clip(); c.drawImage(ico, M + 3, 73, 46, 46); } c.restore();
+  T(c, "PARTIU 085", M + 66, 108, 34, MARCA.titulo, escuro ? "#fff" : COR.tinta, "left", 400, 1);
+  if (dir) kicker(c, dir, W - M, 106, escuro ? COR.am : COR.tinta, "right");
+}
+function rodapeP(c, W, H, escuro = true, txt = "Alertas grátis saindo de Fortaleza · link na bio") {
+  const y = H - 100;
+  c.fillStyle = escuro ? COR.linha : "rgba(15,42,71,.15)"; c.fillRect(M, y - 46, W - 2 * M, 2);
+  T(c, "@partiu.085", M, y, 26, MARCA.corpo, escuro ? "#fff" : COR.tinta, "left", 800);
+  c.fillStyle = COR.am; c.beginPath(); c.arc(W - M - 14, y - 9, 14, 0, 7); c.fill(); aviao(c, W - M - 14, y - 9, 16, COR.tinta, Math.PI / 4);
+  T(c, txt, W - M - 40, y, 24, MARCA.corpo, escuro ? "rgba(255,255,255,.8)" : "rgba(15,42,71,.75)", "right", 600);
+}
+function titulo(c, t, x, y, w, max = 120, min = 64, cor = "#fff", lmax = 3) {
+  t = t.toUpperCase(); let s = max; while (s > min && quebrar(c, t, w, s, MARCA.titulo).length > lmax) s -= 6;
+  const L = quebrar(c, t, w, s, MARCA.titulo).slice(0, lmax); L.forEach((l, i) => T(c, l, x, y + s * .9 + i * s * .98, s, MARCA.titulo, cor)); return y + L.length * s * .98;
+}
+function selo(o) { return o.tipo === "bonus" ? (o.pct ? `${o.pct}%` : "BÔNUS") : o.tipo === "compra" ? (o.pct ? `−${o.pct}%` : "COMPRA") : "CLUBE"; }
+function rotSelo(o) { return o.tipo === "bonus" ? "bônus" : o.tipo === "compra" ? "compra" : "clube"; }
+function linhaLista(c, W, y, num, nome, sub, valor, sv, escuro = true, h = 132) {
+  T(c, num, M, y + 74, 64, MARCA.titulo, COR.am);
+  const nx = M + 100, vw = 310;
+  T(c, nome, nx, y + 62, caber(c, nome, W - 2 * M - 100 - vw, 52, MARCA.titulo, 400, 34), MARCA.titulo, escuro ? "#fff" : COR.tinta);
+  if (sub) T(c, sub, nx + 2, y + 100, 24, MARCA.corpo, escuro ? COR.cinza : "rgba(15,42,71,.6)", "left", 600);
+  if (valor) T(c, valor, W - M, y + 62, 52, MARCA.titulo, escuro ? "#fff" : COR.tinta, "right");
+  if (sv) T(c, sv, W - M, y + 100, 22, MARCA.corpo, escuro ? COR.cinza : "rgba(15,42,71,.6)", "right", 700);
+  c.fillStyle = escuro ? COR.linha : "rgba(15,42,71,.12)"; c.fillRect(M, y + h - 2, W - 2 * M, 2);
+}
 function promosMilhas() {
   const lim = diaMenos(hojeISO(), 2);
   return ((S.mi && S.mi.ofertas) || []).filter(o => !o.busca_propria && o.ativa !== false && ["bonus", "compra", "clube"].includes(o.tipo) && (o.publicado || "").slice(0, 10) >= lim)
     .sort((a, b) => (b.tipo === "bonus") - (a.tipo === "bonus") || (b.pct || 0) - (a.pct || 0));
 }
-function selo(o) { return o.tipo === "bonus" ? (o.pct ? `${o.pct}%` : "BÔNUS") : o.tipo === "compra" ? (o.pct ? `${o.pct}% OFF` : "COMPRA") : "CLUBE"; }
-function gRadarMilhas() {
-  const L = promosMilhas().slice(0, 4); if (L.length < 2) return null;
-  const t = TEMAS.noite;
-  return { id: "milhas-" + hojeISO(), tipo: "Milhas", titulo: "Radar de milhas de hoje", porque: "Notícia do dia: quem junta milhas salva e compartilha. É o tipo de post que traz seguidor novo.", fmt: "Feed 4:5",
-    telas: [c => { fundo(c, PW, PH, t); topo(c, PW, t, dmCurto(hojeISO()));
-      let y = titulos(c, PW, 250, t, "RADAR DE MILHAS", "o que tá rolando hoje", null) + 40;
-      L.forEach(o => { cartao(c, 80, y, PW - 160, 150, t);
-        const s = selo(o), fs = caber(c, s, 220, 60, MARCA.titulo);
-        c.fillStyle = MARCA.amarelo; rr(c, 100, y + 20, 250, 110, 24); c.fill(); tx(c, s, 225, y + 75 + fs * .36, fs, MARCA.titulo, MARCA.navy, "center");
-        bloco(c, curto(o.titulo, 90), 380, y + 60, PW - 160 - 330, 29, MARCA.corpo, t.cardInk, "left", 700, 1.25, 3); y += 168; });
-      tx(c, "Confira as regras no site de cada programa.", PW / 2, Math.min(y + 24, PH - 200), 24, MARCA.corpo, t.sub, "center", 600);
-      rodape(c, PW, PH, t); }],
-    legenda: legenda(`✈️ RADAR DE MILHAS · ${dmCurto(hojeISO())}\n\nO que tá rolando hoje no mundo das milhas:\n\n${L.map(o => `🔸 ${o.titulo}`).join("\n")}\n\nAs regras mudam de programa pra programa, então confira tudo no site antes de transferir ou comprar.\n\n💬 Comenta "QUERO" que eu te explico como aproveitar.`) };
+function espacoLink(c, W, H) {
+  c.save(); c.setLineDash([10, 10]); c.strokeStyle = "rgba(255,255,255,.3)"; c.lineWidth = 2; rr(c, W / 2 - 240, H - 300, 480, 110, 24); c.stroke(); c.restore();
+  T(c, "adesivo de link do grupo aqui", W / 2, H - 236, 22, MARCA.corpo, "rgba(255,255,255,.45)", "center", 600);
 }
-function gBonus() {
-  const o = promosMilhas().filter(x => x.tipo === "bonus" && x.pct).sort((a, b) => b.pct - a.pct)[0]; if (!o) return null;
-  const t = TEMAS.amarelo, de = o.de || "", para = o.para || "", ex = 10000, ganho = Math.round(ex * (1 + o.pct / 100));
-  return { id: "bonus-" + o.id, tipo: "Milhas", titulo: `Bônus de ${o.pct}% em destaque`, porque: "Número grande e simples chama atenção no feed e gera compartilhamento.", fmt: "Feed 4:5",
-    telas: [c => { fundo(c, PW, PH, t); topo(c, PW, t, "TRANSFERÊNCIA BONIFICADA");
-      tx(c, "ATÉ", PW / 2, 330, 90, MARCA.titulo, t.ink, "center");
-      const s = `${o.pct}%`; tx(c, s, PW / 2, 600, caber(c, s, PW - 200, 300, MARCA.titulo), MARCA.titulo, MARCA.navy, "center");
-      tx(c, "DE BÔNUS", PW / 2, 700, 96, MARCA.titulo, t.ink, "center");
-      const rt = [de, para].filter(Boolean).join("  ➜  ") || curto(o.titulo, 40);
-      pil(c, rt, PW / 2, 750, 34, MARCA.navy, "#fff", 36, 84, MARCA.corpo, 800, "center");
-      cartao(c, 110, 880, PW - 220, 220, { card: "#fff" });
-      tx(c, "NA PRÁTICA", PW / 2, 945, 28, MARCA.corpo, MARCA.navy, "center", 800);
-      tx(c, `${milN(ex)} pontos ➜ até ${milN(ganho)} milhas`, PW / 2, 1020, caber(c, `${milN(ex)} pontos ➜ até ${milN(ganho)} milhas`, PW - 300, 54, MARCA.titulo), MARCA.titulo, MARCA.navy, "center");
-      tx(c, "Confira regras e prazo no site do programa", PW / 2, 1072, 22, MARCA.corpo, "rgba(23,58,94,.7)", "center", 600);
-      rodape(c, PW, PH, t); }],
-    legenda: legenda(`🚨 ATÉ ${o.pct}% DE BÔNUS${de || para ? ` · ${[de, para].filter(Boolean).join(" ➜ ")}` : ""}\n\n${o.titulo}\n\nNa prática: com ${o.pct}% de bônus, ${milN(ex)} pontos podem virar até ${milN(ganho)} milhas. Bônus assim é a forma mais barata de juntar milhas pra viajar.\n\n⚠️ Cada promoção tem regra e prazo: confira no site do programa antes de transferir.`) };
-}
-function gTop5() {
+function bola(c, x, y) { c.fillStyle = COR.am; c.beginPath(); c.arc(x, y, 20, 0, 7); c.fill(); T(c, "✓", x, y + 9, 24, MARCA.corpo, COR.tinta, "center", 800); }
+
+/* ================= STORIES (do dia) ================= */
+function sTop5() {
   const L = typeof top5 === "function" ? top5() : []; if (L.length < 3) return null;
-  const t = TEMAS.noite;
-  return { id: "top5-ig-" + hojeISO(), tipo: "Passagens", titulo: "Top 5 saindo de Fortaleza", porque: "Conteúdo útil e local: o seguidor salva e manda pro amigo. Só a gente tem esses dados de Fortaleza.", fmt: "Feed 4:5",
-    telas: [c => { fundo(c, PW, PH, t); topo(c, PW, t, dmCurto(hojeISO()));
-      let y = titulos(c, PW, 240, t, "TOP 5 DO DIA", "saindo de Fortaleza", null) + 20;
-      L.forEach((x, i) => { cartao(c, 80, y, PW - 160, 140, t);
-        c.fillStyle = MARCA.amarelo; c.beginPath(); c.arc(150, y + 70, 40, 0, 7); c.fill(); tx(c, String(i + 1), 150, y + 91, 56, MARCA.titulo, MARCA.navy, "center");
-        const nm = x.nome.toUpperCase(); tx(c, nm, 215, y + 78, caber(c, nm, 430, 52, MARCA.titulo), MARCA.titulo, MARCA.navy);
-        tx(c, x.mes ? `melhor em ${MESES[+x.mes - 1].toLowerCase()}` : "", 217, y + 112, 24, MARCA.corpo, "rgba(23,58,94,.65)", "left", 600);
-        tx(c, brl(x.rt), PW - 110, y + 82, 52, MARCA.titulo, MARCA.navy, "right"); tx(c, "ida e volta", PW - 110, y + 112, 22, MARCA.corpo, "rgba(23,58,94,.65)", "right", 700);
-        y += 153; });
-      rodape(c, PW, PH, t); }],
-    legenda: legenda(`🏆 TOP 5 DO DIA · saindo de Fortaleza (${dmCurto(hojeISO())})\n\nOs destinos mais abaixo do preço normal hoje, no nosso radar:\n\n${L.map((x, i) => `${i + 1}. ${x.nome}: ida e volta a partir de ${brl(x.rt)}${x.mes ? ` (${MESES[+x.mes - 1].toLowerCase()})` : ""}`).join("\n")}\n\n⚠️ Preços de hoje, podem mudar a qualquer momento.\n💬 Qual desses você iria? Comenta aqui!`) };
+  return { id: "s-top5-" + hojeISO(), grupo: "stories", tipo: "Passagens", titulo: "Top 5 de hoje", porque: "Informação do dia vai pro story: some em 24h, como o preço.", fmt: "Story 9:16", stories: true,
+    telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, dataCurta(hojeISO()));
+      kicker(c, "Top 5 de hoje", M, 330);
+      let y = titulo(c, "Os mais baratos saindo de Fortaleza", M, 356, SW - 2 * M, 120, 80) + 60;
+      L.forEach((x, i) => { linhaLista(c, SW, y, String(i + 1).padStart(2, "0"), x.nome.toUpperCase(), x.mes ? `melhor em ${MESES[+x.mes - 1].toLowerCase()}` : "", brl(x.rt), "ida e volta", true, 150); y += 150; });
+      T(c, "Preços de hoje, podem mudar a qualquer momento.", M, y + 60, 24, MARCA.corpo, COR.cinza, "left", 600);
+      espacoLink(c, SW, SH); }],
+    legenda: `Adesivo de LINK: ${linkGrupo()}\nTexto do adesivo: "Grupo grátis de alertas"` };
 }
-async function gQuantoCusta() {
+function sMilhas() {
+  const L = promosMilhas().slice(0, 5); if (L.length < 2) return null;
+  return { id: "s-milhas-" + hojeISO(), grupo: "stories", tipo: "Milhas", titulo: "Radar de milhas de hoje", porque: "Notícia rápida de milhas: perfeita pra story e puxa quem ama milhas.", fmt: "Story 9:16", stories: true,
+    telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, dataCurta(hojeISO()));
+      kicker(c, "Radar de milhas", M, 330);
+      let y = titulo(c, "O que tá rolando hoje", M, 356, SW - 2 * M, 130, 80, "#fff", 2) + 50;
+      L.forEach(o => { const s = selo(o), fs = caber(c, s, 180, 64, MARCA.titulo);
+        c.fillStyle = COR.am; rr(c, M, y + 10, 210, 124, 22); c.fill(); T(c, s, M + 105, y + 82, fs, MARCA.titulo, COR.tinta, "center");
+        T(c, rotSelo(o).toUpperCase(), M + 105, y + 118, 16, MARCA.corpo, COR.tinta, "center", 800, 2);
+        paragrafo(c, curto(o.titulo, 95), M + 240, y + 54, SW - 2 * M - 240, 30, MARCA.corpo, "#fff", 700, 1.28, 3);
+        c.fillStyle = COR.linha; c.fillRect(M, y + 160, SW - 2 * M, 2); y += 182; });
+      T(c, "Confira as regras no site de cada programa.", M, y + 40, 24, MARCA.corpo, COR.cinza, "left", 600);
+      espacoLink(c, SW, SH); }],
+    legenda: `Adesivo de LINK: ${linkGrupo()}` };
+}
+async function sAchado() {
+  const lim = diaMenos(hojeISO(), 1);
+  const a = S.alertas.filter(x => x.criado.slice(0, 10) >= lim && !(x.conferido && x.conferido.status === "subiu") && (typeof ivBarato !== "function" || ivBarato(x)))
+    .sort((x, y) => (y.desconto + (y.recorde ? .2 : 0)) - (x.desconto + (x.recorde ? .2 : 0)))[0];
+  if (!a) return null;
+  const im = await fotoPronta(a.destino), rf = refDe(a.destino), rt = a.preco + (a.preco_volta || 0);
+  return { id: "s-achado-" + a.id, grupo: "stories", tipo: "Passagens", titulo: `Achado de hoje: ${a.destino_nome}`, porque: "A melhor passagem do dia com a foto da cidade. Gera resposta e clique no link.", fmt: "Story 9:16", stories: true,
+    telas: [c => { bgFoto(c, SW, SH, im, .52); marca(c, SW, true, a.recorde ? "MENOR PREÇO JÁ VISTO" : "ACHADO DE HOJE");
+      const y0 = SH * .52 - 120;
+      kicker(c, `Saindo de Fortaleza${rf && rf.curta ? " · " + rf.curta : ""}`, M, y0);
+      let y = titulo(c, a.destino_nome, M, y0 + 26, SW - 2 * M, 170, 90, "#fff", 2) + 40;
+      T(c, "ida e volta a partir de", M, y + 30, 30, MARCA.corpo, COR.cinza, "left", 600);
+      const bs = caber(c, brl(rt), SW - 2 * M, 190, MARCA.titulo); T(c, brl(rt), M - 4, y + 40 + bs * .9, bs, MARCA.titulo, COR.am); y += 40 + bs;
+      T(c, `trecho ${brl(a.preco)} · ${nomeCia(a.cia_nome)} · ${paradasTxt(a.escalas)}`, M, y + 30, 28, MARCA.corpo, "#fff", "left", 700);
+      const ida = (a.ida_meses || []).slice(0, 2).map(g => `${g.mes.split(" ")[0].slice(0, 3).toLowerCase()} ${g.dias.slice(0, 5).join(", ")}`).join("  ·  ");
+      if (ida) T(c, "IDA  " + ida, M, y + 80, 24, MARCA.corpo, COR.cinza, "left", 600);
+      espacoLink(c, SW, SH); }],
+    legenda: `Adesivo de LINK: ${linkGrupo()}\nEnquete sugerida: "Você iria?" Sim / Com certeza` };
+}
+function sChamada() {
+  return { id: "s-chamada-" + hojeISO(), grupo: "stories", tipo: "Grupo", titulo: "Chamada pro grupo grátis", porque: "Story fixo com link: transforma seguidor em membro do grupo.", fmt: "Story 9:16", stories: true,
+    telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, "GRÁTIS");
+      kicker(c, "Grupo de alertas", M, 360);
+      let y = titulo(c, "Passagem barata saindo de Fortaleza no seu WhatsApp", M, 386, SW - 2 * M, 130, 80, "#fff", 4) + 100;
+      ["Alertas todo dia", "Preço de ida e volta", "As datas mais baratas", "Promoções de milhas"].forEach(it => { bola(c, M + 20, y - 14); T(c, it, M + 64, y, 40, MARCA.corpo, "#fff", "left", 700); y += 84; });
+      desenhaImg(c, "mascote", SW - M - 160, y - 60, 300);
+      espacoLink(c, SW, SH); }],
+    legenda: `Adesivo de LINK: ${linkGrupo()}\nTexto: "Grupo grátis de alertas saindo de Fortaleza 👇"` };
+}
+
+/* ================= FEED (duradouro) ================= */
+async function fOportunidade() {
+  const lim = diaMenos(hojeISO(), 2);
+  const a = S.alertas.filter(x => x.criado.slice(0, 10) >= lim && (x.recorde || x.desconto >= .5) && !(x.conferido && x.conferido.status === "subiu") && (typeof ivBarato !== "function" || ivBarato(x)))
+    .sort((x, y) => ((y.recorde ? 1 : 0) - (x.recorde ? 1 : 0)) || y.desconto - x.desconto)[0];
+  if (!a) return null;
+  const im = await fotoPronta(a.destino), rf = refDe(a.destino), rt = a.preco + (a.preco_volta || 0);
+  const md = ms => (ms || []).map(g => `${g.mes.split(" ")[0]} ${g.dias.join(", ")}`).join(" · ");
+  return { id: "f-op-" + a.id, grupo: "feed", tipo: "Oportunidade", titulo: `Oportunidade rara: ${a.destino_nome}`, porque: a.recorde ? "É o menor preço que o radar já viu nessa rota: merece o feed." : "Preço muito abaixo do normal: vale registrar no feed.", fmt: "Feed 4:5",
+    telas: [c => { bgFoto(c, PW, PH, im, .56); marca(c, PW, true, a.recorde ? "MENOR PREÇO JÁ VISTO" : "OPORTUNIDADE RARA");
+      const y0 = PH * .56 - 130;
+      kicker(c, `Fortaleza ➜ ${a.destino}${rf && rf.curta ? " · " + rf.curta : ""}`, M, y0);
+      const y = titulo(c, a.destino_nome, M, y0 + 24, PW - 2 * M, 130, 76, "#fff", 2) + 30;
+      T(c, "ida e volta a partir de", M, y + 20, 26, MARCA.corpo, COR.cinza, "left", 600);
+      const bs = caber(c, brl(rt), 560, 140, MARCA.titulo); T(c, brl(rt), M - 4, y + 30 + bs * .9, bs, MARCA.titulo, COR.am);
+      T(c, `trecho ${brl(a.preco)}`, PW - M, y + 30 + bs * .55, 38, MARCA.titulo, "#fff", "right");
+      T(c, `${nomeCia(a.cia_nome)} · ${paradasTxt(a.escalas)}`, PW - M, y + 30 + bs * .55 + 40, 24, MARCA.corpo, COR.cinza, "right", 600);
+      rodapeP(c, PW, PH); }],
+    legenda: legenda(`${a.recorde ? "📉 MENOR PREÇO QUE JÁ VIMOS" : "🔥 OPORTUNIDADE RARA"}: FORTALEZA ➜ ${a.destino_nome.toUpperCase()}\n\nIda e volta a partir de ${brl(rt)} (trecho ${brl(a.preco)}), ${nomeCia(a.cia_nome)}, ${paradasTxt(a.escalas)}.\n\n🗓️ Ida: ${md(a.ida_meses)}\n🗓️ Volta: ${md(a.volta_meses)}\n\n⚠️ Preço de ${dataCurta(a.criado.slice(0, 10)).toLowerCase()}, pode ter mudado. Quem estava no grupo recebeu na hora.`) };
+}
+function fSemana() {
+  const lim = diaMenos(hojeISO(), 6), vistos = new Set();
+  const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && (typeof ivBarato !== "function" || ivBarato(a))).sort((a, b) => b.desconto - a.desconto).filter(a => !vistos.has(a.destino) && vistos.add(a.destino)).slice(0, 5);
+  if (L.length < 3) return null;
+  return { id: "f-semana-" + hojeISO(), grupo: "feed", tipo: "Resumo", titulo: "Resumo da semana", porque: "Prova de que o grupo funciona: é o post que mais leva gente pro grupo.", fmt: "Feed 4:5",
+    telas: [c => { bgNavy(c, PW, PH); marca(c, PW, true, `${dataCurta(lim)} – ${dataCurta(hojeISO())}`);
+      kicker(c, "Resumo da semana", M, 260);
+      let y = titulo(c, "O que o radar achou pro grupo", M, 286, PW - 2 * M, 110, 70, "#fff", 2) + 20;
+      L.forEach((a, i) => { linhaLista(c, PW, y, String(i + 1).padStart(2, "0"), a.destino_nome.toUpperCase(), `${nomeCia(a.cia_nome)} · ${dataCurta(a.criado.slice(0, 10)).toLowerCase()}`, brl(a.preco + (a.preco_volta || 0)), a.preco_volta ? `ida e volta · trecho ${brl(a.preco)}` : "o trecho", true, 128); y += 128; });
+      rodapeP(c, PW, PH, true, "Entre no grupo grátis · link na bio"); }],
+    legenda: legenda(`🔔 RESUMO DA SEMANA NO GRUPO\n\nAlguns alertas que mandamos saindo de Fortaleza:\n\n${L.map(a => `✈️ ${a.destino_nome}: ida e volta ${brl(a.preco + (a.preco_volta || 0))} (trecho ${brl(a.preco)})`).join("\n")}\n\nQuem estava no grupo viu primeiro. Os preços eram do dia do alerta.`) };
+}
+function fBonus() {
+  const o = promosMilhas().filter(x => x.tipo === "bonus" && x.pct >= 80).sort((a, b) => b.pct - a.pct)[0]; if (!o) return null;
+  const ex = 10000, ganho = Math.round(ex * (1 + o.pct / 100)), rota_ = [o.de, o.para].filter(Boolean).join("  ➜  "), ex_ = `${milN(ex)} pontos ➜ até ${milN(ganho)} milhas`;
+  return { id: "f-bonus-" + o.id, grupo: "feed", tipo: "Milhas", titulo: `Bônus de ${o.pct}%`, porque: "Bônus alto é raro e muito compartilhado: vale feed.", fmt: "Feed 4:5",
+    telas: [c => { bgCreme(c, PW, PH); marca(c, PW, false, "TRANSFERÊNCIA BONIFICADA");
+      kicker(c, "Promoção de milhas", M, 300, "#B7871A");
+      T(c, "ATÉ", M, 390, 90, MARCA.titulo, COR.tinta);
+      T(c, `${o.pct}%`, M - 8, 700, caber(c, `${o.pct}%`, PW - 2 * M, 320, MARCA.titulo), MARCA.titulo, COR.tinta);
+      c.fillStyle = COR.am; c.fillRect(M, 718, 360, 16);
+      T(c, "DE BÔNUS", M, 820, 86, MARCA.titulo, COR.tinta);
+      if (rota_) T(c, rota_, M, 890, 36, MARCA.corpo, COR.tinta, "left", 800);
+      c.fillStyle = "rgba(15,42,71,.08)"; rr(c, M, 940, PW - 2 * M, 150, 24); c.fill();
+      T(c, "NA PRÁTICA", M + 36, 990, 20, MARCA.corpo, "rgba(15,42,71,.6)", "left", 800, 3);
+      T(c, ex_, M + 36, 1052, caber(c, ex_, PW - 2 * M - 72, 50, MARCA.titulo), MARCA.titulo, COR.tinta);
+      rodapeP(c, PW, PH, false, "Confira regras e prazo no site do programa"); }],
+    legenda: legenda(`🚨 ATÉ ${o.pct}% DE BÔNUS${rota_ ? ` · ${[o.de, o.para].filter(Boolean).join(" ➜ ")}` : ""}\n\n${o.titulo}\n\nNa prática: ${ex_}.\n\n⚠️ Cada promoção tem regra e prazo: confira no site do programa antes de transferir.`) };
+}
+async function fQuanto() {
   const ks = DESTINOS_PAUTA.filter(k => (S.status.rotas || {})[k]); if (!ks.length) return null;
   const k = ks[nDia() % ks.length]; await carregarCal(k); const cal = S.cal[k]; if (!cal || !cal.ida || !cal.ida.length) return null;
   const pm = {}; cal.ida.forEach(d => { const m = d.dia.slice(0, 7); pm[m] = Math.min(d.preco, pm[m] || 1e9); });
   const ms = Object.entries(pm).sort().slice(0, 4); if (ms.length < 2) return null;
   const nome = (S.rotas.find(r => r.iata === k) || {}).nome || IATA[k] || k, mn = Math.min(...ms.map(m => m[1])), mx = Math.max(...ms.map(m => m[1])), melhor = ms.find(m => m[1] === mn)[0];
-  const t = TEMAS.azul;
-  return { id: "quanto-" + k + "-" + hojeISO(), tipo: "Passagens", titulo: `Quanto custa voar pra ${nome}`, porque: "Responde uma dúvida real (\"quando é mais barato?\") com dado nosso. Bom pra salvar.", fmt: "Feed 4:5",
-    telas: [c => { fundo(c, PW, PH, t); topo(c, PW, t, "DADOS DO RADAR");
-      let y = titulos(c, PW, 250, t, "QUANTO CUSTA VOAR", "de Fortaleza pra", nome.toUpperCase()) + 50;
-      ms.forEach(([m, p]) => { const w = 200 + (p / mx) * (PW - 520), best = p === mn;
-        tx(c, `${MESES[+m.slice(5, 7) - 1].toUpperCase()}`, 90, y + 58, 40, MARCA.titulo, t.ink);
-        c.fillStyle = best ? MARCA.amarelo : "rgba(255,255,255,.22)"; rr(c, 300, y + 10, w, 66, 33); c.fill();
-        tx(c, brl(p), 300 + w - 24, y + 56, 36, MARCA.titulo, best ? MARCA.navy : "#fff", "right"); y += 100; });
-      y += 20; pil(c, `Melhor mês: ${MESES[+melhor.slice(5, 7) - 1].toLowerCase()}`, PW / 2, y, 30, MARCA.amarelo, MARCA.navy, 32, 76, MARCA.corpo, 800, "center");
-      tx(c, `Menor preço do trecho (só ida) achado pelo radar em ${dmCurto(hojeISO())}`, PW / 2, y + 130, 22, MARCA.corpo, t.sub, "center", 600);
-      rodape(c, PW, PH, t); }],
-    legenda: legenda(`📅 QUANTO CUSTA VOAR DE FORTALEZA PRA ${nome.toUpperCase()}?\n\nO menor preço do trecho (só ida) que o nosso radar achou pra cada mês:\n\n${ms.map(([m, p]) => `${p === mn ? "⭐" : "▫️"} ${MESES[+m.slice(5, 7) - 1]}: a partir de ${brl(p)}`).join("\n")}\n\nO mais barato agora é ${MESES[+melhor.slice(5, 7) - 1].toLowerCase()}.\n⚠️ Preços de ${dmCurto(hojeISO())}, mudam a qualquer momento.\n\n💬 Quer que a gente faça de outro destino? Comenta aqui!`) };
+  const im = await fotoPronta(k);
+  return { id: "f-quanto-" + k + "-" + hojeISO(), grupo: "feed", tipo: "Dados", titulo: `Quanto custa voar pra ${nome}`, porque: "Responde \"quando é mais barato?\" com dado que só a gente tem. Muito salvo.", fmt: "Feed 4:5",
+    telas: [c => { bgFoto(c, PW, PH, im, .4); marca(c, PW, true, "DADOS DO RADAR");
+      kicker(c, "Quanto custa voar de Fortaleza pra", M, 450);
+      titulo(c, nome, M, 476, PW - 2 * M, 140, 80, "#fff", 1);
+      let y = 670;
+      ms.forEach(([m, p]) => { const best = p === mn, w = 160 + (p / mx) * (PW - 2 * M - 220 - 380);
+        T(c, MESES[+m.slice(5, 7) - 1].toUpperCase(), M, y + 50, 40, MARCA.titulo, best ? COR.am : "#fff");
+        c.fillStyle = best ? COR.am : "rgba(255,255,255,.16)"; rr(c, M + 220, y + 12, w, 52, 26); c.fill();
+        T(c, brl(p), M + 220 + w + 20, y + 52, 40, MARCA.titulo, best ? COR.am : "#fff"); y += 90; });
+      T(c, `Menor preço do trecho (só ida) achado em ${dataCurta(hojeISO()).toLowerCase()}`, M, y + 34, 22, MARCA.corpo, COR.cinza, "left", 600);
+      rodapeP(c, PW, PH); }],
+    legenda: legenda(`📅 QUANTO CUSTA VOAR DE FORTALEZA PRA ${nome.toUpperCase()}?\n\nO menor preço do trecho (só ida) que o radar achou pra cada mês:\n\n${ms.map(([m, p]) => `${p === mn ? "⭐" : "▫️"} ${MESES[+m.slice(5, 7) - 1]}: a partir de ${brl(p)}`).join("\n")}\n\nO mais barato agora é ${MESES[+melhor.slice(5, 7) - 1].toLowerCase()}.\n⚠️ Preços de ${dataCurta(hojeISO()).toLowerCase()}, mudam a qualquer momento.\n\n💬 Quer que a gente faça de outro destino? Comenta aqui!`) };
 }
-function gEducativo(x) {
+function fGuia(x) {
   x = x || EDU[nDia() % EDU.length];
-  const T = [TEMAS.noite, TEMAS.amarelo], n = x.slides.length;
-  const telas = [c => { const t = TEMAS.noite; fundo(c, PW, PH, t); topo(c, PW, t, "ARRASTA ➜");
-    let y = titulos(c, PW, 430, t, x.capa[0], x.capa[1], x.capa[2]) + 40; bloco(c, x.sub, PW / 2, y + 20, PW - 240, 36, MARCA.corpo, t.sub, "center", 700, 1.3, 2);
-    desenhaImg(c, "mascote", PW / 2, PH - 520, 330); }];
-  x.slides.forEach(([h, txt], i) => telas.push(c => { const t = T[(i + 1) % 2]; fundo(c, PW, PH, t); topo(c, PW, t, `${i + 2}/${n + 2}`);
-    cartao(c, 80, 240, PW - 160, 900, t);
-    const hs = caber(c, h, PW - 240, 96, MARCA.titulo, 400, 60);
-    const yh = bloco(c, h, PW / 2, 420, PW - 240, hs, MARCA.titulo, t.cardInk, "center", 400, 1.05, 2);
-    c.fillStyle = MARCA.amarelo; rr(c, PW / 2 - 60, yh + 50, 120, 10, 5); c.fill();
-    bloco(c, txt, PW / 2, yh + 150, PW - 280, 50, MARCA.corpo, t.cardInk, "center", 700, 1.4, 7);
-    desenhaImg(c, "icone", PW / 2, 1180, 110); }));
-  telas.push(c => { const t = TEMAS.amarelo; fundo(c, PW, PH, t); topo(c, PW, t, "");
-    let y = titulos(c, PW, 360, t, "GOSTOU?", "salva e manda pra quem vai viajar", null) + 40; desenhaImg(c, "mascote", PW / 2, y, 360);
-    rodape(c, PW, PH, t, "Siga @partiu.085 · alertas grátis na bio"); });
-  return { id: "edu-" + x.id, tipo: "Educativo", titulo: `Carrossel: ${x.capa.join(" ").toLowerCase()}`, porque: "Carrossel educativo é o que mais é salvo e compartilhado. Traz seguidor que ainda não conhece milhas.", fmt: `Carrossel · ${telas.length} telas`, telas,
-    legenda: legenda(`${x.capa.join(" ").toUpperCase()} ✈️\n\n${x.slides.map(([h, t]) => `▪️ ${h}: ${t}`).join("\n\n")}\n\n📌 Salva esse post pra consultar depois.`) };
-}
-function gProva() {
-  const lim = diaMenos(hojeISO(), 6);
-  const vistos = new Set(), L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && (typeof ivBarato !== "function" || ivBarato(a))).sort((a, b) => b.desconto - a.desconto)
-    .filter(a => !vistos.has(a.destino) && vistos.add(a.destino)).slice(0, 5);
-  if (L.length < 3) return null;
-  const t = TEMAS.azul;
-  return { id: "prova-" + hojeISO(), tipo: "Prova", titulo: "O que o radar achou essa semana", porque: "Mostra que o grupo funciona: é o post que mais converte seguidor em membro do grupo.", fmt: "Feed 4:5",
-    telas: [c => { fundo(c, PW, PH, t); topo(c, PW, t, "ÚLTIMOS 7 DIAS");
-      let y = titulos(c, PW, 240, t, "O RADAR ACHOU", "essa semana no grupo", null) + 20;
-      L.forEach(a => { cartao(c, 80, y, PW - 160, 140, t);
-        const nm = a.destino_nome.toUpperCase(); tx(c, nm, 116, y + 70, caber(c, nm, 440, 50, MARCA.titulo), MARCA.titulo, MARCA.navy);
-        tx(c, `${nomeCia(a.cia_nome)} · ${dmCurto(a.criado.slice(0, 10))}`, 118, y + 110, 22, MARCA.corpo, "rgba(23,58,94,.65)", "left", 600);
-        tx(c, brl(a.preco), PW - 110, y + 74, 52, MARCA.titulo, MARCA.navy, "right"); tx(c, a.preco_volta ? `ida e volta ${brl(a.preco + a.preco_volta)}` : "o trecho", PW - 110, y + 110, 22, MARCA.corpo, "rgba(23,58,94,.65)", "right", 700);
-        y += 150; });
-      rodape(c, PW, PH, t, "Entre no grupo grátis · link na bio"); }],
-    legenda: legenda(`🔔 O QUE O RADAR ACHOU ESSA SEMANA\n\nAlguns dos alertas que mandamos no grupo, saindo de Fortaleza:\n\n${L.map(a => `✈️ ${a.destino_nome}: ${brl(a.preco)} o trecho${a.preco_volta ? ` · ida e volta ${brl(a.preco + a.preco_volta)}` : ""}`).join("\n")}\n\nQuem estava no grupo viu primeiro. Os preços eram do dia do alerta e podem ter mudado.`) };
-}
-function gChamada() {
-  const t = TEMAS.amarelo;
-  return { id: "chamada-" + hojeISO(), tipo: "Stories", titulo: "Chamada pro grupo grátis", porque: "Story diário com link: é o que transforma seguidor em membro do grupo.", fmt: "Stories 9:16", stories: true,
-    telas: [c => { fundo(c, SW, SH, t); topo(c, SW, t, "GRÁTIS");
-      let y = titulos(c, SW, 420, t, "PASSAGEM BARATA", "saindo de Fortaleza", "NO SEU WHATSAPP") + 60;
-      desenhaImg(c, "mascote", SW / 2, y, 440); y += 520;
-      ["Alertas todo dia", "Preço de ida e volta", "Datas mais baratas", "Promoções de milhas"].forEach(it => { pil(c, "✓  " + it, SW / 2, y, 34, MARCA.navy, "#fff", 40, 86, MARCA.corpo, 800, "center"); y += 110; });
-      cta(c, SW, SH, t, "Toque no link e entre no grupo"); }],
-    legenda: `Texto pro story (coloque o adesivo de LINK com: ${linkGrupo()})\n\n"Grupo GRÁTIS de alertas de passagem saindo de Fortaleza 👇"` };
+  const n = x.slides.length + 2;
+  const telas = [c => { bgNavy(c, PW, PH); marca(c, PW, true, `GUIA · ${x.cat}`);
+    const y = titulo(c, x.capa, M, 380, PW - 2 * M, 130, 76, "#fff", 4);
+    c.fillStyle = COR.am; c.fillRect(M, y + 30, 140, 12);
+    paragrafo(c, x.sub, M, y + 110, PW - 2 * M - 220, 38, MARCA.corpo, COR.cinza, 600, 1.3, 3);
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230);
+    T(c, "ARRASTA ➜", M, PH - 100, 26, MARCA.corpo, COR.am, "left", 800, 3); }];
+  x.slides.forEach(([h, t], i) => telas.push(c => { bgCreme(c, PW, PH); marca(c, PW, false, `${i + 2}/${n}`);
+    T(c, String(i + 1).padStart(2, "0"), M - 6, 600, 240, MARCA.titulo, COR.am);
+    const y = titulo(c, h, M, 650, PW - 2 * M, 96, 64, COR.tinta, 2);
+    paragrafo(c, t, M, y + 60, PW - 2 * M, 44, MARCA.corpo, COR.tinta, 600, 1.42, 7);
+    rodapeP(c, PW, PH, false, "Salva pra consultar depois"); }));
+  telas.push(c => { bgNavy(c, PW, PH); marca(c, PW, true, "");
+    kicker(c, "Gostou?", M, 430); const y = titulo(c, "Salva e manda pra quem vai viajar", M, 456, PW - 2 * M, 120, 76, "#fff", 3) + 60;
+    paragrafo(c, "Todo dia tem passagem barata saindo de Fortaleza no nosso grupo grátis. O link tá na bio.", M, y, PW - 2 * M - 160, 38, MARCA.corpo, COR.cinza, 600, 1.35, 3);
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230);
+    rodapeP(c, PW, PH, true, "Siga @partiu.085 · grupo grátis na bio"); });
+  return { id: "f-guia-" + x.id, grupo: "feed", tipo: "Guia · " + CAT_EDU[x.cat], titulo: x.capa, porque: "Carrossel que ensina é o que mais é salvo e compartilhado. Traz seguidor novo.", fmt: `Carrossel · ${telas.length} telas`, telas,
+    legenda: legenda(`${x.capa.toUpperCase()} ✈️\n\n${x.slides.map(([h, t]) => `▪️ ${h}: ${t}`).join("\n\n")}\n\n📌 Salva esse post pra consultar depois.`) };
 }
 
-/* ---------- campanha de lançamento: 9 posts na ordem do grid */
-function campanha() {
-  const t1 = TEMAS.noite, t2 = TEMAS.amarelo, t3 = TEMAS.azul;
-  const simples = (id, titulo, porque, desenhar, leg) => ({ id: "camp-" + id, tipo: "Lançamento", titulo, porque, fmt: "Feed 4:5", telas: [desenhar], legenda: legenda(leg) });
+/* ================= campanha de lançamento ================= */
+async function campanha() {
+  const simples = (id, titulo_, porque, desenhar, leg) => ({ id: "camp-" + id, grupo: "feed", tipo: "Lançamento", titulo: titulo_, porque, fmt: "Feed 4:5", telas: [desenhar], legenda: legenda(leg) });
   const L = [
-    simples("chegou", "1. Chegou o Partiu 085", "Apresenta a marca e o que ela faz.", c => { fundo(c, PW, PH, t1); topo(c, PW, t1, "NOVIDADE");
-      let y = titulos(c, PW, 330, t1, "CHEGOU O RADAR", "de passagens de Fortaleza", null) + 30; desenhaImg(c, "logo", PW / 2, y, 560);
-      bloco(c, "A gente olha os preços saindo de Fortaleza o dia todo e te avisa quando aparece passagem barata.", PW / 2, PH - 360, PW - 220, 34, MARCA.corpo, t1.sub, "center", 700, 1.35, 3); rodape(c, PW, PH, t1, "Siga @partiu.085 e ative as notificações"); },
-      "✈️ CHEGOU O PARTIU 085!\n\nUm radar de passagens feito pra quem sai de Fortaleza. A gente pesquisa os preços o dia todo, compara com o preço normal de cada rota e avisa quando aparece promoção de verdade.\n\nAqui no perfil: dicas, promoções de milhas e os destinos mais baratos da semana.\nNo grupo grátis: os alertas na hora."),
-    simples("como", "2. Como funciona o radar", "Explica o processo em 3 passos e dá credibilidade.", c => { fundo(c, PW, PH, t3); topo(c, PW, t3, "COMO FUNCIONA");
-      let y = titulos(c, PW, 270, t3, "COMO O RADAR", "trabalha por você", null) + 40;
-      [["PESQUISA", "Olha os preços saindo de Fortaleza pra dezenas de destinos, várias vezes por dia."], ["COMPARA", "Vê se o preço está abaixo do normal daquela rota, na ida e na volta."], ["AVISA", "Quando é promoção de verdade, manda no grupo com as datas mais baratas."]]
-        .forEach(([h, s], i) => { cartao(c, 80, y, PW - 160, 230, t3); c.fillStyle = MARCA.amarelo; c.beginPath(); c.arc(170, y + 115, 52, 0, 7); c.fill(); tx(c, String(i + 1), 170, y + 140, 70, MARCA.titulo, MARCA.navy, "center");
-          tx(c, h, 260, y + 95, 54, MARCA.titulo, MARCA.navy); bloco(c, s, 260, y + 145, PW - 420, 26, MARCA.corpo, MARCA.navy, "left", 600, 1.3, 3); y += 260; });
-      rodape(c, PW, PH, t3); },
-      "🤖 COMO O RADAR DO PARTIU 085 FUNCIONA\n\n1️⃣ Pesquisa os preços saindo de Fortaleza várias vezes por dia\n2️⃣ Compara com o preço normal de cada rota (ida e volta)\n3️⃣ Quando é promoção de verdade, avisa no grupo com as datas mais baratas\n\nSem enrolação: se não está barato, não vai pro grupo."),
-    simples("grupo", "3. O grupo grátis", "Convite direto pro grupo.", c => { fundo(c, PW, PH, t2); topo(c, PW, t2, "GRÁTIS");
-      let y = titulos(c, PW, 300, t2, "GRUPO DE ALERTAS", "saindo de Fortaleza", null) + 40; desenhaImg(c, "mascote", PW / 2, y, 340); y += 400;
-      ["Passagens baratas em dinheiro", "Promoções de milhas", "Datas mais baratas de ida e volta"].forEach(it => { pil(c, "✓  " + it, PW / 2, y, 32, MARCA.navy, "#fff", 36, 80, MARCA.corpo, 800, "center"); y += 100; });
-      rodape(c, PW, PH, t2, "Link na bio · é de graça"); },
-      "📲 GRUPO GRÁTIS DE ALERTAS\n\nQuer saber primeiro quando aparecer passagem barata saindo de Fortaleza? Entra no nosso grupo. É de graça.\n\n✅ Passagens em dinheiro\n✅ Promoções de milhas\n✅ Datas mais baratas de ida e volta"),
+    simples("chegou", "Chegou o Partiu 085", "Apresenta a marca e a promessa.", c => { bgNavy(c, PW, PH); marca(c, PW, true, "NOVIDADE");
+      kicker(c, "Radar de passagens", M, 420); const y = titulo(c, "Passagem barata saindo de Fortaleza, sem você procurar", M, 446, PW - 2 * M, 120, 76, "#fff", 4) + 60;
+      paragrafo(c, "A gente olha os preços o dia todo, compara com o normal de cada rota e avisa quando é promoção de verdade.", M, y, PW - 2 * M - 200, 36, MARCA.corpo, COR.cinza, 600, 1.35, 4);
+      desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Siga e ative as notificações"); },
+      "✈️ CHEGOU O PARTIU 085\n\nUm radar de passagens feito pra quem sai de Fortaleza. A gente pesquisa os preços o dia todo, compara com o preço normal de cada rota e avisa quando aparece promoção de verdade.\n\nAqui no perfil: guias, promoções de milhas e os destinos mais baratos.\nNo grupo grátis: os alertas na hora."),
+    simples("como", "Como funciona o radar", "Dá credibilidade explicando o processo.", c => { bgCreme(c, PW, PH); marca(c, PW, false, "COMO FUNCIONA");
+      let y = titulo(c, "Como o radar trabalha por você", M, 290, PW - 2 * M, 110, 70, COR.tinta, 2) + 30;
+      [["Pesquisa", "Olha os preços saindo de Fortaleza pra dezenas de destinos, várias vezes por dia."], ["Compara", "Vê se o preço está abaixo do normal daquela rota, na ida e na volta."], ["Avisa", "Se for promoção de verdade, manda no grupo com as datas mais baratas."]]
+        .forEach(([h, s], i) => { T(c, String(i + 1).padStart(2, "0"), M, y + 70, 90, MARCA.titulo, "#C9971C"); T(c, h.toUpperCase(), M + 150, y + 40, 50, MARCA.titulo, COR.tinta); paragrafo(c, s, M + 150, y + 90, PW - 2 * M - 150, 30, MARCA.corpo, COR.tinta, 600, 1.35, 3); y += 230; });
+      rodapeP(c, PW, PH, false); },
+      "🤖 COMO O RADAR DO PARTIU 085 FUNCIONA\n\n1️⃣ Pesquisa os preços saindo de Fortaleza várias vezes por dia\n2️⃣ Compara com o preço normal de cada rota (ida e volta)\n3️⃣ Quando é promoção de verdade, avisa no grupo com as datas mais baratas\n\nSe não está barato, não vai pro grupo."),
   ];
-  const t5 = gTop5(); if (t5) L.push({ ...t5, id: "camp-top5", titulo: "4. Top 5 do dia" });
-  const ed = gEducativo(EDU[0]); L.push({ ...ed, id: "camp-edu", titulo: "5. Carrossel: milhas ou pontos?" });
-  const pv = gProva(); if (pv) L.push({ ...pv, id: "camp-prova", titulo: "6. O que o radar achou" });
-  const ed2 = gEducativo(EDU[2]); L.push({ ...ed2, id: "camp-erros", titulo: "7. Carrossel: 5 erros" });
-  const rm = gRadarMilhas(); if (rm) L.push({ ...rm, id: "camp-milhas", titulo: "8. Radar de milhas" });
-  L.push(simples("notif", "9. Ative as notificações", "Fecha a campanha pedindo a ação mais importante.", c => { fundo(c, PW, PH, t1); topo(c, PW, t1, "");
-    let y = titulos(c, PW, 380, t1, "PROMOÇÃO BOA", "some em horas", "ATIVE AS NOTIFICAÇÕES") + 60; desenhaImg(c, "mascote", PW / 2, y, 380); rodape(c, PW, PH, t1, "Siga @partiu.085 + grupo grátis na bio"); },
-    "🔔 PROMOÇÃO BOA SOME EM HORAS\n\nAtiva as notificações do perfil e entra no grupo grátis pra não perder a próxima.\n\n✈️ Partiu 085: o radar de passagens de Fortaleza."));
-  return L;
+  const sem = fSemana(); if (sem) L.push({ ...sem, id: "camp-semana", titulo: "O que o radar achou" });
+  L.push({ ...fGuia(EDU[0]), id: "camp-g1", titulo: "Guia: milhas ou pontos?" });
+  const q = await fQuanto(); if (q) L.push({ ...q, id: "camp-quanto" });
+  L.push({ ...fGuia(EDU[4]), id: "camp-g2", titulo: "Guia: 5 hábitos" });
+  const op = await fOportunidade(); if (op) L.push({ ...op, id: "camp-op" });
+  L.push({ ...fGuia(EDU[9]), id: "camp-g3", titulo: "Guia: checklist do aeroporto" });
+  L.push(simples("grupo", "Grupo grátis + notificações", "Fecha pedindo as duas ações mais importantes.", c => { bgNavy(c, PW, PH); marca(c, PW, true, "GRÁTIS");
+    kicker(c, "Promoção boa some em horas", M, 420); let y = titulo(c, "Entra no grupo e ativa as notificações", M, 446, PW - 2 * M, 120, 76, "#fff", 3) + 70;
+    ["Passagens em dinheiro", "Promoções de milhas", "Datas mais baratas de ida e volta"].forEach(it => { bola(c, M + 20, y - 12); T(c, it, M + 60, y, 36, MARCA.corpo, "#fff", "left", 700); y += 70; });
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Link do grupo na bio"); },
+    "🔔 PROMOÇÃO BOA SOME EM HORAS\n\nEntra no grupo grátis e ativa as notificações do perfil pra não perder a próxima.\n\n✅ Passagens em dinheiro\n✅ Promoções de milhas\n✅ Datas mais baratas de ida e volta"));
+  return L.map((p, i) => ({ ...p, titulo: `${i + 1}. ${p.titulo}` }));
 }
 const STORIES_LEO = [
   "Story 1 (vídeo falando): \"Gente, criei um radar que avisa quando aparece passagem barata saindo de Fortaleza. Vou mostrar como funciona.\"",
-  "Story 2 (print de um alerta real do grupo): \"Olha esse que saiu essa semana 👀\" + adesivo de enquete: \"Você iria? Sim / Com certeza\"",
+  "Story 2 (print de um alerta real do grupo): \"Olha esse que saiu essa semana 👀\" + enquete \"Você iria? Sim / Com certeza\"",
   "Story 3 (link): \"É de graça. Entra no grupo e segue o @partiu.085\" + adesivo de LINK do grupo + menção @partiu.085",
 ];
 
-/* ---------- página */
+/* ================= página ================= */
 async function ideiasHoje() {
-  const L = [gRadarMilhas(), gBonus(), gTop5(), await gQuantoCusta(), gEducativo(), gProva(), gChamada()].filter(Boolean);
-  return L;
+  const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
+  const fd = [await fOportunidade(), fBonus(), fGuia(), await fQuanto(), fSemana()].filter(Boolean);
+  return st.concat(fd);
 }
 function feito(id) { return S.marcados && S.marcados["ig-" + id]; }
 function cardPauta(p, i) {
-  return `<article class="card pa-c ${feito(p.id) ? "feito" : ""}" data-pa="${i}">
+  return `<article class="card pa-c ${p.stories ? "pa-st" : ""} ${feito(p.id) ? "feito" : ""}">
     <div class="pa-h"><span class="tag">${esc(p.tipo)}</span><b>${esc(p.titulo)}</b><small>${esc(p.fmt)}</small></div>
     <div class="pa-telas ${p.stories ? "st" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
     <div class="pa-porque">💡 ${esc(p.porque)}</div>
-    <textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea>
-    <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar ${p.telas.length > 1 ? `as ${p.telas.length} telas` : "imagem"}</button>
-      <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar legenda</button>
-      <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Marcar como postado"}</button></div>
+    <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
+    <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}</button>
+      <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
+      <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
   </article>`;
 }
 function pPauta() {
   PA.lista = null;
-  const abas = pills("paaba", PA.aba, [["hoje", "Pra hoje"], ["campanha", "Campanha de lançamento"], ["biblioteca", "Biblioteca educativa"]]);
   setTimeout(montarPauta, 0);
-  return head("Pauta do Instagram", "Opções de post prontas pra hoje, feitas com os dados do radar e com a nossa identidade. Escolha 1 ou 2, baixe, copie a legenda e poste. Tudo termina chamando pro grupo grátis.") +
-    `<div class="pa-bar">${abas}</div>
-    ${PA.aba === "campanha" ? `<div class="card pa-dica"><b>Como usar a campanha:</b> poste na ordem, 1 ou 2 por dia, pra o perfil ficar com um grid bonito desde o começo. No seu perfil pessoal (@leoxpinheiro), faça os 3 stories abaixo no dia do lançamento:<ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
-    <div class="pa-grade" id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
+  return head("Pauta do Instagram", "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto. Tudo com a nossa identidade, chamando pro grupo grátis.") +
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["hoje", "Pra hoje"], ["campanha", "Campanha de lançamento"], ["biblioteca", "Guias (feed)"]])}</div>
+    ${PA.aba === "campanha" ? `<div class="card pa-dica"><b>Como usar:</b> poste na ordem, 1 por dia, pra o grid começar bonito. No seu perfil pessoal, no dia do lançamento:<ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
+    <div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
 }
 async function montarPauta() {
   const g = document.getElementById("pa-grade"); if (!g) return;
   carregarMilhas();
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
-  try { await Promise.all([`400 80px ${MARCA.titulo}`, `400 60px ${MARCA.script}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(f => document.fonts.load(f))); } catch (e) { }
-  const L = PA.aba === "hoje" ? await ideiasHoje() : PA.aba === "campanha" ? campanha() : EDU.map(x => gEducativo(x));
+  try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
+  const L = PA.aba === "hoje" ? await ideiasHoje() : PA.aba === "campanha" ? await campanha() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
-  g.innerHTML = L.length ? L.map(cardPauta).join("") : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`;
+  const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
+  g.innerHTML = !L.length ? `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
+    : PA.aba === "hoje" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L.filter(p => p.grupo === "stories")) + sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L.filter(p => p.grupo === "feed"))
+    : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
-    p.telas.forEach((fn, j) => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { fn(cv.getContext("2d")); } catch (e) { console.error(e); } box.appendChild(cv); }); });
+    p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { fn(cv.getContext("2d")); } catch (e) { console.error(e); } box.appendChild(cv); }); });
 }
 document.addEventListener("click", async e => {
-  const b = e.target.closest('[data-act^="pa"]'); if (!b) return;
-  if (b.dataset.act === "pill") return;
+  const b = e.target.closest('[data-act^="pa"]'); if (!b || b.dataset.act === "pill") return;
   const p = (PA.lista || [])[+b.dataset.i]; if (!p) return;
   if (b.dataset.act === "pabaixar") { [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)].forEach((cv, j) => setTimeout(() => { const a = document.createElement("a"); a.download = `partiu085-${p.id}-${j + 1}.png`; a.href = cv.toDataURL("image/png"); a.click(); }, j * 350)); }
-  else if (b.dataset.act === "pacopiar") { await copiar(($("#pa-l-" + b.dataset.i) || {}).value || p.legenda); toast("Legenda copiada."); }
-  else if (b.dataset.act === "pafeito") { marcar("ig-" + p.id, !feito(p.id)); const card = b.closest(".pa-c"); card.classList.toggle("feito", !!feito(p.id)); b.classList.toggle("ok", !!feito(p.id)); b.innerHTML = `${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Marcar como postado"}`; }
+  else if (b.dataset.act === "pacopiar") { await copiar(p.stories ? linkGrupo() : (($("#pa-l-" + b.dataset.i) || {}).value || p.legenda)); toast(p.stories ? "Link do grupo copiado (pro adesivo de link)." : "Legenda copiada."); }
+  else if (b.dataset.act === "pafeito") { marcar("ig-" + p.id, !feito(p.id)); const card = b.closest(".pa-c"); card.classList.toggle("feito", !!feito(p.id)); b.classList.toggle("ok", !!feito(p.id)); b.innerHTML = `${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}`; }
 });
-document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g="paaba"]'); if (b) { PA.aba = b.dataset.v; } }, true);
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g="paaba"]'); if (b) PA.aba = b.dataset.v; }, true);

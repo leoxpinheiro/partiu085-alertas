@@ -882,3 +882,7 @@ body.ej-on{overflow:hidden}
 .pa-leg{width:100%;min-height:140px;font:13px/1.45 inherit;padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--tile);color:inherit;resize:vertical}
 .pa-dica{margin-bottom:14px;font-size:14px}.pa-dica ol{margin:8px 0 0 18px;display:grid;gap:4px}
 @media (max-width:520px){.pa-grade{grid-template-columns:1fr}}
+.pa-sec{display:flex;align-items:baseline;gap:12px;margin:18px 2px 10px}.pa-sec h3{margin:0;font-size:18px}
+.pa-legd summary{cursor:pointer;font-size:13px;opacity:.8;margin-bottom:6px}
+.pa-telas.st canvas{width:min(100%,260px)}
+.pa-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px}

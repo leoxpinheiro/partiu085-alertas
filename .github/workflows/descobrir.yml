@@ -1,0 +1,32 @@
+name: Descobrir ofertas (Travelpayouts)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sondar:
+        description: "Só testar a API"
+        required: false
+        default: "sim"
+
+permissions:
+  contents: write
+
+jobs:
+  descobrir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Sondar
+        env:
+          TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
+        run: |
+          mkdir -p data
+          python engine/descobrir.py --sondar > data/sonda_tp.txt 2>&1 || true
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add data/sonda_tp.txt && git commit -q -m "Sonda Travelpayouts" && git pull --rebase -X theirs -q && git push -q

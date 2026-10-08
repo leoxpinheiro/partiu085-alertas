@@ -250,7 +250,7 @@ def montar_texto(a: dict, aj: dict) -> str:
     ]
     if a.get("preco_volta"):
         L.append(f"🔁 Ida e volta a partir de *{brl(a['preco'] + a['preco_volta'])}*")
-    L.append(f"{emoji} *{rotulo}* · {round(a['desconto'] * 100)}% abaixo da média")
+    L.append(f"{emoji} *{rotulo}*")
     L.append(f"🛫 {a['cia_nome'] or '—'} · {paradas}")
     if a.get("recorde"):
         L.append(f"📉 _Menor preço que já vimos nesse trecho ({a['base']['dias']} dias de pesquisa)_")

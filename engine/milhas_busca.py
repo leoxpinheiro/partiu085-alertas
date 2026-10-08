@@ -128,7 +128,7 @@ def montar_texto(a: dict, link: str) -> str:
     if classe(a.get("desconto")):
         em, resto = classe(a["desconto"]).split(" ", 1)
         rot, pct = (resto.split(" · ") + [""])[:2]
-        L.append(f"{em} *{rot}* · {pct}")
+        L.append(f"{em} *{rot}*")
     L += ["", "🗓️ *IDA*"] + [f"▸ {curto(g)}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
     if a.get("volta_meses"):
         L += ["", f"🗓️ *VOLTA* · a partir de *{mil(a['milhas_volta'])} milhas*"] + [f"▸ {curto(g)}: {', '.join(g['dias'])}" for g in a["volta_meses"]]

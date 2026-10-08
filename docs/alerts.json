@@ -1,6 +1,114 @@
 {
- "atualizado": "2026-10-08T19:28-03:00",
+ "atualizado": "2026-10-08T20:33-03:00",
  "alertas": [
+  {
+   "id": "FOR-BEL-2026-11-19-1791502410",
+   "criado": "2026-10-08T20:33-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 584,
+   "preco_volta": 606,
+   "preco_tipico": 1176,
+   "desconto": 0.503,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Azul",
+   "escalas": 1,
+   "ida": "2026-11-19",
+   "volta": "2026-11-24",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-19",
+     "preco": 584
+    },
+    {
+     "dia": "2026-12-04",
+     "preco": 611
+    },
+    {
+     "dia": "2026-12-06",
+     "preco": 611
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-21",
+     "preco": 617
+    },
+    {
+     "dia": "2026-11-23",
+     "preco": 659
+    },
+    {
+     "dia": "2026-11-24",
+     "preco": 606
+    },
+    {
+     "dia": "2026-11-27",
+     "preco": 628
+    },
+    {
+     "dia": "2026-11-30",
+     "preco": 661
+    },
+    {
+     "dia": "2026-12-10",
+     "preco": 606
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "19"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "04",
+      "06"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "21",
+      "23",
+      "24",
+      "27",
+      "30"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "10"
+     ]
+    }
+   ],
+   "meses": [
+    "nov",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTlqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1911BEL24111?marker=677880",
+   "base": {
+    "dias": 2,
+    "menor_visto": 548
+   },
+   "recorde": false,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 584* o trecho\n🔁 Ida e volta a partir de *R$ 1.190*\n🔥 *IMPERDÍVEL*\n🛫 Azul · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 19\n▸ Dezembro/26: 04, 06\n\n🗓️ *VOLTA*\n▸ Novembro/26: 21, 23, 24, 27, 30\n▸ Dezembro/26: 10\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-UDI-2026-11-07-1791497318",
    "criado": "2026-10-08T19:08-03:00",
@@ -91,7 +199,12 @@
    "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMDdqBRIDRk9ScgUSA1VESUIBAUgBmAEC&hl=pt-BR&curr=BRL",
    "link_compra": "https://www.aviasales.com/search/FOR0711UDI10111?marker=677880",
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Uberlândia* (UDI)\n📍 _Triângulo Mineiro (MG)_\n💰 *R$ 973* o trecho\n🔁 Ida e volta a partir de *R$ 1.929*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 07, 10, 11, 12\n\n🗓️ *VOLTA*\n▸ Novembro/26: 10, 14, 16, 24, 25\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 973,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-VCP-2026-11-10-1791493627",
@@ -366,7 +479,7 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Vitória (VIX)\n💰 A partir de *R$ 716* o trecho\n✅ BOA OPORTUNIDADE · 25% abaixo da média\n🛫 Azul · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 05\n\n*Datas de volta:*\nNovembro 2026: 07, 13, 14\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-08T16:03-03:00",
+    "quando": "2026-10-08T20:33-03:00",
     "preco": 696,
     "status": "valendo"
    }
@@ -438,7 +551,7 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → São Luís (SLZ)\n💰 A partir de *R$ 781* o trecho\n🔥 IMPERDÍVEL · 44% abaixo da média\n🛫 Gol · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 09\n\n*Datas de volta:*\nDezembro 2026: 01, 03\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-08T16:03-03:00",
+    "quando": "2026-10-08T20:33-03:00",
     "preco": 781,
     "status": "valendo"
    }
@@ -861,7 +974,7 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Roma (ROM)\n💰 A partir de *R$ 1.908* o trecho\n🔥 IMPERDÍVEL · 46% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 03, 08, 10, 11, 16, 18, 20, 24, 25, 27\n\n*Datas de volta:*\nNovembro 2026: 13, 17, 18, 19, 22, 23, 24, 26, 27\nDezembro 2026: 01, 02, 03\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-08T16:03-03:00",
+    "quando": "2026-10-08T20:33-03:00",
     "preco": 1917,
     "status": "valendo"
    }
@@ -1188,8 +1301,8 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Foz do Iguaçu (IGU)\n💰 A partir de *R$ 618* o trecho\n⭐ ÓTIMA OPORTUNIDADE · 39% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 07, 08, 09, 10, 14, 15, 16, 17, 23, 24\n\n*Datas de volta:*\nDezembro 2026: 31\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-08T16:03-03:00",
-    "preco": 618,
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 656,
     "status": "valendo"
    }
   },
@@ -2890,9 +3003,9 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Porto Alegre (POA)\n💰 A partir de *R$ 570* o trecho\n🔥 IMPERDÍVEL · 53% abaixo da média\n🛫 Gol · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 08\n\n*Datas de volta:*\nDezembro 2026: 10, 11, 12\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-07T13:06-03:00",
-    "preco": 584,
-    "status": "valendo"
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 652,
+    "status": "subiu"
    }
   },
   {
@@ -3020,8 +3133,8 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Florianópolis (FLN)\n💰 A partir de *R$ 588* o trecho\n🔥 IMPERDÍVEL · 44% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 08, 09\n\n*Datas de volta:*\nDezembro 2026: 11\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-07T06:23-03:00",
-    "preco": 620,
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 577,
     "status": "valendo"
    }
   },
@@ -3303,9 +3416,9 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Brasília (BSB)\n💰 A partir de *R$ 679* o trecho\n🔥 IMPERDÍVEL · 45% abaixo da média\n🛫 Gol · voo direto\n\n*Datas de ida:*\nNovembro 2026: 05, 12\n\n*Datas de volta:*\nNovembro 2026: 16\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-07T06:23-03:00",
-    "preco": 681,
-    "status": "valendo"
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 885,
+    "status": "subiu"
    }
   },
   {
@@ -3485,9 +3598,9 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Lisboa (LIS)\n💰 A partir de *R$ 1.700* o trecho\n⭐ ÓTIMA OPORTUNIDADE · 36% abaixo da média\n🛫 Tap Air Portugal · voo direto\n\n*Datas de ida:*\nOutubro 2026: 31\nNovembro 2026: 01, 04, 06, 08, 10, 23, 24, 30\nDezembro 2026: 01, 10, 11\n\n*Datas de volta:*\nNovembro 2026: 14, 16, 20, 23, 24, 30\nDezembro 2026: 01, 04, 05, 12, 14\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-07T09:09-03:00",
-    "preco": 1694,
-    "status": "valendo"
+    "quando": "2026-10-08T20:33-03:00",
+    "preco": 2974,
+    "status": "subiu"
    }
   },
   {

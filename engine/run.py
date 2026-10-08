@@ -173,9 +173,18 @@ def coletar(r: dict, aj: dict) -> tuple[list[dict], list[dict]]:
     if OFFLINE:
         return dados_falsos(r, "ida"), dados_falsos(r, "volta")
     max_esc = aj["max_escalas_nacional"] if r["tipo"] == "nacional" else aj["max_escalas_internacional"]
-    ida = varrer(C.ORIGEM, r["iata"], max_esc, aj)
-    volta = varrer(r["iata"], C.ORIGEM, max_esc, aj) if ida else []
+    ida = limpar(varrer(C.ORIGEM, r["iata"], max_esc, aj), r)
+    volta = limpar(varrer(r["iata"], C.ORIGEM, max_esc, aj), r) if ida else []
     return ida, volta
+
+
+def falso(p: float, r: dict) -> bool:
+    """O Google devolve um preço 'de mentira' (~R$ 3.850–3.870) quando não acha voo bom em rota nacional."""
+    return r.get("tipo") == "nacional" and 3840 <= p <= 3870
+
+
+def limpar(dias: list[dict], r: dict) -> list[dict]:
+    return [d for d in dias if not falso(d["preco"], r)]
 
 
 def dados_falsos(r: dict, sentido: str) -> list[dict]:
@@ -246,8 +255,11 @@ def montar_texto(a: dict, aj: dict) -> str:
         "🚨 *O RADAR APITOU!*",
         "",
         f"✈️ *{C.ORIGEM_NOME} ➜ {a['destino_nome']}* ({a['destino']})",
-        f"💰 *{brl(a['preco'])}* o trecho",
     ]
+    ref = (ler_json(DOCS / "referencias.json", {}).get("ref") or {}).get(a["destino"]) or {}
+    if ref.get("texto"):
+        L.append(f"📍 _{ref['texto']}_")
+    L.append(f"💰 *{brl(a['preco'])}* o trecho")
     if a.get("preco_volta"):
         L.append(f"🔁 Ida e volta a partir de *{brl(a['preco'] + a['preco_volta'])}*")
     L.append(f"{emoji} *{rotulo}*")

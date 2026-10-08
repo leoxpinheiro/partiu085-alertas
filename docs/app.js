@@ -10,7 +10,7 @@ const S = {
   rotasSujo: false, ajustesSujo: false,
   F: { q: "", tipo: "", classe: "", cia: "", mes: "", max: "", direto: false, ordem: "recentes", dias: "30", env: "" },
   marcados: {}, grupos: null, gruposSujo: false, rodando: false,
-  R: { ordem: "az", tipo: "" }, D: { ordem: "ofertas", tipo: "", q: "", sel: "" }, dashOrd: "ofertas", cal: {},
+  R: { ordem: "az", tipo: "" }, D: { ordem: "ofertas", tipo: "", q: "", sel: "", reg: "", ate: "" }, dashOrd: "ofertas", cal: {},
   histRota: "", conv: null,
 };
 
@@ -152,13 +152,17 @@ function textoFinal(t, tipo) {
   const out = L.join("\n").replace(/\n{3,}/g, "\n\n");
   return rod ? out + "\n\n" + rod : out;
 }
+function refDe(k) { return ((S.ref || {}).ref || {})[k] || null; }
+function regiaoDe(k) { const R = (S.ref || {}).regioes || {}; return Object.keys(R).find(n => R[n].includes(k)) || ""; }
 function montarTextoDinheiro(a) {
   if (!a || !a.ida_meses || !a.ida_meses.length) return null;
   const aj = S.ajustes || {}, esc_ = a.escalas;
   const paradas = esc_ === 0 ? "voo direto" : esc_ ? `${esc_} parada${esc_ > 1 ? "s" : ""}` : "";
   const k = a.classe || "boa", rot = { imperdivel: ["🔥", "IMPERDÍVEL"], otima: ["⭐", "ÓTIMA OPORTUNIDADE"], boa: ["✅", "BOA OPORTUNIDADE"] }[k];
   const curto = g => { const [n, y] = g.mes.split(" "); return y ? `${n}/${y.slice(2)}` : n; };
-  const L = ["🚨 *O RADAR APITOU!*", "", `✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`, `💰 *${brl(a.preco)}* o trecho`];
+  const L = ["🚨 *O RADAR APITOU!*", "", `✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`];
+  const rf = refDe(a.destino); if (rf && rf.texto) L.push(`📍 _${rf.texto}_`);
+  L.push(`💰 *${brl(a.preco)}* o trecho`);
   if (a.preco_volta) L.push(`🔁 Ida e volta a partir de *${brl(a.preco + a.preco_volta)}*`);
   L.push(`${rot[0]} *${rot[1]}*`);
   L.push(`🛫 ${a.cia_nome || "—"}${paradas ? " · " + paradas : ""}`);
@@ -195,6 +199,7 @@ async function carregar() {
   if (!S.gruposSujo) S.grupos = gp || GRUPOS_PADRAO.map(g => ({ ...g }));
   S.ultima = S.status.ultima_rodada || a.atualizado;
   S.pri = (await getJSON("prioridades.json", { prioridades: {} })).prioridades || {};
+  S.ref = await getJSON("referencias.json", { ref: {}, regioes: {} });
   reaplicarTextos();
 }
 
@@ -907,7 +912,7 @@ document.addEventListener("click", async e => {
       if (g === "convmodo") { S.convModo = v; }
       else if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
       else if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
-      else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v;
+      else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v; else if (g === "destreg") S.D.reg = v; else if (g === "destlimpa") { S.D.reg = ""; S.D.ate = ""; S.D.q = ""; } else if (g === "destate") S.D.ate = v;
       render(); return;
     }
     else if (act === "histabrir") { const k = b.dataset.k; S.H.aberto = S.H.aberto === k ? "" : k; if (S.H.aberto) await carregarCal(k.split("-")[1]); render(); return; }

@@ -767,3 +767,23 @@ body.ej-on{overflow:hidden}
 .ej-n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.18);font-size:12px;font-weight:700;margin-right:6px}
 .ej-acts .bt.ok{outline:2px solid #16A34A}
 @media (max-width:720px){.ej-g{grid-template-columns:1fr}.ej-img{max-width:320px;margin:auto}.ej-t textarea{min-height:200px}.ej-acts .bt{flex:1 1 100%;justify-content:center}}
+
+/* Modo envio: fila em miniaturas */
+.ev-tira{display:flex;flex-direction:column;gap:10px;margin:0 0 14px}
+.ev-tira-g .micro{display:block;margin-bottom:6px}
+.ev-tira-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ev-mini{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 6px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:inherit;cursor:pointer;text-align:left;font:inherit;min-width:0;border-left:3px solid var(--c)}
+.ev-mini:hover{background:var(--raised)}
+.ev-mini.on{outline:2px solid var(--c);background:var(--raised)}
+.ev-mini-f{flex:none;width:38px;height:38px;border-radius:8px;background:var(--muted) center/cover no-repeat}
+.ev-mini-t{min-width:0;display:flex;flex-direction:column}
+.ev-mini-t b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev-mini-t small{font-size:11.5px;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:640px){.ev-tira-l{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}.ev-mini{flex:0 0 150px;scroll-snap-align:start}}
+/* destinos: referência e filtros */
+.dest-ref{display:block;font-size:12px;opacity:.7;font-weight:500;margin-top:2px}
+.mv-filtros{display:flex;flex-direction:column;gap:8px;margin:-4px 0 14px}
+.mv-f{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mv-f .micro{min-width:92px}
+.mv-como{margin:2px 0 0;max-width:900px}
+.lnk{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}

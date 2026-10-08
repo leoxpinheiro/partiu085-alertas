@@ -149,7 +149,7 @@ async function desenharResgate(cv, r) {
   const nome = (r.nome || r.iata || "").toUpperCase();
   const tn = caberR(c, nome, 150, 76, W - 128, t => `${t}px ${A}`);
   c.fillStyle = "#fff"; c.shadowColor = "rgba(0,0,0,.35)"; c.shadowBlur = 18; c.fillText(nome, 60, FH - 24); c.shadowBlur = 0;
-  c.font = `800 26px ${J}`; c.fillStyle = AM; c.fillText(`SAINDO DE FORTALEZA ✈${r.internacional ? "  ·  INTERNACIONAL" : ""}`, 64, FH - 24 - tn * 0.98 - 18);
+  c.font = `800 26px ${J}`; c.fillStyle = AM; const rfc = (typeof refDe === "function" && refDe(r.iata) || {}).curta; c.fillText(`SAINDO DE FORTALEZA ✈${rfc ? "  ·  " + rfc.toUpperCase() : r.internacional ? "  ·  INTERNACIONAL" : ""}`, 64, FH - 24 - tn * 0.98 - 18);
   // crédito da foto
   const cr = foto ? await creditoFoto(r.iata) : null;
   if (cr) { c.font = `500 15px ${J}`; c.fillStyle = "rgba(255,255,255,.55)"; c.textAlign = "right"; c.fillText(`Foto: ${(cr.autor || "Wikimedia Commons").slice(0, 40)}${cr.licenca ? " · " + cr.licenca : ""}`, W - 60, 156); c.textAlign = "left"; }

@@ -8,6 +8,13 @@ function filaModoEnvio() {
 }
 function evFonte(f) { return f && (S.alertas.find(a => a.id === f.id) || ((S.mi && S.mi.ofertas) || []).find(o => o.id === f.id)); }
 async function evImagem() { const F = filaModoEnvio(), f = F[EV.i], cv = document.getElementById("ev-cv"), d = cardDeAlerta(evFonte(f)); if (cv && d) await desenharResgate(cv, d); return cv; }
+function evTira(F) {
+  const hj = hojeISO(), grupos = [["Hoje", F.map((f, i) => [f, i]).filter(([f]) => f.q.slice(0, 10) === hj)], ["Ontem e antes", F.map((f, i) => [f, i]).filter(([f]) => f.q.slice(0, 10) !== hj)]].filter(g => g[1].length);
+  const mini = ([f, i]) => { const x = evFonte(f) || {}, ia = x.destino || x.iata || "";
+    return `<button class="ev-mini ${i === EV.i ? "on" : ""}" data-act="evir" data-i="${i}" style="--c:${f.cor}" title="${esc(f.t)} · ${esc(f.v)}">
+      <span class="ev-mini-f" style="${ia ? `background-image:url(fotos/${ia}.jpg)` : ""}"></span><span class="ev-mini-t"><b>${esc(f.t)}</b><small>${esc(String(f.v).replace(/ o trecho$/, ""))}</small></span></button>`; };
+  return `<div class="ev-tira">${grupos.map(([n, L]) => `<div class="ev-tira-g"><span class="micro">${n} · ${L.length}</span><div class="ev-tira-l">${L.map(mini).join("")}</div></div>`).join("")}</div>`;
+}
 function pEnviar() {
   carregarMilhas();
   const F = filaModoEnvio();
@@ -20,7 +27,8 @@ function pEnviar() {
   if (!f) return topo + `<div class="card ev-fim"><div class="ev-fim-i">🎉</div><h3>Tudo enviado</h3><p class="desc">Não tem nada pendente de ontem e hoje. Os próximos alertas aparecem aqui sozinhos.</p><div class="al-acts"><a class="bt" href="#alertas">${ic("bell")}Ver todos os alertas</a></div></div>`;
   const pode = typeof navigator.share === "function";
   return topo + `
-    <div class="ev-prog"><span>Faltam ${tot} pra enviar${EV.i ? ` · vendo o ${EV.i + 1}º` : ""}</span></div>
+    <div class="ev-prog"><span>Faltam ${tot} pra enviar · vendo o ${EV.i + 1}º</span></div>
+    ${evTira(F)}
     <div class="card ev-card" style="--c:${f.cor}">
       <div class="ev-h"><span class="fila-tag">${esc(f.rot)}</span><div><b>${esc(f.t)}</b><small>${esc(f.v)}${f.d ? ` · ${f.d}` : ""} · achado ${f.q.slice(0, 10) === hojeISO() ? "hoje" : "ontem"} às ${f.q.slice(11, 16)}</small></div></div>
       <div class="ev-grid"><div><textarea class="ev-texto" id="ev-texto" spellcheck="false" title="Pode editar antes de copiar">${esc(f.texto)}</textarea><div class="sub" style="margin-top:6px">Dá pra editar o texto antes de copiar. Vale só pra este envio.</div></div>
@@ -45,6 +53,7 @@ document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="ev"]'); if (!b) return;
   const F = filaModoEnvio(), f = F[EV.i]; const act = b.dataset.act;
   if (act === "evpular") { EV.i = Math.min(EV.i + 1, F.length - 1); render(); return; }
+  if (act === "evir") { EV.i = +b.dataset.i; render(); return; }
   if (act === "evvoltar") { EV.i = Math.max(0, EV.i - 1); render(); return; }
   if (!f) return;
   const txt = ($("#ev-texto") || {}).value || f.texto;

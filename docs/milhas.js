@@ -166,7 +166,7 @@ function mapaDestinos() { montarMapa("mapa-dest", pontosMapa("real"), COR_MOEDA.
 function blocoDestinos(moeda) {
   const real = moeda === "real", cor = COR_MOEDA[moeda], st = real ? S.D : MI;
   const nomeM = real ? "dinheiro" : MOEDAS.find(m => m[0] === moeda)[1];
-  let L = linhasDestinos(moeda).filter(x => (!st.tipo || x.tipo === st.tipo) && (!real || !st.q || (x.nome + " " + x.k).toLowerCase().includes(st.q.toLowerCase())));
+  let L = linhasDestinos(moeda).filter(x => (real ? (!st.reg || regiaoDe(x.k) === st.reg) && (!st.ate || (st.ate === "promo" ? x.d >= .2 : x.menor && x.menor <= +st.ate)) : (!st.tipo || x.tipo === st.tipo)) && (!real || !st.q || (x.nome + " " + x.k + " " + ((refDe(x.k) || {}).texto || "")).toLowerCase().includes(st.q.toLowerCase())));
   if (real) L = ordenarDest(L, st.ordem);
   else L.sort({ ofertas: (a, b) => (b.d || 0) - (a.d || 0) || (a.menor || 1e12) - (b.menor || 1e12), preco: (a, b) => (a.menor || 1e12) - (b.menor || 1e12), az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR") }[st.ordem] || (() => 0));
   const comDados = L.filter(x => x.real || x.ida || x.volta), semDados = real ? S.rotas.filter(r => r.ativo !== false && !(S.status.rotas || {})[r.iata]) : L.filter(x => !(x.ida || x.volta));
@@ -178,7 +178,7 @@ function blocoDestinos(moeda) {
       : (x.ida && x.volta ? `volta ${milN(x.volta.milhas)} + ${taxaR(x.volta.taxa)}` : "");
     return `<article class="dest ${aberto ? "aberto" : ""}" id="${real ? "cal-" : "mcal-"}${x.k}">
       <button class="dest-h" data-act="${real ? "abrirdest" : "miabrir"}" data-iata="${x.k}" aria-expanded="${aberto}">
-        <span class="dest-n"><span class="micro">${x.k}${x.foco ? " · em foco" : ""}</span><b>${esc(x.nome)}</b></span>
+        <span class="dest-n"><span class="micro">${x.k}${x.foco ? " · em foco" : ""}</span><b>${esc(x.nome)}</b>${refDe(x.k) && refDe(x.k).texto ? `<small class="dest-ref">📍 ${esc(refDe(x.k).texto)}</small>` : ""}</span>
         <span class="dest-p">${preco}</span>
         ${x.d > 0 ? `<span class="badge ${x.d >= .2 ? "pos" : ""}">−${pct(x.d)}</span>` : `<span></span>`}
         <span class="dest-x sub">${extra}</span>
@@ -195,9 +195,15 @@ function blocoDestinos(moeda) {
     <div class="mv-tools">
       ${real ? `<input class="busca" type="search" placeholder="Buscar destino…" data-d="q" value="${esc(st.q || "")}">` : ""}
       ${pills("vista", VISTA, [["quadros", "▦ Quadros"], ["lista", "☰ Lista"]])}
-      ${pills(g.t, st.tipo || "", [["", "Todos"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}
+      ${real ? "" : pills(g.t, st.tipo || "", [["", "Todos"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}
       ${pills(g.o, st.ordem, ords)}
     </div>
+    ${real ? `<div class="mv-filtros">
+      <div class="mv-f"><span class="micro">Região</span>${pills("destreg", st.reg || "", [["", "Todas"]].concat(Object.keys((S.ref || {}).regioes || {}).map(n => [n, n])))}</div>
+      <div class="mv-f"><span class="micro">Preço da ida</span>${pills("destate", st.ate || "", [["", "Qualquer"], ["promo", "🔥 Só em promoção"], ["500", "até R$ 500"], ["1000", "até R$ 1.000"], ["2000", "até R$ 2.000"], ["4000", "até R$ 4.000"]])}</div>
+      <p class="sub mv-como">Como ler: o número grande é a <b>ida mais barata</b> nos próximos meses. A barrinha compara com a <b>média</b> da rota (o risquinho). Quanto mais curta a barra, mais barato que o normal. Toque no destino pra ver o calendário.</p>
+      <div class="sub">${comDados.length} destino${comDados.length === 1 ? "" : "s"} nesse filtro${st.reg || st.ate || st.q ? ` · <button class="lnk" data-act="pill" data-g="destlimpa" data-v="1">limpar filtros</button>` : ""}</div>
+    </div>` : ""}
     ${comDados.length ? `<div class="dests ${VISTA === "quadros" ? "grade" : ""}">${comDados.map(quadro).join("")}</div>` : `<div class="card vazio">Nenhum destino com preço${real ? "" : ` em ${esc(nomeM)}`} ainda.</div>`}
     ${semDados.length ? `<div class="mv-esp"><span class="sub">Aguardando a primeira busca:</span> ${semDados.map(x => `<span class="tag">${esc(x.nome)}</span>`).join("")}</div>` : ""}
   </div>`;

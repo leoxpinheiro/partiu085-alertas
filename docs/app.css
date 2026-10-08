@@ -739,3 +739,16 @@ textarea.ev-texto:focus{box-shadow:inset 0 0 0 2px var(--lime-300)}
 select.pri-sel{height:32px;border-radius:999px;border:0;padding:0 10px;background:var(--tile);color:inherit;font:inherit;font-size:12.5px}
 select.pri-sel.alta{box-shadow:inset 0 0 0 1.5px #16A34A}select.pri-sel.baixa{opacity:.75}
 select.pri-sel{min-width:132px}
+
+/* rotas sem rolagem lateral */
+table.rt-tab{width:100%;table-layout:auto;font-size:13px}
+table.rt-tab td,table.rt-tab th{padding:8px 8px;white-space:nowrap}
+.rt-n b{display:block;font-weight:600;white-space:normal;max-width:180px}
+.rt-n small,.rt-p small{display:block;font-size:11px;color:var(--text-tertiary)}
+.rt-p b{font-weight:600}
+.rt-q{color:var(--text-tertiary);font-size:12px}
+.rt-teto{width:84px!important}
+.rt-a{display:flex;gap:4px;justify-content:flex-end}
+.rt-a .bt{width:34px;padding:0;justify-content:center}
+table.rt-tab select.pri-sel{min-width:136px;font-size:12px}
+@media (max-width:1150px){table.rt-tab th:nth-child(4),table.rt-tab td:nth-child(4),table.rt-tab th:nth-child(6),table.rt-tab td:nth-child(6){display:none}}

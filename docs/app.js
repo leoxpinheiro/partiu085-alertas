@@ -549,21 +549,17 @@ function pRotas() {
   const linhas = idx.map(i => {
     const r = S.rotas[i];
     const s = st[r.iata] || {};
+    const pa = (S.pri || {})[r.iata] || {}, auto = pa.auto || "normal", NOME = { alta: "Alta", normal: "Normal", baixa: "Baixa" };
     return `<tr class="${r.ativo === false ? "off" : ""}">
-      <td><span class="iata">${esc(r.iata)}</span></td>
-      <td>${esc(r.nome)}</td>
-      <td><span class="tag ${r.tipo === "internacional" ? "info" : ""}">${r.tipo === "internacional" ? "Internacional" : "Nacional"}</span></td>
-      <td class="num"><input class="mini" type="number" data-rota="${i}" data-campo="teto" value="${r.teto || ""}" placeholder="sem teto"></td>
-      <td class="num">${s.menor ? brl(s.menor) : "–"}</td>
-      <td class="num">${s.mediana ? brl(s.mediana) : "–"}</td>
-      <td style="color:var(--text-tertiary);font-size:12px;white-space:nowrap">${s.quando ? haQuanto(s.quando) : "ainda não"}</td>
-      <td>${(() => { const pa = (S.pri || {})[r.iata] || {}; const auto = pa.auto || "normal"; const nome = { alta: "Alta", normal: "Normal", baixa: "Baixa" };
-        return `<select class="mini pri-sel ${r.prioridade || auto}" data-rota="${i}" data-campo="prioridade" title="${esc(pa.motivo || "")}">
-          <option value="" ${!r.prioridade ? "selected" : ""}>Auto · ${nome[auto]}</option>${["alta", "normal", "baixa"].map(v => `<option value="${v}" ${r.prioridade === v ? "selected" : ""}>${nome[v]}</option>`).join("")}</select>`; })()}</td>
+      <td><b class="iata">${esc(r.iata)}</b></td>
+      <td class="rt-n"><b>${esc(r.nome)}</b><small>${r.tipo === "internacional" ? "Internacional" : "Nacional"}</small></td>
+      <td class="num rt-p">${s.menor ? `<b>${brl(s.menor)}</b><small>média ${brl(s.mediana)}</small>` : `<small>–</small>`}</td>
+      <td class="rt-q">${s.quando ? haQuanto(s.quando) : "ainda não"}</td>
+      <td><select class="mini pri-sel ${r.prioridade || auto}" data-rota="${i}" data-campo="prioridade" title="${esc(pa.motivo || "")}"><option value="" ${!r.prioridade ? "selected" : ""}>Auto · ${NOME[auto]}</option>${["alta", "normal", "baixa"].map(v => `<option value="${v}" ${r.prioridade === v ? "selected" : ""}>${NOME[v]}</option>`).join("")}</select></td>
+      <td class="num"><input class="mini rt-teto" type="number" data-rota="${i}" data-campo="teto" value="${r.teto || ""}" placeholder="–" title="Teto ida e volta (R$)"></td>
       <td><label class="sw" title="Foco: varre em toda rodada"><input type="checkbox" data-rota="${i}" data-campo="foco" ${r.foco ? "checked" : ""}><span></span></label></td>
       <td><label class="sw" title="Ativa"><input type="checkbox" data-rota="${i}" data-campo="ativo" ${r.ativo !== false ? "checked" : ""}><span></span></label></td>
-      <td style="white-space:nowrap"><button class="bt sm" data-act="buscarrota" data-iata="${esc(r.iata)}">Buscar agora</button>
-        <button class="bt sm ghost danger" data-act="excluirrota" data-i="${i}" title="Excluir" aria-label="Excluir">${ic("x")}</button></td>
+      <td class="rt-a"><button class="bt sm ghost" data-act="buscarrota" data-iata="${esc(r.iata)}" title="Buscar agora">${ic("refresh")}</button><button class="bt sm ghost danger" data-act="excluirrota" data-i="${i}" title="Excluir" aria-label="Excluir">${ic("x")}</button></td>
     </tr>`;
   }).join("");
   return head("Rotas vigiadas", "Os destinos que o radar procura saindo de Fortaleza. Adicione, tire ou coloque em foco.",
@@ -588,8 +584,8 @@ function pRotas() {
         <div class="freq-g"><div class="freq-i alta"><b>${conta("alta")}</b><span>Alta</span><small>olhada ~a cada 6h</small></div><div class="freq-i normal"><b>${conta("normal")}</b><span>Normal</span><small>~1 vez por dia</small></div><div class="freq-i baixa"><b>${conta("baixa")}</b><span>Baixa</span><small>~a cada 2 dias</small></div></div></div>`; })()}
     <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("rotas", R.ordem, [["az", "A–Z"], ["ofertas", "Melhores ofertas"], ["preco", "Menor valor"], ["recente", "Varridas agora"], ["foco", "Em foco"]])}
       ${pills("rotastipo", R.tipo, [["", "Todas"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}</div>
-    <div class="tbl-wrap"><table><thead><tr><th>Cód.</th><th>Destino</th><th>Tipo</th><th class="num">Teto</th><th class="num">Menor agora</th><th class="num">Média</th><th>Varrida</th><th title="Quantas vezes o radar olha essa rota">Frequência</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
-    <tbody>${linhas || `<tr><td colspan="11" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
+    <div class="tbl-wrap"><table class="rt-tab"><thead><tr><th>Cód.</th><th>Destino</th><th class="num">Menor agora</th><th>Varrida</th><th title="Quantas vezes o radar olha essa rota">Frequência</th><th class="num" title="Teto ida e volta (R$)">Teto</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
+    <tbody>${linhas || `<tr><td colspan="9" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
     <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">A cada rodada (de 2 em 2 horas) o radar varre ${S.ajustes.rotas_por_rodada || 9} rotas: as de foco sempre, e as outras pela frequência. Use foco em poucas rotas (até 5) pra não deixar a rodada lenta.</p>`;
 }
 function addRota(iata, extra = {}) {
@@ -1000,6 +996,8 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
 
 /* ------------------------------------------------------------ início */
 (async () => {
+  const mc = (location.hash || "").match(/^#conectar=([\w-]+)/);
+  if (mc) { store("p085_token", mc[1]); history.replaceState(null, "", location.pathname + "#dashboard"); setTimeout(() => toast("✓ Aparelho conectado. Pode usar normalmente."), 800); }
   await carregar(); render(); checarRodando();
   if (token()) fetch(API, { headers: { Authorization: "Bearer " + token() } }).then(r => { const h = r.headers.get("github-authentication-token-expiration"); if (h) { S.tokenVence = Math.floor((new Date(h.replace(" UTC", "Z").replace(" ", "T")) - Date.now()) / 864e5); if (S.tokenVence <= 10) render(); } }).catch(() => { });
   setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas/.test(location.hash)) render(); } }, 120000);

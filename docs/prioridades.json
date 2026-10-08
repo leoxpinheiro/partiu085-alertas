@@ -123,7 +123,7 @@
   "MAD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (17 de ~90 dias)"
+   "motivo": "poucos voos (22 de ~90 dias)"
   },
   "PAR": {
    "prioridade": "alta",
@@ -156,9 +156,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "NYC": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (10 de ~90 dias)"
   },
   "BUE": {
    "prioridade": "alta",
@@ -178,12 +178,12 @@
   "BOG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (6 de ~90 dias)"
+   "motivo": "poucos voos (1 de ~90 dias)"
   },
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (6 de ~90 dias)"
+   "motivo": "poucos voos (5 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -198,7 +198,7 @@
   "MVD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (11 de ~90 dias)"
+   "motivo": "poucos voos (5 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -226,14 +226,14 @@
    "motivo": "padrão"
   },
   "BPS": {
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
+  },
+  "PMW": {
    "prioridade": "normal",
    "auto": "normal",
    "motivo": "padrão"
-  },
-  "PMW": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "destino de nicho, promoção rara"
   },
   "UDI": {
    "prioridade": "baixa",
@@ -251,9 +251,9 @@
    "motivo": "padrão"
   },
   "FRA": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "PUJ": {
    "prioridade": "baixa",
@@ -271,16 +271,16 @@
    "motivo": "destino de nicho, promoção rara"
   }
  },
- "quando": "2026-10-08T17:35-03:00",
+ "quando": "2026-10-08T18:48-03:00",
  "ultimo_lote": [
-  "VCP",
-  "CGB",
-  "CGR",
-  "NVT",
-  "BPS",
-  "BCN",
-  "MIL",
-  "FRA",
-  "PMW"
+  "UDI",
+  "PUJ",
+  "MDE",
+  "SDQ",
+  "MVD",
+  "NAT",
+  "RIO",
+  "BSB",
+  "BHZ"
  ]
 }

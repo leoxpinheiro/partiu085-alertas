@@ -160,10 +160,10 @@ async function desenharResgate(cv, r) {
   c.font = `600 28px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("a partir de", 64, y0);
   const tb = caberR(c, big, 128, 80, 560, t => `${t}px ${A}`); c.fillStyle = AM; c.fillText(big, 60, y0 + tb * .92);
   const yb = y0 + tb * .92;
-  c.font = `700 30px ${J}`; c.fillStyle = "#fff"; c.fillText(milhas ? `milhas ${r.taxa ? "+ R$ " + milN(r.taxa) : "+ taxas"} · o trecho` : "o trecho", 64, yb + 46);
+  c.font = `700 30px ${J}`; c.fillStyle = "#fff"; c.fillText(milhas ? `milhas ${r.taxa ? "+ R$ " + milN(r.taxa) : "+ taxas"} · o trecho` : (r.sob || "o trecho"), 64, yb + 46);
   // caixa à direita
   const bx = 660, by = y0 - 30, bw = W - 60 - bx, bh = 186;
-  rr(c, bx, by, bw, bh, 28); c.fillStyle = "rgba(255,255,255,.1)"; c.fill(); c.strokeStyle = "rgba(255,255,255,.18)"; c.lineWidth = 2; c.stroke();
+  if (milhas || r.idaVolta) { rr(c, bx, by, bw, bh, 28); c.fillStyle = "rgba(255,255,255,.1)"; c.fill(); c.strokeStyle = "rgba(255,255,255,.18)"; c.lineWidth = 2; c.stroke(); }
   c.textAlign = "center"; const cx = bx + bw / 2;
   if (milhas) {
     c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("PROGRAMA", cx, by + 52);

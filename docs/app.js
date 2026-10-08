@@ -240,7 +240,7 @@ function navs() {
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);

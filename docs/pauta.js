@@ -3,7 +3,8 @@
    Feed = o que tem valor duradouro (oportunidade rara, resumo da semana, bônus forte, quanto custa, guias).
    Usa MARCA/img/caber/quebrar/rr/aviao/desenhaImg do Criar arte e as fotos reais das cidades (fotos/IATA.jpg). */
 "use strict";
-const PA = { aba: "hoje" };
+const PA = { aba: "campanha", tipo: "feed", nt: { link: "", kicker: "Novidade no aeroporto de Fortaleza", titulo: "", pontos: "", fonte: "", texto: "", foto: null } };
+try { PA.tipo = localStorage.getItem("p085_pa_tipo") || "feed"; } catch (e) { }
 const PW = 1080, PH = 1350, SW = 1080, SH = 1920, M = 90;
 const COR = { navy: "#0B2440", am: "#F5C531", creme: "#F6F1E4", tinta: "#0F2A47", cinza: "rgba(255,255,255,.62)", linha: "rgba(255,255,255,.14)" };
 const HASH = "#fortaleza #ceara #passagensbaratas #promocaodepassagem #milhas #viagem #partiu085";
@@ -314,6 +315,58 @@ const STORIES_LEO = [
   "Story 3 (link): \"É de graça. Entra no grupo e segue o @partiu.085\" + adesivo de LINK do grupo + menção @partiu.085",
 ];
 
+/* ================= notícias (novidade do aeroporto, rota nova, etc.) ================= */
+const DIAS_SEM_RE = /(segunda|terça|terca|quarta|quinta|sexta|sábado|sabado|domingo|diári[oa]s?|diariamente|semanais?|por semana)/i;
+function extrairPontos(texto) {
+  const nomes = S.rotas.map(r => r.nome.toLowerCase());
+  return String(texto || "").split(/\n+|(?<=[.!])\s+/).map(x => x.replace(/^[\s•\-–✈️📍🛫*]+/, "").trim())
+    .filter(x => x.length > 8 && x.length < 140 && (DIAS_SEM_RE.test(x) || /\d/.test(x) || nomes.some(n => x.toLowerCase().includes(n)))).slice(0, 5).join("\n");
+}
+function noticiaHTML() {
+  const N = PA.nt, lista = (PA.noticias || []).slice(0, 8);
+  if (!PA.noticias) getJSON("noticias.json", { itens: [] }).then(d => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
+  return `<div class="card pa-nt">
+    <h3>Transformar uma novidade em post</h3>
+    <div class="desc">Viu uma novidade (ex.: post do aeroporto com rota nova e dias da semana)? Cole o link e o texto do post. A gente separa os pontos principais e monta a arte com a nossa marca, citando a fonte.</div>
+    <div class="form pa-nt-f">
+      <div class="field"><label>Link do post (Instagram, site, notícia)</label><input data-nt="link" value="${esc(N.link)}" placeholder="https://www.instagram.com/p/…"></div>
+      <div class="field"><label>Fonte (aparece na arte)</label><input data-nt="fonte" value="${esc(N.fonte)}" placeholder="@aeroportodefortaleza"></div>
+      <div class="field" style="grid-column:1/-1"><label>Texto do post (cole a legenda aqui)</label><textarea data-nt="texto" rows="4" placeholder="Cole aqui a legenda do post ou o texto da notícia…">${esc(N.texto)}</textarea></div>
+      <div class="field"><label>Etiqueta</label><input data-nt="kicker" value="${esc(N.kicker)}"></div>
+      <div class="field"><label>Título da arte</label><input data-nt="titulo" value="${esc(N.titulo)}" placeholder="Ex.: Novo voo direto Fortaleza ➜ Recife"></div>
+      <div class="field" style="grid-column:1/-1"><label>Pontos principais (1 por linha)</label><textarea data-nt="pontos" rows="4" placeholder="Ex.: Voos às segundas, quartas e sextas&#10;Começa em dezembro">${esc(N.pontos)}</textarea></div>
+      <div class="field"><label>Foto de fundo (opcional)</label><input type="file" accept="image/*" data-nt-foto></div>
+      <div class="field" style="align-self:end"><button class="bt" data-act="ntextrair">✨ Separar os pontos do texto</button> <button class="bt pri" data-act="ntgerar">Gerar arte</button></div>
+    </div>
+    <p class="sub">Dica: no Instagram, toque nos 3 pontinhos do post › Copiar link. Pra copiar a legenda, abra o post no navegador do computador. A arte é nossa, com crédito à fonte; não repostamos a imagem dos outros.</p>
+  </div>
+  ${lista.length ? `<div class="card pa-nt"><h3>Notícias recentes que o robô achou</h3><div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni"><div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
+    <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm" data-act="ntusar" data-i="${i}">Usar</button></div>`).join("")}</div></div>` : ""}`;
+}
+async function postNoticia() {
+  const N = PA.nt; if (!N.titulo && !N.pontos) return [];
+  const pts = N.pontos.split("\n").map(x => x.trim()).filter(Boolean).slice(0, 5);
+  const fotoIm = N.foto ? await new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = N.foto; }) : null;
+  const desenha = (W, H, story) => c => {
+    if (fotoIm) bgFoto(c, W, H, fotoIm, story ? .42 : .38); else bgNavy(c, W, H);
+    marca(c, W, true, "NOVIDADE");
+    const y0 = fotoIm ? H * (story ? .42 : .38) - 60 : (story ? 520 : 360);
+    kicker(c, N.kicker || "Novidade", M, y0);
+    let y = titulo(c, N.titulo || "Novidade", M, y0 + 26, W - 2 * M, story ? 120 : 104, 64, "#fff", 3) + 40;
+    pts.forEach(p => { bola(c, M + 20, y + 4); y = paragrafo(c, p, M + 60, y + 16, W - 2 * M - 60, story ? 44 : 36, MARCA.corpo, "#fff", 700, 1.3, 3) + 30; });
+    if (N.fonte) T(c, `Fonte: ${N.fonte}`, M, Math.min(y + 30, H - (story ? 340 : 190)), 22, MARCA.corpo, COR.cinza, "left", 600);
+    if (story) espacoLink(c, W, H); else rodapeP(c, W, H); };
+  const leg = legenda(`📰 ${(N.titulo || "").toUpperCase()}\n\n${pts.map(p => `✈️ ${p}`).join("\n")}${N.fonte ? `\n\nFonte: ${N.fonte}` : ""}\n\n💬 Você vai aproveitar? Comenta aqui!`);
+  return [{ id: "nt-feed-" + (N.titulo || "x").slice(0, 30), grupo: "feed", tipo: "Notícia", titulo: "Notícia · feed", porque: "Novidade do aeroporto/companhias: mostra que o perfil está sempre por dentro.", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg },
+    { id: "nt-story-" + (N.titulo || "x").slice(0, 30), grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Versão rápida pro story, com espaço pro link do grupo.", fmt: "Story 9:16", stories: true, telas: [desenha(SW, SH, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+}
+document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.nt; if (k) PA.nt[k] = e.target.value; });
+document.addEventListener("change", e => { if (e.target.dataset && e.target.dataset.ntFoto !== undefined) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { PA.nt.foto = r.result; toast("Foto carregada. Toque em Gerar arte."); }; r.readAsDataURL(f); } });
+document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
+  if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
+  else if (b.dataset.act === "ntgerar") { if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
+  else if (b.dataset.act === "ntusar") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; Object.assign(PA.nt, { link: x.link, fonte: x.fonte || "", texto: x.titulo + (x.resumo ? "\n" + x.resumo : ""), titulo: curto(x.titulo, 70), kicker: "Novidade" }); PA.nt.pontos = extrairPontos(PA.nt.texto) || x.titulo; render(); } });
+
 /* ================= página ================= */
 async function ideiasHoje() {
   const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
@@ -324,7 +377,7 @@ function feito(id) { return S.marcados && S.marcados["ig-" + id]; }
 function cardPauta(p, i) {
   return `<article class="card pa-c ${p.stories ? "pa-st" : ""} ${feito(p.id) ? "feito" : ""}">
     <div class="pa-h"><span class="tag">${esc(p.tipo)}</span><b>${esc(p.titulo)}</b><small>${esc(p.fmt)}</small></div>
-    <div class="pa-telas ${p.stories ? "st" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
+    <div class="pa-telas ${p.stories ? "pa-vert" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
     <div class="pa-porque">💡 ${esc(p.porque)}</div>
     <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
     <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}</button>
@@ -336,7 +389,9 @@ function pPauta() {
   PA.lista = null;
   setTimeout(montarPauta, 0);
   return head("Pauta do Instagram", "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto. Tudo com a nossa identidade, chamando pro grupo grátis.") +
-    `<div class="pa-bar">${pills("paaba", PA.aba, [["hoje", "Pra hoje"], ["campanha", "Campanha de lançamento"], ["biblioteca", "Guias (feed)"]])}</div>
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["biblioteca", "Guias"]])}
+      ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
+    ${PA.aba === "noticia" ? noticiaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><b>Como usar:</b> poste na ordem, 1 por dia, pra o grid começar bonito. No seu perfil pessoal, no dia do lançamento:<ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
     <div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
 }
@@ -345,12 +400,12 @@ async function montarPauta() {
   carregarMilhas();
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
-  const L = PA.aba === "hoje" ? await ideiasHoje() : PA.aba === "campanha" ? await campanha() : EDU.map(x => fGuia(x));
+  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
   g.innerHTML = !L.length ? `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
-    : PA.aba === "hoje" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L.filter(p => p.grupo === "stories")) + sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L.filter(p => p.grupo === "feed"))
+    : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
     p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { fn(cv.getContext("2d")); } catch (e) { console.error(e); } box.appendChild(cv); }); });
@@ -362,4 +417,5 @@ document.addEventListener("click", async e => {
   else if (b.dataset.act === "pacopiar") { await copiar(p.stories ? linkGrupo() : (($("#pa-l-" + b.dataset.i) || {}).value || p.legenda)); toast(p.stories ? "Link do grupo copiado (pro adesivo de link)." : "Legenda copiada."); }
   else if (b.dataset.act === "pafeito") { marcar("ig-" + p.id, !feito(p.id)); const card = b.closest(".pa-c"); card.classList.toggle("feito", !!feito(p.id)); b.classList.toggle("ok", !!feito(p.id)); b.innerHTML = `${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}`; }
 });
-document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g="paaba"]'); if (b) PA.aba = b.dataset.v; }, true);
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="pa"]'); if (!b) return;
+  if (b.dataset.g === "paaba") PA.aba = b.dataset.v; else if (b.dataset.g === "patipo") { PA.tipo = b.dataset.v; try { localStorage.setItem("p085_pa_tipo", PA.tipo); } catch (x) { } } }, true);

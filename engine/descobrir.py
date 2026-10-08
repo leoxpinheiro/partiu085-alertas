@@ -91,6 +91,43 @@ def pistas_blogs(rotas: dict) -> list[dict]:
     return out
 
 
+NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia"]
+
+
+def noticias() -> None:
+    """Notícias quentes (rota nova, voo direto, aeroporto de Fortaleza) pra virar post no Instagram."""
+    import html
+    import re
+    from email.utils import parsedate_to_datetime
+    itens, vistos = [], set()
+    lim = datetime.now(timezone.utc) - timedelta(days=10)
+    for q in NOTICIAS_Q:
+        url = "https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:10d")
+        try:
+            x = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
+        except Exception as e:  # noqa: BLE001
+            print(f"! notícias: {e}")
+            continue
+        for item in re.findall(r"<item>(.*?)</item>", x, re.S)[:25]:
+            g = lambda t: html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", (re.search(rf"<{t}[^>]*>(.*?)</{t}>", item, re.S) or [None, ""])[1])).strip()
+            tit, link, fonte = g("title"), g("link"), g("source")
+            try:
+                dt = parsedate_to_datetime(g("pubDate"))
+            except Exception:  # noqa: BLE001
+                continue
+            if dt < lim or "fortaleza" not in tit.lower():
+                continue
+            chave = re.sub(r"\W+", "", tit.lower())[:60]
+            if chave in vistos:
+                continue
+            vistos.add(chave)
+            tit = re.sub(r"\s+-\s+[^-]+$", "", tit)
+            itens.append({"titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat()})
+    itens.sort(key=lambda i: i["data"], reverse=True)
+    (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens[:30]}, ensure_ascii=False, indent=1), "utf-8")
+    print(f"Notícias: {len(itens)}")
+
+
 def descobrir() -> dict:
     """Junta os menores preços (ida e volta e só ida) por destino e marca as 'pistas':
     rotas que estão baratas segundo o Aviasales e que o robô deve confirmar no Google na próxima rodada."""
@@ -157,6 +194,10 @@ if __name__ == "__main__":
     if "--blogs" in sys.argv:
         print(json.dumps(pistas_blogs({r["iata"]: r for r in json.loads((DOCS / "rotas.json").read_text("utf-8"))}), ensure_ascii=False, indent=1))
         sys.exit(0)
+    try:
+        noticias()
+    except Exception as e:  # noqa: BLE001
+        print(f"! notícias: {e}")
     if not TOKEN:
         print("sem TRAVELPAYOUTS_TOKEN")
         sys.exit(0)

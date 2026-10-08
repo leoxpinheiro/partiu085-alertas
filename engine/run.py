@@ -689,7 +689,7 @@ def rodada() -> None:
     todos = novos + [a for a in salvos if a["criado"] >= corte]
     salvar_json(ALERTS_FILE, {"atualizado": agora().isoformat(timespec="minutes"), "alertas": todos})
     salvar_json(HIST_FILE, hist)
-    salvar_json(HIST_PUB, {k: v for k, v in hist.items() if k.startswith(C.ORIGEM + "-")})
+    salvar_json(HIST_PUB, {k: v[-60:] for k, v in hist.items() if C.ORIGEM in k.split("-")})  # ida e volta, pro painel
     salvar_json(SENT_FILE, [e for e in enviados if e["quando"] >= corte])
     rodadas = ler_json(LOG_FILE, [])
     rodadas.append({"quando": agora().isoformat(timespec="minutes"), "rotas": [r["iata"] for r in lote],

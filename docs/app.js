@@ -673,41 +673,63 @@ function linhasHist() {
   const st = S.status.rotas || {};
   return Object.keys(S.hist).filter(k => k.startsWith(ORIGEM + "-")).map(k => {
     const iata = k.split("-")[1], serie = (S.hist[k] || []).slice(-30), r = S.rotas.find(x => x.iata === iata) || {}, s = st[iata] || {};
-    const hoje = serie[serie.length - 1] || {}, ontem = serie[serie.length - 2];
-    const var1 = ontem ? hoje.minimo / ontem.minimo - 1 : null;
-    const min30 = serie.length ? Math.min(...serie.map(p => p.minimo)) : null;
-    return { k, iata, nome: r.nome || s.nome || IATA[iata] || iata, tipo: r.tipo || s.tipo, serie, hoje, var1, min30, dias: serie.length,
-      abaixo: hoje.mediana ? 1 - hoje.minimo / hoje.mediana : 0, melhor_mes: s.melhor_mes, volta: st[iata] && st[iata].menor_volta };
+    const vol = {}; (S.hist[`${iata}-${ORIGEM}`] || []).forEach(p => vol[p.dia] = p);
+    // série de ida e volta: menor ida + menor volta do mesmo dia de pesquisa
+    const rt = serie.filter(p => vol[p.dia]).map(p => ({ dia: p.dia, minimo: p.minimo + vol[p.dia].minimo, mediana: p.mediana + vol[p.dia].mediana, ida: p.minimo, volta: vol[p.dia].minimo }));
+    const usa = rt.length ? rt : serie, hoje = usa[usa.length - 1] || {}, ontem = usa[usa.length - 2];
+    const var1 = ontem ? hoje.minimo / ontem.minimo - 1 : null, min30 = usa.length ? Math.min(...usa.map(p => p.minimo)) : null;
+    const tipo = r.tipo || s.tipo || (INTL.has(iata) ? "internacional" : "nacional"), teto = rt.length ? tetoIV(iata, tipo) : null;
+    const abaixo = hoje.mediana ? 1 - hoje.minimo / hoje.mediana : 0;
+    let termo = "normal";
+    if (rt.length && (hoje.minimo > teto * 1.3 || abaixo < .08)) termo = "caro";
+    else if (usa.length < 3) termo = "novo";
+    else if ((!rt.length || hoje.minimo <= teto) && (abaixo >= .3 || (hoje.minimo <= min30 * 1.03 && abaixo >= .15))) termo = "bom";
+    return { k, iata, nome: r.nome || s.nome || IATA[iata] || iata, tipo, serie, rt, temRT: !!rt.length, hoje, var1, min30, dias: usa.length, teto, termo,
+      abaixo, melhor_mes: s.melhor_mes, idaHoje: (serie[serie.length - 1] || {}).minimo, recorde: usa.length >= 3 && hoje.minimo <= min30 };
   }).filter(x => x.hoje.minimo);
 }
+const TERMO = { novo: ["⚪", "Aprendendo", "pouco dado ainda (menos de 3 dias), o radar ainda está conhecendo o preço normal dessa rota"], bom: ["🟢", "Bom momento", "perto do menor preço que já vimos e dentro do teto"], normal: ["🟡", "Normal", "nem caro nem promoção"], caro: ["🔴", "Caro agora", "acima do normal pra essa rota: melhor esperar"] };
 function pHist() {
-  const L = linhasHist(), H = S.H || (S.H = { ordem: "queda", aberto: "" });
-  const comVar = L.filter(x => x.var1 !== null);
-  const caiu = comVar.slice().sort((a, b) => a.var1 - b.var1)[0], subiu = comVar.filter(x => x.var1 > .03).length, desceram = comVar.filter(x => x.var1 < -.03).length;
-  const barato = L.slice().sort((a, b) => a.hoje.minimo - b.hoje.minimo)[0];
-  const ord = { queda: (a, b) => (a.var1 ?? 0) - (b.var1 ?? 0), preco: (a, b) => a.hoje.minimo - b.hoje.minimo, abaixo: (a, b) => b.abaixo - a.abaixo, az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR") }[H.ordem];
-  const lista = L.slice().sort(ord);
+  const H = S.H || (S.H = { ordem: "termo", aberto: "" }); if (!H.ordem || H.ordem === "queda" && !H._v2) { H.ordem = "termo"; H._v2 = 1; }
+  const T = linhasHist();
+  let L = T.filter(x => (!H.q || (x.nome + " " + x.iata + " " + ((refDe(x.iata) || {}).texto || "")).toLowerCase().includes(H.q.toLowerCase())) && (!H.reg || regiaoDe(x.iata) === H.reg) && (!H.termo || x.termo === H.termo));
+  const comVar = T.filter(x => x.var1 !== null);
+  const subiu = comVar.filter(x => x.var1 > .03).length, desceram = comVar.filter(x => x.var1 < -.03).length;
+  const bons = T.filter(x => x.termo === "bom").sort((a, b) => b.abaixo - a.abaixo), barato = T.filter(x => x.temRT).sort((a, b) => a.hoje.minimo - b.hoje.minimo)[0];
+  const pos = { bom: 0, normal: 1, novo: 2, caro: 3 };
+  const ord = { termo: (a, b) => pos[a.termo] - pos[b.termo] || b.abaixo - a.abaixo, queda: (a, b) => (a.var1 ?? 0) - (b.var1 ?? 0), preco: (a, b) => a.hoje.minimo - b.hoje.minimo, abaixo: (a, b) => b.abaixo - a.abaixo, az: (a, b) => a.nome.localeCompare(b.nome, "pt-BR") }[H.ordem] || (() => 0);
+  L = L.sort(ord);
   const varTag = v => v === null ? `<span class="sub">1º dia</span>` : `<span class="badge ${v < -.005 ? "pos" : v > .005 ? "neg" : ""}">${v < 0 ? "−" : "+"}${Math.abs(v * 100).toFixed(0)}% ${v < -.005 ? "↘" : v > .005 ? "↗" : "→"}</span>`;
-  const dias = Math.max(0, ...L.map(x => x.dias));
-  return head("Histórico de preços", "Como os preços saindo de Fortaleza estão se mexendo — o menor preço de cada dia (só ida, por trecho)") +
-    `<div class="grid kpis">
-      ${kpi("Maior queda desde ontem", caiu && caiu.var1 < 0 ? "−" + Math.abs(caiu.var1 * 100).toFixed(0) + "%" : "–", caiu && caiu.var1 < 0 ? `${esc(caiu.nome)}: ${brl(caiu.hoje.minimo)} o trecho` : "Aparece a partir do 2º dia de varredura", true, "downr")}
-      ${kpi("Mais barato agora", barato ? brl(barato.hoje.minimo) : "–", barato ? `${esc(barato.nome)} · o trecho` : "", false, "plane")}
-      ${kpi("Movimento do dia", comVar.length ? `${desceram}<small> caíram</small>` : "–", comVar.length ? `${subiu} subiram · ${comVar.length - desceram - subiu} estáveis` : `${dias} dia${dias === 1 ? "" : "s"} de histórico até agora`, false, "chart")}
+  const dias = Math.max(0, ...T.map(x => x.dias));
+  const opt = (v, t) => `<option value="${v}" ${H.ordem === v ? "selected" : ""}>${t}</option>`;
+  // régua: onde o preço de hoje está entre o menor já visto e o preço médio
+  const regua = x => { const lo = Math.min(x.min30, x.hoje.minimo), hi = Math.max(x.hoje.mediana || x.hoje.minimo, lo + 1), p = Math.max(0, Math.min(1, (x.hoje.minimo - lo) / (hi - lo)));
+    return `<span class="h2-regua ${x.termo}" title="Esquerda = menor já visto (${brl(x.min30)}) · direita = preço médio (${brl(x.hoje.mediana)})"><i style="left:${(p * 100).toFixed(0)}%"></i></span>`; };
+  const cont = k => T.filter(x => x.termo === k).length;
+  return head("Histórico de preços", `Como os preços saindo de Fortaleza se mexem dia a dia, em <b>ida e volta</b>. Serve pra saber se é hora de mandar no grupo ou de esperar. ${dias} dia${dias === 1 ? "" : "s"} de dados até agora.`) +
+    `<div class="h2-cards">
+      <div class="card h2-c bom"><small>🟢 Bom momento agora</small><b>${bons.length}</b><span>${bons.slice(0, 4).map(x => esc(x.nome)).join(", ") || "nenhum destino hoje"}</span></div>
+      <div class="card h2-c"><small>Ida e volta mais barata</small><b>${barato ? brl(barato.hoje.minimo) : "–"}</b><span>${barato ? `${esc(barato.nome)} · trecho ${brl(barato.idaHoje)}` : ""}</span></div>
+      <div class="card h2-c"><small>Movimento desde ontem</small><b>${comVar.length ? `${desceram} <em>caíram</em>` : "–"}</b><span>${comVar.length ? `${subiu} subiram · ${comVar.length - desceram - subiu} estáveis` : "aparece a partir do 2º dia"}</span></div>
     </div>
-    <div class="aviso"><span>${ic("chart")} <b>Como ler:</b> “Menor hoje” é a passagem mais barata encontrada para os próximos 3 meses. “Abaixo da média” compara com o preço comum da rota. A linha mostra os últimos 30 dias.</span></div>
-    <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("hist", H.ordem, [["queda", "Maiores quedas"], ["abaixo", "Mais abaixo da média"], ["preco", "Menor valor"], ["az", "A–Z"]])}</div>
-    ${lista.length ? `<div class="tbl-wrap"><table class="hist-t"><thead><tr><th>Destino</th><th class="num">Menor hoje</th><th class="num">vs. ontem</th><th class="num">Abaixo da média</th><th>Últimos 30 dias</th><th class="num">Menor em 30 dias</th><th>Melhor mês</th></tr></thead><tbody>
-      ${lista.map(x => `<tr class="clic ${H.aberto === x.k ? "aberto" : ""}" data-act="histabrir" data-k="${x.k}">
-        <td data-l="Destino"><span><span class="iata">${x.iata}</span> ${esc(x.nome)}</span></td>
-        <td class="num" data-l="Menor hoje"><b>${brl(x.hoje.minimo)}</b></td>
+    <div class="a2-bar">
+      <input class="busca" type="search" placeholder="Buscar destino…" data-h="q" value="${esc(H.q || "")}">
+      <select data-h="ordem">${opt("termo", "Melhor momento primeiro")}${opt("queda", "Maiores quedas desde ontem")}${opt("abaixo", "Mais abaixo da média")}${opt("preco", "Menor ida e volta")}${opt("az", "A–Z")}</select>
+    </div>
+    <div class="h2-termos">${["", "bom", "normal", "caro", "novo"].filter(k => !k || cont(k)).map(k => `<button class="h2-t ${(H.termo || "") === k ? "on" : ""} ${k}" data-act="pill" data-g="htermo" data-v="${k}">${k ? `${TERMO[k][0]} ${TERMO[k][1]} <b>${cont(k)}</b>` : `Todos <b>${T.length}</b>`}</button>`).join("")}
+      <span class="h2-sep"></span>${pills("hreg", H.reg || "", [["", "Todas as regiões"]].concat(Object.keys((S.ref || {}).regioes || {}).map(x => [x, x])))}</div>
+    ${L.length ? `<div class="tbl-wrap"><table class="hist-t h2"><thead><tr><th>Destino</th><th class="num">Ida e volta hoje</th><th>Termômetro</th><th class="num">vs. ontem</th><th>Últimos 30 dias</th><th class="num">Menor já visto</th><th>Melhor mês</th></tr></thead><tbody>
+      ${L.map(x => `<tr class="clic ${H.aberto === x.k ? "aberto" : ""}" data-act="histabrir" data-k="${x.k}">
+        <td data-l="Destino"><span class="h2-d"><i style="background-image:url(fotos/${x.iata}.jpg)"></i><span><b>${esc(x.nome)}</b><small>${x.iata}${refDe(x.iata) && refDe(x.iata).curta ? " · " + esc(refDe(x.iata).curta) : x.tipo === "internacional" ? " · internacional" : ""}</small></span></span></td>
+        <td class="num" data-l="Ida e volta"><b>${brl(x.hoje.minimo)}</b><small class="h2-s">${x.temRT ? `trecho ${brl(x.idaHoje)}` : "só ida"}</small></td>
+        <td data-l="Termômetro"><span class="h2-chip ${x.termo}" title="${TERMO[x.termo][2]}">${TERMO[x.termo][0]} ${TERMO[x.termo][1]}</span>${regua(x)}</td>
         <td class="num" data-l="vs. ontem">${varTag(x.var1)}</td>
-        <td class="num" data-l="Abaixo da média">−${pct(x.abaixo)}</td>
-        <td data-l="30 dias">${sparkline(x.serie)}</td>
-        <td class="num" data-l="Menor em 30 dias">${brl(x.min30)}</td>
+        <td data-l="30 dias">${sparkline(x.temRT ? x.rt : x.serie)}</td>
+        <td class="num" data-l="Menor já visto">${brl(x.min30)}${x.recorde ? ` <span class="tag ok-t">hoje</span>` : ""}</td>
         <td data-l="Melhor mês">${x.melhor_mes ? MESES[+x.melhor_mes.slice(5, 7) - 1] + "/" + x.melhor_mes.slice(2, 4) : "–"}</td></tr>
         ${H.aberto === x.k ? `<tr class="det"><td colspan="7">${detalheHist(x)}</td></tr>` : ""}`).join("")}
-    </tbody></table></div>` : `<div class="card vazio">Ainda sem histórico. Rode a varredura turbo em Destinos.</div>`}`;
+    </tbody></table></div>` : `<div class="card vazio">${T.length ? "Nenhum destino nesse filtro." : "Ainda sem histórico. Rode a varredura turbo em Destinos."}</div>`}
+    <p class="sub" style="margin-top:10px">🟢 <b>Bom momento</b>: perto do menor preço que já vimos e dentro do teto de ida e volta da rota. 🟡 <b>Normal</b>. 🔴 <b>Caro agora</b>: acima do normal pra essa rota. ⚪ <b>Aprendendo</b>: menos de 3 dias de dados. A régua vai do menor já visto (esquerda) até o preço médio (direita).</p>`;
 }
 function detalheHist(x) {
   const c = S.cal[x.iata];
@@ -717,8 +739,9 @@ function detalheHist(x) {
     const ms = Object.entries(pm).sort(), mx = Math.max(...ms.map(m => m[1])), mn = Math.min(...ms.map(m => m[1]));
     meses = `<div class="hm"><b>Menor preço por mês (ida)</b>${ms.map(([m, p]) => `<div class="hm-r"><span>${MESES[+m.slice(5, 7) - 1]}/${m.slice(2, 4)}</span><span class="hm-b"><i class="${p === mn ? "best" : ""}" style="width:${Math.max(8, p / mx * 100)}%"></i></span><b>${brl(p)}</b></div>`).join("")}</div>`;
   }
-  return `<div class="hist-det"><div class="linechart">${x.serie.length >= 2 ? linha(x.serie) : `<div class="vazio">O gráfico de linha aparece a partir do 2º dia. Hoje: menor ${brl(x.hoje.minimo)} · média ${brl(x.hoje.mediana)}.</div>`}
-      <div class="legend"><span><i style="background:var(--ink)"></i>Menor preço do dia</span><span><i style="background:var(--text-disabled)"></i>Preço médio</span></div></div>
+  const g = x.temRT && x.rt.length >= 2 ? gLinha([{ n: "Ida e volta", cor: GC.verde, pts: x.rt.map(p => ({ dia: p.dia, preco: p.minimo, tip: `ida ${brl(p.ida)} + volta ${brl(p.volta)}` })) }, { n: "Só a ida", cor: GC.azul, tracejada: true, pts: x.serie.map(p => ({ dia: p.dia, preco: p.minimo })) }], x.teto, brl).replace("média da rota", "teto de promoção").replace(/>média R\$/, ">teto R$") : "";
+  return `<div class="hist-det"><div class="linechart">${g || (x.serie.length >= 2 ? linha(x.serie) : `<div class="vazio">O gráfico aparece a partir do 2º dia. Hoje: ida e volta ${brl(x.hoje.minimo)}.</div>`)}
+      <div class="sub" style="margin-top:6px">${TERMO[x.termo][0]} <b>${TERMO[x.termo][1]}</b>: ${TERMO[x.termo][2]}.${x.teto ? ` Teto de promoção dessa rota hoje: <b>${brl(x.teto)}</b> ida e volta (vai baixando conforme o radar aprende).` : ""}</div></div>
     <div>${meses || `<div class="vazio">Calendário carregando…</div>`}
       <div class="al-acts" style="margin-top:var(--space-3)"><a class="bt sm" href="#destinos" data-act="histcal" data-k="${x.iata}">${ic("globe")}Ver calendário dia a dia</a><button class="bt sm" data-act="buscarrota" data-iata="${x.iata}">${ic("refresh")}Buscar agora</button></div></div></div>`;
 }
@@ -966,7 +989,7 @@ document.addEventListener("click", async e => {
       if (g === "convmodo") { S.convModo = v; }
       else if (g === "aba") S.F.aba = v; else if (g === "fdias") S.F.dias = v; else if (g === "ftipo") S.F.tipo = v; else if (g === "freg") S.F.reg = v; else if (g === "fclasse") S.F.classe = v; else if (g === "alvista") { ALV = v; try { localStorage.setItem("p085_vista_alertas", v); } catch (x) { } }
       else if (g === "alertas") S.F.ordem = v; else if (g === "rotas") S.R.ordem = v; else if (g === "rotastipo") S.R.tipo = v;
-      else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v; else if (g === "destreg") S.D.reg = v; else if (g === "destlimpa") { S.D.reg = ""; S.D.ate = ""; S.D.q = ""; } else if (g === "destate") S.D.ate = v;
+      else if (g === "dash") S.dashOrd = v; else if (g === "hist") S.H.ordem = v; else if (g === "htermo") S.H.termo = v; else if (g === "hreg") S.H.reg = v; else if (g === "dest") S.D.ordem = v; else if (g === "desttipo") S.D.tipo = v; else if (g === "destreg") S.D.reg = v; else if (g === "destlimpa") { S.D.reg = ""; S.D.ate = ""; S.D.q = ""; } else if (g === "destate") S.D.ate = v;
       render(); return;
     }
     else if (act === "histabrir") { const k = b.dataset.k; S.H.aberto = S.H.aberto === k ? "" : k; if (S.H.aberto) await carregarCal(k.split("-")[1]); render(); return; }
@@ -1011,6 +1034,11 @@ document.addEventListener("click", async e => {
 });
 document.addEventListener("input", e => {
   const el = e.target;
+  if (el.dataset.h !== undefined) {
+    S.H[el.dataset.h] = el.value;
+    if (el.type === "search") { clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $('[data-h="q"]'); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250); } else render();
+    return;
+  }
   if (el.dataset.f !== undefined) {
     S.F[el.dataset.f] = el.type === "checkbox" ? el.checked : el.value;
     if (el.type === "search" || el.type === "number") { clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-f="${el.dataset.f}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250); }

@@ -21,6 +21,7 @@ import traceback
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+import sys
 import requests
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -203,6 +204,24 @@ def dados_falsos(r: dict, sentido: str) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------- lógica
+TETO_IDA_VOLTA = {"Nordeste": 850, "Sudeste e Sul": 1100, "Centro-Oeste e Norte": 1100, "América do Sul": 2400,
+                  "Caribe e América do Norte": 3300, "Europa e África": 3600}
+
+
+def regiao(iata: str) -> str:
+    regs = ler_json(DOCS / "referencias.json", {}).get("regioes") or {}
+    return next((n for n, ks in regs.items() if iata in ks), "")
+
+
+def teto_ida_volta(iata: str, tipo: str, aj: dict) -> float:
+    """Preço máximo de ida+volta pra chamar de promoção. Sem isso, 'Barcelona R$ 4.880' passava por estar abaixo da média."""
+    tetos = {**TETO_IDA_VOLTA, **(aj.get("teto_ida_volta") or {})}
+    reg = regiao(iata)
+    if reg in tetos:
+        return float(tetos[reg])
+    return float(tetos["Sudeste e Sul"] if tipo == "nacional" else tetos["Europa e África"])
+
+
 def tipico(chave: str, dias: list[dict], hist: dict) -> float | None:
     base = []
     if len(dias) >= 8:
@@ -291,17 +310,102 @@ def para_telegram(texto: str) -> str:
     return re.sub(r"(?<![\w/])_([^_\n]+)_(?![\w/])", r"\1", texto)
 
 
-def postar_telegram(texto: str, aj: dict) -> bool:
+def postar_telegram(texto: str, aj: dict, foto: bytes | None = None) -> bool:
+    """Posta no canal. Com foto: imagem com o texto na legenda (ou imagem + texto separado, se o texto for grande)."""
     if not (TG_TOKEN and TG_CHAT and aj.get("telegram_ativo", True)):
         return False
+    txt = para_telegram(texto)
     try:
+        if foto:
+            leg = txt if len(txt) <= 1024 else None
+            r = requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendPhoto",
+                              data={"chat_id": TG_CHAT, **({"caption": leg} if leg else {})},
+                              files={"photo": ("alerta.jpg", foto, "image/jpeg")}, timeout=40)
+            if r.ok and leg:
+                return True
+            if not r.ok:
+                log(f"  ! Telegram foto: {r.status_code} {r.text[:120]}")
         r = requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-                          json={"chat_id": TG_CHAT, "text": para_telegram(texto), "disable_web_page_preview": True},
+                          json={"chat_id": TG_CHAT, "text": txt, "disable_web_page_preview": True},
                           timeout=20)
         return r.ok
     except Exception as e:  # noqa: BLE001
         log(f"  ! Telegram: {e}")
         return False
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+
+def imagem_alerta(a: dict) -> bytes | None:
+    try:
+        import imagem
+        return imagem.card_alerta(a)
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! imagem {a.get('destino')}: {type(e).__name__}: {e}")
+        return None
+
+
+def top5_do_dia(aj: dict) -> list[dict]:
+    """Os 5 destinos mais abaixo do preço normal hoje, só os que estão baratos também na ida e volta."""
+    st = ler_json(DOCS / "status.json", {}).get("rotas") or {}
+    lim = (agora() - timedelta(hours=30)).isoformat()
+    L = []
+    for k, v in st.items():
+        if not (v.get("menor") and v.get("mediana") and v.get("menor_volta") and v.get("quando", "") >= lim):
+            continue
+        rt = v["menor"] + v["menor_volta"]
+        tip = v["mediana"] + (v.get("mediana_volta") or v["mediana"])
+        d = 1 - rt / tip
+        if d < 0.2 or rt > teto_ida_volta(k, v.get("tipo", "nacional"), aj):
+            continue
+        L.append({"k": k, "nome": v.get("nome") or k, "menor": v["menor"], "rt": rt, "d": d,
+                  "mes": (v.get("dia_menor") or v.get("melhor_mes") or "")[5:7], "intl": v.get("tipo") == "internacional"})
+    return sorted(L, key=lambda x: -x["d"])[:5]
+
+
+def texto_top5(L: list[dict], aj: dict) -> str:
+    n = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
+    meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+    hoje = agora().date().isoformat()
+    T = ["🏆 *TOP 5 DO DIA*", "_Os destinos mais abaixo do preço normal, saindo de Fortaleza_", f"_{hoje[8:10]}/{hoje[5:7]}_", ""]
+    T += [f"{n[i]} *{x['nome']}* · *{brl(x['menor'])}* o trecho · ida e volta {brl(x['rt'])}" + (f" ({meses[int(x['mes']) - 1]})" if x["mes"] else "")
+          for i, x in enumerate(L)]
+    T += ["", "👉 _Quer as datas de algum? Responde aqui o número._"]
+    aviso = aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._")
+    if aviso and aviso.strip():
+        T += ["", aviso.strip()]
+    modelo = aj.get("rodape", "✈️ Receba alertas no WhatsApp: {link}")
+    if modelo:
+        T += ["", modelo.replace("{link}", aj.get("link_whatsapp") or "https://bit.ly/radar085").strip()]
+    return "\n".join(T)
+
+
+def postar_top5(aj: dict) -> None:
+    """Uma vez por dia no Telegram, pra nunca ficar sem material: dia útil a partir das 17h, fim de semana a partir das 10h."""
+    if OFFLINE or not aj.get("top5_telegram", True):
+        return
+    h = agora()
+    if h.hour < (10 if h.weekday() >= 5 else 17) or h.hour >= 22:
+        return
+    reg_path = DOCS / "telegram_extra.json"
+    reg = ler_json(reg_path, {})
+    if reg.get("top5") == h.date().isoformat():
+        return
+    L = top5_do_dia(aj)
+    if len(L) < 3:
+        log(f"Top 5: só {len(L)} destinos bons hoje — não postado")
+        return
+    try:
+        import imagem
+        foto = imagem.card_top5(L, h.date().isoformat())
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! imagem top5: {e}")
+        foto = None
+    if postar_telegram(texto_top5(L, aj), aj, foto=foto):
+        reg["top5"] = h.date().isoformat()
+        salvar_json(reg_path, reg)
+        log(f"Top 5 do dia postado: {', '.join(x['nome'] for x in L)}")
 
 
 def registrar(hist: dict, chave: str, dias: list[dict], hoje: str) -> None:
@@ -488,6 +592,10 @@ def rodada() -> None:
         no_alvo = vip and alvo > 0 and m_ida["preco"] <= alvo
         if desc < limiar and not no_alvo:
             continue
+        rt, lim_rt = m_ida["preco"] + m_volta["preco"], teto_ida_volta(r["iata"], r["tipo"], aj)
+        if rt > lim_rt and not no_alvo:
+            log(f"  ida e volta {brl(rt)} acima do teto da região ({brl(lim_rt)}) — sem alerta")
+            continue
         if r["tipo"] == "internacional" and (m_ida.get("escalas") or 0) >= 2 and desc < float(aj.get("desconto_2paradas", 0.30)) and not no_alvo:
             log(f"  2 paradas e só {desc:.0%} abaixo — sem alerta (filtro de qualidade)")
             continue
@@ -556,7 +664,7 @@ def rodada() -> None:
             a["base"] = {"dias": len(passado), "menor_visto": round(menor_visto)}
             a["recorde"] = len(passado) >= 3 and a["preco"] <= menor_visto
         a["texto"] = montar_texto(a, aj)
-        a["telegram"] = postar_telegram(a["texto"], aj)
+        a["telegram"] = postar_telegram(a["texto"], aj, foto=imagem_alerta(a))
         novos.append(a)
         enviados.append({"rota": a["rota"], "preco": a["preco"], "quando": agora().isoformat()})
         log(f"  ✓ {a['rota']} {brl(a['preco'])}/trecho (-{a['desconto']:.0%}) "
@@ -580,6 +688,10 @@ def rodada() -> None:
     status["ultima_rodada"] = agora().isoformat(timespec="minutes")
     status["modo"] = "trecho"
     salvar_json(STATUS_FILE, status)
+    try:
+        postar_top5(aj)
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! top5: {e}")
     log(f"\nRodada: {len(lote)} rotas · {len(candidatos)} candidatos · {len(novos)} alertas · {int(time.time()-inicio)}s")
 
 

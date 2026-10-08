@@ -285,6 +285,7 @@ function resumoDatas(meses, max = 6) {
   return L.length ? L.slice(0, max).join(", ") + (L.length > max ? ` <b>+${L.length - max}</b>` : "") : "";
 }
 function linhaAlerta(a) {
+  ENV_REG[a.id] = a;
   const k = a.classe || "boa", env = enviado(a), aberto = S.alAberto === a.id, trecho = a.modo === "trecho";
   const ida = trecho ? resumoDatas(a.ida_meses) : (a.datas || []).slice(0, 4).map(d => dm(d.ida)).join(", ");
   const volta = trecho ? resumoDatas(a.volta_meses, 4) : "";
@@ -297,8 +298,8 @@ function linhaAlerta(a) {
       <div class="alr-info"><span>${a.conferido && a.conferido.status === "subiu" ? `<b class="neg">subiu p/ ${brl(a.conferido.preco)}</b> · ` : a.conferido && a.conferido.status === "valendo" ? `<b class="pos">✓ ainda valendo</b> · ` : ""}${a.recorde ? "📉 menor já visto · " : ""}${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
       <div class="alr-acts">
         <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}" title="Copiar texto">${ic("copy")}<span>Copiar</span></button>
-        <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(a.id)}" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}" title="WhatsApp">${ic("send")}</a>
-        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? (S.marcados[a.id] === "descartado" ? "Descartado" : "Enviado") : "Enviar"}</span></button>
+        <button class="bt sm zap" data-act="envabrir" data-id="${esc(a.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
+        <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}" title="${env ? "Enviado (toque para desfazer)" : "Marcar como enviado"}">${ic(env ? "check" : "circle")}<span>${env ? (S.marcados[a.id] === "descartado" ? "Descartado" : "Enviado") : "Marcar"}</span></button>
         ${(Date.now() - new Date(a.criado).getTime()) > 6 * 36e5 && !env ? `<button class="bt sm ghost" data-act="buscarrota" data-iata="${esc(a.destino)}" title="Buscar o preço de novo agora">${ic("refresh")}</button>` : ""}
         <button class="bt sm ghost alr-x" data-act="alabrir" data-id="${esc(a.id)}" title="Ver datas e texto">${aberto ? "▴" : "▾"}</button>
       </div>
@@ -307,6 +308,7 @@ function linhaAlerta(a) {
   </article>`;
 }
 function cardAlerta(a, compacto = false) {
+  ENV_REG[a.id] = a;
   const k = a.classe || "boa";
   const ktxt = { imperdivel: "Imperdível", otima: "Ótima", boa: "Boa" }[k];
   const trecho = a.modo === "trecho";
@@ -331,7 +333,7 @@ function cardAlerta(a, compacto = false) {
     ${corpo}
     <div class="al-acts">
       <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}">${ic("copy")}<span>Copiar</span></button>
-      <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(a.id)}" href="https://wa.me/?text=${encodeURIComponent(a.texto || "")}">${ic("send")}WhatsApp</a>
+      <button class="bt sm zap" data-act="envabrir" data-id="${esc(a.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
       <a class="bt sm" target="_blank" rel="noopener" href="${esc(a.link_google)}">${ic("ext")}Google Voos</a>
       <button class="bt sm ${env ? "ok" : "ghost"}" data-act="marcar" data-id="${esc(a.id)}">${ic(env ? "check" : "circle")}${env ? "Enviado" : "Marcar enviado"}</button>
       ${compacto ? "" : `<button class="bt sm ghost" data-act="vertexto" data-id="${esc(a.id)}">Ver texto</button>`}

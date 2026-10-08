@@ -29,6 +29,7 @@ function miFiltrar() {
   return L;
 }
 function cardMilha(o) {
+  ENV_REG[o.id] = o;
   const [vc, vt] = validadeTxt(o), env = enviado(o);
   const par = o.tipo === "passagem" && o.destino ? (o.fortaleza ? "Fortaleza → " : "") + o.destino + (o.para ? " · " + o.para : "")
     : [o.de, o.para].filter(Boolean).join(" → ") || (o.programas || []).slice(0, 2).join(" · ") || "Milhas";
@@ -45,7 +46,7 @@ function cardMilha(o) {
     </div>
     <div class="al-acts">
       <button class="bt sm" data-act="micopiar" data-id="${esc(o.id)}">${ic("copy")}<span>Copiar</span></button>
-      <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(o.id)}" href="https://wa.me/?text=${encodeURIComponent(o.texto || "")}">${ic("send")}WhatsApp</a>
+      <button class="bt sm zap" data-act="envabrir" data-id="${esc(o.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
       <button class="bt sm ${env ? "ok" : "ghost"}" data-act="mimarcar" data-id="${esc(o.id)}">${ic(env ? "check" : "circle")}${env ? "Enviado" : "Marcar enviado"}</button>
       <button class="bt sm ghost" data-act="mitexto" data-id="${esc(o.id)}">${MI.aberto === o.id ? "Esconder" : "Ver texto"}</button>
       <button class="bt sm ghost" data-act="mibanner" data-id="${esc(o.id)}">${ic("image")}Banner</button>
@@ -58,6 +59,7 @@ function cardMilha(o) {
 
 /* ---------------- principal: passagens em milhas saindo de FOR (busca própria) */
 function cardVoo(o) {
+  ENV_REG[o.id] = o;
   const env = enviado(o), k = o.desconto >= .4 ? "imperdivel" : o.desconto >= .3 ? "otima" : "boa";
   const ktxt = { imperdivel: "Imperdível", otima: "Ótima", boa: "Boa" }[k];
   return `<article class="al ${k} ${env ? "enviado" : ""}" data-id="${esc(o.id)}">
@@ -75,7 +77,7 @@ function cardVoo(o) {
       <div><div class="iv-h">${ic("downl", "i sm")} Datas de volta ${o.milhas_volta ? `<small>${milN(o.milhas_volta)} milhas + ${taxaR(o.taxa_volta)}</small>` : ""}</div>${o.volta_meses && o.volta_meses.length ? mesesHTML(o.volta_meses, false) : `<div class="sub">ainda sem volta consultada</div>`}</div></div>
     <div class="al-acts">
       <button class="bt sm" data-act="micopiar" data-id="${esc(o.id)}">${ic("copy")}<span>Copiar</span></button>
-      <a class="bt sm zap" target="_blank" rel="noopener" data-marca="${esc(o.id)}" href="https://wa.me/?text=${encodeURIComponent(o.texto || "")}">${ic("send")}WhatsApp</a>
+      <button class="bt sm zap" data-act="envabrir" data-id="${esc(o.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
       <button class="bt sm ${env ? "ok" : "ghost"}" data-act="mimarcar" data-id="${esc(o.id)}">${ic(env ? "check" : "circle")}${env ? "Enviado" : "Marcar enviado"}</button>
       <button class="bt sm ghost" data-act="mitexto" data-id="${esc(o.id)}">${MI.aberto === o.id ? "Esconder" : "Ver texto"}</button>
       <button class="bt sm ghost" data-act="mibanner" data-id="${esc(o.id)}">${ic("image")}Banner</button>

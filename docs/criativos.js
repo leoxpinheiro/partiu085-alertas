@@ -160,7 +160,7 @@ function mPromo(c, W, H, t, a) {
   const nome = a.destino_nome.toUpperCase(), s = caber(c, nome, W - 160, alto ? 190 : 160, MARCA.titulo);
   tx(c, `${ORIGEM}  ✈  ${a.destino}`, W / 2, y, 34, MARCA.corpo, t.sub, "center", 700, 4); y += s * .95 + 10;
   tx(c, nome, W / 2, y, s, MARCA.titulo, t.ink, "center"); y += 40;
-  pil(c, `${classeTxt(a)} · −${Math.round(a.desconto * 100)}% da média`, W / 2, y, 28, t.acc, t.accInk, 30, 64, MARCA.corpo, 800, "center"); y += 64 + (alto ? 60 : 36);
+  pil(c, classeTxt(a).toUpperCase(), W / 2, y, 28, t.acc, t.accInk, 30, 64, MARCA.corpo, 800, "center"); y += 64 + (alto ? 60 : 36);
   // preço
   const ph = alto ? 250 : 210; c.fillStyle = t.card; rr(c, M, y, W - M * 2, ph, 44); c.fill();
   tx(c, "a partir de", W / 2, y + 62, 32, MARCA.corpo, t.cardInk, "center", 600);
@@ -368,7 +368,7 @@ function legendaCR(a) {
     const l = topSemana();
     return `As melhores promoções da semana saindo de Fortaleza ✈️\n\n${l.map(x => `• ${x.destino_nome}: a partir de ${brl(x.preco)} ${x.modo === "trecho" ? "o trecho" : "ida e volta"} (−${Math.round(x.desconto * 100)}%)`).join("\n")}\n\n${ass}\nPreços podem mudar a qualquer momento.\n✈️ Receba alertas no WhatsApp: ${linkGrupo()}\n\n#partiu085 #passagensbaratas #fortaleza #ceara #viagem`;
   }
-  if (CR.tpl === "promo" && a) return `🚨 ${a.destino_nome} a partir de ${brl(a.preco)} ${a.modo === "trecho" ? "o trecho" : "ida e volta"} saindo de Fortaleza!\n${Math.round(a.desconto * 100)}% abaixo da média · ${a.cia_nome || ""}${mesesTxt(a) ? ` · datas em ${mesesTxt(a)}` : ""}\n\n${ass}\nPreço pode mudar a qualquer momento.\n✈️ Receba alertas no WhatsApp: ${linkGrupo()}\n\n#partiu085 #passagensbaratas #fortaleza #${(a.destino_nome || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")}`;
+  if (CR.tpl === "promo" && a) return `🚨 ${a.destino_nome} a partir de ${brl(a.preco)} ${a.modo === "trecho" ? "o trecho" : "ida e volta"} saindo de Fortaleza!\n${a.cia_nome || ""}${mesesTxt(a) ? ` · datas em ${mesesTxt(a)}` : ""}\n\n${ass}\nPreço pode mudar a qualquer momento.\n✈️ Receba alertas no WhatsApp: ${linkGrupo()}\n\n#partiu085 #passagensbaratas #fortaleza #${(a.destino_nome || "").toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")}`;
   if (CR.tpl === "destino") { const d = destinoCR(); return d ? `🌎 Destino em destaque: ${d.nome}!\nO radar já viu passagem saindo de Fortaleza por ${brl(d.menor)} o trecho${d.melhor_mes ? `, e ${MC[+d.melhor_mes.slice(5, 7) - 1]} é o mês mais barato` : ""}.\n\nQuer ser avisado quando cair? Entra no grupo 👇\n✈️ ${linkGrupo()}\n\n#partiu085 #${d.nome.toLowerCase().normalize("NFD").replace(/[^a-z]/g, "")} #fortaleza` : ""; }
   if (CR.tpl === "frase") return `${T.titulo || ""} — ${T.destaque || ""}\n\n${T.rodape || ass}\n🔔 Ativa as notificações e não perde o próximo alerta!\n\n#partiu085 #viagem #fortaleza #ceara`;
   if (CR.tpl === "beneficios") return `A gente encontra, você embarca. 🌍\nDo 085 pra onde você quiser, com alertas, milhas e passagens que cabem no bolso.\n\n${String(T.lista || "").split("\n").filter(Boolean).map(l => "✈️ " + l).join("\n")}\n\nSegue o perfil e compartilha com quem também ama viajar!\n\n#partiu085 #viagem #fortaleza`;

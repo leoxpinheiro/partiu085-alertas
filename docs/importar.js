@@ -115,7 +115,7 @@ function fotoDestino(iata) {
   return FOTOS.img[iata];
 }
 async function creditoFoto(iata) { if (!FOTOS.cred) FOTOS.cred = await getJSON("fotos/creditos.json", {}); return FOTOS.cred[iata]; }
-function caber(c, txt, max, min, larg, fonte) { let t = max; c.font = fonte(t); while (c.measureText(txt).width > larg && t > min) { t -= 4; c.font = fonte(t); } return t; }
+function caberR(c, txt, max, min, larg, fonte) { let t = max; c.font = fonte(t); while (c.measureText(txt).width > larg && t > min) { t -= 4; c.font = fonte(t); } return t; }
 
 async function desenharResgate(cv, r) {
   const W = 1080, H = 1080, c = cv.getContext("2d"); cv.width = W; cv.height = H;
@@ -147,7 +147,7 @@ async function desenharResgate(cv, r) {
   // ---- destino sobre a foto
   c.textBaseline = "alphabetic";
   const nome = (r.nome || r.iata || "").toUpperCase();
-  const tn = caber(c, nome, 150, 76, W - 128, t => `${t}px ${A}`);
+  const tn = caberR(c, nome, 150, 76, W - 128, t => `${t}px ${A}`);
   c.fillStyle = "#fff"; c.shadowColor = "rgba(0,0,0,.35)"; c.shadowBlur = 18; c.fillText(nome, 60, FH - 24); c.shadowBlur = 0;
   c.font = `800 26px ${J}`; c.fillStyle = AM; c.fillText(`SAINDO DE FORTALEZA ✈${r.internacional ? "  ·  INTERNACIONAL" : ""}`, 64, FH - 24 - tn * 0.98 - 18);
   // crédito da foto
@@ -158,7 +158,7 @@ async function desenharResgate(cv, r) {
   const big = milhas ? milN(r.milhas) : r.big;
   const y0 = FH + 56;
   c.font = `600 28px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("a partir de", 64, y0);
-  const tb = caber(c, big, 128, 80, 560, t => `${t}px ${A}`); c.fillStyle = AM; c.fillText(big, 60, y0 + tb * .92);
+  const tb = caberR(c, big, 128, 80, 560, t => `${t}px ${A}`); c.fillStyle = AM; c.fillText(big, 60, y0 + tb * .92);
   const yb = y0 + tb * .92;
   c.font = `700 30px ${J}`; c.fillStyle = "#fff"; c.fillText(milhas ? `milhas ${r.taxa ? "+ R$ " + milN(r.taxa) : "+ taxas"} · o trecho` : "o trecho", 64, yb + 46);
   // caixa à direita
@@ -167,11 +167,11 @@ async function desenharResgate(cv, r) {
   c.textAlign = "center"; const cx = bx + bw / 2;
   if (milhas) {
     c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("PROGRAMA", cx, by + 52);
-    const tp = caber(c, r.prog || "", 52, 30, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(r.prog || "", cx, by + 50 + tp);
+    const tp = caberR(c, r.prog || "", 52, 30, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(r.prog || "", cx, by + 50 + tp);
     c.font = `600 20px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText(r.classe || "Econômica", cx, by + bh - 24);
   } else if (r.idaVolta) {
     c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("IDA E VOLTA", cx, by + 52);
-    const tv = caber(c, brl(r.idaVolta), 68, 40, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(brl(r.idaVolta), cx, by + 50 + tv);
+    const tv = caberR(c, brl(r.idaVolta), 68, 40, bw - 40, t => `${t}px ${A}`); c.fillStyle = "#fff"; c.fillText(brl(r.idaVolta), cx, by + 50 + tv);
     c.font = `600 20px ${J}`; c.fillStyle = "rgba(255,255,255,.7)"; c.fillText("somando ida + volta", cx, by + bh - 24);
   }
   c.textAlign = "left";
@@ -222,7 +222,7 @@ document.addEventListener("click", async e => {
   try {
     if (act === "impler") { IMP.txt = $("#imp-in").value; IMP.lista = lerVarios(IMP.txt); if (!IMP.lista.length) toast("Não reconheci nenhum resgate nesse texto."); render(); }
     else if (act === "impcopiar") { await copiar(txt()); toast(`Copiado: ${r.nome} · ${milN(r.milhas)} milhas`); }
-    else if (act === "impzap") { e.preventDefault(); window.open("https://wa.me/?text=" + encodeURIComponent(txt()), "_blank"); }
+    else if (act === "impzap") { e.preventDefault(); window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(txt()), "_blank"); }
     else if (act === "impbaixar") { const cv = $("#imp-cv-" + i); const a = document.createElement("a"); a.download = `resgate-${r.iata}-${(r.prog || "").replace(/\W/g, "")}.png`; a.href = cv.toDataURL("image/png"); a.click(); }
     else if (act === "impcopimg") { const cv = $("#imp-cv-" + i); const blob = await new Promise(ok => cv.toBlob(ok, "image/png")); await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]); toast("Imagem copiada: é só colar no WhatsApp."); }
     else if (act === "impsalvar" || act === "impsalvartodos") {
@@ -256,5 +256,7 @@ function cardDeAlerta(x) {
   }
   if (x.busca_propria) return { prog: x.para, origem: "FOR", nome: x.destino, iata: x.iata, internacional: x.internacional || INTL.has(x.iata), milhas: x.milhas, taxa: x.taxa, classe: x.classe || "Econômica",
     idas: x.idas || isoDeMeses(x.ida_meses), voltas: x.voltas || isoDeMeses(x.volta_meses) };
+  if (x.milhas && (x.destino || x.iata || x.aeroporto)) { const ia = x.iata || x.aeroporto || ""; return { prog: x.para || x.programa || "", origem: "FOR", nome: x.destino || ia, iata: ia, internacional: x.internacional || INTL.has(ia), milhas: x.milhas, taxa: x.taxa, classe: x.classe || "Econômica",
+    idas: x.idas || isoDeMeses(x.ida_meses || {}), voltas: x.voltas || isoDeMeses(x.volta_meses || {}) }; }
   return null;
 }

@@ -27,7 +27,7 @@ function pEnviar() {
         ${cardDeAlerta(evFonte(f)) ? `<div class="ev-img"><canvas id="ev-cv"></canvas><div class="al-acts"><button class="bt sm" data-act="evcopimg">${ic("copy")}Copiar imagem</button><button class="bt sm ghost" data-act="evbaixar">${ic("down")}Baixar</button></div></div>` : ""}</div>
       <div class="ev-acts">
         <button class="bt pri lg" data-act="evcopiar">${ic("copy")}Copiar e ir pro próximo</button>
-        ${pode ? `<button class="bt lg" data-act="evshare">${ic("send")}Compartilhar (imagem + texto)</button>` : `<a class="bt lg zap" target="_blank" rel="noopener" data-act="evzap" href="https://wa.me/?text=${encodeURIComponent(f.texto || "")}">${ic("send")}Abrir no WhatsApp</a>`}
+        ${pode ? `<button class="bt lg" data-act="evshare">${ic("send")}Compartilhar (imagem + texto)</button>` : `<a class="bt lg zap" target="_blank" rel="noopener" data-act="evzap" href="https://api.whatsapp.com/send?text=${encodeURIComponent(f.texto || "")}">${ic("send")}Abrir no WhatsApp</a>`}
       </div>
       <div class="ev-acts sec">
         <button class="bt sm ghost" data-act="evvoltar" ${EV.i ? "" : "disabled"}>← Anterior</button>
@@ -54,7 +54,52 @@ document.addEventListener("click", async e => {
   else if (act === "evshare") { try { const cv = $("#ev-cv"); let dados = { text: txt };
       if (cv) { const blob = await new Promise(ok => cv.toBlob(ok, "image/png")); const arq = new File([blob], "alerta-085.png", { type: "image/png" }); if (navigator.canShare && navigator.canShare({ files: [arq] })) dados = { files: [arq], text: txt }; }
       await navigator.share(dados); await evConcluir(f, `Enviado: ${f.t}`); } catch (x) { /* cancelou */ } }
-  else if (act === "evzap") { b.href = "https://wa.me/?text=" + encodeURIComponent(txt); setTimeout(() => evConcluir(f, `Aberto no WhatsApp: ${f.t}`), 300); }
+  else if (act === "evzap") { b.href = "https://api.whatsapp.com/send?text=" + encodeURIComponent(txt); setTimeout(() => evConcluir(f, `Aberto no WhatsApp: ${f.t}`), 300); }
   else if (act === "evacabou") { marcar(f.id, "descartado"); toast(`${f.t} tirado da fila.`); render(); }
 });
 document.addEventListener("input", e => { if (e.target.dataset.evPromos !== undefined) { EV.promos = e.target.checked; EV.i = 0; try { localStorage.setItem("p085_env_promos", EV.promos ? "1" : "0"); } catch (x) { } render(); } });
+
+/* Enviar com imagem: janela usada em Alertas, Milhas e Promoções (mesmo fluxo do Modo envio). */
+const ENV_REG = {};
+const EJ = { id: null };
+function fonteEnvio(id) { return ENV_REG[id] || S.alertas.find(a => a.id === id) || ((S.mi && S.mi.ofertas) || []).find(o => o.id === id); }
+async function abrirEnvio(id) {
+  const x = fonteEnvio(id); if (!x) { toast("Não achei esse alerta."); return; }
+  EJ.id = id; fecharEnvio(true);
+  const card = cardDeAlerta(x), pode = typeof navigator.share === "function" && matchMedia("(pointer:coarse)").matches;
+  const titulo = x.destino_nome || x.destino || x.titulo || "Alerta";
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "ej";
+  d.innerHTML = `<div class="ej" role="dialog" aria-modal="true" aria-label="Enviar alerta">
+    <div class="ej-h"><div><b>Enviar: ${esc(titulo)}</b><small>${card ? "Imagem e texto prontos. No WhatsApp: cole a imagem e depois o texto." : "Este é só texto (promoção)."}</small></div><button class="bt sm ghost" data-act="ejfechar" title="Fechar">✕</button></div>
+    <div class="ej-g">
+      ${card ? `<div class="ej-img"><canvas id="ej-cv"></canvas></div>` : ""}
+      <div class="ej-t"><textarea id="ej-texto" spellcheck="false">${esc(x.texto || "")}</textarea><div class="sub">Pode editar antes de copiar. Vale só pra este envio.</div></div>
+    </div>
+    <div class="ej-acts">
+      ${pode ? `<button class="bt pri lg" data-act="ejshare">${ic("send")}Compartilhar no WhatsApp (imagem + texto)</button>` : ""}
+      ${card ? `<button class="bt ${pode ? "" : "pri"} lg" data-act="ejimg"><span class="ej-n">1</span>Copiar imagem</button>` : ""}
+      <button class="bt lg" data-act="ejtxt">${card ? `<span class="ej-n">2</span>` : ""}Copiar texto</button>
+      ${card ? `<button class="bt ghost" data-act="ejbaixar">${ic("down")}Baixar imagem</button>` : ""}
+      <button class="bt ghost" data-act="ejok">${ic("check")}Marcar como enviado</button>
+    </div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+  if (card) await desenharResgate(document.getElementById("ej-cv"), card);
+}
+function fecharEnvio(silencio) { const d = document.getElementById("ej"); if (d) d.remove(); document.body.classList.remove("ej-on"); if (!silencio) render(); }
+async function ejBlob() { const cv = document.getElementById("ej-cv"); return cv ? new Promise(ok => cv.toBlob(ok, "image/png")) : null; }
+document.addEventListener("click", async e => {
+  const b = e.target.closest('[data-act="envabrir"],[data-act^="ej"]');
+  if (!b) { if (e.target.id === "ej") fecharEnvio(); return; }
+  e.preventDefault(); const act = b.dataset.act;
+  if (act === "envabrir") { abrirEnvio(b.dataset.id); return; }
+  const id = EJ.id, x = fonteEnvio(id), txt = ($("#ej-texto") || {}).value || "";
+  if (act === "ejfechar") fecharEnvio();
+  else if (act === "ejimg") { try { const blob = await ejBlob(); await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]); b.classList.add("ok"); toast("① Imagem copiada. Cole no WhatsApp (⌘V) e depois copie o texto."); } catch (x) { toast("O navegador não deixou copiar a imagem. Use Baixar imagem."); } }
+  else if (act === "ejtxt") { await copiar(txt); b.classList.add("ok"); marcar(id, true); toast("② Texto copiado e alerta marcado como enviado.", 3500); }
+  else if (act === "ejbaixar") { const cv = $("#ej-cv"); const a = document.createElement("a"); a.download = `alerta-${String((x && (x.destino_nome || x.destino)) || "085").replace(/\W+/g, "-")}.png`; a.href = cv.toDataURL("image/png"); a.click(); }
+  else if (act === "ejok") { marcar(id, true); toast("Marcado como enviado."); fecharEnvio(); }
+  else if (act === "ejshare") { try { let dados = { text: txt }; const blob = await ejBlob();
+      if (blob) { const arq = new File([blob], "alerta-085.png", { type: "image/png" }); if (navigator.canShare && navigator.canShare({ files: [arq] })) dados = { files: [arq], text: txt }; }
+      await navigator.share(dados); marcar(id, true); toast("Enviado ✓"); fecharEnvio(); } catch (x) { } }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.getElementById("ej")) fecharEnvio(); });

@@ -752,3 +752,18 @@ table.rt-tab td,table.rt-tab th{padding:8px 8px;white-space:nowrap}
 .rt-a .bt{width:34px;padding:0;justify-content:center}
 table.rt-tab select.pri-sel{min-width:136px;font-size:12px}
 @media (max-width:1150px){table.rt-tab th:nth-child(4),table.rt-tab td:nth-child(4),table.rt-tab th:nth-child(6),table.rt-tab td:nth-child(6){display:none}}
+
+/* janela Enviar com imagem */
+.ej-fundo{position:fixed;inset:0;z-index:200;background:rgba(5,12,28,.62);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
+body.ej-on{overflow:hidden}
+.ej{background:var(--card,#fff);color:var(--ink,inherit);border-radius:18px;max-width:880px;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.ej-h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.ej-h b{display:block;font-size:17px}.ej-h small{opacity:.7}
+.ej-g{display:grid;grid-template-columns:340px minmax(0,1fr);gap:16px}
+.ej-g:not(:has(.ej-img)){grid-template-columns:1fr}
+.ej-img canvas{width:100%;height:auto;border-radius:14px;display:block;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.ej-t textarea{width:100%;min-height:340px;font:13px/1.45 ui-monospace,Menlo,monospace;padding:10px;border-radius:12px;border:1px solid var(--border,#ccc);background:var(--tile,#f6f6f6);color:inherit;resize:vertical}
+.ej-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ej-n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.18);font-size:12px;font-weight:700;margin-right:6px}
+.ej-acts .bt.ok{outline:2px solid #16A34A}
+@media (max-width:720px){.ej-g{grid-template-columns:1fr}.ej-img{max-width:320px;margin:auto}.ej-t textarea{min-height:200px}.ej-acts .bt{flex:1 1 100%;justify-content:center}}

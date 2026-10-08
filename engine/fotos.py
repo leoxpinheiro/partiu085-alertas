@@ -5,7 +5,7 @@ Uso: python engine/fotos.py [IATA ...]   (sem argumentos: todos os destinos de d
 import io, json, re, sys, time
 from pathlib import Path
 import requests
-from PIL import Image
+from PIL import Image, ImageOps
 
 RAIZ = Path(__file__).resolve().parent.parent
 DIR = RAIZ / "docs" / "fotos"; DIR.mkdir(parents=True, exist_ok=True)
@@ -15,14 +15,14 @@ UA = {"User-Agent": "Partiu085-radar/1.0 (https://leoxpinheiro.github.io/partiu0
 PAGINA = {
     "SAO": "en:Paulista Avenue", "RIO": "pt:Pão de Açúcar (Rio de Janeiro)", "BSB": "en:Cathedral of Brasília", "BHZ": "en:Pampulha Modern Ensemble",
     "CNF": "en:Pampulha Modern Ensemble", "SSA": "pt:Elevador Lacerda", "REC": "pt:Praia de Boa Viagem", "NAT": "pt:Ponta Negra (Natal)",
-    "JPA": "pt:Praia de Tambaú", "MCZ": "pt:Maceió", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "pt:Ponte Estaiada Mestre João Isidoro França",
+    "JPA": "pt:Praia de Tambaú", "MCZ": "pt:Maceió", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "pt:Parque Encontro dos Rios",
     "BEL": "pt:Estação das Docas", "MAO": "pt:Teatro Amazonas", "POA": "en:Porto Alegre", "CWB": "pt:Jardim Botânico de Curitiba",
     "FLN": "pt:Ponte Hercílio Luz", "VIX": "pt:Terceira Ponte", "GYN": "en:Goiânia", "IGU": "pt:Cataratas do Iguaçu",
     "FEN": "pt:Baía do Sancho", "JDO": "pt:Estátua do Padre Cícero", "VCP": "en:Campinas", "CGB": "en:Cuiabá", "CGR": "en:Campo Grande",
-    "NVT": "pt:Balneário Camboriú", "BPS": "en:Porto Seguro", "PMW": "en:Palmas, Tocantins", "UDI": "en:Uberlândia",
+    "NVT": "pt:Balneário Camboriú", "BPS": "en:Porto Seguro", "PMW": "pt:Palácio Araguaia", "UDI": "en:Uberlândia",
     "LIS": "en:Belém Tower", "OPO": "en:Dom Luís I Bridge", "MAD": "en:Plaza Mayor, Madrid", "PAR": "en:Eiffel Tower", "ROM": "en:Colosseum",
     "LON": "en:Tower Bridge", "AMS": "en:Canals of Amsterdam", "MIA": "en:South Beach", "ORL": "en:Orlando, Florida", "NYC": "en:Lower Manhattan",
-    "BUE": "en:Obelisco de Buenos Aires", "SCL": "en:Santiago", "LIM": "en:Miraflores District, Lima", "BOG": "en:Bogotá", "CTG": "en:Walled City of Cartagena",
+    "BUE": "en:Obelisco de Buenos Aires", "SCL": "en:Santiago", "LIM": "en:Miraflores District, Lima", "BOG": "en:Bogotá", "CTG": "en:Castillo San Felipe de Barajas",
     "PTY": "en:Cinta Costera", "CUN": "en:Cancún", "MVD": "en:Montevideo", "SID": "en:Santa Maria, Cape Verde", "BCN": "en:Sagrada Família",
     "MIL": "en:Milan Cathedral", "FRA": "en:Frankfurt", "PUJ": "en:Punta Cana", "MDE": "en:Medellín", "SDQ": "en:Ciudad Colonial (Santo Domingo)",
 }
@@ -55,7 +55,7 @@ def main():
             arquivo, url = foto_da_pagina(ref)
             if not url:
                 print(iata, "sem foto em", ref); continue
-            img = Image.open(io.BytesIO(requests.get(url, headers=UA, timeout=60).content)).convert("RGB")
+            img = ImageOps.exif_transpose(Image.open(io.BytesIO(requests.get(url, headers=UA, timeout=60).content))).convert("RGB")
             w, h = img.size
             alvo = 1080
             if w < 700:

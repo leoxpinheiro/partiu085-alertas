@@ -120,17 +120,19 @@ def classe(desc: float | None) -> str:
 def montar_texto(a: dict, link: str) -> str:
     p = a["paradas"]
     paradas = "" if p is None else (" · voo direto" if p == 0 else f" · {p} parada" + ("s" if p > 1 else ""))
-    L = ["🚨 *O RADAR APITOU — MILHAS*", "",
-         f"✈️ {ORIGEM_NOME} ({ORIGEM}) → {a['destino']} ({a['aeroporto']})",
-         f"🎟️ A partir de *{mil(a['milhas'])} milhas + R$ {a['taxa']:.0f}* o trecho",
-         f"💳 {a['para']}" + (f" · {a['cia']}" if a.get("cia") else "") + paradas]
+    curto = lambda g: (lambda n, y: f"{n}/{y[2:]}")(*g["mes"].split(" "))
+    L = ["🚨 *O RADAR APITOU — MILHAS!*", "",
+         f"✈️ *{ORIGEM_NOME} ➜ {a['destino']}* ({a['aeroporto']})",
+         f"🎟️ *{mil(a['milhas'])} milhas* + R$ {a['taxa']:.0f} o trecho",
+         f"💳 *{a['para']}*" + (f" · {a['cia']}" if a.get("cia") else "") + paradas]
     if classe(a.get("desconto")):
-        L.append(classe(a["desconto"]))
-    L += ["", "*Datas de ida:*"] + [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
+        em, resto = classe(a["desconto"]).split(" ", 1)
+        rot, pct = (resto.split(" · ") + [""])[:2]
+        L.append(f"{em} *{rot}* · {pct}")
+    L += ["", "🗓️ *IDA*"] + [f"▸ {curto(g)}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
     if a.get("volta_meses"):
-        L += ["", f"*Datas de volta:* a partir de {mil(a['milhas_volta'])} milhas + R$ {a['taxa_volta']:.0f}"]
-        L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
-    L += ["", "⚠️ Disponibilidade em milhas pode acabar a qualquer momento.", "", RODAPE.replace("{link}", link)]
+        L += ["", f"🗓️ *VOLTA* · a partir de *{mil(a['milhas_volta'])} milhas*"] + [f"▸ {curto(g)}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
+    L += ["", "⚠️ _Disponibilidade em milhas pode acabar a qualquer momento._", "", RODAPE.replace("{link}", link)]
     return "\n".join(L)
 
 
@@ -244,7 +246,7 @@ def rodada() -> None:
             if tok and chat:
                 try:
                     a["telegram"] = requests.post(f"https://api.telegram.org/bot{tok}/sendMessage", timeout=20,
-                                                  json={"chat_id": chat, "text": a["texto"].replace("*", ""), "disable_web_page_preview": True}).ok
+                                                  json={"chat_id": chat, "text": a["texto"].replace("*", "").replace("_", ""), "disable_web_page_preview": True}).ok
                 except Exception:  # noqa: BLE001
                     pass
             al["ofertas"].insert(0, a)

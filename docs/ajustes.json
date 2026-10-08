@@ -1,7 +1,7 @@
 {
  "desconto_minimo": 0.2,
  "max_alertas_por_rodada": 3,
- "rotas_por_rodada": 6,
+ "rotas_por_rodada": 9,
  "dias_inicio": 5,
  "dias_fim": 95,
  "passo_dias": 1,
@@ -14,7 +14,8 @@
  "telegram_ativo": true,
  "mostrar_link": false,
  "tolerancia_datas": 0.1,
- "descanso_rota_dias": 4,
+ "descanso_rota_dias": 3,
  "queda_para_repetir": 0.15,
- "desconto_2paradas": 0.3
+ "desconto_2paradas": 0.3,
+ "aviso_preco": "⚠️ _Preço pode mudar a qualquer momento._"
 }

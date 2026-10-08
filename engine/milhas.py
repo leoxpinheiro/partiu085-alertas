@@ -240,7 +240,7 @@ def postar(txt: str) -> bool:
         return False
     try:
         r = requests.post(f"https://api.telegram.org/bot{tok}/sendMessage",
-                          json={"chat_id": chat, "text": txt.replace("*", ""), "disable_web_page_preview": True}, timeout=20)
+                          json={"chat_id": chat, "text": txt.replace("*", "").replace("_", ""), "disable_web_page_preview": True}, timeout=20)
         return r.ok
     except Exception:  # noqa: BLE001
         return False

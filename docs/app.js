@@ -134,7 +134,7 @@ const enviado = a => !!S.marcados[a.id];
 
 /* ------------------------------------------------------------ texto final (rodapé e aviso configuráveis) */
 const RODAPE_PADRAO = "✈️ Receba alertas no WhatsApp: {link}";
-const AVISO_PADRAO = "⚠️ Preço pode mudar a qualquer momento.";
+const AVISO_PADRAO = "⚠️ _Preço pode mudar a qualquer momento._";
 function textoFinal(t, tipo) {
   const aj = S.ajustes || {};
   if (!t) return t;
@@ -144,7 +144,7 @@ function textoFinal(t, tipo) {
   while (L.length && (L[L.length - 1].trim() === "" || /Receba alertas no WhatsApp|bit\.ly\/radar085/i.test(L[L.length - 1]) || (ass && L[L.length - 1].trim() === ass) || (aj._rodape_ant && aj._rodape_ant.split("\n").includes(L[L.length - 1])))) L.pop();
   if (tipo === "dinheiro") {
     const av = aj.aviso_preco ?? AVISO_PADRAO;
-    L = L.flatMap(l => /^⚠️ Preço pode mudar/.test(l) ? (av.trim() ? [av] : []) : [l]);
+    L = L.flatMap(l => /Preço pode mudar a qualquer momento/.test(l) ? (av.trim() ? [av] : []) : [l]);
   }
   const milhas = tipo === "milhas";
   const link = (milhas ? aj.link_whatsapp_milhas : "") || aj.link_whatsapp || "https://bit.ly/radar085";
@@ -152,8 +152,26 @@ function textoFinal(t, tipo) {
   const out = L.join("\n").replace(/\n{3,}/g, "\n\n");
   return rod ? out + "\n\n" + rod : out;
 }
+function montarTextoDinheiro(a) {
+  if (!a || !a.ida_meses || !a.ida_meses.length) return null;
+  const aj = S.ajustes || {}, esc_ = a.escalas;
+  const paradas = esc_ === 0 ? "voo direto" : esc_ ? `${esc_} parada${esc_ > 1 ? "s" : ""}` : "";
+  const k = a.classe || "boa", rot = { imperdivel: ["🔥", "IMPERDÍVEL"], otima: ["⭐", "ÓTIMA OPORTUNIDADE"], boa: ["✅", "BOA OPORTUNIDADE"] }[k];
+  const curto = g => { const [n, y] = g.mes.split(" "); return y ? `${n}/${y.slice(2)}` : n; };
+  const L = ["🚨 *O RADAR APITOU!*", "", `✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`, `💰 *${brl(a.preco)}* o trecho`];
+  if (a.preco_volta) L.push(`🔁 Ida e volta a partir de *${brl(a.preco + a.preco_volta)}*`);
+  L.push(`${rot[0]} *${rot[1]}* · ${Math.round(a.desconto * 100)}% abaixo da média`);
+  L.push(`🛫 ${a.cia_nome || "—"}${paradas ? " · " + paradas : ""}`);
+  if (a.recorde && a.base) L.push(`📉 _Menor preço que já vimos nesse trecho (${a.base.dias} dias de pesquisa)_`);
+  if (a.vip) L.push("🎯 _Rota acompanhada a pedido dos assinantes VIP_");
+  L.push("", "🗓️ *IDA*", ...a.ida_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  if (a.volta_meses && a.volta_meses.length) L.push("", "🗓️ *VOLTA*", ...a.volta_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  const av = aj.aviso_preco ?? AVISO_PADRAO; if (av.trim()) L.push("", av.trim());
+  if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);
+  return L.join("\n");
+}
 function reaplicarTextos() {
-  S.alertas.forEach(a => { a.texto = textoFinal(a.texto0 || a.texto, "dinheiro"); });
+  S.alertas.forEach(a => { a.texto = textoFinal(montarTextoDinheiro(a) || a.texto0 || a.texto, "dinheiro"); });
   if (S.mi && S.mi.ofertas) S.mi.ofertas.forEach(o => { o.texto = textoFinal(o.texto0 || o.texto, "milhas"); });
 }
 
@@ -221,6 +239,7 @@ function render() {
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
   if (pag === "converter" && typeof desenharImportados === "function") setTimeout(desenharImportados, 0);
+  if (pag === "enviar" && typeof evImagem === "function") setTimeout(evImagem, 0);
   if (pag === "destinos" && typeof mapaDestinos === "function") setTimeout(mapaDestinos, 0);
   window.scrollTo(0, 0);
 }
@@ -790,7 +809,7 @@ function pConv() {
 
 /* ------------------------------------------------------------ Ajustes */
 function previaTexto() {
-  const ex = S.alertas[0] ? (S.alertas[0].texto0 || S.alertas[0].texto) : "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Recife (REC)\n💰 A partir de *R$ 379* o trecho\n\n⚠️ Preço pode mudar a qualquer momento.";
+  const ex = S.alertas[0] ? (montarTextoDinheiro(S.alertas[0]) || S.alertas[0].texto0 || S.alertas[0].texto) : "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Recife (REC)\n💰 A partir de *R$ 379* o trecho\n\n⚠️ Preço pode mudar a qualquer momento.";
   return textoFinal(ex, "dinheiro").split("\n").slice(-6).join("\n");
 }
 function pAjustes() {

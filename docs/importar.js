@@ -55,11 +55,12 @@ function lerVarios(txt) {
   return (partes.length ? partes : [txt]).map(lerResgate).filter(r => r.iata || r.milhas);
 }
 function textoResgate(r) {
-  const L = ["🚨 *O RADAR APITOU — MILHAS*", "", `✈️ ${r.origem === "FOR" ? "Fortaleza" : r.origem} (${r.origem}) → ${r.nome} (${r.iata})${r.internacional ? " · INTERNACIONAL" : ""}`,
-    `🎟️ A partir de *${milN(r.milhas)} milhas*${r.taxa ? ` + R$ ${milN(r.taxa)}` : " + taxas"} o trecho`, `💳 ${r.prog || "Programa"} · ${r.classe}`,
-    "", "*Datas de ida:*", ...porMesIso(r.idas).map(g => `${g.mes}: ${g.dias.join(", ")}`)];
-  if (r.voltas.length) L.push("", "*Datas de volta:*", ...porMesIso(r.voltas).map(g => `${g.mes}: ${g.dias.join(", ")}`));
-  L.push("", "⚠️ Disponibilidade em milhas pode acabar a qualquer momento.");
+  const curto = g => { const [n, y] = g.mes.split(" "); return y ? `${n}/${y.slice(2)}` : n; };
+  const L = ["🚨 *O RADAR APITOU — MILHAS!*", "", `✈️ *${r.origem === "FOR" ? "Fortaleza" : r.origem} ➜ ${r.nome}* (${r.iata})${r.internacional ? " 🌎" : ""}`,
+    `🎟️ *${milN(r.milhas)} milhas*${r.taxa ? ` + R$ ${milN(r.taxa)}` : " + taxas"} o trecho`, `💳 *${r.prog || "Programa"}* · ${r.classe}`,
+    "", "🗓️ *IDA*", ...porMesIso(r.idas).map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`)];
+  if (r.voltas.length) L.push("", "🗓️ *VOLTA*", ...porMesIso(r.voltas).map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  L.push("", "⚠️ _Disponibilidade em milhas pode acabar a qualquer momento._");
   return L.join("\n");
 }
 function paraOferta(r, txtEditado) {
@@ -110,12 +111,12 @@ async function desenharResgate(cv, r) {
   const W = 1080, H = 1350, c = cv.getContext("2d"); cv.width = W; cv.height = H;
   try { await Promise.all([document.fonts.load('120px "Anton"'), document.fonts.load('60px "Kaushan Script"'), document.fonts.load('600 40px "Plus Jakarta Sans"')]); } catch (e) { }
   const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, MARCA.azul2); g.addColorStop(.45, MARCA.azul); g.addColorStop(1, MARCA.navy); c.fillStyle = g; c.fillRect(0, 0, W, H);
-  const cor = COR_PROG_IMG[r.prog] || MARCA.amarelo;
+  const cor = r.cor || COR_PROG_IMG[r.prog] || MARCA.amarelo;
   // faixa do programa
-  c.font = `700 34px ${MARCA.corpo}`; const pt = (r.prog || "MILHAS").toUpperCase(); const pw = c.measureText(pt).width + 64;
+  c.font = `700 34px ${MARCA.corpo}`; const pt = (r.pill || r.prog || "MILHAS").toUpperCase(); const pw = c.measureText(pt).width + 64;
   rr(c, 70, 70, pw, 66, 33); c.fillStyle = cor; c.fill(); c.fillStyle = "#fff"; c.textBaseline = "middle"; c.fillText(pt, 102, 104);
   c.font = `600 30px ${MARCA.corpo}`; c.fillStyle = "rgba(255,255,255,.85)"; c.textAlign = "right"; c.fillText(r.internacional ? "INTERNACIONAL" : "NACIONAL", W - 70, 104); c.textAlign = "left";
-  c.font = `64px ${MARCA.script}`; c.fillStyle = MARCA.amarelo; c.fillText("oportunidade de resgate", 70, 205);
+  c.font = `64px ${MARCA.script}`; c.fillStyle = MARCA.amarelo; c.fillText(r.script || "oportunidade de resgate", 70, 205);
   // rota
   c.font = `46px ${MARCA.titulo}`; c.fillStyle = "rgba(255,255,255,.85)"; c.fillText(`FORTALEZA (${r.origem})  ✈`, 70, 290);
   let tam = 150; c.font = `${tam}px ${MARCA.titulo}`; const nome = (r.nome || r.iata).toUpperCase();
@@ -124,8 +125,8 @@ async function desenharResgate(cv, r) {
   // caixa de milhas
   const by = 290 + tam * .75 + 70; rr(c, 70, by, W - 140, 230, 36); c.fillStyle = "#fff"; c.fill();
   c.fillStyle = MARCA.navy; c.textAlign = "center"; c.font = `600 34px ${MARCA.corpo}`; c.fillText("a partir de", W / 2, by + 48);
-  c.font = `118px ${MARCA.titulo}`; c.fillText(`${milN(r.milhas)} MILHAS`, W / 2, by + 125);
-  c.font = `600 32px ${MARCA.corpo}`; c.fillStyle = "rgba(23,58,94,.75)"; c.fillText(`o trecho${r.taxa ? ` + R$ ${milN(r.taxa)}` : " + taxas"} · ${r.classe}`, W / 2, by + 196); c.textAlign = "left";
+  c.font = `118px ${MARCA.titulo}`; c.fillText(r.big || `${milN(r.milhas)} MILHAS`, W / 2, by + 125);
+  c.font = `600 32px ${MARCA.corpo}`; c.fillStyle = "rgba(23,58,94,.75)"; c.fillText(r.sub || `o trecho${r.taxa ? ` + R$ ${milN(r.taxa)}` : " + taxas"} · ${r.classe}`, W / 2, by + 196); c.textAlign = "left";
   // datas
   let y = by + 280; const LIM = H - 150;
   const bloco = (titulo, dias, x, w) => {
@@ -192,3 +193,22 @@ document.addEventListener("click", async e => {
     }
   } catch (err) { toast("Erro: " + err.message, 5000); b.disabled = false; }
 });
+
+/* ---------- imagem de qualquer alerta (dinheiro ou milhas) */
+function isoDeMeses(meses) {
+  const M = ["janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  const out = []; (meses || []).forEach(g => { const [n, y] = g.mes.split(" "); const mi = M.indexOf(semAc(n)); if (mi < 0) return; const ano = y ? +y : anoPara(mi); g.dias.forEach(d => out.push(`${ano}-${String(mi + 1).padStart(2, "0")}-${String(+d).padStart(2, "0")}`)); }); return out;
+}
+function cardDeAlerta(x) {
+  if (!x) return null;
+  if (x.destino_nome) { // alerta em dinheiro
+    const k = x.classe || "boa";
+    return { pill: { imperdivel: "Imperdível", otima: "Ótima oportunidade", boa: "Boa oportunidade" }[k], cor: { imperdivel: "#16A34A", otima: "#2563EB", boa: "#D97706" }[k],
+      script: "passagem barata saindo do 085", origem: "FOR", nome: x.destino_nome, iata: x.destino, internacional: x.tipo === "internacional",
+      big: brl(x.preco), sub: `o trecho${x.preco_volta ? ` · ida e volta a partir de ${brl(x.preco + x.preco_volta)}` : ""} · −${pct(x.desconto)}`,
+      idas: (x.datas_ida || []).map(d => d.dia).length ? x.datas_ida.map(d => d.dia) : isoDeMeses(x.ida_meses), voltas: (x.datas_volta || []).map(d => d.dia).length ? x.datas_volta.map(d => d.dia) : isoDeMeses(x.volta_meses) };
+  }
+  if (x.busca_propria) return { prog: x.para, origem: "FOR", nome: x.destino, iata: x.iata, internacional: x.internacional || INTL.has(x.iata), milhas: x.milhas, taxa: x.taxa, classe: x.classe || "Econômica",
+    idas: x.idas || isoDeMeses(x.ida_meses), voltas: x.voltas || isoDeMeses(x.volta_meses) };
+  return null;
+}

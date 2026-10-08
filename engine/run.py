@@ -12,6 +12,7 @@ Cada rodada (a cada 3h, no GitHub Actions):
 from __future__ import annotations
 
 import json
+import re
 import os
 import statistics
 import sys
@@ -232,24 +233,32 @@ def link_aviasales(dest: str, ida: str, volta: str) -> str:
     return u + (f"?marker={TP_MARKER}" if TP_MARKER else "")
 
 
+def mes_curto(g: dict) -> str:
+    nome, ano = (g["mes"].split(" ") + [""])[:2]
+    return f"{nome}/{ano[2:]}" if ano else nome
+
+
 def montar_texto(a: dict, aj: dict) -> str:
-    paradas = "voo direto" if a["escalas"] == 0 else f"{a['escalas']} parada" + ("s" if a["escalas"] > 1 else "")
+    esc = a["escalas"]
+    paradas = "voo direto" if esc == 0 else f"{esc} parada" + ("s" if esc and esc > 1 else "")
+    emoji, rotulo = (a["classe_txt"].split(" ", 1) + [""])[:2]
     L = [
-        "🚨 *O RADAR APITOU*",
+        "🚨 *O RADAR APITOU!*",
         "",
-        f"✈️ {C.ORIGEM_NOME} ({C.ORIGEM}) → {a['destino_nome']} ({a['destino']})",
-        f"💰 A partir de *{brl(a['preco'])}* o trecho",
-        f"{a['classe_txt']} · {round(a['desconto'] * 100)}% abaixo da média",
-        *([f"📉 Menor preço que já vimos nesse trecho ({a['base']['dias']} dias de pesquisa)"] if a.get("recorde") else []),
-        f"🛫 {a['cia_nome'] or '—'} · {paradas}",
+        f"✈️ *{C.ORIGEM_NOME} ➜ {a['destino_nome']}* ({a['destino']})",
+        f"💰 *{brl(a['preco'])}* o trecho",
     ]
+    if a.get("preco_volta"):
+        L.append(f"🔁 Ida e volta a partir de *{brl(a['preco'] + a['preco_volta'])}*")
+    L.append(f"{emoji} *{rotulo}* · {round(a['desconto'] * 100)}% abaixo da média")
+    L.append(f"🛫 {a['cia_nome'] or '—'} · {paradas}")
+    if a.get("recorde"):
+        L.append(f"📉 _Menor preço que já vimos nesse trecho ({a['base']['dias']} dias de pesquisa)_")
     if a.get("vip"):
-        L.append("🎯 Rota acompanhada a pedido dos assinantes VIP")
-    L += ["", "*Datas de ida:*"]
-    L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
-    L += ["", "*Datas de volta:*"]
-    L += [f"{g['mes']}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
-    aviso = aj.get("aviso_preco", "⚠️ Preço pode mudar a qualquer momento.")
+        L.append("🎯 _Rota acompanhada a pedido dos assinantes VIP_")
+    L += ["", "🗓️ *IDA*"] + [f"▸ {mes_curto(g)}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
+    L += ["", "🗓️ *VOLTA*"] + [f"▸ {mes_curto(g)}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
+    aviso = aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._")
     if aviso and aviso.strip():
         L += ["", aviso.strip()]
     if aj.get("mostrar_link"):
@@ -264,12 +273,18 @@ def montar_texto(a: dict, aj: dict) -> str:
     return "\n".join(L)
 
 
+def para_telegram(texto: str) -> str:
+    """Telegram sem formatação: tira *negrito* e _itálico_ do WhatsApp."""
+    texto = texto.replace("*", "")
+    return re.sub(r"(?<![\w/])_([^_\n]+)_(?![\w/])", r"\1", texto)
+
+
 def postar_telegram(texto: str, aj: dict) -> bool:
     if not (TG_TOKEN and TG_CHAT and aj.get("telegram_ativo", True)):
         return False
     try:
         r = requests.post(f"https://api.telegram.org/bot{TG_TOKEN}/sendMessage",
-                          json={"chat_id": TG_CHAT, "text": texto.replace("*", ""), "disable_web_page_preview": True},
+                          json={"chat_id": TG_CHAT, "text": para_telegram(texto), "disable_web_page_preview": True},
                           timeout=20)
         return r.ok
     except Exception as e:  # noqa: BLE001

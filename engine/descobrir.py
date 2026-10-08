@@ -47,9 +47,73 @@ def sondar():
     return "\n".join(out)
 
 
+def dia(x: str) -> str:
+    return (x or "")[:10]
+
+
+def descobrir() -> dict:
+    """Junta os menores preços (ida e volta e só ida) por destino e marca as 'pistas':
+    rotas que estão baratas segundo o Aviasales e que o robô deve confirmar no Google na próxima rodada."""
+    status = (json.loads((DOCS / "status.json").read_text("utf-8")) if (DOCS / "status.json").exists() else {})
+    rotas = {r["iata"]: r for r in json.loads((DOCS / "rotas.json").read_text("utf-8"))}
+    tetos = status.get("tetos_iv") or {}
+    st = status.get("rotas") or {}
+    agora = datetime.now(timezone.utc)
+    melhor: dict[str, dict] = {}
+    for one_way in ("false", "true"):
+        try:
+            code, j = get("/aviasales/v3/get_latest_prices", origin="FOR", currency="brl", period_type="year",
+                          one_way=one_way, limit=1000, sorting="price", market="br")
+        except Exception as e:  # noqa: BLE001
+            print(f"! Travelpayouts: {e}")
+            continue
+        if code != 200 or not isinstance(j, dict):
+            print(f"! Travelpayouts HTTP {code}")
+            continue
+        for x in j.get("data") or []:
+            d = x.get("destination")
+            if not d or not x.get("value"):
+                continue
+            try:
+                visto = datetime.fromisoformat(x["found_at"].replace("Z", "+00:00"))
+            except Exception:  # noqa: BLE001
+                continue
+            if agora - visto > timedelta(hours=96):
+                continue  # preço velho demais
+            m = melhor.setdefault(d, {"iata": d})
+            k = "rt" if one_way == "false" else "ow"
+            if k not in m or x["value"] < m[k]["preco"]:
+                m[k] = {"preco": x["value"], "ida": dia(x.get("depart_date")), "volta": dia(x.get("return_date")),
+                        "paradas": x.get("number_of_changes"), "visto": x["found_at"]}
+    pistas = []
+    for d, m in melhor.items():
+        rt = (m.get("rt") or {}).get("preco")
+        ow = (m.get("ow") or {}).get("preco")
+        r = rotas.get(d)
+        m["rastreada"] = bool(r)
+        m["nome"] = (r or {}).get("nome") or d
+        teto = tetos.get(d)
+        med = (st.get(d) or {}).get("mediana")
+        boa = False
+        if r and rt and teto and rt <= teto:
+            boa = True
+        if r and ow and med and ow <= med * 0.75:
+            boa = True
+        m["pista"] = boa
+        if boa:
+            pistas.append(d)
+    saida = {"atualizado": agora.isoformat(timespec="minutes"), "pistas": sorted(pistas),
+             "destinos": sorted(melhor.values(), key=lambda m: (m.get("rt") or m.get("ow") or {}).get("preco", 1e9))}
+    (DOCS / "descobertas.json").write_text(json.dumps(saida, ensure_ascii=False, indent=1), "utf-8")
+    print(f"Travelpayouts: {len(melhor)} destinos com preço recente · pistas pra confirmar: {', '.join(pistas) or 'nenhuma'}")
+    return saida
+
+
 if __name__ == "__main__":
     if not TOKEN:
         print("sem TRAVELPAYOUTS_TOKEN")
         sys.exit(0)
     if "--sondar" in sys.argv:
         print(sondar())
+    else:
+        descobrir()

@@ -517,7 +517,15 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
             horas = 999  # nunca varrida: vai primeiro
         return horas * PESO[p]
 
-    lote = sorted(resto, key=urgencia, reverse=True)[:n]
+    # pistas da Travelpayouts (rotas que parecem baratas lá): entram primeiro pra o Google confirmar
+    desc = ler_json(DOCS / "descobertas.json", {})
+    pistas = set(desc.get("pistas") or []) if desc.get("atualizado", "") >= (datetime.now(timezone.utc) - timedelta(hours=6)).isoformat() else set()
+    status_q = {k: v.get("quando", "") for k, v in status.items()}
+    limite_pista = (agora() - timedelta(hours=8)).isoformat()
+    com_pista = [r for r in resto if r["iata"] in pistas and status_q.get(r["iata"], "") < limite_pista][:max(2, n // 2)]
+    if com_pista:
+        log("Pistas da Travelpayouts: " + ", ".join(r["iata"] for r in com_pista))
+    lote = com_pista + sorted([r for r in resto if r not in com_pista], key=urgencia, reverse=True)[:max(0, n - len(com_pista))]
     salvar_json(DOCS / "prioridades.json", {"prioridades": pri, "quando": agora().isoformat(timespec="minutes"),
                                             "ultimo_lote": [r["iata"] for r in lote]})
     log("Lote: " + ", ".join(f"{r['iata']}({pri[r['iata']]['prioridade'][0]})" for r in lote))

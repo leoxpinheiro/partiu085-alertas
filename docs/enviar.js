@@ -41,14 +41,16 @@ function agendaAjustesHTML() {
 /* ---------- Top 5 do dia: os destinos mais baratos em relação à média, a partir do nosso banco */
 function top5() {
   const R = (S.status && S.status.rotas) || {}, lim = Date.now() - 30 * 36e5;
-  return Object.entries(R).filter(([, v]) => v.menor && v.mediana && v.quando && new Date(v.quando).getTime() > lim && 1 - v.menor / v.mediana >= .2 && v.menor <= (v.tipo === "internacional" ? 4000 : 1200))
-    .map(([k, v]) => ({ k, nome: v.nome || IATA[k] || k, menor: v.menor, d: 1 - v.menor / v.mediana, mes: (v.dia_menor || v.melhor_mes || "").slice(5, 7), intl: v.tipo === "internacional" }))
+  return Object.entries(R).filter(([k, v]) => v.menor && v.mediana && v.menor_volta && v.quando && new Date(v.quando).getTime() > lim)
+    .map(([k, v]) => { const rt = v.menor + v.menor_volta, tip = v.mediana + (v.mediana_volta || v.mediana);
+      return { k, nome: v.nome || IATA[k] || k, menor: v.menor, rt, d: 1 - rt / tip, ok: rt <= tetoIV(k, v.tipo), mes: (v.dia_menor || v.melhor_mes || "").slice(5, 7), intl: v.tipo === "internacional" }; })
+    .filter(x => x.ok && x.d >= .2)
     .sort((a, b) => b.d - a.d).slice(0, 5);
 }
 function textoTop5(L) {
   const n = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"], d = hojeISO();
-  const t = ["🏆 *TOP 5 DO DIA*", "_Os destinos mais abaixo do preço normal, saindo de Fortaleza_", `_${d.slice(8, 10)}/${d.slice(5, 7)} · preço por trecho, só a ida_`, "",
-    ...L.map((x, i) => `${n[i]} *${x.nome}* · *${brl(x.menor)}*${x.mes ? ` (${MESES[+x.mes - 1].toLowerCase()})` : ""}`),
+  const t = ["🏆 *TOP 5 DO DIA*", "_Os destinos mais abaixo do preço normal, saindo de Fortaleza_", `_${d.slice(8, 10)}/${d.slice(5, 7)}_`, "",
+    ...L.map((x, i) => `${n[i]} *${x.nome}* · *${brl(x.menor)}* o trecho · ida e volta ${brl(x.rt)}${x.mes ? ` (${MESES[+x.mes - 1].slice(0, 3).toLowerCase()})` : ""}`),
     "", "👉 _Quer as datas de algum? Responde aqui o número._", "", (S.ajustes || {}).aviso_preco ?? AVISO_PADRAO].join("\n");
   return textoFinal(t, "dinheiro");
 }
@@ -74,13 +76,13 @@ async function desenharTop5(cv, L) {
     const rf = (typeof refDe === "function" && refDe(x.k) || {}).curta; c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.65)";
     c.fillText([x.mes ? "melhor em " + MESES[+x.mes - 1].toLowerCase() : "", rf || (x.intl ? "internacional" : "")].filter(Boolean).join(" · "), 172, y + 70);
     c.textAlign = "right"; c.fillStyle = AM; c.font = `58px ${A}`; c.fillText(brl(x.menor), W - 96, y + 42);
-    c.font = `700 20px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText("o trecho", W - 96, y + 72); c.textAlign = "left"; c.textBaseline = "alphabetic"; });
+    c.font = `700 20px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText(x.rt ? "ida e volta " + brl(x.rt) : "o trecho", W - 96, y + 76); c.textAlign = "left"; c.textBaseline = "alphabetic"; });
   c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.55)"; c.textAlign = "center"; c.fillText("Preços de hoje no radar do Partiu 085 · podem mudar a qualquer momento", W / 2, H - 40); c.textAlign = "left";
 }
 function top5HTML(aberto) {
   const L = top5(), id = "top5-" + hojeISO(), env = S.marcados && S.marcados[id];
   if (L.length < 3) return `<div class="card ev-top5 sub">Top 5 do dia: ainda poucos destinos com preço bom hoje (${L.length}). Aparece aqui sozinho depois das próximas rodadas.</div>`;
-  return `<details class="card ev-top5" ${aberto && !env ? "open" : ""}><summary><span>🏆 <b>Post do dia: Top 5 saindo de Fortaleza</b><small>${env ? "✓ já enviado hoje" : "ótimo pra fim de semana e pra horário sem alerta novo"}</small></span><span class="mapa-seta">▾</span></summary>
+  return `<details class="card ev-top5" ${aberto && !env ? "open" : ""}><summary><span>🏆 <b>Post do dia: Top 5 saindo de Fortaleza</b><small>${env ? "✓ já enviado hoje" : "o robô já posta no Telegram sozinho (dia útil às 17h, fim de semana às 10h)"}</small></span><span class="mapa-seta">▾</span></summary>
     <div class="ev-grid"><div><textarea class="ev-texto" id="t5-texto" spellcheck="false">${esc(textoTop5(L))}</textarea></div>
       <div class="ev-img"><canvas id="t5-cv"></canvas></div></div>
     <div class="ev-acts"><button class="bt pri" data-act="t5img"><span class="ej-n">1</span>Copiar imagem</button><button class="bt" data-act="t5txt"><span class="ej-n">2</span>Copiar texto</button>

@@ -300,7 +300,7 @@ function linhaAlerta(a) {
       <button class="alr-dest" data-act="alabrir" data-id="${esc(a.id)}" title="Ver detalhes"><span class="rt">FOR → ${esc(a.destino)}${a.vip ? " · ⭐ VIP" : ""}</span><b>${esc(a.destino_nome)}</b></button>
       <div class="alr-preco"><b>${brl(a.preco)}</b><small>${trecho ? "o trecho" : "ida e volta"} · média ${brl(a.preco_tipico)}</small></div>
       <span class="tag ${k}">−${pct(a.desconto)}</span>
-      <div class="alr-info"><span>${a.conferido && a.conferido.status === "subiu" ? `<b class="neg">subiu p/ ${brl(a.conferido.preco)}</b> · ` : a.conferido && a.conferido.status === "valendo" ? `<b class="pos">✓ ainda valendo</b> · ` : ""}${a.recorde ? "📉 menor já visto · " : ""}${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
+      <div class="alr-info"><span>${a.conferido && a.conferido.status === "subiu" ? `<b class="neg">subiu p/ ${brl(a.conferido.preco)}</b> · ` : a.conferido && a.conferido.status === "valendo" ? `<b class="pos">✓ ainda valendo</b> · ` : ""}${ivBarato(a) ? "" : `<b class="neg">ida e volta caro</b> · `}${a.recorde ? "📉 menor já visto · " : ""}${esc(nomeCia(a.cia_nome))} · ${paradasTxt(a.escalas)}</span><small>${ida ? `ida ${ida}` : ""}${volta ? ` · volta ${volta}` : ""}</small></div>
       <div class="alr-acts">
         <button class="bt sm" data-act="copiar" data-id="${esc(a.id)}" title="Copiar texto">${ic("copy")}<span>Copiar</span></button>
         <button class="bt sm zap" data-act="envabrir" data-id="${esc(a.id)}" title="Enviar com imagem (imagem + texto)">${ic("image")}<span>Enviar</span></button>
@@ -352,11 +352,15 @@ function cardAlerta(a, compacto = false) {
 /* ------------------------------------------------------------ Dashboard */
 const POPULARES = new Set(["SAO", "RIO", "BSB", "REC", "SSA", "NAT", "LIS", "BHZ", "MCZ", "JPA", "POA", "CWB", "FLN", "BUE", "MIA", "ORL", "SCL", "MVD", "PAR", "MAD"]);
 /* nota da oferta: desconto vale mais; recorde, preço reconferido e destino popular somam */
+const TETO_IV = { "Nordeste": 850, "Sudeste e Sul": 1100, "Centro-Oeste e Norte": 1100, "América do Sul": 2400, "Caribe e América do Norte": 3300, "Europa e África": 3600 };
+function tetoIV(k, tipo) { const T = { ...TETO_IV, ...((S.ajustes || {}).teto_ida_volta || {}) }, r = regiaoDe(k); return T[r] || (tipo === "internacional" ? T["Europa e África"] : T["Sudeste e Sul"]); }
+/* a ida e volta também tem que estar barata (senão "Barcelona por R$ 4.880" parece promoção) */
+function ivBarato(a) { return !a.preco_volta || a.vip || a.preco + a.preco_volta <= tetoIV(a.destino, a.tipo); }
 function notaAlerta(a) { return (a.desconto || 0) + (a.recorde ? .15 : 0) + (a.conferido && a.conferido.status === "valendo" ? .08 : 0) + (POPULARES.has(a.destino) ? .06 : 0) + (a.modo === "trecho" && a.escalas === 0 ? .03 : 0); }
 function filaEnvio() {
   const lim = diaMenos(hojeISO(), 1);
   const lim4 = diaMenos(hojeISO(), 4), recente = c => c && c.status === "valendo" && Date.now() - new Date(c.quando).getTime() < 14 * 36e5;
-  const L = S.alertas.filter(a => !enviado(a) && !(a.conferido && a.conferido.status === "subiu") && (a.criado.slice(0, 10) >= lim || (a.criado.slice(0, 10) >= lim4 && recente(a.conferido)))).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: a.criado.slice(0, 10) >= lim ? "Dinheiro" : "Repescagem", rep: a.criado.slice(0, 10) < lim, s: notaAlerta(a), t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
+  const L = S.alertas.filter(a => !enviado(a) && ivBarato(a) && !(a.conferido && a.conferido.status === "subiu") && (a.criado.slice(0, 10) >= lim || (a.criado.slice(0, 10) >= lim4 && recente(a.conferido)))).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: a.criado.slice(0, 10) >= lim ? "Dinheiro" : "Repescagem", rep: a.criado.slice(0, 10) < lim, s: notaAlerta(a), t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
     ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${taxaR(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));

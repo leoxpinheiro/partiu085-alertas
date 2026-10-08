@@ -330,6 +330,30 @@ def reconferir(salvos: list[dict], rotas: list[dict], aj: dict, maximo: int = 6)
         time.sleep(C.PAUSA_GOOGLE)
 
 
+# Rotas com voo todo dia e muita disputa de preço (capitais, Nordeste, Lisboa…) mudam de preço toda hora:
+# vale olhar mais vezes. Rotas com poucos voos quase nunca têm promoção nova: olha menos, mas não abandona.
+HUBS = {"SAO", "RIO", "BSB", "BHZ", "CNF", "REC", "SSA", "NAT", "JPA", "MCZ", "AJU", "SLZ", "THE", "BEL", "MAO",
+        "POA", "CWB", "FLN", "VIX", "GYN", "LIS", "MIA", "ORL", "BUE"}
+NICHO = {"MDE", "PUJ", "SDQ", "CTG", "PTY", "SID", "UDI", "PMW", "ADZ", "AUA", "CUR", "HAV", "LPB", "VVI", "CUZ", "UIO", "ASU"}
+PESO = {"alta": 3.0, "normal": 1.5, "baixa": 0.6}
+
+
+def prioridade_auto(r: dict, st: dict, alertas30: int) -> tuple[str, str]:
+    """Devolve (prioridade, motivo) calculada pelos dados."""
+    datas = (st or {}).get("ofertas")
+    if alertas30 >= 2:
+        return "alta", f"{alertas30} alertas em 30 dias"
+    if datas is not None and datas < 35:
+        return "baixa", f"poucos voos ({datas} de ~90 dias)"
+    if r["iata"] in HUBS:
+        return "alta", "voo todo dia, preço muda muito"
+    if r["iata"] in NICHO and alertas30 == 0:
+        return "baixa", "destino de nicho, promoção rara"
+    if alertas30 == 0 and r.get("tipo") == "internacional" and datas is not None and datas < 70:
+        return "baixa", "pouca oferta e nenhum alerta em 30 dias"
+    return "normal", "padrão"
+
+
 def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     if ROTAS_AGORA:
         return [r for r in rotas if r["iata"] in ROTAS_AGORA]
@@ -341,9 +365,28 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     n = max(0, int(aj["rotas_por_rodada"]) - len(foco))
     if not resto:
         return foco
-    i0 = ler_json(ROT_FILE, {"i": 0})["i"] % len(resto)
-    lote = [resto[(i0 + k) % len(resto)] for k in range(min(n, len(resto)))]
-    salvar_json(ROT_FILE, {"i": (i0 + len(lote)) % len(resto)})
+    status = ler_json(STATUS_FILE, {"rotas": {}}).get("rotas", {})
+    enviados = ler_json(SENT_FILE, [])
+    corte = (agora() - timedelta(days=30)).isoformat()
+    agora_ts = agora().timestamp()
+    pri = {}
+
+    def urgencia(r):
+        st = status.get(r["iata"], {})
+        a30 = sum(1 for e in enviados if e.get("rota") == f"{C.ORIGEM}-{r['iata']}" and e.get("quando", "") >= corte)
+        auto, motivo = prioridade_auto(r, st, a30)
+        p = r.get("prioridade") if r.get("prioridade") in PESO else auto
+        pri[r["iata"]] = {"prioridade": p, "auto": auto, "motivo": motivo}
+        try:
+            horas = (agora_ts - datetime.fromisoformat(st["quando"]).timestamp()) / 3600
+        except Exception:  # noqa: BLE001
+            horas = 999  # nunca varrida: vai primeiro
+        return horas * PESO[p]
+
+    lote = sorted(resto, key=urgencia, reverse=True)[:n]
+    salvar_json(DOCS / "prioridades.json", {"prioridades": pri, "quando": agora().isoformat(timespec="minutes"),
+                                            "ultimo_lote": [r["iata"] for r in lote]})
+    log("Lote: " + ", ".join(f"{r['iata']}({pri[r['iata']]['prioridade'][0]})" for r in lote))
     return foco + lote
 
 

@@ -194,6 +194,7 @@ async function carregar() {
   S.marcados = { ...(mk || {}), ...local };
   if (!S.gruposSujo) S.grupos = gp || GRUPOS_PADRAO.map(g => ({ ...g }));
   S.ultima = S.status.ultima_rodada || a.atualizado;
+  S.pri = (await getJSON("prioridades.json", { prioridades: {} })).prioridades || {};
   reaplicarTextos();
 }
 
@@ -556,6 +557,9 @@ function pRotas() {
       <td class="num">${s.menor ? brl(s.menor) : "–"}</td>
       <td class="num">${s.mediana ? brl(s.mediana) : "–"}</td>
       <td style="color:var(--text-tertiary);font-size:12px;white-space:nowrap">${s.quando ? haQuanto(s.quando) : "ainda não"}</td>
+      <td>${(() => { const pa = (S.pri || {})[r.iata] || {}; const auto = pa.auto || "normal"; const nome = { alta: "Alta", normal: "Normal", baixa: "Baixa" };
+        return `<select class="mini pri-sel ${r.prioridade || auto}" data-rota="${i}" data-campo="prioridade" title="${esc(pa.motivo || "")}">
+          <option value="" ${!r.prioridade ? "selected" : ""}>Auto · ${nome[auto]}</option>${["alta", "normal", "baixa"].map(v => `<option value="${v}" ${r.prioridade === v ? "selected" : ""}>${nome[v]}</option>`).join("")}</select>`; })()}</td>
       <td><label class="sw" title="Foco: varre em toda rodada"><input type="checkbox" data-rota="${i}" data-campo="foco" ${r.foco ? "checked" : ""}><span></span></label></td>
       <td><label class="sw" title="Ativa"><input type="checkbox" data-rota="${i}" data-campo="ativo" ${r.ativo !== false ? "checked" : ""}><span></span></label></td>
       <td style="white-space:nowrap"><button class="bt sm" data-act="buscarrota" data-iata="${esc(r.iata)}">Buscar agora</button>
@@ -579,11 +583,14 @@ function pRotas() {
       </div>
       <div class="presets"><span style="font-size:12px;color:var(--text-tertiary);align-self:center">Pacotes prontos:</span>${Object.keys(PRESETS).map(p => `<button class="chip" data-act="preset" data-p="${p}">+ ${p}</button>`).join("")}</div>
     </div>
+    ${(() => { const P = S.pri || {}; const conta = k => S.rotas.filter(r => r.ativo !== false && (r.prioridade || (P[r.iata] || {}).auto || "normal") === k).length;
+      return `<div class="card freq" style="margin-bottom:14px"><h3>Como o radar divide as rodadas</h3><div class="desc">Rotas com voo todo dia mudam de preço toda hora, então o radar olha mais vezes. Destinos de nicho quase nunca têm promoção nova: ele continua olhando, só que menos. A frequência é automática (pelos alertas dos últimos 30 dias e pela quantidade de voos), mas você pode mudar em cada rota.</div>
+        <div class="freq-g"><div class="freq-i alta"><b>${conta("alta")}</b><span>Alta</span><small>olhada ~a cada 6h</small></div><div class="freq-i normal"><b>${conta("normal")}</b><span>Normal</span><small>~1 vez por dia</small></div><div class="freq-i baixa"><b>${conta("baixa")}</b><span>Baixa</span><small>~a cada 2 dias</small></div></div></div>`; })()}
     <div class="ordbar"><span class="ord-l">Ordenar</span>${pills("rotas", R.ordem, [["az", "A–Z"], ["ofertas", "Melhores ofertas"], ["preco", "Menor valor"], ["recente", "Varridas agora"], ["foco", "Em foco"]])}
       ${pills("rotastipo", R.tipo, [["", "Todas"], ["nacional", "Nacionais"], ["internacional", "Internacionais"]])}</div>
-    <div class="tbl-wrap"><table><thead><tr><th>Cód.</th><th>Destino</th><th>Tipo</th><th class="num">Teto</th><th class="num">Menor agora</th><th class="num">Média</th><th>Varrida</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
-    <tbody>${linhas || `<tr><td colspan="10" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
-    <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">Rodízio: a cada rodada (3 em 3 horas) o radar varre ${S.ajustes.rotas_por_rodada || 11} rotas, sempre incluindo as de foco. Use foco em poucas rotas (até 5) para não deixar a rodada lenta.</p>`;
+    <div class="tbl-wrap"><table><thead><tr><th>Cód.</th><th>Destino</th><th>Tipo</th><th class="num">Teto</th><th class="num">Menor agora</th><th class="num">Média</th><th>Varrida</th><th title="Quantas vezes o radar olha essa rota">Frequência</th><th>Foco</th><th>Ativa</th><th></th></tr></thead>
+    <tbody>${linhas || `<tr><td colspan="11" class="vazio">Nenhuma rota cadastrada.</td></tr>`}</tbody></table></div>
+    <p style="font-size:12px;color:var(--text-tertiary);margin-top:10px">A cada rodada (de 2 em 2 horas) o radar varre ${S.ajustes.rotas_por_rodada || 9} rotas: as de foco sempre, e as outras pela frequência. Use foco em poucas rotas (até 5) pra não deixar a rodada lenta.</p>`;
 }
 function addRota(iata, extra = {}) {
   iata = (iata || "").toUpperCase().trim();
@@ -962,9 +969,9 @@ document.addEventListener("input", e => {
     S.D[el.dataset.d] = el.value; clearTimeout(el._t); el._t = setTimeout(() => { const pos = el.selectionStart; render(); const n = $(`[data-d="${el.dataset.d}"]`); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (x) { } } }, 250);
   } else if (el.dataset.rota !== undefined) {
     const r = S.rotas[+el.dataset.rota], k = el.dataset.campo;
-    r[k] = el.type === "checkbox" ? el.checked : (el.value ? +el.value : null);
+    r[k] = el.type === "checkbox" ? el.checked : el.tagName === "SELECT" ? (el.value || undefined) : (el.value ? +el.value : null);
     S.rotasSujo = true;
-    if (el.type === "checkbox") render(); else { const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarrotas"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>`); }
+    if (el.type === "checkbox" || el.tagName === "SELECT") render(); else { const bar = $(".head .acts"); if (bar && !bar.querySelector('[data-act="salvarrotas"]')) bar.insertAdjacentHTML("afterbegin", `<button class="bt pri" data-act="salvarrotas">${ic("save")}Salvar alterações</button>`); }
   } else if (el.dataset.aj !== undefined) {
     const k = el.dataset.aj;
     S.ajustes[k] = el.type === "checkbox" ? el.checked : el.type === "number" ? (el.value === "" ? null : +el.value) : el.value;

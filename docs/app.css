@@ -867,3 +867,18 @@ body.ej-on{overflow:hidden}
 .h2-chip.novo{background:var(--chip);color:var(--text-tertiary)}
 .h2-regua.novo{opacity:.35}
 @media (max-width:820px){.h2-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.h2-c{padding:12px}.h2-c b{font-size:22px}.h2-c span{display:none}.h2-c small{font-size:11.5px}}
+
+/* ---------- Pauta do Instagram */
+.pa-bar{margin-bottom:14px}
+.pa-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:16px}
+.pa-c{display:flex;flex-direction:column;gap:10px;padding:16px}
+.pa-c.feito{opacity:.6}
+.pa-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.pa-h b{font-size:16px}.pa-h small{opacity:.6;margin-left:auto}
+.pa-telas{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
+.pa-telas canvas{flex:0 0 auto;width:min(100%,320px);height:auto;border-radius:12px;scroll-snap-align:start;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.pa-telas.st canvas{width:min(100%,220px)}
+.pa-telas canvas:only-child{width:100%;max-width:420px}
+.pa-porque{font-size:13px;opacity:.8}
+.pa-leg{width:100%;min-height:140px;font:13px/1.45 inherit;padding:10px;border-radius:12px;border:1px solid var(--border);background:var(--tile);color:inherit;resize:vertical}
+.pa-dica{margin-bottom:14px;font-size:14px}.pa-dica ol{margin:8px 0 0 18px;display:grid;gap:4px}
+@media (max-width:520px){.pa-grade{grid-template-columns:1fr}}

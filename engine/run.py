@@ -314,18 +314,20 @@ def registrar(hist: dict, chave: str, dias: list[dict], hoje: str) -> None:
 
 
 # ----------------------------------------------------------------------------- rodada
-def reconferir(salvos: list[dict], rotas: list[dict], aj: dict, maximo: int = 6) -> None:
-    """Confere de novo o preço dos alertas das últimas 36h: ainda valendo ou já subiu?"""
+def reconferir(salvos: list[dict], rotas: list[dict], aj: dict, maximo: int | None = None) -> None:
+    """Confere de novo o preço dos alertas das últimas 72h (ainda valendo ou já subiu?).
+    Os que seguem valendo viram 'repescagem' no painel, ótimos pro fim de semana."""
     if OFFLINE:
         return
-    limite = (agora() - timedelta(hours=36)).isoformat()
+    maximo = int(maximo or aj.get("reconferir_max", 10))
+    limite = (agora() - timedelta(hours=72)).isoformat()
     tipos = {r["iata"]: r["tipo"] for r in rotas}
     feitos = 0
     for a in salvos:
         if feitos >= maximo or a.get("modo") != "trecho" or a["criado"] < limite or a.get("ida", "") <= date.today().isoformat():
             continue
         conf = a.get("conferido") or {}
-        if conf.get("quando", "") >= (agora() - timedelta(hours=5)).isoformat():
+        if conf.get("status") == "subiu" or conf.get("quando", "") >= (agora() - timedelta(hours=4)).isoformat():
             continue
         nac = tipos.get(a["destino"], a.get("tipo")) == "nacional"
         try:
@@ -374,7 +376,10 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
         return []
     foco = [r for r in ativas if r.get("foco") or r.get("vip")]
     resto = [r for r in ativas if not (r.get("foco") or r.get("vip"))]
-    n = max(0, int(aj["rotas_por_rodada"]) - len(foco))
+    base = int(aj["rotas_por_rodada"])
+    if agora().weekday() <= 2:  # segunda a quarta: é quando as companhias soltam promoção, varre mais
+        base = round(base * float(aj.get("reforco_seg_qua", 1.35)))
+    n = max(0, base - len(foco))
     if not resto:
         return foco
     status = ler_json(STATUS_FILE, {"rotas": {}}).get("rotas", {})

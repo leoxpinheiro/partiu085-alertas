@@ -350,9 +350,13 @@ function cardAlerta(a, compacto = false) {
 }
 
 /* ------------------------------------------------------------ Dashboard */
+const POPULARES = new Set(["SAO", "RIO", "BSB", "REC", "SSA", "NAT", "LIS", "BHZ", "MCZ", "JPA", "POA", "CWB", "FLN", "BUE", "MIA", "ORL", "SCL", "MVD", "PAR", "MAD"]);
+/* nota da oferta: desconto vale mais; recorde, preço reconferido e destino popular somam */
+function notaAlerta(a) { return (a.desconto || 0) + (a.recorde ? .15 : 0) + (a.conferido && a.conferido.status === "valendo" ? .08 : 0) + (POPULARES.has(a.destino) ? .06 : 0) + (a.modo === "trecho" && a.escalas === 0 ? .03 : 0); }
 function filaEnvio() {
   const lim = diaMenos(hojeISO(), 1);
-  const L = S.alertas.filter(a => a.criado.slice(0, 10) >= lim && !enviado(a) && !(a.conferido && a.conferido.status === "subiu")).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: "Dinheiro", t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
+  const lim4 = diaMenos(hojeISO(), 4), recente = c => c && c.status === "valendo" && Date.now() - new Date(c.quando).getTime() < 14 * 36e5;
+  const L = S.alertas.filter(a => !enviado(a) && !(a.conferido && a.conferido.status === "subiu") && (a.criado.slice(0, 10) >= lim || (a.criado.slice(0, 10) >= lim4 && recente(a.conferido)))).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: a.criado.slice(0, 10) >= lim ? "Dinheiro" : "Repescagem", rep: a.criado.slice(0, 10) < lim, s: notaAlerta(a), t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
     ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${taxaR(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
@@ -376,6 +380,7 @@ function pDash() {
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
   return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) +
     `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
+    ${typeof agendaHTML === "function" ? agendaHTML(fila.length) : ""}
     <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). Alertas cujo preço já subiu ficam de fora.</div></div><a class="bt pri" href="#enviar">${ic("send")}Abrir Modo envio</a></div>
       <div class="falta">${[["dinheiro", "Alertas em dinheiro", "#16A34A", "#alertas"], ["milhas", "Alertas em milhas", "#FF7A00", "#milhas"], ["promo", "Promoções de milhas", "#8B5CF6", "#promocoes"]].map(([t, n, cor, href]) => {
         const L = fila.filter(f => f.tipo === t);
@@ -834,6 +839,7 @@ function pAjustes() {
       <div class="field"><button class="bt pri" data-act="salvartoken">Salvar e testar</button></div>
       ${t ? `<div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div></div>
     ${integracoesHTML()}
+    ${typeof agendaAjustesHTML === "function" ? agendaAjustesHTML() : ""}
     <div class="grid two">
       <div class="card"><h3>Texto das mensagens</h3><div class="desc">O fim de toda mensagem (rodapé) e o aviso. Vale na hora para tudo que você copiar, inclusive alertas antigos, e para o Telegram nas próximas rodadas.</div>
         <div class="form" style="grid-template-columns:1fr">

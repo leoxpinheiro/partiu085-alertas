@@ -787,3 +787,22 @@ body.ej-on{overflow:hidden}
 .mv-f .micro{min-width:92px}
 .mv-como{margin:2px 0 0;max-width:900px}
 .lnk{background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer;font:inherit}
+
+/* agenda de envios */
+.ag{margin-bottom:14px;padding:16px 18px}
+.ag-h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.ag-h b{display:block;font-size:16px}.ag-h small{opacity:.7}
+.ag-tot{font-weight:700;white-space:nowrap}
+.ag-s{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px}
+.ag-i{display:inline-flex;gap:6px;align-items:center;padding:7px 12px;border-radius:999px;background:var(--chip);border:1px solid var(--border);font-size:13.5px}
+.ag-i.ok{background:rgba(22,163,74,.14);border-color:#16A34A}
+.ag-i.agora{background:#FFC800;color:#0F2A47;border-color:#FFC800;font-weight:700}
+.ag-i.atras{border-color:#D97706}
+.ag-msg{font-size:14px}
+.ev-top5{margin-bottom:14px}
+.ev-top5 summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;gap:12px}
+.ev-top5 summary::-webkit-details-marker{display:none}
+.ev-top5 summary small{display:block;opacity:.7;font-size:12.5px}
+.ev-top5[open] summary{margin-bottom:12px}
+.ev-top5 .ev-texto{min-height:300px}
+.ev-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}

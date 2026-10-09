@@ -525,10 +525,11 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     com_pista = [r for r in resto if r["iata"] in pistas and status_q.get(r["iata"], "") < limite_pista][:max(2, n // 2)]
     if com_pista:
         log("Pistas da Travelpayouts: " + ", ".join(r["iata"] for r in com_pista))
-    lote = com_pista + sorted([r for r in resto if r not in com_pista], key=urgencia, reverse=True)[:max(0, n - len(com_pista))]
+    urg = {r["iata"]: urgencia(r) for r in resto}  # calcula a prioridade de todas (inclusive as pistas)
+    lote = com_pista + sorted([r for r in resto if r not in com_pista], key=lambda r: urg[r["iata"]], reverse=True)[:max(0, n - len(com_pista))]
     salvar_json(DOCS / "prioridades.json", {"prioridades": pri, "quando": agora().isoformat(timespec="minutes"),
                                             "ultimo_lote": [r["iata"] for r in lote]})
-    log("Lote: " + ", ".join(f"{r['iata']}({pri[r['iata']]['prioridade'][0]})" for r in lote))
+    log("Lote: " + ", ".join(f"{r['iata']}({pri.get(r['iata'], {}).get('prioridade', '?')[0]})" for r in lote))
     return foco + lote
 
 

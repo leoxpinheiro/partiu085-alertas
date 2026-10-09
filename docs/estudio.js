@@ -37,13 +37,27 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
   }
   c.putImageData(dst, x0, y0); return cv;
 }
+/* olho de peixe "vetorial": cada letra é desenhada nítida, maior no centro e menor nas bordas (lente suave), sem distorcer pixels */
 function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
-  const t = document.createElement("canvas"); t.width = W; t.height = H; const g = t.getContext("2d");
-  g.font = fonte; g.textAlign = "center"; g.textBaseline = "alphabetic"; if ("letterSpacing" in g) g.letterSpacing = c.letterSpacing || "0px";
-  let y = yCentro - (linhas.length * lh) / 2 + fs * .8, larg = 0; linhas.forEach(l => { larg = Math.max(larg, g.measureText(l).width); });
-  g.fillStyle = cor; linhas.forEach(l => { g.fillText(l, W / 2, y); y += lh; });
-  olhoDePeixe(t, W / 2, yCentro, larg / 2 * 1.18, Math.max(linhas.length * lh, fs * 2) * 1.1, forca);
-  c.save(); if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; } c.drawImage(t, 0, 0); c.restore();
+  const a = Math.max(0, Math.min(100, forca || 0)) / 100, ls = parseFloat(c.letterSpacing) || 0;
+  const fam = fonte.replace(/^.*?\d+(\.\d+)?px\s*/, ""), peso = (fonte.match(/^(\d{3}|bold|normal)/) || ["400"])[0];
+  const F = sz => `${peso} ${sz}px ${fam}`;
+  c.save(); c.font = F(fs); if ("letterSpacing" in c) c.letterSpacing = "0px";
+  const L = linhas.map(l => { const ch = Array.from(l); return { ch, w: ch.map(x => c.measureText(x).width + ls) }; });
+  const maxW = Math.max(1, ...L.map(l => l.w.reduce((p, q) => p + q, 0))), n = L.length, meiaA = n * lh / 2 + fs * .25;
+  const esc = (nx, ny) => (1 - a * .38) + a * 1.05 * Math.exp(-(nx * nx * 1.5 + ny * ny * 1.9)); // centro até ~1.7x, bordas ~0.6x
+  L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), yc = yCentro - n * lh / 2 + lh * (j + .5); let x = W / 2 - tot / 2;
+    l.s = l.w.map(w => { const cx = x + w / 2; x += w; return esc((cx - W / 2) / (maxW / 2), (yc - yCentro) / meiaA); });
+    l.h = lh * l.s.reduce((p, q) => p + q, 0) / Math.max(1, l.s.length); });
+  const larga = Math.max(...L.map(l => l.w.reduce((p, w, k) => p + w * l.s[k], 0))), kf = Math.min(1, W * .92 / larga); // nunca sai da tela
+  if (kf < 1) L.forEach(l => { l.s = l.s.map(v => v * kf); l.h *= kf; });
+  const altura = L.reduce((p, l) => p + l.h, 0); let y = yCentro - altura / 2;
+  if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; }
+  c.fillStyle = cor; c.textAlign = "left"; c.textBaseline = "alphabetic";
+  L.forEach(l => { const tot = l.w.reduce((p, w, k) => p + w * l.s[k], 0); let x = W / 2 - tot / 2; const meio = y + l.h / 2;
+    l.ch.forEach((ch, k) => { const s = l.s[k], sz = fs * s; c.font = F(sz); c.fillText(ch, x + ls * s / 2, meio + sz * .3); x += l.w[k] * s; });
+    y += l.h; });
+  c.restore();
 }
 /* desenha o texto (mesma função na prévia e no vídeo final) */
 function estQuebrar(c, t, w) { const out = []; t.split("\n").forEach(par => { let l = ""; par.split(/\s+/).forEach(p => { const tt = l ? l + " " + p : p; if (c.measureText(tt).width > w && l) { out.push(l); l = p; } else l = tt; }); out.push(l); }); return out; }

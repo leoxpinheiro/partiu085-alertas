@@ -491,9 +491,9 @@ function noticiaHTML() {
   const N = PA.nt, lista = (PA.noticias || []).slice(0, 10);
   if (!PA.noticias) getJSON("noticias.json", { itens: [] }).then(d => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
   return `<div class="card pa-nt"><h3>📰 Notícias que o robô achou</h3>
-    <div class="desc">Ideias de pauta do dia. Toque em <b>Abrir</b> pra ler, ou em <b>Usar</b> pra montar uma arte simples com a novidade.</div>
-    ${lista.length ? `<div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni"><div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
-      <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm" data-act="ntusar" data-i="${i}">Usar</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
+    <div class="desc">O robô atualiza a lista várias vezes por dia. Toque em <b>Criar post</b>: a arte sai com a foto da matéria (quando tem) ou do destino, título limpo e resumo. Notícia quente: agende pra daqui a 10 min ou toque em Publicar agora.</div>
+    ${lista.length ? `<div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
+      <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
   </div>
   <details class="card pa-nt" id="pa-man" ${N.titulo ? "open" : ""}><summary><b>Montar arte da notícia</b></summary>
     <div class="form pa-nt-f" style="margin-top:12px">
@@ -505,29 +505,93 @@ function noticiaHTML() {
       <div class="field" style="align-self:end"><button class="bt pri" data-act="ntgerar">Gerar arte</button></div>
     </div></details>`;
 }
-async function postNoticia() {
-  const N = PA.nt; if (!N.titulo && !N.pontos) return [];
-  const pts = N.pontos.split("\n").map(x => x.trim()).filter(Boolean).slice(0, 5);
-  const fotoIm = N.foto ? await new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = N.foto; }) : null;
+
+/* ================= notícia premium (foto real da matéria ou foto do destino, título limpo, resumo) ================= */
+const FOTOS_OK = "AJU AMS BCN BEL BHZ BOG BPS BSB BUE CGB CGR CTG CUN CWB FEN FLN FRA GYN IGU JDO JPA LIM LIS LON MAD MAO MCZ MDE MIA MIL MVD NAT NVT NYC OPO ORL PAR POA PTY PUJ REC RIO ROM SAO SCL SDQ SID SLZ SSA UDI VCP VIX".split(" ");
+const PROG_NT = [[/latam pass|latam/i, "LATAM Pass", "#C8102E"], [/azul fidelidade|azul/i, "Azul Fidelidade", "#0B4EA2"], [/smiles|\bgol\b/i, "Smiles", "#F26B21"], [/livelo/i, "Livelo", "#D6006E"], [/esfera/i, "Esfera", "#CC092F"], [/\btap\b/i, "TAP", "#1D7A3A"]];
+function ntCategoria(x) { return /pontos|milhas|b[oô]nus|transfer|livelo|esfera|smiles|fidelidade|latam pass/i.test(x.titulo) ? "MILHAS" : /aeroporto/i.test(x.titulo) ? "AEROPORTO" : "AVIAÇÃO · CEARÁ"; }
+function ntTitulo(t) { t = String(t || "").replace(/\s+[-|–]\s+[^-|–]{2,40}$/, "").trim(); if (t.length <= 92) return t;
+  const corte = Math.max(t.lastIndexOf(";", 92), t.lastIndexOf(":", 92), t.lastIndexOf(",", 92)); return corte > 45 ? t.slice(0, corte) : curto(t, 92); }
+function ntResumo(x) { const r = String(x.resumo || "").replace(/\s+/g, " ").replace(/(Leia mais|Continue lendo|The post|O post).*$/i, "").trim();
+  const fr = r.split(/(?<=[.!?])\s+/).filter(f => f.length > 25 && !x.titulo.toLowerCase().startsWith(f.toLowerCase().slice(0, 30))); return fr.slice(0, 2).join(" ").slice(0, 230); }
+function ntFotoIata(x) { const t = sem(x.titulo + " " + (x.resumo || ""));
+  for (const k of FOTOS_OK) { const n = sem((IATA[k] || "").split(" (")[0]); if (n && n.length > 3 && t.includes(n)) return k; } return ""; }
+function sem(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+function ntImg(src) { return new Promise(ok => { if (!src) return ok(null); const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = src; }); }
+function heroPrograma(c, W, H, prog) {
+  c.fillStyle = prog[2]; c.fillRect(0, 0, W, H);
+  const g = c.createRadialGradient(W * .8, H * .1, 20, W * .8, H * .1, W); g.addColorStop(0, "rgba(255,255,255,.22)"); g.addColorStop(1, "rgba(0,0,0,.25)"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .12; for (let i = 0; i < 7; i++) { c.beginPath(); c.arc(W * .85, H * .2, 120 + i * 90, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore();
+  T(c, prog[1].toUpperCase(), M, H * .42, caber(c, prog[1].toUpperCase(), W - 2 * M, 150, MARCA.titulo, 400, 70), MARCA.titulo, "rgba(255,255,255,.95)");
+}
+function heroAviao(c, W, H) {
+  const g = c.createLinearGradient(0, 0, W, H); g.addColorStop(0, "#1F5FBF"); g.addColorStop(1, "#0B2440"); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .18; c.strokeStyle = "#fff"; c.lineWidth = 3; c.setLineDash([16, 18]);
+  [[.05, .9, .5, .2, 1.05, .35], [-.05, .5, .4, .05, 1.1, .1], [.1, 1.1, .7, .6, 1.05, .7]].forEach(([a, b, cc, d, e, f]) => { c.beginPath(); c.moveTo(W * a, H * b); c.quadraticCurveTo(W * cc, H * d, W * e, H * f); c.stroke(); }); c.restore();
+  aviao(c, W * .7, H * .38, Math.min(W, H) * .42, "rgba(255,255,255,.92)", -Math.PI / 7);
+}
+async function postsDaNoticia(x) {
+  const cat = ntCategoria(x), tit = ntTitulo(x.titulo), res = ntResumo(x), prog = PROG_NT.find(p => p[0].test(x.titulo));
+  const iata = x.img ? "" : ntFotoIata(x);
+  const im = await ntImg(x.img || (iata ? `fotos/${iata}.jpg` : ""));
+  const credito = x.img ? `Foto: ${x.fonte}` : iata ? "Foto ilustrativa" : "";
   const desenha = (W, H, story) => c => {
-    if (fotoIm) bgFoto(c, W, H, fotoIm, story ? .42 : .38); else bgNavy(c, W, H);
-    marca(c, W, true, "NOVIDADE");
-    const y0 = fotoIm ? H * (story ? .42 : .38) - 60 : (story ? 520 : 360);
-    kicker(c, N.kicker || "Novidade", M, y0);
-    let y = titulo(c, N.titulo || "Novidade", M, y0 + 26, W - 2 * M, story ? 120 : 104, 64, "#fff", 3) + 40;
-    pts.forEach(p => { bola(c, M + 20, y + 4); y = paragrafo(c, p, M + 60, y + 16, W - 2 * M - 60, story ? 44 : 36, MARCA.corpo, "#fff", 700, 1.3, 3) + 30; });
-    if (N.fonte) T(c, `Fonte: ${N.fonte}`, M, Math.min(y + 30, H - (story ? 340 : 190)), 22, MARCA.corpo, COR.cinza, "left", 600);
-    if (story) espacoLink(c, W, H); else rodapeP(c, W, H); };
-  const leg = legenda(`📰 ${(N.titulo || "").toUpperCase()}\n\n${pts.map(p => `✈️ ${p}`).join("\n")}${N.fonte ? `\n\nFonte: ${N.fonte}` : ""}\n\n💬 Você vai aproveitar? Comenta aqui!`);
-  return [{ id: "nt-feed-" + (N.titulo || "x").slice(0, 30), grupo: "feed", tipo: "Notícia", titulo: "Notícia · feed", porque: "Novidade do aeroporto/companhias: mostra que o perfil está sempre por dentro.", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg },
-    { id: "nt-story-" + (N.titulo || "x").slice(0, 30), grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Versão rápida pro story, com espaço pro link do grupo.", fmt: "Story 9:16", stories: true, telas: [desenha(SW, SH, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+    const hh = Math.round(H * (story ? .46 : .44));
+    if (im) { c.fillStyle = COR.navy; c.fillRect(0, 0, W, H); const s = Math.max(W / im.naturalWidth, (hh + 160) / im.naturalHeight); c.drawImage(im, (W - im.naturalWidth * s) / 2, 0, im.naturalWidth * s, im.naturalHeight * s); }
+    else { c.save(); c.beginPath(); c.rect(0, 0, W, hh + 160); c.clip(); prog && cat === "MILHAS" ? heroPrograma(c, W, hh + 160, prog) : heroAviao(c, W, hh + 160); c.restore(); c.fillStyle = COR.navy; c.fillRect(0, hh + 160, W, H); }
+    let g = c.createLinearGradient(0, 0, 0, 300); g.addColorStop(0, "rgba(8,22,40,.7)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, W, 300);
+    g = c.createLinearGradient(0, hh - 220, 0, hh + 170); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.75, "rgba(11,36,64,.96)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 220, W, 400);
+    c.fillStyle = COR.navy; c.fillRect(0, hh + 170, W, H);
+    marca(c, W, true, "NOTÍCIA");
+    if (credito) T(c, credito, W - M, hh - 30, 20, MARCA.corpo, "rgba(255,255,255,.7)", "right", 600);
+    const fim = story ? H - 380 : H - 190;   // onde acaba o espaço de texto (antes da fonte e do rodapé)
+    kicker(c, cat, M, hh + 40, COR.am);
+    let y = titulo(c, tit, M, hh + 60, W - 2 * M, story ? 104 : 86, 54, "#fff", 4) + 34;
+    const fs = story ? 38 : 31, lh = fs * 1.32, cabe = Math.floor((fim - 50 - y) / lh);
+    if (res && cabe >= 2) { const n = Math.min(story ? 5 : 4, cabe); c.fillStyle = COR.am; c.fillRect(M, y, 6, n * lh + 6); y = paragrafo(c, res, M + 30, y + fs, W - 2 * M - 30, fs, MARCA.corpo, "rgba(255,255,255,.86)", 600, 1.32, n); }
+    const t = `FONTE: ${String(x.fonte || "").toUpperCase()}`; c.font = `800 20px ${MARCA.corpo}`; const fw = c.measureText(t).width + 48, fy = Math.min(y + 24, fim);
+    c.strokeStyle = "rgba(255,255,255,.35)"; c.lineWidth = 2; rr(c, M, fy, fw, 42, 21); c.stroke(); T(c, t, M + 22, fy + 28, 20, MARCA.corpo, "rgba(255,255,255,.8)", "left", 800, 1.5);
+    if (story) espacoLink(c, W, H); else rodapeP(c, W, H, true, "Siga @partiu.085 · ative o sininho 🔔");
+  };
+  const leg = `📰 ${tit.toUpperCase()}\n\n${res || ""}${res ? "\n\n" : ""}Fonte: ${x.fonte}\n\n💬 O que você achou dessa novidade? Comenta aqui!\n\n${HASH}`;
+  const id = "nt-" + (x.link || tit).replace(/\W+/g, "").slice(-28);
+  return [{ id, grupo: "feed", tipo: "Notícia", rot: "Notícia", titulo: `Notícia: ${curto(tit, 60)}`, porque: "Notícia quente: poste o quanto antes (dá pra agendar pra daqui a 10 min).", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg, noticia: true },
+    { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Versão pro story, com espaço pro link do grupo.", fmt: "Story 9:16", stories: true, telas: [desenha(SW, SH, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+}
+
+/* arte de notícia: foto real da matéria em cima, manchete inteira, resumo e fonte */
+function artNoticia(N, im, story) {
+  return c => { const W = story ? SW : PW, H = story ? SH : PH, fh = Math.round(H * (story ? .5 : .56));
+    c.fillStyle = COR.navy; c.fillRect(0, 0, W, H);
+    if (im) { const s = Math.max(W / im.naturalWidth, (fh + 180) / im.naturalHeight); c.drawImage(im, (W - im.naturalWidth * s) / 2, (fh + 180 - im.naturalHeight * s) / 2, im.naturalWidth * s, im.naturalHeight * s);
+      let g = c.createLinearGradient(0, 0, 0, 300); g.addColorStop(0, "rgba(8,22,40,.75)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, W, 300);
+      g = c.createLinearGradient(0, fh - 380, 0, fh + 180); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.7, "rgba(11,36,64,.94)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, fh - 380, W, 560);
+      c.fillStyle = COR.navy; c.fillRect(0, fh + 178, W, H); }
+    else { bgNavy(c, W, H); rota(c, W, H, COR.am, .22); }
+    marca(c, W, true, "NOTÍCIA");
+    const y0 = im ? fh - 30 : (story ? 600 : 420);
+    kicker(c, N.kicker || "Novidade", M, y0, COR.am);
+    let y = titulo(c, N.titulo || "", M, y0 + 20, W - 2 * M, story ? 112 : 92, 50, "#fff", 4) + 34;
+    if (N.pontos) y = paragrafo(c, N.pontos.replace(/\n/g, " "), M, y + 10, W - 2 * M, story ? 40 : 33, MARCA.corpo, "rgba(255,255,255,.86)", 600, 1.36, story ? 6 : 4) + 10;
+    if (N.fonte) { const t = `FONTE: ${N.fonte.toUpperCase()}${N.data ? " · " + N.data : ""}`; c.font = `800 20px ${MARCA.corpo}`; const w = c.measureText(t).width + 50;
+      const fy = Math.min(y + 30, H - (story ? 380 : 210)); c.strokeStyle = "rgba(255,255,255,.35)"; c.lineWidth = 2; rr(c, M, fy, w, 44, 22); c.stroke(); T(c, t, M + 22, fy + 29, 20, MARCA.corpo, "rgba(255,255,255,.8)", "left", 800, 1.5); }
+    if (story) espacoLink(c, W, H); else rodapeP(c, W, H, true, "Siga @partiu.085 · ative o sininho 🔔"); };
+}
+function legendaNoticia(N) { return `📰 ${(N.titulo || "").toUpperCase()}\n\n${N.pontos || ""}${N.fonte ? `\n\nFonte: ${N.fonte}` : ""}\n\n💬 O que você achou dessa? Comenta aqui!\n\n${HASH}`; }
+async function postNoticia() {
+  if (PA.ntSel != null && (PA.noticias || [])[PA.ntSel]) return postsDaNoticia(PA.noticias[PA.ntSel]);
+  const N = PA.nt; if (!N.titulo && !N.pontos) return [];
+  const im = await carregarFoto(N.foto);
+  const leg = legendaNoticia(N);
+  return [{ id: "nt-feed-" + (N.titulo || "x").slice(0, 30), grupo: "feed", tipo: "Notícia", titulo: "Notícia · feed", porque: "Novidade do aeroporto/companhias: mostra que o perfil está sempre por dentro.", fmt: "Feed 4:5", telas: [artNoticia(N, im, false)], legenda: leg },
+    { id: "nt-story-" + (N.titulo || "x").slice(0, 30), grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Versão rápida pro story, com espaço pro link do grupo.", fmt: "Story 9:16", stories: true, telas: [artNoticia(N, im, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
 }
 document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.nt; if (k) PA.nt[k] = e.target.value; });
 document.addEventListener("change", e => { if (e.target.dataset && e.target.dataset.ntFoto !== undefined) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { PA.nt.foto = r.result; toast("Foto carregada. Toque em Gerar arte."); }; r.readAsDataURL(f); } });
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
   if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
-  else if (b.dataset.act === "ntgerar") { if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
-  else if (b.dataset.act === "ntusar") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; Object.assign(PA.nt, { link: x.link, fonte: x.fonte || "", texto: x.titulo + (x.resumo ? "\n" + x.resumo : ""), titulo: curto(x.titulo, 70), kicker: "Novidade" }); PA.nt.pontos = extrairPontos(PA.nt.texto) || x.titulo; render(); } });
+  else if (b.dataset.act === "ntgerar") { PA.ntSel = null; if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
+  else if (b.dataset.act === "ntusar") { if (!(PA.noticias || [])[+b.dataset.i]) return; PA.ntSel = +b.dataset.i; render(); setTimeout(() => { const g = document.getElementById("pa-grade"); if (g) g.scrollIntoView({ behavior: "smooth" }); }, 500); } });
 
 
 /* ================= 🗓️ montar calendário: escolher, ordenar e agendar ================= */
@@ -536,15 +600,17 @@ const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p;
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
-const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["dia", "Do dia"], ["guias", "Guias"]];
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
   add(await campanha(), "");
   add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
   add(EDU.map(x => fGuia(x)), "Guia");
-  return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.rot }));
+  if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
+  for (const x of PA.noticias.slice(0, 8)) add([(await postsDaNoticia(x))[0]], "Notícia");
+  return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.noticia ? "Notícia" : p.rot }));
 }
 function mcCard(p, i) {
   const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id], vivo = aoVivo(p);

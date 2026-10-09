@@ -983,3 +983,5 @@ body.ej-on{overflow:hidden}
 .mc-aviso2{font-size:11px;color:#C9971C;font-weight:600;line-height:1.3}
 .mc-arr2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--text-tertiary)}.mc-arr2 input{width:54px;height:32px;border:0;border-radius:10px;background:var(--tile);color:inherit;text-align:center;font:inherit;font-weight:700}
 .mc-vg{border:2px dashed #C9971C}
+.pa-ni{display:flex;align-items:center;gap:12px}.pa-ni>div{flex:1}.pa-ni.on{background:rgba(34,160,107,.08);border-radius:12px}
+.pa-nimg{width:72px;height:54px;object-fit:cover;border-radius:10px;flex:0 0 auto}.pa-nimg.vazio{display:grid;place-items:center;background:var(--tile);font-size:22px}

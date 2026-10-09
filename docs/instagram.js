@@ -39,7 +39,8 @@ function abrirAgendar(origem) {
     <div class="ej-h"><div><b>Agendar no Instagram</b><small>${esc(origem.titulo)} · ${story ? "story" : origem.cvs.length > 1 ? `carrossel com ${origem.cvs.length} telas` : "post no feed"}</small></div><button class="bt sm ghost" data-act="igmfechar">✕</button></div>
     <div class="igm-thumbs">${origem.cvs.map((cv, i) => `<img src="${cv.toDataURL("image/jpeg", .6)}" alt="tela ${i + 1}">`).join("")}</div>
     ${story ? `<div class="aviso warn"><span>A API do Instagram publica o story sem adesivo de link. Se quiser o link do grupo, poste esse story pelo celular.</span></div>` : `<div class="field"><label>Legenda</label><textarea id="igm-leg" rows="8">${esc(paraInsta(origem.legenda))}</textarea></div>`}
-    <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="igm-qd" value="${proximoHorario(story).slice(0, 16)}"></div>
+    <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="igm-qd" value="${(origem.cedo ? isoLocal(new Date(Date.now() + 10 * 6e4)) : proximoHorario(story)).slice(0, 16)}">
+      <div class="mc-rap" style="margin-top:6px">${[["10", "Daqui 10 min"], ["60", "Em 1 hora"], ["h12", "12h"], ["h19", "19h"]].map(([v, t]) => `<button class="pill" data-act="igmq" data-v="${v}">${t}</button>`).join("")}</div></div>
       <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="igm-ok" checked> Aprovado: publicar sozinho no horário</label></div></div>
     <div class="ej-acts"><button class="bt pri lg" data-act="igmsalvar">${ic("calendar")}Agendar</button><button class="bt lg" data-act="igmagora">${ic("send")}Publicar agora</button><a class="bt ghost" href="#instagram" data-act="igmfechar">Ver agenda</a></div>
   </div>`;
@@ -108,6 +109,10 @@ function abrirEditar(p) {
     <div class="ej-acts"><button class="bt pri lg" data-act="igesalvar" data-id="${p.id}">${ic("save")}Salvar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="igmq"]'); if (!b) return; const v = b.dataset.v, i = $("#igm-qd"); if (!i) return;
+  let d; if (v.startsWith("h")) { const hoje = hojeISO(), q = `${hoje}T${v.slice(1)}:00`; d = q > isoLocal(new Date()).slice(0, 16) ? q : `${diaMenos(hoje, -1)}T${v.slice(1)}:00`; }
+  else d = isoLocal(new Date(Date.now() + (+v) * 6e4)).slice(0, 16);
+  i.value = d; document.querySelectorAll('[data-act="igmq"]').forEach(x => x.classList.toggle("on", x === b)); });
 document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="ige"]'); if (!b) return;
   const fechar = () => { const d = $("#ige"); if (d) d.remove(); document.body.classList.remove("ej-on"); };
   if (b.dataset.act === "igefechar") { fechar(); return; }
@@ -302,7 +307,7 @@ document.addEventListener("click", async e => {
   if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)$/.test(act)) return;
   try {
     if (act === "igagendar") {
-      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
+      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
       else { const i = +b.dataset.i, it = CV.itens[i], cv = $("#cv-cv-" + i); if (!cv) { toast("Ligue “Fazer imagem” pra agendar."); return; }
         abrirAgendar({ id: "cv-" + i, titulo: it.tipo === "promo" ? "Promoção de milhas" : `Fortaleza ➜ ${(it.c || it.r).nome || ""}`, tipo: "feed", cvs: [cv], legenda: (($("#cv-t-" + i) || {}).value || it.texto) + `\n\n${typeof HASH !== "undefined" ? HASH : ""}` }); }
       return;

@@ -137,7 +137,7 @@ function promosMilhas() {
 function espacoLink(c, W, H) { /* espaço livre pro adesivo de link (sem desenho) */ }
 /* mascote com variação: poses extras (marca/mascote-2.png … mascote-8.png, se existirem), espelhado e inclinado.
    A variação sai do próprio conteúdo da arte, então a prévia e o post publicado ficam iguais. */
-const POSES = ["mascote", ...[2, 3, 4, 5, 6, 7, 8].map(n => "mascote-" + n)];
+const POSES = ["mascote", ...Array.from({ length: 24 }, (_, i) => "mascote-" + (i + 2))];
 POSES.forEach(n => { const im = img(n); im.onerror = () => { im.falhou = true; }; });
 function desenhaMascote(c, x, y, w) {
   let h = 7; try { const d = c.getImageData(0, 0, c.canvas.width, 600).data; for (let i = 0; i < d.length; i += 4999) h = (h * 31 + d[i] + d[i + 1]) % 100003; } catch (e) { }

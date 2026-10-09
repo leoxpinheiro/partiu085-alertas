@@ -211,7 +211,7 @@ const MENU = [
   ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
-  ["Divulgação", [["pauta", "star", "Pauta do Instagram"], ["instagram", "chart", "Instagram: números"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
+  ["Divulgação", [["pauta", "star", "Pauta do Instagram"], ["instagram", "calendar", "Instagram: agenda"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
   ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8"],
 ];
 const PAGS = MENU.flatMap(g => g[1]);

@@ -128,7 +128,7 @@ async function salvarLote(sem, bt) {
     }
     prog.textContent = "Salvando a agenda…"; await salvarFila(`Instagram: agenda a semana ${sem} (${L.length} posts)`);
     const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on");
-    toast(`${L.length} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: números › Agenda.`, 6000);
+    toast(`${L.length} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: agenda.`, 6000);
   } catch (e) { toast("Parou no meio: " + e.message + ". O que já subiu fica salvo; tente de novo.", 8000); bt.disabled = false; }
 }
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="igl"]'); if (!b) return;
@@ -137,7 +137,8 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (b.dataset.act === "iglsalvar") salvarLote(+b.dataset.s, b); });
 
 /* ---------- página: números do perfil + agenda */
-IGF.per = 7; IGF.ord = "recentes";
+IGF.per = 7; IGF.ord = "recentes"; IGF.numAberto = false;
+document.addEventListener("toggle", e => { if (e.target.classList && e.target.classList.contains("ig-num")) IGF.numAberto = e.target.open; }, true);
 const igN = v => v == null ? "–" : milN(v);
 const igSoma = (L, k) => L.reduce((a, d) => a + (+d[k] || 0), 0);
 function igDias(c) {
@@ -209,7 +210,7 @@ function pInstagram() {
       <div class="ig-a">${s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
         ${s === "erro" ? `<button class="bt sm pri" data-act="igtentar" data-id="${p.id}">${ic("refresh")}Tentar de novo</button>` : ""}
         <button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button></div></div>`; };
-  if (setup) return head("Instagram: números", "Crescimento do perfil, desempenho de cada post e agenda.") + `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Instagram ainda não conectado"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : `<p class="sub">Carregando…</p>`}</div>`;
+  if (setup) return head("Instagram: agenda", "Crescimento do perfil, desempenho de cada post e agenda.") + `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Instagram ainda não conectado"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : `<p class="sub">Carregando…</p>`}</div>`;
 
   const per = IGF.per, T = igDias(c), L = T.slice(-per), ant = T.slice(-2 * per, -per);
   const M = (c.midias || []).slice().sort((a, b) => b.quando.localeCompare(a.quando));
@@ -220,23 +221,39 @@ function pInstagram() {
   const ord = { recentes: () => 0, alcance: (a, b) => (b.alcance || 0) - (a.alcance || 0), curtidas: (a, b) => (b.curtidas || 0) - (a.curtidas || 0), salvos: (a, b) => (b.salvos || 0) + (b.compartilhamentos || 0) - (a.salvos || 0) - (a.compartilhamentos || 0), seguiram: (a, b) => (b.seguiram || 0) - (a.seguiram || 0) }[IGF.ord];
   const MP = IGF.ord === "recentes" ? M : M.slice().sort(ord);
   const faltaHist = L.filter(d => !d.tem).length;
-  return head("Instagram: números", `@${esc(c.usuario || "")} · atualiza sozinho a cada hora · última leitura ${haQuanto(c.quando)}`, `<button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
-    `<div class="ig-bar">${pills("igper", String(per), [["7", "7 dias"], ["14", "14 dias"], ["30", "30 dias"]])}</div>
+  const DS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+  const diaRot = d => { const h = hojeISO(); return d === h ? "Hoje" : d === diaMenos(h, -1) ? "Amanhã" : `${DS[new Date(d + "T12:00:00Z").getUTCDay()]} ${d.slice(8, 10)}/${d.slice(5, 7)}`; };
+  const porDia = {}; pend.forEach(p => (porDia[p.quando.slice(0, 10)] = porDia[p.quando.slice(0, 10)] || []).push(p));
+  const nAg = pend.filter(p => st(p) === "agendado").length, nRas = pend.filter(p => st(p) === "rascunho").length, nErr = pend.filter(p => st(p) === "erro").length;
+  const prox = pend.find(p => st(p) === "agendado");
+  const pubs = (F || []).filter(p => st(p) === "publicado").sort((x, y) => ((S_[y.id] || {}).publicado_em || "").localeCompare((S_[x.id] || {}).publicado_em || "")).slice(0, 6);
+  const linhaPub = p => { const e = S_[p.id] || {}, m = e.metricas || {};
+    return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${e.publicado_em ? dataHora(e.publicado_em) : ""}${e.link ? ` · <a href="${esc(e.link)}" target="_blank" rel="noopener">ver no Instagram ↗</a>` : ""}</small></div>
+      <div class="ig-m">${[["curtidas", "❤️"], ["comentarios", "💬"], ["alcance", "👀"], ["salvos", "🔖"], ["compartilhamentos", "↗️"]].map(([k, e_]) => m[k] != null ? `<span>${e_} <b>${milN(m[k])}</b></span>` : "").join("") || `<span class="sub">números em até 1h</span>`}</div></div>`; };
+  return head("Instagram: agenda", `@${esc(c.usuario || "")} · o robô publica sozinho o que estiver aprovado, no horário`, `<a class="bt pri" href="#pauta">${ic("calendar")}Agendar posts</a><button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
+    `<div class="card ig-ag2">
+      <div class="ig-resumo"><span><b>${nAg}</b> agendado${nAg === 1 ? "" : "s"}</span>${nRas ? `<span class="warn"><b>${nRas}</b> esperando aprovação</span>` : ""}${nErr ? `<span class="neg"><b>${nErr}</b> com erro</span>` : ""}
+        <span>${prox ? `Próximo: <b>${diaRot(prox.quando.slice(0, 10)).toLowerCase()} às ${prox.quando.slice(11, 16)}</b>` : "Nenhum post programado"}</span></div>
+      ${F == null ? `<div class="vazio">Carregando…</div>` : pend.length ? Object.entries(porDia).map(([d, arr]) => `<div class="ig-dia"><h4>${diaRot(d)} <small>${arr.length} post${arr.length > 1 ? "s" : ""}</small></h4><div class="ig-lista">${arr.map(linhaFila).join("")}</div></div>`).join("")
+        : `<div class="vazio">Nada agendado. Vá em <a href="#pauta">Pauta do Instagram › 🚀 Lançamento</a> e toque em <b>Agendar a semana inteira</b>.</div>`}
+      ${pubs.length ? `<details class="ig-pubs"><summary>Publicados pelo robô (${pubs.length})</summary><div class="ig-lista">${pubs.map(linhaPub).join("")}</div></details>` : ""}
+    </div>
+    ${dmHTML()}
+    <details class="card ig-num" ${IGF.numAberto ? "open" : ""}><summary><b>📊 Números do perfil</b> <small>${milN(c.seguidores || 0)} seguidores · <span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias · atualizado ${haQuanto(c.quando)}</small></summary>
+    <div class="ig-bar">${pills("igper", String(per), [["7", "7 dias"], ["14", "14 dias"], ["30", "30 dias"]])}</div>
     <div class="grid kpis ig-k4">${kpi("Seguidores", milN(c.seguidores || 0), `<span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias`, true, "users")}
       ${kpi("Entraram × saíram", `<span class="pos">+${milN(ent)}</span> <span class="neg">−${milN(sai)}</span>`, `média de ${(ent / per).toFixed(0)} entrando e ${(sai / per).toFixed(0)} saindo por dia`, false, "swap")}
       ${kpi("Alcance", milN(alc), pct(alc, alcA), false, "globe")}
       ${kpi("Interações", milN(int_), pct(int_, intA), false, "star")}</div>
-    ${faltaHist ? `<p class="sub">Completando o histórico: ${per - faltaHist} de ${per} dias carregados (o resto chega nas próximas horas).</p>` : ""}
-    <div class="card ig-diag"><h3>Como estamos</h3><ul>${igDiagnostico(c, L, ant, M).map(([k, t]) => `<li class="${k}">${t}</li>`).join("")}</ul></div>
+    ${faltaHist ? `<p class="sub">Completando o histórico: ${per - faltaHist} de ${per} dias carregados.</p>` : ""}
+    <div class="ig-diag"><h3>Como estamos</h3><ul>${igDiagnostico(c, L, ant, M).map(([k, t]) => `<li class="${k}">${t}</li>`).join("")}</ul></div>
     <div class="ig-graf"><div class="card"><h3>Seguidores</h3>${igSvgLinha(L.map(d => ({ v: d.seg, l: dataCurta(d.dia).toLowerCase() })))}</div>
-      <div class="card"><h3>Quem entrou e quem saiu, por dia</h3>${igSvgBarras(L, postsDia)}<div class="ig-leg"><span><i style="background:#22A06B"></i>entraram</span><span><i style="background:#E5484D"></i>deixaram de seguir</span><span><i style="background:#7C5CE0;border-radius:50%"></i>dia com post</span></div></div>
-      <div class="card"><h3>Alcance da conta por dia</h3>${igSvgLinha(L.map(d => ({ v: d.alcance || 0, l: dataCurta(d.dia).toLowerCase() })), "#0EA5E9")}</div></div>
-    <div class="ig-sec"><h2 class="mv-t">Posts (${M.length})</h2>${pills("igord", IGF.ord, [["recentes", "Recentes"], ["alcance", "Mais alcance"], ["curtidas", "Mais curtidas"], ["salvos", "Mais salvos/compart."], ["seguiram", "Mais seguidores"]])}</div>
-    ${MP.length ? `<div class="ig-posts">${MP.slice(0, 30).map(igPostCard).join("")}</div>` : `<div class="card vazio">Nenhum post no perfil ainda.</div>`}
-    ${(c.stories || []).length ? `<h2 class="mv-t">Stories recentes</h2><div class="ig-posts">${c.stories.slice(0, 12).map(s => igPostCard({ ...s, tipo: "story", legenda: "Story" })).join("")}</div>` : ""}
-    ${dmHTML()}
-    <details class="card ig-ag" ${pend.length ? "open" : ""}><summary><b>Agenda do robô</b> <small>${pend.length ? `${pend.length} na fila` : "vazia"} · publica sozinho o que estiver aprovado</small></summary>
-      ${F == null ? `<div class="vazio">Carregando…</div>` : pend.length ? `<div class="ig-lista">${pend.map(linhaFila).join("")}</div>` : `<div class="vazio">Nada agendado. Se quiser que o robô publique, use 📅 Agendar nas artes da Pauta.</div>`}</details>`;
+      <div class="card"><h3>Quem entrou e quem saiu</h3>${igSvgBarras(L, postsDia)}<div class="ig-leg"><span><i style="background:#22A06B"></i>entraram</span><span><i style="background:#E5484D"></i>saíram</span><span><i style="background:#7C5CE0;border-radius:50%"></i>dia com post</span></div></div>
+      <div class="card"><h3>Alcance por dia</h3>${igSvgLinha(L.map(d => ({ v: d.alcance || 0, l: dataCurta(d.dia).toLowerCase() })), "#0EA5E9")}</div></div>
+    <div class="ig-sec"><h3>Posts (${M.length})</h3>${pills("igord", IGF.ord, [["recentes", "Recentes"], ["alcance", "Mais alcance"], ["curtidas", "Mais curtidas"], ["salvos", "Mais salvos"], ["seguiram", "Mais seguidores"]])}</div>
+    ${MP.length ? `<div class="ig-posts">${MP.slice(0, 30).map(igPostCard).join("")}</div>` : `<div class="vazio">Nenhum post no perfil ainda.</div>`}
+    ${(c.stories || []).length ? `<h3>Stories recentes</h3><div class="ig-posts">${c.stories.slice(0, 12).map(s => igPostCard({ ...s, tipo: "story", legenda: "Story" })).join("")}</div>` : ""}
+    </details>`;
 }
 document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="ig"]'); if (!b) return; if (b.dataset.g === "igper") IGF.per = +b.dataset.v; else if (b.dataset.g === "igord") IGF.ord = b.dataset.v; });
 document.addEventListener("click", async e => {

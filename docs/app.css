@@ -936,3 +936,9 @@ body.ej-on{overflow:hidden}
 .ig-dm summary{cursor:pointer}.ig-dm summary small{color:var(--text-tertiary);margin-left:6px}.ig-dm{margin-bottom:14px}
 .ig-dmf{grid-template-columns:auto 1fr;margin:10px 0}.ig-dmf .field textarea{min-height:130px}
 .ig-row.dm .ig-i{flex:1}
+.ig-ag2{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.ig-resumo{display:flex;gap:8px;flex-wrap:wrap}.ig-resumo span{padding:8px 14px;border-radius:99px;background:var(--tile);font-size:13px}.ig-resumo .warn{background:rgba(245,197,49,.22)}.ig-resumo .neg{background:rgba(229,72,77,.14)}
+.ig-dia h4{margin:6px 0 4px;font-size:15px}.ig-dia h4 small{font-weight:500;color:var(--text-tertiary);margin-left:6px}
+.ig-row img{width:64px;height:80px;object-fit:cover;border-radius:10px;flex:0 0 auto}
+.ig-pubs summary,.ig-num summary{cursor:pointer}.ig-num summary small{color:var(--text-tertiary);margin-left:6px}.ig-num[open] summary{margin-bottom:12px}
+.ig-num .ig-diag{margin:12px 0}

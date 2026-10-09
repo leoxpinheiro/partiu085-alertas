@@ -26,10 +26,10 @@ jobs:
           curl -sf -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/alertas.yml/dispatches" \
             -d '{"ref":"main","inputs":{"rotas":""}}'
-      - name: Esperar (seg–qua ~1h15 · qui–sex ~2h · fim de semana ~3h)
+      - name: Esperar (seg–qua ~55min · qui–sex ~1h10 · fim de semana ~1h40)
         run: |
           d=$(TZ=America/Fortaleza date +%u)
-          if [ "$d" -le 3 ]; then s=4500; elif [ "$d" -le 5 ]; then s=7080; else s=10680; fi
+          if [ "$d" -le 3 ]; then s=3300; elif [ "$d" -le 5 ]; then s=4200; else s=6000; fi
           echo "dia $d: esperando $s segundos"; sleep $s
       - name: Dar corda de novo
         env:

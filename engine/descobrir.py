@@ -233,9 +233,10 @@ def noticias() -> None:
             m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
             itens.append({"cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
-    itens = itens[:50]
+    itens = [i for i in itens if i["cat"] == "milhas"][:45] + [i for i in itens if i["cat"] != "milhas"][:30]  # milhas não espreme as de voos
+    itens.sort(key=lambda i: i["data"], reverse=True)
     fotos_noticias(itens)
-    (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens[:50]}, ensure_ascii=False, indent=1), "utf-8")
+    (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens}, ensure_ascii=False, indent=1), "utf-8")
     print(f"Notícias: {len(itens)}")
 
 

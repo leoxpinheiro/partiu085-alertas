@@ -535,7 +535,7 @@ const CAL = { f: "todos", thumbs: {}, legs: {}, aberto: "" };
 const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p; } catch (e) { return p; } };
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
-CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
+CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["dia", "Do dia"], ["guias", "Guias"]];
 function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
@@ -553,32 +553,48 @@ function mcCard(p, i) {
     <div class="mc-i"><small>${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
+function slotsCal(n) { const hs = lerHorarios(CAL.hs); if (!CAL.ini || !hs.length) return [];
+  const out = [], arr = Math.min(n, Math.max(0, +CAL.arr || 0));
+  if (arr) { let t = CAL.ini === hojeISO() ? Date.now() + 15 * 6e4 : new Date(CAL.ini + "T12:00:00-03:00").getTime();
+    t = Math.ceil(t / 3e5) * 3e5; for (let i = 0; i < arr; i++) out.push(isoLocal(new Date(t + i * 20 * 6e4))); }
+  const resto = n - out.length; if (resto > 0) out.push(...gerarSlots(arr ? diaMenos(out[out.length - 1].slice(0, 10), -1) : CAL.ini, hs, resto));
+  return out; }
 const DSEM = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 const rotSlot = q => { if (!q) return ""; const d = q.slice(0, 10); return `${DSEM[new Date(d + "T12:00:00Z").getUTCDay()]} ${d.slice(8, 10)}/${d.slice(5, 7)} · ${q.slice(11, 16)}`; };
-function mcSelecionados() { return CAL.sel.map(id => (PA.lista || []).find(p => p.id === id)).filter(Boolean); }
+const VAGA = { id: "vaga", titulo: "💲 Oferta do dia", rot: "Robô escolhe na hora", porque: "Na hora de postar, o robô pega a melhor promoção fresca (das últimas 30h, que ainda vale) e cria a arte e a legenda. Se não tiver nenhuma, posta o Top 5 do dia.", telas: [], legenda: "(a legenda é escrita pelo robô na hora, com o preço do momento)" };
+const ehVaga = id => /^vaga-/.test(id);
+function mcPost(id) { return ehVaga(id) ? { ...VAGA, id } : (PA.lista || []).find(p => p.id === id); }
+function mcSelecionados() { return CAL.sel.map(mcPost).filter(Boolean); }
+function desenhaVaga(c) { bgNavy(c, PW, PH); rota(c, PW, PH, COR.am, .25); marca(c, PW, true, "NA HORA");
+  kicker(c, "Vaga reservada", M, 420, COR.am); const y = titulo(c, "Oferta do dia", M, 450, PW - 2 * M, 170, 100, COR.am, 2) + 40;
+  paragrafo(c, "Na hora de postar, o robô escolhe a melhor promoção fresca e cria a arte com o preço do momento.", M, y, PW - 2 * M - 60, 44, MARCA.corpo, "#fff", 600, 1.32, 4);
+  T(c, "💲", PW - M - 60, PH - 260, 160, MARCA.corpo, "#fff", "center"); rodapeP(c, PW, PH, true, "Preço sempre fresco"); }
+const vira = (p, q) => !ehVaga(p.id) && aoVivo(p) && (q || "").slice(0, 10) !== hojeISO();
 function mcCfgHTML() {
   const h = hojeISO(), am = diaMenos(h, -1);
   return `<div class="mc-h"><b>Minha programação</b><small id="mc-resumo"></small></div>
     <div class="mc-cfg"><label>Começa<input type="date" data-mc="ini" value="${CAL.ini}"></label><label>Horários<input data-mc="hs" value="${esc(CAL.hs)}" placeholder="12:00, 19:00"></label></div>
     <div class="mc-rap"><button class="pill ${CAL.ini === h ? "on" : ""}" data-act="mcdia" data-v="${h}">Hoje</button><button class="pill ${CAL.ini === am ? "on" : ""}" data-act="mcdia" data-v="${am}">Amanhã</button><small class="sub">horário que já passou é pulado</small></div>
+    <div class="mc-rap"><small class="sub">Por dia:</small>${[["12:00, 19:00", "2"], ["09:00, 13:00, 19:00", "3"], ["09:00, 12:00, 15:00, 19:00", "4"]].map(([v, n]) => `<button class="pill ${CAL.hs.replace(/\s/g, "") === v.replace(/\s/g, "") ? "on" : ""}" data-act="mchs" data-v="${v}">${n} posts</button>`).join("")}</div>
+    <label class="mc-arr2"><span>🚀 Arrancada: no 1º dia, postar</span><input type="number" min="0" max="9" data-mc="arr" value="${CAL.arr}"><span>de uma vez (1 a cada 20 min)</span></label>
     <div id="mc-lista"></div>`;
 }
 function mcListaHTML() {
-  const L = mcSelecionados(), hs = lerHorarios(CAL.hs), slots = CAL.ini && hs.length ? gerarSlots(CAL.ini, hs, L.length) : [], hoje = hojeISO();
+  const L = mcSelecionados(), slots = slotsCal(L.length), hoje = hojeISO();
   const r = document.getElementById("mc-resumo"); if (r) r.textContent = `${L.length} post${L.length === 1 ? "" : "s"}${L.length && slots.length ? ` · até ${rotSlot(slots[slots.length - 1]).split(" · ")[0]}` : ""}`;
-  const errado = L.filter((p, k) => aoVivo(p) && (slots[k] || "").slice(0, 10) !== hoje);
+  const errado = [];
   return (L.length ? `<ol class="mc-lista">${L.map((p, k) => { const ruim = errado.includes(p);
       return `<li class="mc-it ${ruim ? "ruim" : ""}" draggable="true" data-k="${k}">
-      <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[p.id] || ""}" alt="" data-act="mcver" data-id="${esc(p.id)}" title="ver o post">
-      <div class="mc-ii"><small>${rotSlot(slots[k])}${aoVivo(p) ? " · 💲 preço do dia" : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b>
-        ${ruim ? `<span class="mc-aviso">Tem preço: só pode sair hoje. Suba ele pra um horário de hoje ou tire da lista.</span>` : ""}
-        <button class="lnk" data-act="mcver" data-id="${esc(p.id)}">ver post e legenda</button></div>
+      <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[ehVaga(p.id) ? "vaga" : p.id] || ""}" alt="" data-act="mcver" data-id="${esc(p.id)}" title="ver o post">
+      <div class="mc-ii"><small>${rotSlot(slots[k])}${aoVivo(p) || ehVaga(p.id) ? " · 💲 preço do dia" : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b>
+        ${vira(p, slots[k]) ? `<span class="mc-aviso2">Cai em outro dia: no dia, vira 💲 oferta do dia (o robô troca pela melhor promoção fresca).</span>` : ehVaga(p.id) ? `<span class="mc-aviso2">O robô escolhe a melhor promoção fresca na hora.</span>` : ""}
+        ${ehVaga(p.id) ? "" : `<button class="lnk" data-act="mcver" data-id="${esc(p.id)}">ver post e legenda</button>`}</div>
       <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`; }).join("")}</ol>`
     : `<div class="mc-vazio">Toque em <b>+ Escolher</b> ou arraste os posts pra cá.<br>A ordem aqui é a ordem em que vão sair.<br>Clique na imagem de qualquer post pra ver todas as telas e a legenda.</div>`)
     + (L.length ? `<label class="chk"><input type="checkbox" data-mc="ok" ${CAL.ok ? "checked" : ""}> Já aprovar (o robô publica sozinho)</label>
       <div class="al-acts"><button class="bt pri lg" data-act="mcagendar" ${errado.length ? "disabled" : ""}>${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : "");
 }
-function mcAtualizar() { CAL.sel = CAL.sel.filter(id => (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
+function mcAtualizar() { CAL.sel = CAL.sel.filter(id => ehVaga(id) || (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
   const a = document.getElementById("mc-lista"); if (a) a.innerHTML = mcListaHTML();
   document.querySelectorAll('[data-act="mcdia"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.ini));
   (PA.lista || []).forEach(p => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
@@ -603,23 +619,27 @@ async function montarBoard(g) {
   if (!CAL.ini) CAL.ini = diaMenos(hojeISO(), -1);
   const L = await mcTodos(); PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
-  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.length} posts prontos · escolha os que vão sair e a ordem</small></div><div class="mc-grade">${L.map(mcCard).join("")}</div></div>
+  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.length} posts prontos · escolha os que vão sair e a ordem</small></div><div class="mc-grade"><div class="mc-card mc-vg" draggable="true" data-id="vaga-novo" data-g="dia"><div class="mc-img"><canvas id="mc-cv-vaga" width="${PW}" height="${PH}"></canvas></div>
+      <div class="mc-i"><small>Pode usar várias vezes</small><b>💲 Oferta do dia (o robô escolhe na hora)</b></div><button class="bt sm pri mc-add" data-act="mcvaga">+ Adicionar vaga</button></div>${L.map(mcCard).join("")}</div></div>
     <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
+  { const cv = document.getElementById("mc-cv-vaga"); if (cv) { desenhaVaga(cv.getContext("2d")); CAL.thumbs.vaga = cv.toDataURL("image/jpeg", .55); } }
   for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
   mcAtualizar();
 }
 async function mcAgendar(bt) {
   const L = mcSelecionados(), hs = lerHorarios(CAL.hs);
   if (!CAL.ini || !hs.length) { toast("Confira o dia de começo e os horários."); return; }
-  const slots = gerarSlots(CAL.ini, hs, L.length), hoje = hojeISO();
-  if (L.some((p, k) => aoVivo(p) && slots[k].slice(0, 10) !== hoje)) { toast("Tem post com preço marcado pra outro dia. Ele só pode sair hoje."); return; }
+  const slots = slotsCal(L.length);
   const prog = document.getElementById("mc-prog"); bt.disabled = true;
   try {
     const itens = [];
-    for (const p of L) { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+    const semGrupoAinda = L.some(p => p.semana === 1) && !L.some(p => p.semana === 2);
+    for (let k = 0; k < L.length; k++) { const p = L[k];
+      if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
+      const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
       itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id }); }
     const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
-    L.forEach((p, k) => { CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
+    L.forEach((p, k) => { if (!ehVaga(p.id)) CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
   } catch (e) { toast("Parou no meio: " + e.message, 8000); bt.disabled = false; }
 }
@@ -635,6 +655,8 @@ document.addEventListener("click", e => {
   else if (a === "mcvfechar") { mcFecharVer(); return; }
   else if (a === "mcvadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); mcFecharVer(); }
   else if (a === "mcvbaixar") { [...document.querySelectorAll("#mcv-t canvas")].forEach((cv, j) => setTimeout(() => { const l = document.createElement("a"); l.download = `partiu085-${j + 1}.png`; l.href = cv.toDataURL("image/png"); l.click(); }, j * 350)); return; }
+  else if (a === "mchs") { CAL.hs = b.dataset.v; mcGravar("p085_mc_hs", CAL.hs); const i = document.querySelector('[data-mc="hs"]'); if (i) i.value = CAL.hs; document.querySelectorAll('[data-act="mchs"]').forEach(x => x.classList.toggle("on", x === b)); }
+  else if (a === "mcvaga") { CAL.sel.push("vaga-" + Date.now().toString(36)); }
   else if (a === "mcdia") { CAL.ini = b.dataset.v; const i = document.querySelector('[data-mc="ini"]'); if (i) i.value = CAL.ini; }
   else if (a === "mclimpar") { if (!confirm("Tirar todos da lista?")) return; CAL.sel = []; }
   else if (a === "mcagendar") { mcAgendar(b); return; }
@@ -644,6 +666,7 @@ document.addEventListener("click", e => {
 document.addEventListener("input", e => { const t = e.target;
   if (t.dataset && t.dataset.mcleg) CAL.legs[t.dataset.mcleg] = t.value;
   else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); }
+  else if (t.dataset && t.dataset.mc === "arr") { CAL.arr = Math.max(0, Math.min(9, +t.value || 0)); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 300); }
   else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
   if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; });
@@ -655,7 +678,8 @@ document.addEventListener("dragover", e => { const sel = e.target.closest && e.t
   document.querySelectorAll(".mc-alvo").forEach(x => x.classList.remove("mc-alvo")); const it = e.target.closest(".mc-it"); (it || sel).classList.add("mc-alvo"); });
 document.addEventListener("drop", e => { const sel = e.target.closest && e.target.closest("#mc-sel"); if (!sel) return; e.preventDefault();
   const v = e.dataTransfer.getData("text/plain"), it = e.target.closest(".mc-it"); let pos = it ? +it.dataset.k : CAL.sel.length;
-  if (v.startsWith("id:")) { const id = v.slice(3), n = CAL.sel.indexOf(id); if (n >= 0) { CAL.sel.splice(n, 1); if (n < pos) pos--; } CAL.sel.splice(pos, 0, id); }
+  if (v === "id:vaga-novo") { CAL.sel.splice(pos, 0, "vaga-" + Date.now().toString(36)); }
+  else if (v.startsWith("id:")) { const id = v.slice(3), n = CAL.sel.indexOf(id); if (n >= 0) { CAL.sel.splice(n, 1); if (n < pos) pos--; } CAL.sel.splice(pos, 0, id); }
   else if (v.startsWith("k:")) { const de = +v.slice(2); const [x] = CAL.sel.splice(de, 1); CAL.sel.splice(de < pos ? pos - 1 + (it ? 1 : 0) : pos, 0, x); }
   mcAtualizar(); });
 

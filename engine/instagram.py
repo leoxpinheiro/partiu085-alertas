@@ -60,6 +60,96 @@ def esperar(container: str):
     raise RuntimeError("Instagram demorou demais pra processar")
 
 
+# ---------- vaga "oferta do dia": o robô escolhe a melhor oferta fresca na hora de postar ----------
+MES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
+
+
+def brl(v) -> str:
+    return "R$ " + f"{round(float(v or 0)):,}".replace(",", ".")
+
+
+def subir_github(caminho: str, dados: bytes) -> None:
+    import base64
+    tok = os.environ.get("GH_TOKEN", "")
+    if not tok:
+        raise RuntimeError("sem GH_TOKEN pra subir a imagem")
+    url = f"https://api.github.com/repos/{REPO}/contents/docs/{caminho}"
+    h = {"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json"}
+    sha = (requests.get(url, headers=h, timeout=30).json() or {}).get("sha")
+    body = {"message": f"Instagram: oferta do dia {caminho}", "content": base64.b64encode(dados).decode(), "branch": "main"}
+    if sha:
+        body["sha"] = sha
+    r = requests.put(url, headers=h, json=body, timeout=60)
+    if not r.ok:
+        raise RuntimeError(f"GitHub {r.status_code}: {r.text[:120]}")
+    time.sleep(6)
+
+
+def escolher_oferta(st: dict):
+    """Melhor alerta das últimas 30h, que ainda vale (não subiu), dentro do teto de ida e volta e que não foi postado nos últimos 3 dias."""
+    alertas = ler(DOCS / "alerts.json", {}).get("alertas", [])
+    tetos = ler(DOCS / "status.json", {}).get("tetos_iv") or {}
+    agora = datetime.now(FUSO)
+    lim = (agora - timedelta(hours=30)).isoformat(timespec="minutes")
+    lim_rep = (agora - timedelta(days=3)).isoformat(timespec="minutes")
+    usados = {x.get("destino") for x in st.values() if isinstance(x, dict) and x.get("destino") and x.get("publicado_em", "") >= lim_rep}
+    boas = []
+    for a in alertas:
+        if a.get("criado", "") < lim or a.get("destino") in usados:
+            continue
+        cf = a.get("conferido") or {}
+        if cf.get("status") == "subiu":
+            continue
+        rt = a["preco"] + (a.get("preco_volta") or a["preco"])
+        if tetos.get(a["destino"]) and rt > tetos[a["destino"]]:
+            continue
+        boas.append(a)
+    boas.sort(key=lambda a: (not a.get("recorde"), not (a.get("conferido") or {}).get("status") == "valendo", -(a.get("desconto") or 0)))
+    return boas[0] if boas else None
+
+
+def montar_oferta(p: dict, st: dict) -> dict:
+    sys.path.insert(0, str(RAIZ / "engine"))
+    import imagem  # noqa: PLC0415
+    a = escolher_oferta(st)
+    agora = datetime.now(FUSO)
+    if a:
+        img = imagem.card_alerta(a)
+        rt = a["preco"] + (a.get("preco_volta") or 0)
+        meses = " · ".join(f"{g['mes'].split(' ')[0][:3].lower()}: {', '.join(g['dias'][:6])}" for g in (a.get("ida_meses") or [])[:3])
+        quando = a.get("criado", "")
+        leg = (f"🔥 ACHADO DO DIA\n\n✈️ Fortaleza ➜ {a['destino_nome']}\n💰 {brl(a['preco'])} o trecho"
+               + (f"\n🔁 Ida e volta a partir de {brl(rt)}" if a.get("preco_volta") else "")
+               + f"\n🛫 {a.get('cia_nome') or ''}"
+               + (f"\n📅 Datas de ida: {meses}" if meses else "")
+               + f"\n\n🕐 Visto pelo radar em {quando[8:10]}/{quando[5:7]} às {quando[11:16]}. Preço muda a qualquer momento, corre!")
+        titulo, destino = f"Oferta do dia: {a['destino_nome']}", a["destino"]
+    else:
+        tetos = ler(DOCS / "status.json", {}).get("tetos_iv") or {}
+        rotas = ler(DOCS / "status.json", {}).get("rotas") or {}
+        lim = (agora - timedelta(hours=30)).isoformat()
+        L = []
+        for k, v in rotas.items():
+            if not (v.get("menor") and v.get("mediana") and v.get("menor_volta") and v.get("quando", "") >= lim):
+                continue
+            rt = v["menor"] + v["menor_volta"]
+            d = 1 - rt / (v["mediana"] + (v.get("mediana_volta") or v["mediana"]))
+            if d < 0.2 or (tetos.get(k) and rt > tetos[k]):
+                continue
+            L.append({"k": k, "nome": v.get("nome") or k, "menor": v["menor"], "rt": rt, "d": d, "mes": (v.get("dia_menor") or v.get("melhor_mes") or "")[5:7], "intl": v.get("tipo") == "internacional"})
+        L = sorted(L, key=lambda x: -x["d"])[:5]
+        if len(L) < 3:
+            raise RuntimeError("sem oferta fresca hoje (nenhuma promoção nas últimas 30h). Tente mais tarde ou troque o post.")
+        img = imagem.card_top5(L, agora.date().isoformat())
+        leg = "🏆 TOP 5 DE HOJE SAINDO DE FORTALEZA\n\n" + "\n".join(f"{i + 1}. {x['nome']}: {brl(x['menor'])} o trecho · ida e volta {brl(x['rt'])}" for i, x in enumerate(L)) + f"\n\n🕐 Preços vistos hoje, {agora.strftime('%d/%m')}. Mudam a qualquer momento."
+        titulo, destino = "Oferta do dia: Top 5", ""
+    rod = p.get("rodape") or "🔔 Alertas grátis de passagem saindo de Fortaleza: link na bio"
+    leg += f"\n\n💬 Comenta EU QUERO que eu te mando os próximos no direct 📩\n\n{rod}\n\n#fortaleza #ceara #passagensbaratas #promocaodepassagem #viagem #partiu085"
+    caminho = f"ig/{p['id']}-1.jpg"
+    subir_github(caminho, img)
+    return {"imagens": [caminho], "legenda": leg, "titulo": titulo, "destino": destino}
+
+
 def publicar(p: dict) -> dict:
     imgs = [url_img(x) for x in p["imagens"]]
     if p.get("tipo") == "story":
@@ -323,7 +413,11 @@ def main():
         if not pronto or feitos >= 5:
             continue
         try:
-            st[p["id"]] = {"status": "publicado", **publicar(p)}
+            extra = {}
+            if p.get("tipo") == "oferta_dia":
+                extra = montar_oferta(p, st)
+                p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
+            st[p["id"]] = {"status": "publicado", **publicar(p), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0]} if extra else {})}
             feitos += 1
             print(f"publicado: {p.get('titulo')} {st[p['id']].get('link')}")
         except Exception as e:  # noqa: BLE001

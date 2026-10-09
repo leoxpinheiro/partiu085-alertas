@@ -980,3 +980,6 @@ body.ej-on{overflow:hidden}
 .mc-telas{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
 .mc-telas canvas{flex:0 0 auto;width:min(78vw,380px);height:auto;border-radius:12px;scroll-snap-align:start;box-shadow:0 6px 18px rgba(0,0,0,.2)}
 .mc-ver .mc-leg{min-height:180px;background:var(--tile)}
+.mc-aviso2{font-size:11px;color:#C9971C;font-weight:600;line-height:1.3}
+.mc-arr2{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--text-tertiary)}.mc-arr2 input{width:54px;height:32px;border:0;border-radius:10px;background:var(--tile);color:inherit;text-align:center;font:inherit;font-weight:700}
+.mc-vg{border:2px dashed #C9971C}

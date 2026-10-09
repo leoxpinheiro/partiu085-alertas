@@ -26,12 +26,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests
+      - run: pip install requests pillow
       - name: Publicar e ler números
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IG_POST: ${{ github.event.inputs.post }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python engine/instagram.py
       - name: Salvar
         run: |

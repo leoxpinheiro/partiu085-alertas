@@ -101,10 +101,10 @@ function abrirEditar(p) {
   const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "ige";
   const th = `https://raw.githubusercontent.com/${REPO}/main/docs/`;
   d.innerHTML = `<div class="ej" role="dialog" aria-label="Editar post"><div class="ej-h"><div><b>Editar post</b><small>${esc(p.titulo)}</small></div><button class="bt sm ghost" data-act="igefechar">✕</button></div>
-    <div class="igm-thumbs">${p.imagens.map(x => `<img src="${th + x}" alt="">`).join("")}</div>
+    ${p.imagens.length ? `<div class="igm-thumbs">${p.imagens.map(x => `<img src="${th + x}" alt="">`).join("")}</div>` : `<div class="aviso"><span>💲 A imagem e a legenda são feitas pelo robô na hora de postar, com a melhor oferta fresca do dia.</span></div>`}
     <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="ige-q" value="${p.quando.slice(0, 16)}"></div>
       <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="ige-ok" ${p.aprovado ? "checked" : ""}> Aprovado (publica sozinho)</label></div></div>
-    ${p.tipo === "story" ? "" : `<div class="field"><label>Legenda</label><textarea id="ige-leg" rows="10">${esc(p.legenda)}</textarea></div>`}
+    ${p.tipo === "story" || p.tipo === "oferta_dia" ? "" : `<div class="field"><label>Legenda</label><textarea id="ige-leg" rows="10">${esc(p.legenda)}</textarea></div>`}
     <div class="ej-acts"><button class="bt pri lg" data-act="igesalvar" data-id="${p.id}">${ic("save")}Salvar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
@@ -148,8 +148,9 @@ async function agendarItens(itens, slots, ok, prog) {
   const base = Date.now().toString(36);
   for (let k = 0; k < itens.length; k++) {
     const it = itens[k], id = `ig-${base}-${k + 1}`;
-    const item = { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
-    for (let j = 0; j < it.cvs.length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
+    const item = it.vaga ? { id, titulo: "💲 Oferta do dia (o robô escolhe na hora)", tipo: "oferta_dia", imagens: [], legenda: "", rodape: it.rodape || "", quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "vaga" }
+      : { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
+    for (let j = 0; j < (it.cvs || []).length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
     IGF.fila.push(item);
   }
   prog("Salvando a agenda…"); await salvarFila(`Instagram: agenda ${itens.length} posts`);
@@ -241,10 +242,10 @@ function pInstagram() {
   const setup = !c || !c.ok;
   const st = p => (S_[p.id] || {}).status || (p.aprovado ? "agendado" : "rascunho");
   const chip = s => ({ agendado: `<span class="st verde">agendado</span>`, rascunho: `<span class="st">rascunho · falta aprovar</span>`, publicado: `<span class="st verde">✓ publicado</span>`, erro: `<span class="st vermelho">erro</span>` }[s]);
-  const thumb = p => `https://raw.githubusercontent.com/${REPO}/main/docs/${p.imagens[0]}`;
+  const thumb = p => { const im = p.imagens[0] || (S_[p.id] || {}).imagem; return im ? `https://raw.githubusercontent.com/${REPO}/main/docs/${im}` : "marca/icone.png"; };
   const pend = (F || []).filter(p => st(p) !== "publicado").sort((a, b) => a.quando.localeCompare(b.quando));
   const linhaFila = p => { const s = st(p), e = S_[p.id] || {};
-    return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${p.tipo === "story" ? "Story" : p.tipo === "carrossel" ? `Carrossel · ${p.imagens.length} telas` : "Feed"} · ${dataHora(p.quando)} ${chip(s)}</small>
+    return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${p.tipo === "story" ? "Story" : p.tipo === "oferta_dia" ? "💲 Oferta do dia: o robô escolhe a melhor promoção fresca na hora" : p.tipo === "carrossel" ? `Carrossel · ${p.imagens.length} telas` : "Feed"} · ${dataHora(p.quando)} ${chip(s)}</small>
       ${s === "erro" ? `<small class="neg">${esc(e.erro || "")}</small>` : ""}</div>
       <div class="ig-a">${s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
         ${s === "erro" ? `<button class="bt sm pri" data-act="igtentar" data-id="${p.id}">${ic("refresh")}Tentar de novo</button>` : ""}

@@ -382,6 +382,7 @@ function cardPauta(p, i) {
     <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
     <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}</button>
       <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
+      <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}">${ic("calendar")}Agendar</button>
       <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
   </article>`;
 }

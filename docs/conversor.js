@@ -122,7 +122,7 @@ function pConversor() {
       ${err.length ? `<div class="aviso warn"><span>Não achei: ${err.join(", ")}. Preencha acima e toque em Atualizar.</span></div>` : ""}
       <div class="cv-g ${CV.img ? "" : "sem"}"><div><textarea class="ev-texto" id="cv-t-${i}">${esc(it.texto)}</textarea>
           <div class="al-acts"><button class="bt sm pri" data-act="cvcopiar" data-i="${i}">${ic("copy")}Copiar texto</button>${it.tipo === "milhas" && !err.length ? `<button class="bt sm" data-act="cvsalvar" data-i="${i}" ${it.salvo ? "disabled" : ""}>${ic("save")}${it.salvo ? "Salvo no banco" : "Salvar no banco e na fila"}</button>` : ""}</div></div>
-        ${CV.img ? `<div><canvas class="cv-cv" id="cv-cv-${i}"></canvas><div class="al-acts"><button class="bt sm" data-act="cvcopimg" data-i="${i}">${ic("copy")}Copiar imagem</button><button class="bt sm ghost" data-act="cvbaixar" data-i="${i}">${ic("down")}Baixar</button></div></div>` : ""}</div>
+        ${CV.img ? `<div><canvas class="cv-cv" id="cv-cv-${i}"></canvas><div class="al-acts"><button class="bt sm" data-act="cvcopimg" data-i="${i}">${ic("copy")}Copiar imagem</button><button class="bt sm ghost" data-act="cvbaixar" data-i="${i}">${ic("down")}Baixar</button><button class="bt sm" data-act="igagendar" data-src="cv" data-i="${i}">${ic("calendar")}Instagram</button></div></div>` : ""}</div>
     </div>`; }).join("")}`;
 }
 function desenharConv() { if (!CV.img) return; CV.itens.forEach((it, i) => { const cv = document.getElementById("cv-cv-" + i); if (cv) desenharItem(cv, it).catch(e => console.error(e)); }); }

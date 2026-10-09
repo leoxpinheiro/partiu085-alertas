@@ -7,6 +7,10 @@ const INTEG = [
     { nome: "SEATS_AERO_KEY", t: "Seats.aero", d: "Milhas em programas estrangeiros (Aeroplan, United, LifeMiles…). Espaço reservado.", link: "https://seats.aero", uso: "reservada" },
     { nome: "MILHAS_API_KEY", t: "Outra API de milhas", d: "Se aparecer um fornecedor de LATAM Pass ou outro, a chave entra aqui.", uso: "reservada" },
   ] },
+  { grupo: "Instagram", itens: [
+    { nome: "IG_TOKEN", t: "Instagram · token", d: "Token da API do Instagram (login do Instagram) da conta @partiu.085. O robô publica os posts agendados e traz os números.", link: "https://developers.facebook.com/apps", uso: "ativa" },
+    { nome: "IG_USER_ID", t: "Instagram · ID da conta", d: "O número do ID da conta profissional, mostrado junto com o token.", uso: "ativa" },
+  ] },
   { grupo: "Envio automático", itens: [
     { nome: "TELEGRAM_BOT_TOKEN", t: "Bot do Telegram", d: "O robô que posta os alertas.", link: "https://t.me/BotFather", uso: "ativa" },
     { nome: "TELEGRAM_CHAT_ID", t: "Canal grátis no Telegram", d: "ID do canal dos alertas em dinheiro (ex.: -100123…).", uso: "ativa" },

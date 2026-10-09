@@ -1,0 +1,41 @@
+name: Instagram (publicar agendados)
+
+on:
+  workflow_dispatch:
+    inputs:
+      post:
+        description: "Publicar já este post (id)"
+        required: false
+        default: ""
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Publicar e ler números
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_POST: ${{ github.event.inputs.post }}
+        run: python engine/instagram.py
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/ig_status.json docs/ig_conta.json 2>/dev/null || true
+          git diff --cached --quiet || (git commit -q -m "Instagram $(TZ=America/Fortaleza date '+%d/%m %H:%M')" && git pull --rebase -X theirs -q && git push -q)

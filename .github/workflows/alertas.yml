@@ -52,6 +52,13 @@ jobs:
         run: |
           python engine/milhas.py
           python engine/milhas_busca.py
+      - name: Avisar se deu erro
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_ID: ${{ secrets.TELEGRAM_ADMIN_ID }}
+        run: |
+          [ -n "$TELEGRAM_ADMIN_ID" ] && curl -s -o /dev/null "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" --data-urlencode "chat_id=$TELEGRAM_ADMIN_ID" --data-urlencode "text=⚠️ Radar Partiu 085: a rodada deu erro. $(tail -3 data/ultima_rodada.log 2>/dev/null | cut -c1-200)" || true
       - name: Salvar resultados
         if: always()
         run: |

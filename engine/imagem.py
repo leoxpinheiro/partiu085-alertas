@@ -187,3 +187,30 @@ def png(img: Image.Image) -> bytes:
     b = io.BytesIO()
     img.convert("RGB").save(b, "JPEG", quality=90)
     return b.getvalue()
+
+
+def story_de(card: bytes, titulo: str = "OFERTA DO DIA", rodape: str = "Grupo grátis de alertas: link na bio") -> bytes:
+    """Versão 9:16 (story/reels) de um card quadrado: fundo desfocado, título em cima e chamada embaixo."""
+    from PIL import ImageFilter
+    SW, SH = 1080, 1920
+    base = Image.open(io.BytesIO(card)).convert("RGBA")
+    fundo = ImageOps.fit(base, (SW, SH), Image.LANCZOS).filter(ImageFilter.GaussianBlur(38))
+    img = Image.new("RGBA", (SW, SH), NAVY + (255,))
+    img.alpha_composite(fundo)
+    alfa(img, NAVY, .55, (0, 0, SW, SH))
+    d = ImageDraw.Draw(img)
+    ty = caber(d, titulo, 150, 80, SW - 140, anton)
+    d.text((SW / 2, 330), titulo, font=anton(ty), fill=AM, anchor="ms")
+    d.text((SW / 2, 395), "SAINDO DE FORTALEZA · @PARTIU.085", font=jak(30, 800), fill=BRANCO, anchor="ms")
+    sombra = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    ImageDraw.Draw(sombra).rounded_rectangle((40, 470, SW - 40, 470 + 1000), 40, fill=(0, 0, 0, 120))
+    img.alpha_composite(sombra.filter(ImageFilter.GaussianBlur(24)))
+    cart = base.resize((1000, 1000), Image.LANCZOS)
+    m = Image.new("L", (1000, 1000), 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, 999, 999), 36, fill=255)
+    img.paste(cart, (40, 460), m)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle((SW / 2 - 330, 1560, SW / 2 + 330, 1660), 50, fill=AM)
+    d.text((SW / 2, 1626), rodape.upper()[:34], font=jak(30, 800), fill=NAVY, anchor="ms")
+    d.text((SW / 2, 1740), "Preço pode mudar a qualquer momento", font=jak(26, 600), fill=(205, 212, 222), anchor="ms")
+    return png(img)

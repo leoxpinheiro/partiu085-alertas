@@ -24,6 +24,15 @@ FUSO = timezone(timedelta(hours=-3))
 APENAS = os.environ.get("IG_POST", "").strip()   # publicar já um post específico (botão "Publicar agora")
 
 
+def avisar_admin(msg: str) -> None:
+    tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN", ""), os.environ.get("TELEGRAM_ADMIN_ID", "")
+    if tok and chat:
+        try:
+            requests.post(f"https://api.telegram.org/bot{tok}/sendMessage", data={"chat_id": chat, "text": msg}, timeout=20)
+        except Exception:  # noqa: BLE001
+            pass
+
+
 def ler(p, padrao):
     try:
         return json.loads(p.read_text("utf-8"))
@@ -147,7 +156,62 @@ def montar_oferta(p: dict, st: dict) -> dict:
     leg += f"\n\n💬 Comenta EU QUERO que eu te mando os próximos no direct 📩\n\n{rod}\n\n#fortaleza #ceara #passagensbaratas #promocaodepassagem #viagem #partiu085"
     caminho = f"ig/{p['id']}-1.jpg"
     subir_github(caminho, img)
-    return {"imagens": [caminho], "legenda": leg, "titulo": titulo, "destino": destino}
+    extra = {"imagens": [caminho], "legenda": leg, "titulo": titulo, "destino": destino}
+    try:
+        st9 = imagem.story_de(img, "OFERTA DO DIA" if destino else "TOP 5 DE HOJE", "Comenta EU QUERO no post")
+        c9 = f"ig/{p['id']}-story.jpg"
+        subir_github(c9, st9)
+        extra["story"] = c9
+        if p.get("reels"):
+            extra["video"] = fazer_reels(st9, p["id"])
+    except Exception as e:  # noqa: BLE001
+        print("story/reels da oferta:", e)
+    return extra
+
+
+def fazer_reels(quadro: bytes, pid: str) -> str:
+    """Vídeo de 7s (zoom lento) a partir do quadro 9:16. Vai pro site (GitHub Pages), que serve video/mp4."""
+    import subprocess
+    import tempfile
+    d = Path(tempfile.mkdtemp())
+    (d / "q.jpg").write_bytes(quadro)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(d / "q.jpg"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+                    "-vf", "scale=1188:2112,zoompan=z='min(zoom+0.0007,1.1)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=210:s=1080x1920:fps=30,format=yuv420p",
+                    "-t", "7", "-c:v", "libx264", "-preset", "veryfast", "-crf", "24", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+    caminho = f"ig/{pid}.mp4"
+    subir_github(caminho, (d / "r.mp4").read_bytes())
+    return caminho
+
+
+def url_site(caminho: str) -> str:
+    dono, nome = REPO.split("/")
+    return f"https://{dono}.github.io/{nome}/{caminho}"
+
+
+def publicar_reels(video: str, legenda: str) -> dict:
+    url = url_site(video)
+    for _ in range(30):  # espera o site publicar o arquivo (≈1–2 min)
+        try:
+            if requests.head(url, timeout=15).status_code == 200:
+                break
+        except Exception:  # noqa: BLE001
+            pass
+        time.sleep(10)
+    c = api("POST", f"{USER}/media", media_type="REELS", video_url=url, caption=legenda, share_to_feed="true")["id"]
+    for _ in range(40):
+        stc = api("GET", c, fields="status_code").get("status_code")
+        if stc == "FINISHED":
+            break
+        if stc in ("ERROR", "EXPIRED"):
+            raise RuntimeError(f"Instagram recusou o vídeo ({stc})")
+        time.sleep(8)
+    mid = api("POST", f"{USER}/media_publish", creation_id=c)["id"]
+    info = {}
+    try:
+        info = api("GET", mid, fields="permalink")
+    except Exception:  # noqa: BLE001
+        pass
+    return {"media_id": mid, "link": info.get("permalink", ""), "publicado_em": datetime.now(FUSO).isoformat(timespec="minutes")}
 
 
 def publicar(p: dict) -> dict:
@@ -423,11 +487,19 @@ def main():
             if p.get("tipo") == "oferta_dia":
                 extra = montar_oferta(p, st)
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
-            st[p["id"]] = {"status": "publicado", **publicar(p), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0]} if extra else {})}
+            res = publicar_reels(extra["video"], p["legenda"]) if extra.get("video") else publicar(p)
+            st[p["id"]] = {"status": "publicado", **res, **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
+            if extra.get("story") and p.get("story", True):
+                try:
+                    publicar({"tipo": "story", "imagens": [extra["story"]]})
+                    st[p["id"]]["story"] = True
+                except Exception as e:  # noqa: BLE001
+                    print("story da oferta:", e)
             feitos += 1
             print(f"publicado: {p.get('titulo')} {st[p['id']].get('link')}")
         except Exception as e:  # noqa: BLE001
             st[p["id"]] = {"status": "erro", "erro": str(e)[:200], "tentativa": int(p.get("tentativa", 0)), "quando": agora}
+            avisar_admin(f"⚠️ Instagram: o post \"{p.get('titulo')}\" não saiu.\n{str(e)[:200]}\nAbra a agenda no painel e toque em Tentar de novo.")
             print(f"! {p.get('titulo')}: {e}")
     try:
         direct_automatico(conta)
@@ -457,6 +529,10 @@ def main():
         if not conta.get("renovado") or conta["renovado"] < (datetime.now(FUSO) - timedelta(days=20)).isoformat():
             try:
                 r = requests.get("https://graph.instagram.com/refresh_access_token", params={"grant_type": "ig_refresh_token", "access_token": TOKEN}, timeout=30).json()
+                if r.get("expires_in"):
+                    pass
+                else:
+                    avisar_admin("⚠️ Instagram: não consegui renovar a conexão. Gere um token novo no Meta e me mande.")
                 if r.get("expires_in"):
                     conta["renovado"] = agora
                     conta["expira"] = (datetime.now(FUSO) + timedelta(seconds=int(r["expires_in"]))).isoformat(timespec="minutes")

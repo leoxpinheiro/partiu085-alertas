@@ -14,8 +14,8 @@ MAN = RAIZ / "docs" / "midia.json"
 KEY = os.environ.get("PIXABAY_KEY", "")
 
 FOTOS = {
-    "power-bank": "power bank charging phone", "frascos": "travel toiletries bottles", "travesseiro": "neck pillow airplane",
-    "documentos": "passport boarding pass phone", "casaco": "airplane passenger blanket", "garrafa": "reusable water bottle travel",
+    "power-bank": "power bank charging phone", "frascos": "travel toiletries bottles", "travesseiro": "travel pillow",
+    "documentos": "passport boarding pass phone", "casaco": "cozy sweater travel woman", "garrafa": "reusable water bottle travel",
     "cadeado": "luggage lock suitcase", "mala": "suitcase packing", "aeroporto": "airport terminal window", "janela": "airplane window view",
     "asa": "airplane wing clouds", "passageiros": "airplane cabin passengers", "praia": "tropical beach", "ferias": "woman relaxing beach vacation",
     "trabalho": "tired office worker laptop", "calendario": "calendar planning travel", "celular-viagem": "smartphone travel booking",
@@ -72,7 +72,31 @@ def main():
                 print("!", nome, e)
         man["videos"][nome] = L
         print(nome, len(L))
+    clipes(man)
     MAN.write_text(json.dumps(man, ensure_ascii=False, indent=1) + "\n", "utf-8")
+
+
+def clipes(man):
+    """Transforma cada vídeo em um clipe vertical 1080x1920 de 9s, leve, sem áudio (pra servir de fundo dos Reels)."""
+    import shutil
+    import subprocess
+    if not shutil.which("ffmpeg"):
+        subprocess.run("sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg", shell=True, check=False)
+    for nome, L in man["videos"].items():
+        for v in L:
+            src = RAIZ / "docs" / v["arq"]
+            if v["arq"].startswith("midia/clip-") or not src.exists():
+                continue
+            dst = PASTA / ("clip-" + src.stem + ".mp4")
+            ini = "1" if (v.get("dur") or 0) > 11 else "0"
+            r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", ini, "-i", str(src), "-t", "9", "-an",
+                                "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p",
+                                "-c:v", "libx264", "-preset", "veryfast", "-crf", "27", "-movflags", "+faststart", str(dst)])
+            if r.returncode == 0:
+                subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "2", "-i", str(dst), "-frames:v", "1", "-q:v", "4", str(dst.with_suffix(".jpg"))])
+                src.unlink()
+                v["arq"], v["quadro"], v["w"], v["h"] = f"midia/{dst.name}", f"midia/{dst.stem}.jpg", 1080, 1920
+                print("clipe", dst.name, dst.stat().st_size // 1024, "KB")
 
 
 if __name__ == "__main__":

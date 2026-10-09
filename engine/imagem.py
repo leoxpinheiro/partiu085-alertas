@@ -214,3 +214,32 @@ def story_de(card: bytes, titulo: str = "OFERTA DO DIA", rodape: str = "Grupo gr
     d.text((SW / 2, 1626), rodape.upper()[:34], font=jak(30, 800), fill=NAVY, anchor="ms")
     d.text((SW / 2, 1740), "Preço pode mudar a qualquer momento", font=jak(26, 600), fill=(205, 212, 222), anchor="ms")
     return png(img)
+
+
+def story_post(post: bytes) -> bytes:
+    """Story 9:16 chamando pro post novo do feed (usa a 1ª imagem do post)."""
+    from PIL import ImageFilter
+    SW, SH = 1080, 1920
+    base = Image.open(io.BytesIO(post)).convert("RGBA")
+    fundo = ImageOps.fit(base, (SW, SH), Image.LANCZOS).filter(ImageFilter.GaussianBlur(40))
+    img = Image.new("RGBA", (SW, SH), NAVY + (255,))
+    img.alpha_composite(fundo)
+    alfa(img, NAVY, .6, (0, 0, SW, SH))
+    d = ImageDraw.Draw(img)
+    d.text((SW / 2, 300), "POST NOVO", font=anton(150), fill=AM, anchor="ms")
+    d.text((SW / 2, 370), "NO PERFIL DO @PARTIU.085", font=jak(32, 800), fill=BRANCO, anchor="ms")
+    w = 860
+    h = round(base.height * w / base.width)
+    cart = base.resize((w, h), Image.LANCZOS)
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), 34, fill=255)
+    y = 450
+    sombra = Image.new("RGBA", (SW, SH), (0, 0, 0, 0))
+    ImageDraw.Draw(sombra).rounded_rectangle(((SW - w) / 2 - 10, y + 10, (SW + w) / 2 + 10, y + h + 20), 40, fill=(0, 0, 0, 130))
+    img.alpha_composite(sombra.filter(ImageFilter.GaussianBlur(24)))
+    img.paste(cart, ((SW - w) // 2, y), m)
+    d = ImageDraw.Draw(img)
+    yb = min(SH - 200, y + h + 70)
+    d.rounded_rectangle((SW / 2 - 300, yb, SW / 2 + 300, yb + 96), 48, fill=AM)
+    d.text((SW / 2, yb + 62), "TOCA NO PERFIL 👆", font=jak(34, 800), fill=NAVY, anchor="ms")
+    return png(img)

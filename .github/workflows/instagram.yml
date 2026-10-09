@@ -40,5 +40,5 @@ jobs:
         run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"
-          git add docs/ig_status.json docs/ig_conta.json; [ -f docs/ig_dm.json ] && git add docs/ig_dm.json || true
+          git add docs/ig_status.json docs/ig_conta.json; [ -f docs/ig_dm.json ] && git add docs/ig_dm.json; [ -f docs/ig_auto_fila.json ] && git add docs/ig_auto_fila.json || true
           git diff --cached --quiet || (git commit -q -m "Instagram $(TZ=America/Fortaleza date '+%d/%m %H:%M')" && git pull --rebase -X theirs -q && git push -q)

@@ -454,8 +454,38 @@ def direct_automatico(conta: dict) -> None:
         salvar(DM_LOG, log)
 
 
+AUTO, AUTO_FILA = DOCS / "ig_auto.json", DOCS / "ig_auto_fila.json"
+AUTO_PADRAO = {"pausado": False, "auto_oferta": True, "horarios_oferta": ["19:00"], "rodape": ""}
+
+
+def vagas_automaticas(fila: list, auto: dict) -> list:
+    """Piloto automático: nos horários da oferta do dia, se não tiver nada agendado perto, o robô reserva uma oferta do dia."""
+    lista = ler(AUTO_FILA, [])
+    agora = datetime.now(FUSO)
+    lim = (agora - timedelta(days=3)).isoformat(timespec="minutes")
+    lista = [x for x in lista if x.get("quando", "") >= lim]
+    if auto.get("auto_oferta"):
+        todos = fila + lista
+        for d in range(0, 2):
+            dia = (agora + timedelta(days=d)).date().isoformat()
+            for h in auto.get("horarios_oferta") or []:
+                q = f"{dia}T{h}-03:00"
+                if q[:16] < agora.isoformat()[:16]:
+                    continue
+                t = datetime.fromisoformat(q)
+                perto = [x for x in todos if x.get("tipo") != "story" and x.get("quando") and abs((datetime.fromisoformat(x["quando"]) - t).total_seconds()) < 3600]
+                if not perto:
+                    lista.append({"id": f"auto-{dia}-{h.replace(':', '')}", "titulo": "💲 Oferta do dia (piloto automático)", "tipo": "oferta_dia", "imagens": [], "legenda": "",
+                                  "rodape": auto.get("rodape", ""), "quando": q, "aprovado": True, "tentativa": 0, "origem": "vaga", "auto": True})
+    salvar(AUTO_FILA, lista)
+    return lista
+
+
 def main():
     fila = ler(FILA, [])
+    auto = {**AUTO_PADRAO, **ler(AUTO, {})}
+    if not auto.get("pausado"):
+        fila = fila + vagas_automaticas(fila, auto)
     st = ler(STATUS, {})
     conta = ler(CONTA, {})
     if not TOKEN:
@@ -467,7 +497,9 @@ def main():
         return
     agora = datetime.now(FUSO).isoformat(timespec="minutes")
     feitos = 0
-    for p in fila:
+    if auto.get("pausado"):
+        print("robô pausado pelo painel: não publica nada")
+    for p in ([] if auto.get("pausado") else fila):
         s_ = st.get(p["id"], {})
         if s_.get("status") == "publicado":
             continue
@@ -496,6 +528,17 @@ def main():
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
             res = publicar_reels(extra["video"], p["legenda"]) if extra.get("video") else publicar(p)
             st[p["id"]] = {"status": "publicado", **res, **({"trocado_de": p["trocado_de"]} if p.get("trocado_de") else {}), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
+            if not extra and p.get("story_junto") and p.get("imagens"):
+                try:
+                    sys.path.insert(0, str(RAIZ / "engine"))
+                    import imagem  # noqa: PLC0415
+                    b0 = requests.get(url_img(p["imagens"][0]), timeout=30).content
+                    c9 = f"ig/{p['id']}-story.jpg"
+                    subir_github(c9, imagem.story_post(b0))
+                    publicar({"tipo": "story", "imagens": [c9]})
+                    st[p["id"]]["story"] = True
+                except Exception as e:  # noqa: BLE001
+                    print("story junto:", e)
             if extra.get("story") and p.get("story", True):
                 try:
                     publicar({"tipo": "story", "imagens": [extra["story"]]})

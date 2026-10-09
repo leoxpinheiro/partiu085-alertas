@@ -1,0 +1,37 @@
+name: Enviar no Telegram (painel)
+
+on:
+  workflow_dispatch:
+    inputs:
+      texto:
+        description: "Texto"
+        required: false
+        default: ""
+      imagem:
+        description: "Caminho da imagem em docs/"
+        required: false
+        default: ""
+      canal:
+        description: "milhas ou dinheiro"
+        required: false
+        default: "milhas"
+
+permissions:
+  contents: read
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - name: Enviar
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_MILHAS: ${{ secrets.TELEGRAM_CHAT_MILHAS }}
+          TEXTO: ${{ github.event.inputs.texto }}
+          IMAGEM: ${{ github.event.inputs.imagem }}
+          CANAL: ${{ github.event.inputs.canal }}
+        run: python engine/tg_enviar.py

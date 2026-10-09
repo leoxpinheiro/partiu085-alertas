@@ -95,6 +95,12 @@ def pistas_blogs(rotas: dict) -> list[dict]:
 NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia",
               "Fraport Fortaleza", "aeroporto Pinto Martins", "aeroporto Jericoacoara voos", "aeroporto Juazeiro do Norte voos",
               "Fortaleza Lisboa voo", "Fortaleza Paris voo", "Ceará turismo voos alta estação", "ANAC regra bagagem passageiro"]
+# milhas e pontos: vale pro Brasil todo (o viajante de Fortaleza usa os mesmos programas)
+MILHAS_Q = ["Livelo bônus transferência", "Esfera bônus transferência", "Smiles bônus transferência pontos", "LATAM Pass bônus transferência",
+            "Azul Fidelidade bônus transferência", "Livelo pontos por real promoção", "compra de pontos desconto Livelo", "compra de milhas desconto Smiles",
+            "aniversário Azul Fidelidade promoção", "aniversário LATAM Pass promoção", "Livelo parceiro pontos por real", "sala VIP aeroporto Fortaleza",
+            "sala VIP nova aeroporto", "Priority Pass sala VIP cartão"]
+MILHAS_RE = r"\b(livelo|esfera|smiles|latam ?pass|azul fidelidade|tudo ?azul|iupp|inter loop|milhas?|pontos? por real|bonus|bônus|sala vip|salas vip|lounge|priority pass|loungekey)\b"
 
 
 def decodificar_gnews(url: str) -> str:
@@ -193,6 +199,7 @@ def noticias() -> None:
     itens, vistos = [], set()
     lim = datetime.now(timezone.utc) - timedelta(days=10)
     urls = ["https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:10d") for q in NOTICIAS_Q]
+    urls += ["https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:4d") for q in MILHAS_Q]
     urls += ["https://aeroin.net/feed/", "https://www.aeroflap.com.br/feed/", "https://passageirodeprimeira.com/feed/", "https://www.melhoresdestinos.com.br/feed", "https://pontospravoar.com/feed/"]
     for url in urls:
         try:
@@ -209,6 +216,9 @@ def noticias() -> None:
                 continue
             tl = sem_acento(tit)
             regra = re.search(r"\banac\b.*(bagage|mala|power ?bank|carregador|liquido|passageiro)|mala de mao|power ?bank|bagagem de mao", tl)
+            milha = re.search(MILHAS_RE, tl) and dt >= datetime.now(timezone.utc) - timedelta(days=5)
+            if milha:
+                regra = True  # milhas/pontos/sala vip: nacional, entra sem precisar citar Fortaleza
             if dt < lim or (not regra and not re.search(r"fortaleza|ceara|nordeste|jericoacoara|jeri\b|juazeiro", tl)) or not regra and not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
                 continue
             chave = re.sub(r"\W+", "", tit.lower())[:60]
@@ -221,11 +231,11 @@ def noticias() -> None:
             if "news.google" in url or resumo.lower().startswith(tit.lower()[:30]):
                 resumo = ""
             m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
-            itens.append({"titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
+            itens.append({"cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
-    itens = itens[:30]
+    itens = itens[:50]
     fotos_noticias(itens)
-    (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens[:30]}, ensure_ascii=False, indent=1), "utf-8")
+    (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens[:50]}, ensure_ascii=False, indent=1), "utf-8")
     print(f"Notícias: {len(itens)}")
 
 

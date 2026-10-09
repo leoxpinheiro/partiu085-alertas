@@ -505,12 +505,13 @@ function noticiaHTML() {
   const N = PA.nt;
   if (!PA.noticias || !PA.ntOcultas) Promise.all([getJSON("noticias.json", { itens: [] }), carregarOcultas()]).then(([d]) => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
   const h = hojeISO(), todas = (PA.noticias || []).map((x, i) => ({ x, i, v: validadeNoticia(x) }));
-  const lista = todas.filter(o => !ntOculta(o.x) && o.v.ate >= h).slice(0, 14), velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
-  const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
+  const vivas = todas.filter(o => !ntOculta(o.x) && o.v.ate >= h), ehMi = o => o.x.cat === "milhas" || ntCategoria(o.x) !== "AVIAÇÃO · CEARÁ" && ntCategoria(o.x) !== "AEROPORTO";
+  const lmi = vivas.filter(ehMi).slice(0, 20), lvo = vivas.filter(o => !ehMi(o)).slice(0, 14), lista = [...lmi, ...lvo], velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
+  const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : ntCategoria(x) === "SALA VIP" ? "🛋️" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
       <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
   return `<div class="card pa-nt"><h3>📰 Notícias pra postar</h3>
     <div class="desc">O robô atualiza a lista várias vezes por dia. Aqui só aparece o que ainda está quente: <b>notícia vale no dia e no dia seguinte</b>, e promoção com data (ex.: "até 12/10") some sozinha depois do último dia. Já postou ou não quer? Toque no ✕.</div>
-    ${PA.noticias == null ? `<div class="vazio">Carregando…</div>` : lista.length ? `<div class="pa-nl">${lista.map(o => linha(o, true)).join("")}</div>` : `<div class="vazio">Nenhuma notícia quente agora. O robô procura de novo na próxima rodada.</div>`}
+    ${PA.noticias == null ? `<div class="vazio">Carregando…</div>` : lista.length ? `${lmi.length ? `<h4 style="margin:14px 0 6px">💳 Milhas, pontos e sala VIP <small style="opacity:.6">(vale pro Brasil todo)</small></h4><div class="pa-nl">${lmi.map(o => linha(o, true)).join("")}</div>` : ""}${lvo.length ? `<h4 style="margin:14px 0 6px">✈️ Voos e aeroporto</h4><div class="pa-nl">${lvo.map(o => linha(o, true)).join("")}</div>` : ""}` : `<div class="vazio">Nenhuma notícia quente agora. O robô procura de novo na próxima rodada.</div>`}
     ${velhas.length ? `<details class="pa-velhas"><summary>Antigas e removidas (${velhas.length})</summary><div class="pa-nl">${velhas.slice(0, 20).map(o => linha(o, false)).join("")}</div></details>` : ""}
   </div>
   <details class="card pa-nt" id="pa-man" ${N.titulo ? "open" : ""}><summary><b>Montar arte da notícia</b></summary>
@@ -549,8 +550,8 @@ async function carregarOcultas() { if (PA.ntOcultas) return; let L = []; try { L
 
 /* ================= notícia premium (foto real da matéria ou foto do destino, título limpo, resumo) ================= */
 const FOTOS_OK = "AJU AMS BCN BEL BHZ BOG BPS BSB BUE CGB CGR CTG CUN CWB FEN FLN FRA GYN IGU JDO JPA LIM LIS LON MAD MAO MCZ MDE MIA MIL MVD NAT NVT NYC OPO ORL PAR POA PTY PUJ REC RIO ROM SAO SCL SDQ SID SLZ SSA UDI VCP VIX".split(" ");
-const PROG_NT = [[/latam pass|latam/i, "LATAM Pass", "#C8102E"], [/azul fidelidade|azul/i, "Azul Fidelidade", "#0B4EA2"], [/smiles|\bgol\b/i, "Smiles", "#F26B21"], [/livelo/i, "Livelo", "#D6006E"], [/esfera/i, "Esfera", "#CC092F"], [/\btap\b/i, "TAP", "#1D7A3A"]];
-function ntCategoria(x) { return /pontos|milhas|b[oô]nus|transfer|livelo|esfera|smiles|fidelidade|latam pass/i.test(x.titulo) ? "MILHAS" : /aeroporto/i.test(x.titulo) ? "AEROPORTO" : "AVIAÇÃO · CEARÁ"; }
+const PROG_NT = [[/latam pass|latam/i, "LATAM Pass", "#C8102E"], [/azul fidelidade|azul/i, "Azul Fidelidade", "#0B4EA2"], [/smiles|\bgol\b/i, "Smiles", "#F26B21"], [/livelo/i, "Livelo", "#D6006E"], [/esfera/i, "Esfera", "#CC092F"], [/\btap\b/i, "TAP", "#1D7A3A"], [/\binter\b/i, "Inter", "#FF7A00"]];
+function ntCategoria(x) { return /sala vip|salas vip|lounge|priority pass/i.test(x.titulo) ? "SALA VIP" : /pontos|milhas|b[oô]nus|transfer|livelo|esfera|smiles|fidelidade|latam pass/i.test(x.titulo) ? "MILHAS" : /aeroporto/i.test(x.titulo) ? "AEROPORTO" : "AVIAÇÃO · CEARÁ"; }
 function ntTitulo(t) { t = String(t || "").replace(/\s+[-|–]\s+[^-|–]{2,40}$/, "").trim(); if (t.length <= 92) return t;
   const corte = Math.max(t.lastIndexOf(";", 92), t.lastIndexOf(":", 92), t.lastIndexOf(",", 92)); return corte > 45 ? t.slice(0, corte) : curto(t, 92); }
 function ntResumo(x) { const r = String(x.resumo || "").replace(/\s+/g, " ").replace(/(Leia mais|Continue lendo|The post|O post).*$/i, "").trim();
@@ -662,7 +663,7 @@ async function mcTodos() {
   add(EDU.map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
   await carregarOcultas();
-  for (const x of noticiasValidas().slice(0, 10)) add([(await postsDaNoticia(x))[0]], "Notícia");
+  for (const x of noticiasValidas().slice(0, 24)) add([(await postsDaNoticia(x))[0]], "Notícia");
   return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.noticia ? "Notícia" : p.rot }));
 }
 function mcCard(p, i) {

@@ -1,0 +1,31 @@
+name: Banco de mídia (Pixabay)
+
+on:
+  workflow_dispatch:
+    inputs:
+      so:
+        description: "Só estes nomes (separados por vírgula). Vazio = completa o que falta"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  midia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - env:
+          PIXABAY_KEY: ${{ secrets.PIXABAY_KEY }}
+        run: python engine/midia.py ${{ github.event.inputs.so }}
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/midia docs/midia.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Mídia: banco de fotos e vídeos"
+          for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done

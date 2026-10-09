@@ -964,9 +964,19 @@ body.ej-on{overflow:hidden}
 .mc-it.mc-alvo{box-shadow:inset 0 3px 0 #22A06B}.mc-it.arrastando{opacity:.4}
 .mc-arr{color:var(--text-tertiary);font-weight:800;padding-top:14px;letter-spacing:-2px}
 .mc-it img{width:44px;height:55px;object-fit:cover;border-radius:6px;flex:0 0 auto}
-.mc-ii{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.mc-ii small{font-size:11px;font-weight:700;color:#22A06B;text-transform:capitalize}.mc-ii b{font-size:13px}
+.mc-ii{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}.mc-ii small{font-size:11px;font-weight:700;color:#22A06B}.mc-ii b{font-size:13px}
 .mc-ii .lnk{font-size:12px;align-self:flex-start;color:var(--text-tertiary)}
 .mc-leg{width:100%;margin-top:6px;border:0;border-radius:10px;padding:8px;background:var(--card,#fff);color:inherit;font:inherit;font-size:12px;resize:vertical}
 .mc-bts{display:flex;flex-direction:column;gap:2px}.mc-bts button{width:28px;height:24px;border:0;border-radius:6px;background:var(--card,#fff);color:inherit;cursor:pointer;font-size:12px}
 .mc-vazio{padding:28px 12px;text-align:center;border:2px dashed var(--border,rgba(127,127,127,.3));border-radius:14px;color:var(--text-tertiary);font-size:13px;line-height:1.5}
 .lnk{background:none;border:0;padding:0;color:#7C5CE0;font:inherit;font-weight:700;text-decoration:underline;cursor:pointer}
+.mc-img{cursor:zoom-in}.mc-lupa{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:6px 12px;border-radius:99px;background:rgba(0,0,0,.65);color:#fff;font-size:12px;font-weight:700;opacity:0;transition:.15s;pointer-events:none}
+.mc-img:hover .mc-lupa{opacity:1}
+.mc-vivo{color:#C9971C}
+.mc-rap{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.mc-rap .pill{padding:6px 14px}
+.mc-it.ruim{box-shadow:inset 0 0 0 2px #E5484D}.mc-aviso{font-size:11px;color:#E5484D;font-weight:600;line-height:1.3}
+.mc-it img{cursor:zoom-in}
+.mc-ver{max-width:min(980px,96vw)}
+.mc-telas{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+.mc-telas canvas{flex:0 0 auto;width:min(78vw,380px);height:auto;border-radius:12px;scroll-snap-align:start;box-shadow:0 6px 18px rgba(0,0,0,.2)}
+.mc-ver .mc-leg{min-height:180px;background:var(--tile)}

@@ -96,6 +96,30 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
   b.disabled = true; try { await salvarArquivo("docs/ig_dm_cfg.json", cfg, "Instagram: direct automático"); IGF.dmcfg = cfg; toast("Salvo. Vale a partir da próxima checagem (até 15 min)."); } catch (err) { toast("Erro: " + err.message, 6000); } b.disabled = false; });
 
 
+/* ---------- editar um post da agenda (data, hora e legenda) */
+function abrirEditar(p) {
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "ige";
+  const th = `https://raw.githubusercontent.com/${REPO}/main/docs/`;
+  d.innerHTML = `<div class="ej" role="dialog" aria-label="Editar post"><div class="ej-h"><div><b>Editar post</b><small>${esc(p.titulo)}</small></div><button class="bt sm ghost" data-act="igefechar">✕</button></div>
+    <div class="igm-thumbs">${p.imagens.map(x => `<img src="${th + x}" alt="">`).join("")}</div>
+    <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="ige-q" value="${p.quando.slice(0, 16)}"></div>
+      <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="ige-ok" ${p.aprovado ? "checked" : ""}> Aprovado (publica sozinho)</label></div></div>
+    ${p.tipo === "story" ? "" : `<div class="field"><label>Legenda</label><textarea id="ige-leg" rows="10">${esc(p.legenda)}</textarea></div>`}
+    <div class="ej-acts"><button class="bt pri lg" data-act="igesalvar" data-id="${p.id}">${ic("save")}Salvar</button></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+}
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="ige"]'); if (!b) return;
+  const fechar = () => { const d = $("#ige"); if (d) d.remove(); document.body.classList.remove("ej-on"); };
+  if (b.dataset.act === "igefechar") { fechar(); return; }
+  if (b.dataset.act !== "igesalvar") return;
+  const p = (IGF.fila || []).find(x => x.id === b.dataset.id); if (!p) return;
+  const q = $("#ige-q").value; if (!q) { toast("Escolha dia e hora."); return; }
+  b.disabled = true;
+  try { p.quando = q + "-03:00"; p.aprovado = $("#ige-ok").checked; if ($("#ige-leg")) p.legenda = $("#ige-leg").value;
+    if ((IGF.st[p.id] || {}).status === "erro") p.tentativa = (p.tentativa || 0) + 1;
+    await salvarFila(`Instagram: edita "${p.titulo}"`); fechar(); toast(`Salvo: ${dataHora(p.quando)}.`); render(); }
+  catch (err) { toast("Erro: " + err.message, 6000); b.disabled = false; } });
+
 /* ---------- agendar uma semana inteira de uma vez */
 function abrirLote(sem) {
   const L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
@@ -110,16 +134,21 @@ function abrirLote(sem) {
     <div class="ej-acts"><button class="bt pri lg" data-act="iglsalvar" data-s="${sem}">${ic("calendar")}Agendar ${L.length} posts</button><span class="sub" id="igl-prog"></span></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
-function horarioSlot(ini, hs, k) { return `${diaMenos(ini, -Math.floor(k / hs.length))}T${hs[k % hs.length]}-03:00`; }
+function gerarSlots(ini, hs, n) { /* horários em sequência a partir do dia escolhido, pulando os que já passaram */
+  const out = [], lim = isoLocal(new Date(Date.now() + 10 * 6e4)).slice(0, 16);
+  for (let d = 0; out.length < n && d < 400; d++) { const dia = diaMenos(ini, -d); for (const h of hs) { const q = `${dia}T${h}`; if (q <= lim) continue; out.push(q + "-03:00"); if (out.length >= n) break; } }
+  return out; }
+const AO_VIVO = /^(f-op|f-quanto|aq-quanto|aq-feriadao|aq-teaser3|camp-op|camp-quanto)/;
+const aoVivo = p => !!(p && (p.aoVivo || AO_VIVO.test(p.id || p.origem || "")));
 function lerHorarios(t) { return String(t || "").split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0")); }
 /* agenda vários posts de uma vez: itens = [{ titulo, cvs, legenda, origem }] */
-async function agendarItens(itens, ini, hs, ok, prog) {
+async function agendarItens(itens, slots, ok, prog) {
   if (!token()) throw new Error("Conecte o token do GitHub em Ajustes pra agendar.");
   IGF.fila = null; await carregarIG(true); IGF.fila = IGF.fila || [];
   const base = Date.now().toString(36);
   for (let k = 0; k < itens.length; k++) {
     const it = itens[k], id = `ig-${base}-${k + 1}`;
-    const item = { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: horarioSlot(ini, hs, k), aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
+    const item = { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
     for (let j = 0; j < it.cvs.length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
     IGF.fila.push(item);
   }
@@ -127,14 +156,18 @@ async function agendarItens(itens, ini, hs, ok, prog) {
   return itens.length;
 }
 async function salvarLote(sem, bt) {
-  const L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
   const ini = $("#igl-ini").value, hs = lerHorarios($("#igl-h").value);
   if (!ini || !hs.length) { toast("Confira o dia e os horários."); return; }
+  let L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
+  const slots0 = gerarSlots(ini, hs, L.length), hoje = hojeISO();
+  const fora = L.filter((x, k) => aoVivo(x.p) && (slots0[k] || "").slice(0, 10) !== hoje);
+  L = L.filter(x => !fora.includes(x));
+  const slots = gerarSlots(ini, hs, L.length);
   const prog = $("#igl-prog"); bt.disabled = true;
   try {
-    const n = await agendarItens(L.map(({ p, i }) => ({ titulo: p.titulo, cvs: [...document.querySelectorAll(`#pa-t-${i} canvas`)], legenda: ($("#pa-l-" + i) || {}).value || p.legenda, origem: p.id })), ini, hs, $("#igl-ok").checked, t => { prog.textContent = t; });
+    const n = await agendarItens(L.map(({ p, i }) => ({ titulo: p.titulo, cvs: [...document.querySelectorAll(`#pa-t-${i} canvas`)], legenda: ($("#pa-l-" + i) || {}).value || p.legenda, origem: p.id })), slots, $("#igl-ok").checked, t => { prog.textContent = t; });
     const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on");
-    toast(`${n} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: agenda.`, 6000);
+    toast(`${n} posts agendados.${fora.length ? ` ${fora.length} com preço ficaram de fora (${fora.map(x => x.p.titulo).join(", ")}): agende no dia, pelo Montar calendário.` : ""}`, 9000);
   } catch (e) { toast("Parou no meio: " + e.message + ". Tente de novo.", 8000); bt.disabled = false; }
 }
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="igl"]'); if (!b) return;
@@ -265,7 +298,7 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act=
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="ig"]'); if (!b) return;
   const act = b.dataset.act;
-  if (!/^ig(m|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)/.test(act)) return;
+  if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)$/.test(act)) return;
   try {
     if (act === "igagendar") {
       if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
@@ -284,12 +317,7 @@ document.addEventListener("click", async e => {
     else if (act === "igtentar") { p.tentativa = (p.tentativa || 0) + 1; p.aprovado = true; await salvarFila(`Instagram: tenta de novo "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Tentando de novo em 1 a 2 minutos."); }
     else if (act === "igagora") { p.aprovado = true; p.quando = isoLocal(new Date()); p.tentativa = (p.tentativa || 0) + ((IGF.st[p.id] || {}).status === "erro" ? 1 : 0); await salvarFila(`Instagram: publicar agora "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Enviado pro robô: publica em 1 a 2 minutos."); }
     else if (act === "igremover") { if (!confirm(`Remover "${p.titulo}" da agenda?`)) { b.disabled = false; return; } IGF.fila = IGF.fila.filter(x => x !== p); await salvarFila(`Instagram: remove "${p.titulo}"`); toast("Removido."); }
-    else if (act === "igeditar") {
-      const leg = p.tipo === "story" ? p.legenda : prompt("Legenda:", p.legenda); if (leg == null) { b.disabled = false; return; }
-      const q = prompt("Dia e hora (AAAA-MM-DD HH:MM):", p.quando.slice(0, 16).replace("T", " ")); if (q == null) { b.disabled = false; return; }
-      if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(q.trim())) { toast("Formato: 2026-10-10 19:00"); b.disabled = false; return; }
-      p.legenda = leg; p.quando = q.trim().replace(" ", "T") + "-03:00"; await salvarFila(`Instagram: edita "${p.titulo}"`); toast("Salvo.");
-    }
+    else if (act === "igeditar") { b.disabled = false; abrirEditar(p); return; }
     render();
   } catch (err) { toast("Erro: " + err.message, 6000); b.disabled = false; }
 });

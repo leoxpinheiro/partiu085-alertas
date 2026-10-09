@@ -421,14 +421,14 @@ async function semana1() {
     rodapeP(c, PW, PH, false, ROD); }],
     `FERIADÃO DE FINADOS CHEGANDO 🗓️ (31/10 a 2/11)\n\n3 destinos de voo curto saindo de Fortaleza:\n\n${(perto.length ? perto : [["NAT", "Natal"], ["REC", "Recife"], ["SSA", "Salvador"]]).map(([k, n]) => `✈️ ${n}${R[k] && R[k].menor ? `: trecho a partir de ${brl(R[k].menor)} (menor preço que o radar viu)` : ""}`).join("\n")}\n\nPreços mudam a toda hora. 💬 Qual você escolheria?`));
   // 13 escuro — teaser 3 com achado real
-  const ach = (S.alertas || []).filter(a => a.desconto >= .25 && a.desconto <= .7 && !(a.conferido && a.conferido.status === "subiu") && (typeof ivBarato !== "function" || ivBarato(a))).sort((a, b) => b.desconto - a.desconto)[0];
+  const ach = (S.alertas || []).filter(a => a.criado >= isoLocal(new Date(Date.now() - 24 * 36e5)).slice(0, 16) && !(a.conferido && a.conferido.status === "subiu") && (typeof ivBarato !== "function" || ivBarato(a))).sort((a, b) => b.desconto - a.desconto)[0];
   L.push(P("teaser3", "escuro", "Teaser 3: olha o que o radar achou", "Prova real: mostra um achado de verdade e promete que semana que vem chega na hora.", [c => { bgNavy(c, PW, PH); marca(c, PW, true, "ACHADO REAL");
     kicker(c, "Essa semana o radar achou", M, 330); let y = titulo(c, ach ? `Fortaleza ➜ ${ach.destino_nome}` : "Promoção de verdade", M, 356, PW - 2 * M, 120, 76, "#fff", 2) + 40;
     if (ach) { const rt = ach.preco + (ach.preco_volta || 0); T(c, brl(rt), M - 4, y + 150, 170, MARCA.titulo, COR.am); T(c, ach.preco_volta ? "ida e volta" : "o trecho", M, y + 210, 34, MARCA.corpo, "#fff", "left", 700);
-      T(c, `${Math.round(ach.desconto * 100)}% abaixo do normal dessa rota`, M, y + 270, 30, MARCA.corpo, COR.cinza, "left", 600); }
+      T(c, `Visto pelo radar em ${ach.criado.slice(8, 10)}/${ach.criado.slice(5, 7)} às ${ach.criado.slice(11, 16)} · preço pode mudar`, M, y + 270, 28, MARCA.corpo, COR.cinza, "left", 600); }
     paragrafo(c, "Semana que vem, isso chega no seu celular na hora em que aparece.", M, PH - 330, PW - 2 * M - 240, 36, MARCA.corpo, "#fff", 700, 1.3, 3);
     desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, ROD); }],
-    `OLHA O QUE O RADAR ACHOU ESSA SEMANA 👀\n\n${ach ? `✈️ Fortaleza ➜ ${ach.destino_nome}\n💰 ${brl(ach.preco + (ach.preco_volta || 0))} ${ach.preco_volta ? "ida e volta" : "o trecho"}\n📉 ${Math.round(ach.desconto * 100)}% abaixo do normal\n\n` : ""}Promoção assim some em horas. Semana que vem você vai receber na hora em que aparecer.\n\n💬 Comenta EU QUERO que eu te mando primeiro no direct 📩`));
+    `OLHA O QUE O RADAR ACHOU ESSA SEMANA 👀\n\n${ach ? `✈️ Fortaleza ➜ ${ach.destino_nome}\n💰 ${brl(ach.preco + (ach.preco_volta || 0))} ${ach.preco_volta ? "ida e volta" : "o trecho"}\n🕐 Visto pelo radar em ${ach.criado.slice(8, 10)}/${ach.criado.slice(5, 7)} às ${ach.criado.slice(11, 16)} (preço muda a toda hora)\n\n` : ""}Promoção assim some em horas. Semana que vem você vai receber na hora em que aparecer.\n\n💬 Comenta EU QUERO que eu te mando primeiro no direct 📩`));
   // 14 creme — contagem
   L.push(P("contagem", "creme", "Segunda abre (teaser final)", "Fecha a semana com data marcada: quem está curioso ativa o sininho e volta na segunda.", [c => { const k = TEMA.creme; k.bg(c, PW, PH); marca(c, PW, false, "CONTAGEM");
     kicker(c, "Anota aí", M, 330, k.kk); const y = titulo(c, "Segunda-feira abre. E é de graça.", M, 356, PW - 2 * M, 130, 80, k.tx, 3) + 70;
@@ -547,51 +547,79 @@ async function mcTodos() {
   return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.rot }));
 }
 function mcCard(p, i) {
-  const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id];
+  const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id], vivo = aoVivo(p);
   return `<div class="mc-card ${n >= 0 ? "on" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${CAL.f !== "todos" && CAL.f !== mcGrupo(p) ? "hidden" : ""}>
-    <div class="mc-img"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}</div>
-    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${f ? ` · <b class="pos">já agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
+    <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
+    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
-function mcSelHTML() {
-  const L = CAL.sel.map(id => (PA.lista || []).find(p => p.id === id)).filter(Boolean), hs = lerHorarios(CAL.hs);
-  const DS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
-  const slot = k => { if (!hs.length || !CAL.ini) return ""; const q = horarioSlot(CAL.ini, hs, k), d = q.slice(0, 10); return `${DS[new Date(d + "T12:00:00Z").getUTCDay()]} ${d.slice(8, 10)}/${d.slice(5, 7)} · ${q.slice(11, 16)}`; };
-  return `<div class="mc-h"><b>Minha programação</b><small>${L.length} post${L.length === 1 ? "" : "s"}${L.length && hs.length ? ` · até ${slot(L.length - 1).split(" · ")[0]}` : ""}</small></div>
-    <div class="mc-cfg"><label>Começa<input type="date" data-mc="ini" value="${CAL.ini}"></label><label>Horários<input data-mc="hs" value="${esc(CAL.hs)}"></label></div>
-    ${L.length ? `<ol class="mc-lista">${L.map((p, k) => `<li class="mc-it" draggable="true" data-k="${k}">
-      <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[p.id] || ""}" alt="">
-      <div class="mc-ii"><small>${slot(k)}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b><button class="lnk" data-act="mcleg" data-id="${esc(p.id)}">${CAL.aberto === p.id ? "fechar legenda" : "ver/editar legenda"}</button>
-        ${CAL.aberto === p.id ? `<textarea class="mc-leg" data-mcleg="${esc(p.id)}" rows="7">${esc(CAL.legs[p.id] ?? p.legenda)}</textarea>` : ""}</div>
-      <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`).join("")}</ol>`
-      : `<div class="mc-vazio">Toque em <b>+ Escolher</b> ou arraste os posts pra cá.<br>A ordem aqui é a ordem em que vão sair.</div>`}
-    ${L.length ? `<label class="chk"><input type="checkbox" data-mc="ok" ${CAL.ok ? "checked" : ""}> Já aprovar (o robô publica sozinho)</label>
-      <div class="al-acts"><button class="bt pri lg" data-act="mcagendar">${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : ""}`;
+const DSEM = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const rotSlot = q => { if (!q) return ""; const d = q.slice(0, 10); return `${DSEM[new Date(d + "T12:00:00Z").getUTCDay()]} ${d.slice(8, 10)}/${d.slice(5, 7)} · ${q.slice(11, 16)}`; };
+function mcSelecionados() { return CAL.sel.map(id => (PA.lista || []).find(p => p.id === id)).filter(Boolean); }
+function mcCfgHTML() {
+  const h = hojeISO(), am = diaMenos(h, -1);
+  return `<div class="mc-h"><b>Minha programação</b><small id="mc-resumo"></small></div>
+    <div class="mc-cfg"><label>Começa<input type="date" data-mc="ini" value="${CAL.ini}"></label><label>Horários<input data-mc="hs" value="${esc(CAL.hs)}" placeholder="12:00, 19:00"></label></div>
+    <div class="mc-rap"><button class="pill ${CAL.ini === h ? "on" : ""}" data-act="mcdia" data-v="${h}">Hoje</button><button class="pill ${CAL.ini === am ? "on" : ""}" data-act="mcdia" data-v="${am}">Amanhã</button><small class="sub">horário que já passou é pulado</small></div>
+    <div id="mc-lista"></div>`;
+}
+function mcListaHTML() {
+  const L = mcSelecionados(), hs = lerHorarios(CAL.hs), slots = CAL.ini && hs.length ? gerarSlots(CAL.ini, hs, L.length) : [], hoje = hojeISO();
+  const r = document.getElementById("mc-resumo"); if (r) r.textContent = `${L.length} post${L.length === 1 ? "" : "s"}${L.length && slots.length ? ` · até ${rotSlot(slots[slots.length - 1]).split(" · ")[0]}` : ""}`;
+  const errado = L.filter((p, k) => aoVivo(p) && (slots[k] || "").slice(0, 10) !== hoje);
+  return (L.length ? `<ol class="mc-lista">${L.map((p, k) => { const ruim = errado.includes(p);
+      return `<li class="mc-it ${ruim ? "ruim" : ""}" draggable="true" data-k="${k}">
+      <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[p.id] || ""}" alt="" data-act="mcver" data-id="${esc(p.id)}" title="ver o post">
+      <div class="mc-ii"><small>${rotSlot(slots[k])}${aoVivo(p) ? " · 💲 preço do dia" : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b>
+        ${ruim ? `<span class="mc-aviso">Tem preço: só pode sair hoje. Suba ele pra um horário de hoje ou tire da lista.</span>` : ""}
+        <button class="lnk" data-act="mcver" data-id="${esc(p.id)}">ver post e legenda</button></div>
+      <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`; }).join("")}</ol>`
+    : `<div class="mc-vazio">Toque em <b>+ Escolher</b> ou arraste os posts pra cá.<br>A ordem aqui é a ordem em que vão sair.<br>Clique na imagem de qualquer post pra ver todas as telas e a legenda.</div>`)
+    + (L.length ? `<label class="chk"><input type="checkbox" data-mc="ok" ${CAL.ok ? "checked" : ""}> Já aprovar (o robô publica sozinho)</label>
+      <div class="al-acts"><button class="bt pri lg" data-act="mcagendar" ${errado.length ? "disabled" : ""}>${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : "");
 }
 function mcAtualizar() { CAL.sel = CAL.sel.filter(id => (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
-  const a = document.getElementById("mc-sel"); if (a) a.innerHTML = mcSelHTML();
-  (PA.lista || []).forEach((p, i) => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
+  const a = document.getElementById("mc-lista"); if (a) a.innerHTML = mcListaHTML();
+  document.querySelectorAll('[data-act="mcdia"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.ini));
+  (PA.lista || []).forEach(p => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
     el.classList.toggle("on", n >= 0); const b = el.querySelector(".mc-add"); b.className = `bt sm ${n >= 0 ? "ok" : "pri"} mc-add`; b.innerHTML = n >= 0 ? `${ic("check")}Na lista` : "+ Escolher";
     let pos = el.querySelector(".mc-pos"); if (n >= 0) { if (!pos) { pos = document.createElement("span"); pos.className = "mc-pos"; el.querySelector(".mc-img").appendChild(pos); } pos.textContent = n + 1; } else if (pos) pos.remove(); }); }
+/* ver o post: todas as telas grandes + legenda editável */
+async function mcVer(id) {
+  const p = (PA.lista || []).find(x => x.id === id); if (!p) return;
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "mcv";
+  const n = CAL.sel.indexOf(id);
+  d.innerHTML = `<div class="ej mc-ver" role="dialog" aria-label="Ver post"><div class="ej-h"><div><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b><small>${esc(p.rot || p.tipo)} · ${p.telas.length > 1 ? `carrossel com ${p.telas.length} telas (arraste pro lado)` : "post único"}${aoVivo(p) ? " · 💲 tem preço: só pode sair hoje" : ""}</small></div><button class="bt sm ghost" data-act="mcvfechar">✕</button></div>
+    <div class="mc-telas" id="mcv-t"></div>
+    ${p.porque ? `<div class="pa-porque">💡 ${esc(p.porque)}</div>` : ""}
+    <div class="field"><label>Legenda (o que muda aqui vai junto no agendamento)</label><textarea class="mc-leg" data-mcleg="${esc(id)}" rows="9">${esc(CAL.legs[id] ?? p.legenda)}</textarea></div>
+    <div class="ej-acts"><button class="bt ${n >= 0 ? "" : "pri"} lg" data-act="mcvadd" data-id="${esc(id)}">${n >= 0 ? "Tirar da lista" : "+ Escolher esse"}</button><button class="bt" data-act="mcvbaixar">${ic("down")}Baixar</button><button class="bt ghost" data-act="mcvfechar">Fechar</button></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+  const box = document.getElementById("mcv-t");
+  for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
+}
+function mcFecharVer() { const d = document.getElementById("mcv"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
 async function montarBoard(g) {
   if (!CAL.ini) CAL.ini = diaMenos(hojeISO(), -1);
   const L = await mcTodos(); PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.length} posts prontos · escolha os que vão sair e a ordem</small></div><div class="mc-grade">${L.map(mcCard).join("")}</div></div>
-    <aside class="card mc-sel" id="mc-sel">${mcSelHTML()}</aside></div>`;
+    <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
   for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
   mcAtualizar();
 }
 async function mcAgendar(bt) {
-  const L = CAL.sel.map(id => PA.lista.find(p => p.id === id)).filter(Boolean), hs = lerHorarios(CAL.hs);
+  const L = mcSelecionados(), hs = lerHorarios(CAL.hs);
   if (!CAL.ini || !hs.length) { toast("Confira o dia de começo e os horários."); return; }
+  const slots = gerarSlots(CAL.ini, hs, L.length), hoje = hojeISO();
+  if (L.some((p, k) => aoVivo(p) && slots[k].slice(0, 10) !== hoje)) { toast("Tem post com preço marcado pra outro dia. Ele só pode sair hoje."); return; }
   const prog = document.getElementById("mc-prog"); bt.disabled = true;
   try {
     const itens = [];
     for (const p of L) { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
       itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id }); }
-    const n = await agendarItens(itens, CAL.ini, hs, CAL.ok, t => { if (prog) prog.textContent = t; });
-    L.forEach((p, k) => { CAL.feitos[p.id] = horarioSlot(CAL.ini, hs, k).slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
+    const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
+    L.forEach((p, k) => { CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
   } catch (e) { toast("Parou no meio: " + e.message, 8000); bt.disabled = false; }
 }
@@ -603,7 +631,11 @@ document.addEventListener("click", e => {
   else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);
   else if (a === "mcdown" && k < CAL.sel.length - 1) CAL.sel.splice(k + 1, 0, CAL.sel.splice(k, 1)[0]);
   else if (a === "mcrem") CAL.sel.splice(k, 1);
-  else if (a === "mcleg") CAL.aberto = CAL.aberto === b.dataset.id ? "" : b.dataset.id;
+  else if (a === "mcver") { e.preventDefault(); mcVer(b.dataset.id); return; }
+  else if (a === "mcvfechar") { mcFecharVer(); return; }
+  else if (a === "mcvadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); mcFecharVer(); }
+  else if (a === "mcvbaixar") { [...document.querySelectorAll("#mcv-t canvas")].forEach((cv, j) => setTimeout(() => { const l = document.createElement("a"); l.download = `partiu085-${j + 1}.png`; l.href = cv.toDataURL("image/png"); l.click(); }, j * 350)); return; }
+  else if (a === "mcdia") { CAL.ini = b.dataset.v; const i = document.querySelector('[data-mc="ini"]'); if (i) i.value = CAL.ini; }
   else if (a === "mclimpar") { if (!confirm("Tirar todos da lista?")) return; CAL.sel = []; }
   else if (a === "mcagendar") { mcAgendar(b); return; }
   else return;
@@ -611,9 +643,10 @@ document.addEventListener("click", e => {
 }, true);
 document.addEventListener("input", e => { const t = e.target;
   if (t.dataset && t.dataset.mcleg) CAL.legs[t.dataset.mcleg] = t.value;
-  else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(() => { const f = document.activeElement; mcAtualizar(); const n = document.querySelector('[data-mc="hs"]'); if (n && f && f.dataset.mc === "hs") { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 600); } });
+  else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); }
+  else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
-  if (t.dataset.mc === "ini") { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; });
+  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; });
 /* arrastar: da biblioteca pra lista, e dentro da lista pra mudar a ordem */
 document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".mc-card"), it = e.target.closest && e.target.closest(".mc-it");
   if (it) { e.dataTransfer.setData("text/plain", "k:" + it.dataset.k); it.classList.add("arrastando"); } else if (c) e.dataTransfer.setData("text/plain", "id:" + c.dataset.id); });

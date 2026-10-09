@@ -94,6 +94,46 @@ def pistas_blogs(rotas: dict) -> list[dict]:
 NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia"]
 
 
+def fotos_noticias(itens: list) -> None:
+    """Baixa a foto de cada notícia (do feed ou da página da matéria) e guarda pequena no site, pra usar de fundo na arte."""
+    import hashlib
+    import io
+    import re
+    pasta = DOCS / "noticias_img"
+    pasta.mkdir(exist_ok=True)
+    usados, baixados = set(), 0
+    for it in itens:
+        if "news.google" in it["link"]:
+            it.pop("img_url", None)
+            continue
+        nome = hashlib.sha1(it["link"].encode()).hexdigest()[:16] + ".jpg"
+        alvo = pasta / nome
+        if not alvo.exists() and baixados < 15:
+            url = it.get("img_url") or ""
+            try:
+                if not url:
+                    pg = requests.get(it["link"], timeout=20, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
+                    m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', pg) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image', pg)
+                    url = m.group(1) if m else ""
+                if url:
+                    from PIL import Image
+                    b = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).content
+                    im = Image.open(io.BytesIO(b)).convert("RGB")
+                    if im.width >= 500:
+                        im.thumbnail((1200, 1200))
+                        im.save(alvo, "JPEG", quality=82)
+                        baixados += 1
+            except Exception as e:  # noqa: BLE001
+                print(f"! foto notícia: {e}")
+        it.pop("img_url", None)
+        if alvo.exists():
+            it["img"] = f"noticias_img/{nome}"
+            usados.add(nome)
+    for f in pasta.glob("*.jpg"):
+        if f.name not in usados:
+            f.unlink()
+
+
 def noticias() -> None:
     """Notícias quentes (rota nova, voo direto, aeroporto de Fortaleza) pra virar post no Instagram."""
     import html
@@ -124,8 +164,15 @@ def noticias() -> None:
                 continue
             vistos.add(chave)
             tit = re.sub(r"\s+-\s+[^-]+$", "", tit)
-            itens.append({"titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat()})
+            bruto = g("content:encoded") or g("description")
+            resumo = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", bruto))).strip()
+            if "news.google" in url or resumo.lower().startswith(tit.lower()[:30]):
+                resumo = ""
+            m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
+            itens.append({"titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
+    itens = itens[:30]
+    fotos_noticias(itens)
     (DOCS / "noticias.json").write_text(json.dumps({"atualizado": datetime.now(timezone.utc).isoformat(timespec="minutes"), "itens": itens[:30]}, ensure_ascii=False, indent=1), "utf-8")
     print(f"Notícias: {len(itens)}")
 

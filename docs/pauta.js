@@ -1018,16 +1018,18 @@ const REELS = [
 ];
 const FONTE_REELS = '"Instrument Serif", "Playfair Display", Georgia, serif';
 function textoReels(c, t) {
-  const fs = 118, lh = fs * 1.0, L = t.split("\n").flatMap(l => quebrar(c, l, SW - 170, fs, FONTE_REELS, 400));
-  let y = SH * .47 - (L.length * lh) / 2 + fs * .8;
-  c.save(); c.shadowColor = "rgba(0,0,0,.45)"; c.shadowBlur = 24;
-  L.forEach(l => { T(c, l, SW / 2, y, fs, FONTE_REELS, "#F6EBD0", "center", 400); y += lh; }); c.restore();
-  c.save(); c.globalAlpha = .85; T(c, "PARTIU 085", 90, 250, 24, MARCA.corpo, "#F6EBD0", "left", 700, 4); T(c, "//", SW / 2, 250, 24, MARCA.corpo, "#F6EBD0", "center", 700);
-  T(c, "VIAJAR", SW - 90, 250, 24, MARCA.corpo, "#F6EBD0", "right", 700, 4); T(c, "@PARTIU.085", SW / 2, SH - 360, 24, MARCA.corpo, "#F6EBD0", "center", 700, 4); c.restore();
+  const fs = 112, lh = fs * .98, txt = t.split("\n").map(l => l.charAt(0).toLowerCase() + l.slice(1)).join(" ").replace(/\. /g, ", ").replace(/\.$/, "");
+  c.font = `400 ${fs}px ${FONTE_REELS}`; if ("letterSpacing" in c) c.letterSpacing = "-3px";
+  const L = quebrar(c, txt, SW - 200, fs, FONTE_REELS, 400);
+  let y = SH * .52 - (L.length * lh) / 2 + fs * .78;
+  c.save(); c.shadowColor = "rgba(255,240,220,.35)"; c.shadowBlur = 18; c.fillStyle = "#FFFDF8"; c.textAlign = "center"; c.textBaseline = "alphabetic";
+  L.forEach(l => { c.font = `400 ${fs}px ${FONTE_REELS}`; c.fillText(l, SW / 2, y); y += lh; }); c.restore();
+  if ("letterSpacing" in c) c.letterSpacing = "0px";
+  c.save(); c.globalAlpha = .8; T(c, "@partiu.085", SW / 2, SH - 360, 30, FONTE_REELS, "#FFFDF8", "center", 400); c.restore();
 }
-function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.addColorStop(0, "rgba(0,0,0,.25)"); g.addColorStop(.5, "rgba(0,0,0,.35)"); g.addColorStop(1, "rgba(0,0,0,.3)"); c.fillStyle = g; c.fillRect(0, 0, SW, SH); textoReels(c, t); }
+function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.addColorStop(0, "rgba(0,0,0,.08)"); g.addColorStop(.5, "rgba(0,0,0,.3)"); g.addColorStop(1, "rgba(0,0,0,.15)"); c.fillStyle = g; c.fillRect(0, 0, SW, SH); textoReels(c, t); }
 async function fReels(x) {
-  try { await document.fonts.load(`400 118px ${FONTE_REELS}`); } catch (e) { }
+  try { await document.fonts.load(`400 112px ${FONTE_REELS}`); } catch (e) { }
   const fr = await fotoMidia("clip-v-" + x.clip);
   return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.replace(/\n/g, " ").slice(0, 60), porque: "Clique pra ver o vídeo rodando. Pelo celular dá pra pôr música em alta antes de postar.", fmt: "Reels 9:16 · 9s",
     overlay: c => camadaReels(c, x.t),

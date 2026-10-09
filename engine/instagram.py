@@ -178,8 +178,8 @@ def fazer_reels(quadro: bytes, pid: str) -> str:
     d = Path(tempfile.mkdtemp())
     (d / "q.jpg").write_bytes(quadro)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(d / "q.jpg"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
-                    "-vf", "scale=1188:2112,zoompan=z='min(zoom+0.0007,1.1)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=210:s=1080x1920:fps=30,format=yuv420p",
-                    "-t", "7", "-c:v", "libx264", "-preset", "veryfast", "-crf", "24", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+                    "-vf", "scale=1188:2112,zoompan=z='min(zoom+0.0006,1.1)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=240:s=1080x1920:fps=30,format=yuv420p",
+                    "-t", "8", "-c:v", "libx264", "-preset", "veryfast", "-crf", "24", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
     caminho = f"ig/{pid}.mp4"
     subir_github(caminho, (d / "r.mp4").read_bytes())
     return caminho
@@ -528,6 +528,9 @@ def main():
             if p.get("tipo") == "oferta_dia":
                 extra = montar_oferta(p, st)
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
+            if p.get("tipo") == "reels" and not extra:
+                quadro = requests.get(url_img(p["imagens"][0]), timeout=30).content
+                extra = {"video": fazer_reels(quadro, p["id"]), "imagens": p["imagens"], "titulo": p.get("titulo")}
             res = publicar_reels(extra["video"], p["legenda"]) if extra.get("video") else publicar(p)
             st[p["id"]] = {"status": "publicado", **res, **({"trocado_de": p["trocado_de"]} if p.get("trocado_de") else {}), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
             if not extra and p.get("story_junto") and p.get("imagens"):

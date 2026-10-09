@@ -482,13 +482,20 @@ def main():
             continue
         if not pronto or feitos >= 5:
             continue
+        # não duplica: se esse mesmo post (mesma origem) já saiu por outro agendamento ou pelo "Postar agora", troca por uma oferta do dia
+        orig = p.get("origem") or ""
+        if orig and orig not in ("vaga", "story") and p.get("tipo") not in ("story", "oferta_dia") and p.get("id") != APENAS:
+            ja = [x for x in fila if x.get("origem") == orig and x["id"] != p["id"] and st.get(x["id"], {}).get("status") == "publicado"]
+            if ja:
+                print(f"já tinha saído ({ja[0]['id']}): {p.get('titulo')} vira oferta do dia")
+                p = {**p, "tipo": "oferta_dia", "trocado_de": p.get("titulo")}
         try:
             extra = {}
             if p.get("tipo") == "oferta_dia":
                 extra = montar_oferta(p, st)
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
             res = publicar_reels(extra["video"], p["legenda"]) if extra.get("video") else publicar(p)
-            st[p["id"]] = {"status": "publicado", **res, **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
+            st[p["id"]] = {"status": "publicado", **res, **({"trocado_de": p["trocado_de"]} if p.get("trocado_de") else {}), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
             if extra.get("story") and p.get("story", True):
                 try:
                     publicar({"tipo": "story", "imagens": [extra["story"]]})

@@ -2,7 +2,7 @@
    vê a prévia rodando e baixa o vídeo pronto (ou manda pro robô agendar). */
 "use strict";
 const EST = { video: "", poster: "", nome: "", arquivo: null, texto: "a gente não é rico, mas planeja cada viagem que até Deus tem orgulho da nossa fé", fonte: "Instrument Serif",
-  tam: 92, cor: "#FFFDF8", y: 50, larg: 82, brilho: 1, escuro: 25, arroba: true, minusc: false, gravando: false, lista: null, fontesExtra: null };
+  tam: 92, cor: "#FFFDF8", y: 50, larg: 82, brilho: 1, escuro: 25, arroba: true, minusc: false, maiusc: false, olho: 55, gravando: false, lista: null, fontesExtra: null };
 const FONTES_EST = [
   ["Instrument Serif", "Serifada condensada (viral)"], ["Playfair Display", "Serifada elegante"], ["DM Serif Display", "Serifada forte"], ["Gloock", "Serifada editorial"],
   ["Cormorant Garamond", "Serifada fina"], ["Patrick Hand", "Escrita à mão"], ["Caveat", "Caneta"], ["Montserrat", "Moderna (negrito)"],
@@ -19,6 +19,32 @@ async function estCarregar() {
 }
 function estFontes() { return FONTES_EST.concat((EST.fontesExtra || []).map(x => [x.nome, "Sua fonte"])); }
 
+/* efeito "olho de peixe": o centro do texto fica maior e as bordas curvam (estilo dos Reels virais) */
+function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
+  if (!forca || Rx < 4) return cv;
+  const W = cv.width, H = cv.height, c = cv.getContext("2d");
+  const x0 = Math.max(0, Math.floor(cx - Rx)), y0 = Math.max(0, Math.floor(cy - Ry)), w = Math.min(W, Math.ceil(cx + Rx)) - x0, h = Math.min(H, Math.ceil(cy + Ry)) - y0;
+  if (w <= 0 || h <= 0) return cv;
+  const src = c.getImageData(x0, y0, w, h), dst = c.createImageData(w, h), S = src.data, D = dst.data, k = 1 + forca / 100 * .5;
+  const px = (X, Y, j) => S[(Y * w + X) * 4 + j];
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const nx = (x + x0 - cx) / Rx, ny = (y + y0 - cy) / Ry, r = Math.sqrt(nx * nx + ny * ny), o = (y * w + x) * 4;
+    let sx = x, sy = y;
+    if (r < 1 && r > 0) { const f = Math.pow(r, k) / r; sx = cx + nx * f * Rx - x0; sy = cy + ny * f * Ry - y0; }
+    const ix = Math.floor(sx), iy = Math.floor(sy); if (ix < 0 || iy < 0 || ix >= w - 1 || iy >= h - 1) { if (ix >= 0 && iy >= 0 && ix < w && iy < h) { const i = (iy * w + ix) * 4; for (let j = 0; j < 4; j++) D[o + j] = S[i + j]; } continue; }
+    const fx = sx - ix, fy = sy - iy;
+    for (let j = 0; j < 4; j++) D[o + j] = (px(ix, iy, j) * (1 - fx) + px(ix + 1, iy, j) * fx) * (1 - fy) + (px(ix, iy + 1, j) * (1 - fx) + px(ix + 1, iy + 1, j) * fx) * fy;
+  }
+  c.putImageData(dst, x0, y0); return cv;
+}
+function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
+  const t = document.createElement("canvas"); t.width = W; t.height = H; const g = t.getContext("2d");
+  g.font = fonte; g.textAlign = "center"; g.textBaseline = "alphabetic"; if ("letterSpacing" in g) g.letterSpacing = c.letterSpacing || "0px";
+  let y = yCentro - (linhas.length * lh) / 2 + fs * .8, larg = 0; linhas.forEach(l => { larg = Math.max(larg, g.measureText(l).width); });
+  g.fillStyle = cor; linhas.forEach(l => { g.fillText(l, W / 2, y); y += lh; });
+  olhoDePeixe(t, W / 2, yCentro, larg / 2 * 1.18, Math.max(linhas.length * lh, fs * 2) * 1.1, forca);
+  c.save(); if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; } c.drawImage(t, 0, 0); c.restore();
+}
 /* desenha o texto (mesma função na prévia e no vídeo final) */
 function estQuebrar(c, t, w) { const out = []; t.split("\n").forEach(par => { let l = ""; par.split(/\s+/).forEach(p => { const tt = l ? l + " " + p : p; if (c.measureText(tt).width > w && l) { out.push(l); l = p; } else l = tt; }); out.push(l); }); return out; }
 function estDesenhar(c, W, H) {
@@ -26,11 +52,9 @@ function estDesenhar(c, W, H) {
   const k = W / 1080, fs = EST.tam * k, peso = FONTE_PESO[EST.fonte] || 400;
   c.font = `${peso} ${fs}px "${EST.fonte}", serif`; c.textAlign = "center"; c.textBaseline = "alphabetic";
   if ("letterSpacing" in c) c.letterSpacing = (/Serif|Gloock|Playfair/.test(EST.fonte) ? -fs * .02 : 0) + "px";
-  let t = EST.texto || ""; if (EST.minusc && t) t = t.charAt(0).toLowerCase() + t.slice(1);
-  const L = estQuebrar(c, t, W * EST.larg / 100), lh = fs * 1.02;
-  let y = H * EST.y / 100 - (L.length * lh) / 2 + fs * .8;
-  c.save(); if (EST.brilho) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * k; } c.fillStyle = EST.cor;
-  L.forEach(l => { c.fillText(l, W / 2, y); y += lh; }); c.restore();
+  let t = EST.texto || ""; if (EST.minusc && t) t = t.charAt(0).toLowerCase() + t.slice(1); if (EST.maiusc) t = t.toUpperCase();
+  const L = estQuebrar(c, t, W * EST.larg / 100), lh = fs * (EST.maiusc ? .95 : 1.02);
+  textoOlho(c, W, H, L, c.font, fs, lh, H * EST.y / 100, EST.cor, EST.brilho, EST.olho);
   if ("letterSpacing" in c) c.letterSpacing = "0px";
   if (EST.arroba) { c.save(); c.globalAlpha = .85; c.font = `600 ${30 * k}px "Plus Jakarta Sans", sans-serif`; c.fillStyle = EST.cor; c.fillText("@partiu.085", W / 2, H - 340 * k); c.restore(); }
 }
@@ -111,10 +135,10 @@ function pEstudio() {
         <div class="card"><b>1. Vídeo</b><div class="est-vids">${(EST.lista || []).map(v => `<button class="est-vid ${v.src === EST.video ? "on" : ""}" data-act="estvid" data-src="${esc(v.src)}" data-poster="${esc(v.poster)}" data-nome="${esc(v.nome)}" style="background-image:url(${esc(v.poster)})"></button>`).join("")}
           <label class="est-vid est-up">＋<small>seu vídeo</small><input type="file" accept="video/*" id="est-file" hidden></label></div></div>
         <div class="card"><b>2. Texto</b><textarea id="est-txt" rows="3">${esc(EST.texto)}</textarea>
-          <label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula (estilo viral)</label></div>
+          <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label></div></div>
         <div class="card"><b>3. Fonte</b><div class="est-fontes">${estFontes().map(([f, d]) => `<button class="est-f ${f === EST.fonte ? "on" : ""}" data-act="estfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}
           <label class="est-f est-up">＋ Enviar fonte<small>.ttf ou .otf</small><input type="file" accept=".ttf,.otf,.woff,.woff2" id="est-font" hidden></label></div>
-          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("escuro", "Escurecer vídeo", 0, 60)}</div>
+          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}</div>
           <div class="est-cores">${["#FFFDF8", "#F6EBD0", "#F5C531", "#FFFFFF", "#111111"].map(c => `<button class="est-cor ${c === EST.cor ? "on" : ""}" data-act="estcor" data-c="${c}" style="background:${c}"></button>`).join("")}
             <label class="chk"><input type="checkbox" data-est="brilho" ${EST.brilho ? "checked" : ""}> sombra</label><label class="chk"><input type="checkbox" data-est="arroba" ${EST.arroba ? "checked" : ""}> @partiu.085</label></div></div>
         <div class="card"><b>4. Pronto</b><div class="est-fim"><label class="est-r"><span>Duração (s)</span><input type="number" id="est-dur" min="3" max="30" value="9"></label>

@@ -1022,8 +1022,7 @@ function textoReels(c, t) {
   c.font = `400 ${fs}px ${FONTE_REELS}`; if ("letterSpacing" in c) c.letterSpacing = "-3px";
   const L = quebrar(c, txt, SW - 200, fs, FONTE_REELS, 400);
   let y = SH * .52 - (L.length * lh) / 2 + fs * .78;
-  c.save(); c.shadowColor = "rgba(255,240,220,.35)"; c.shadowBlur = 18; c.fillStyle = "#FFFDF8"; c.textAlign = "center"; c.textBaseline = "alphabetic";
-  L.forEach(l => { c.font = `400 ${fs}px ${FONTE_REELS}`; c.fillText(l, SW / 2, y); y += lh; }); c.restore();
+  textoOlho(c, SW, SH, L, `400 ${fs}px ${FONTE_REELS}`, fs, lh, SH * .52, "#FFFDF8", true, 55);
   if ("letterSpacing" in c) c.letterSpacing = "0px";
   c.save(); c.globalAlpha = .8; T(c, "@partiu.085", SW / 2, SH - 360, 30, FONTE_REELS, "#FFFDF8", "center", 400); c.restore();
 }

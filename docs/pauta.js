@@ -326,11 +326,11 @@ function noticiaHTML() {
   const N = PA.nt, lista = (PA.noticias || []).slice(0, 10);
   if (!PA.noticias) getJSON("noticias.json", { itens: [] }).then(d => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
   return `<div class="card pa-nt"><h3>📰 Notícias que o robô achou</h3>
-    <div class="desc">Toque em <b>✨ Virar carrossel</b> e a IA monta o post explicando a novidade, com a nossa cara. Viu outra novidade no Instagram? Use <a href="#criar"><b>✨ Criar post com IA</b></a> e cole o print.</div>
+    <div class="desc">Ideias de pauta do dia. Toque em <b>Abrir</b> pra ler, ou em <b>Usar</b> pra montar uma arte simples com a novidade.</div>
     ${lista.length ? `<div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni"><div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
-      <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm pri" data-act="ntia" data-i="${i}">✨ Virar carrossel</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
+      <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm" data-act="ntusar" data-i="${i}">Usar</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
   </div>
-  <details class="card pa-nt"><summary><b>Modo manual</b> (arte única, sem IA)</summary>
+  <details class="card pa-nt" id="pa-man" ${N.titulo ? "open" : ""}><summary><b>Montar arte da notícia</b></summary>
     <div class="form pa-nt-f" style="margin-top:12px">
       <div class="field"><label>Fonte (aparece na arte)</label><input data-nt="fonte" value="${esc(N.fonte)}" placeholder="@aeroportodefortaleza"></div>
       <div class="field"><label>Etiqueta</label><input data-nt="kicker" value="${esc(N.kicker)}"></div>
@@ -362,7 +362,6 @@ document.addEventListener("change", e => { if (e.target.dataset && e.target.data
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
   if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
   else if (b.dataset.act === "ntgerar") { if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
-  else if (b.dataset.act === "ntia") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; crAbrirCom(`${x.titulo}${x.resumo ? "\n" + x.resumo : ""}\nLink: ${x.link}`, x.fonte || "", "noticia"); }
   else if (b.dataset.act === "ntusar") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; Object.assign(PA.nt, { link: x.link, fonte: x.fonte || "", texto: x.titulo + (x.resumo ? "\n" + x.resumo : ""), titulo: curto(x.titulo, 70), kicker: "Novidade" }); PA.nt.pontos = extrairPontos(PA.nt.texto) || x.titulo; render(); } });
 
 /* ================= página ================= */

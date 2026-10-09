@@ -63,41 +63,108 @@ async function confirmarAgendar(agora) {
 }
 function dataHora(q) { return `${q.slice(8, 10)}/${q.slice(5, 7)} às ${q.slice(11, 16)}`; }
 
-/* ---------- página */
+/* ---------- página: números do perfil + agenda */
+IGF.per = 7; IGF.ord = "recentes";
+const igN = v => v == null ? "–" : milN(v);
+const igSoma = (L, k) => L.reduce((a, d) => a + (+d[k] || 0), 0);
+function igDias(c) {
+  const D = c.dias || {}, hoje = hojeISO(), out = [];
+  for (let k = 89; k >= 0; k--) { const d = diaMenos(hoje, k); out.push({ dia: d, ...(D[d] || {}), tem: !!D[d] }); }
+  // seguidores por dia: parte do número de hoje e volta descontando quem entrou e saiu
+  let seg = c.seguidores || 0;
+  for (let i = out.length - 1; i >= 0; i--) { out[i].seg = seg; if (out[i].tem) seg -= (out[i].seguiram || 0) - (out[i].deixaram || 0); }
+  const h = Object.fromEntries((c.historico || []).map(x => [x.dia, x.seguidores])); out.forEach(d => { if (h[d.dia] != null) d.seg = h[d.dia]; });
+  return out;
+}
+function igSvgLinha(pts, cor = "#7C5CE0") {
+  if (pts.length < 2) return `<div class="sub">O gráfico aparece com 2 dias de dados.</div>`;
+  const W = 640, H = 170, P = 8, vs = pts.map(p => p.v), mn = Math.min(...vs), mx = Math.max(...vs), r = mx - mn || 1;
+  const x = i => P + i * (W - 2 * P) / (pts.length - 1), y = v => H - 22 - (v - mn) / r * (H - 44);
+  const d = pts.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" class="ig-svg"><path d="${d} L${x(pts.length - 1)},${H - 22} L${x(0)},${H - 22}Z" fill="${cor}" opacity=".10"/><path d="${d}" fill="none" stroke="${cor}" stroke-width="3" stroke-linejoin="round"/>
+    <text x="${P}" y="14" class="ig-ax">${milN(mx)}</text><text x="${P}" y="${H - 26}" class="ig-ax">${milN(mn)}</text>
+    <text x="${P}" y="${H - 4}" class="ig-ax">${pts[0].l}</text><text x="${W - P}" y="${H - 4}" class="ig-ax" text-anchor="end">${pts[pts.length - 1].l}</text></svg>`;
+}
+function igSvgBarras(L, posts) {
+  const W = 640, H = 190, mid = 95, n = L.length, bw = (W - 16) / n;
+  const mx = Math.max(1, ...L.map(d => Math.max(d.seguiram || 0, d.deixaram || 0)));
+  const s = v => (v || 0) / mx * (mid - 22);
+  return `<svg viewBox="0 0 ${W} ${H}" class="ig-svg"><line x1="8" x2="${W - 8}" y1="${mid}" y2="${mid}" stroke="currentColor" opacity=".2"/>
+    ${L.map((d, i) => { const x = 8 + i * bw + bw * .15, w = bw * .7, p = posts[d.dia];
+      return `<g><title>${dataCurta(d.dia).toLowerCase()}: +${d.seguiram || 0} entraram, −${d.deixaram || 0} saíram${p ? ` · ${p} post${p > 1 ? "s" : ""}` : ""}</title>
+      <rect x="${x}" y="${mid - s(d.seguiram)}" width="${w}" height="${s(d.seguiram)}" rx="2" fill="#22A06B"/><rect x="${x}" y="${mid}" width="${w}" height="${s(d.deixaram)}" rx="2" fill="#E5484D"/>
+      ${p ? `<circle cx="${x + w / 2}" cy="12" r="5" fill="#7C5CE0"/>` : ""}</g>`; }).join("")}
+    <text x="8" y="${H - 4}" class="ig-ax">${dataCurta(L[0].dia).toLowerCase()}</text><text x="${W - 8}" y="${H - 4}" class="ig-ax" text-anchor="end">hoje</text></svg>`;
+}
+function igDiagnostico(c, L, ant, M) {
+  const out = [], n = L.length, ent = igSoma(L, "seguiram"), sai = igSoma(L, "deixaram"), liq = ent - sai;
+  if (L.some(d => d.tem)) out.push(liq < 0 ? ["neg", `Nos últimos ${n} dias o perfil <b>perdeu ${milN(-liq)} seguidores</b>: entraram ${milN(ent)} e saíram ${milN(sai)} (média de ${(sai / n).toFixed(0)} saindo por dia).`]
+    : ["pos", `Nos últimos ${n} dias o perfil <b>ganhou ${milN(liq)} seguidores</b>: entraram ${milN(ent)} e saíram ${milN(sai)}.`]);
+  const ult = M[0]; const dias = ult ? Math.floor((Date.now() - new Date(ult.quando.replace("+0000", "Z")).getTime()) / 864e5) : null;
+  if (dias == null) out.push(["neg", "Ainda não tem nenhum post no perfil."]);
+  else if (dias >= 3) out.push(["neg", `O último post foi há <b>${dias} dias</b>. Perfil parado faz o seguidor esquecer e deixar de seguir. Meta: <b>1 post por dia</b> no feed + stories todo dia.`]);
+  else out.push(["pos", `Último post há ${dias === 0 ? "menos de 1 dia" : dias + " dia" + (dias > 1 ? "s" : "")}. Mantém o ritmo.`]);
+  const per = M.filter(m => m.quando.slice(0, 10) >= L[0].dia);
+  if (per.length) out.push(["", `${per.length} post${per.length > 1 ? "s" : ""} no período.`]);
+  const a = igSoma(L, "alcance"), aa = igSoma(ant, "alcance");
+  if (a || aa) out.push([a >= aa ? "pos" : "neg", `Alcance da conta: <b>${milN(a)}</b> contas no período${aa ? ` (${a >= aa ? "+" : ""}${Math.round((a / aa - 1) * 100)}% vs período anterior)` : ""}.`]);
+  const best = M.slice().sort((x, y) => (y.seguiram || 0) - (x.seguiram || 0))[0];
+  if (best && best.seguiram) out.push(["pos", `O post que mais trouxe seguidor até agora (${best.seguiram}) foi de ${dataCurta(best.quando.slice(0, 10)).toLowerCase()} de ${best.quando.slice(0, 4)}: <a href="${esc(best.link)}" target="_blank" rel="noopener">${esc(curto(best.legenda || "ver post", 60))}</a>. Vale repetir o formato.`]);
+  const tipos = {}; M.forEach(m => { if (m.alcance != null) (tipos[m.tipo] = tipos[m.tipo] || []).push(m.alcance); });
+  const med = Object.entries(tipos).filter(([, v]) => v.length >= 2).map(([t, v]) => [t, v.reduce((p, q) => p + q, 0) / v.length]).sort((p, q) => q[1] - p[1]);
+  if (med.length >= 2) out.push(["", `Formato que mais alcança: <b>${med[0][0]}</b> (média ${milN(Math.round(med[0][1]))}) contra ${med[1][0]} (${milN(Math.round(med[1][1]))}).`]);
+  return out;
+}
+function igPostCard(m) {
+  const t = { carrossel: "Carrossel", reels: "Reels", video: "Vídeo", foto: "Foto" }[m.tipo] || m.tipo;
+  const met = [["alcance", "👀", "alcance"], ["curtidas", "❤️", "curtidas"], ["comentarios", "💬", "comentários"], ["salvos", "🔖", "salvos"], ["compartilhamentos", "↗️", "compartilhamentos"], ["seguiram", "➕", "seguidores ganhos"]];
+  return `<a class="ig-post" href="${esc(m.link)}" target="_blank" rel="noopener"><div class="ig-pimg">${m.thumb ? `<img src="${esc(m.thumb)}" alt="" loading="lazy" onerror="this.remove()">` : ""}<span>${t}</span></div>
+    <div class="ig-pi"><small>${dataCurta(m.quando.slice(0, 10)).toLowerCase()} ${m.quando.slice(0, 4)}</small><p>${esc(curto(m.legenda || "(sem legenda)", 70))}</p>
+    <div class="ig-m">${met.map(([k, e, tt]) => m[k] != null ? `<span title="${tt}">${e} <b>${milN(m[k])}</b></span>` : "").join("")}</div></div></a>`;
+}
 function pInstagram() {
   carregarIG();
   const c = IGF.conta, F = IGF.fila, S_ = IGF.st || {};
   const setup = !c || !c.ok;
-  const hist = (c && c.historico) || [], h7 = hist.length > 1 ? hist[hist.length - 1].seguidores - (hist[Math.max(0, hist.length - 8)].seguidores || 0) : null;
   const st = p => (S_[p.id] || {}).status || (p.aprovado ? "agendado" : "rascunho");
   const chip = s => ({ agendado: `<span class="st verde">agendado</span>`, rascunho: `<span class="st">rascunho · falta aprovar</span>`, publicado: `<span class="st verde">✓ publicado</span>`, erro: `<span class="st vermelho">erro</span>` }[s]);
   const thumb = p => `https://raw.githubusercontent.com/${REPO}/main/docs/${p.imagens[0]}`;
   const pend = (F || []).filter(p => st(p) !== "publicado").sort((a, b) => a.quando.localeCompare(b.quando));
-  const pub = (F || []).filter(p => st(p) === "publicado").sort((a, b) => ((S_[b.id] || {}).publicado_em || "").localeCompare((S_[a.id] || {}).publicado_em || ""));
   const linhaFila = p => { const s = st(p), e = S_[p.id] || {};
     return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${p.tipo === "story" ? "Story" : p.tipo === "carrossel" ? `Carrossel · ${p.imagens.length} telas` : "Feed"} · ${dataHora(p.quando)} ${chip(s)}</small>
-      ${s === "erro" ? `<small class="neg">${esc(e.erro || "")}</small>` : ""}${p.legenda ? `<small class="ig-leg">${esc(p.legenda.slice(0, 140))}${p.legenda.length > 140 ? "…" : ""}</small>` : ""}</div>
+      ${s === "erro" ? `<small class="neg">${esc(e.erro || "")}</small>` : ""}</div>
       <div class="ig-a">${s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
         ${s === "erro" ? `<button class="bt sm pri" data-act="igtentar" data-id="${p.id}">${ic("refresh")}Tentar de novo</button>` : ""}
         <button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button></div></div>`; };
-  const linhaPub = p => { const e = S_[p.id] || {}, m = e.metricas || {};
-    return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${e.publicado_em ? dataHora(e.publicado_em) : ""}${e.link ? ` · <a href="${esc(e.link)}" target="_blank" rel="noopener">ver no Instagram ↗</a>` : ""}</small></div>
-      <div class="ig-m">${[["curtidas", "❤️"], ["comentarios", "💬"], ["alcance", "👀"], ["salvos", "🔖"], ["compartilhamentos", "↗️"]].map(([k, e_]) => m[k] != null ? `<span title="${k}">${e_} <b>${milN(m[k])}</b></span>` : "").join("") || `<span class="sub">números aparecem em até 1h</span>`}</div></div>`; };
-  return head("Instagram", "Agenda dos posts: você aprova, o robô publica sozinho no horário e traz os números. Pra agendar, use o botão 📅 nas artes da Pauta ou do Conversor.",
-    `<button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
-    (setup ? `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Conectar o Instagram (uma vez só)"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : ""}
-      <ol><li>No app do Instagram do <b>@partiu.085</b>: Configurações › Tipo de conta › mude pra <b>conta profissional</b> (Criador de conteúdo ou Empresa). É grátis.</li>
-        <li>Em <a href="https://developers.facebook.com/apps" target="_blank" rel="noopener">developers.facebook.com</a>, crie um app (tipo <b>Empresa</b>) e adicione o produto <b>Instagram</b> › “API com login do Instagram”.</li>
-        <li>Em “Gerar tokens de acesso”, adicione a conta @partiu.085 e gere o token. Copie também o número do <b>ID da conta</b>.</li>
-        <li>Cole os dois em <a href="#ajustes">Ajustes › Integrações</a>: <code>IG_TOKEN</code> e <code>IG_USER_ID</code>. Pronto: o robô passa a publicar e a trazer os números.</li></ol>
-      <p class="sub">Se quiser, eu faço esse passo a passo junto com você pelo navegador.</p></div>`
-    : `<div class="grid kpis">${kpi("Seguidores", milN(c.seguidores || 0), h7 != null ? `${h7 >= 0 ? "+" : ""}${h7} nos últimos 7 dias` : "o crescimento aparece a partir de amanhã", true, "users")}
-        ${kpi("Posts no perfil", milN(c.posts || 0), `@${esc(c.usuario || "")}`, false, "image")}
-        ${kpi("Agendados", pend.filter(p => st(p) === "agendado").length, `${pend.filter(p => st(p) === "rascunho").length} esperando aprovação`, false, "calendar")}</div>
-      ${c.expira ? `<p class="sub">Conexão válida até ${dataHora(c.expira)} (o robô renova sozinho).</p>` : ""}`) +
-    `<h2 class="mv-t">Agenda</h2>${F == null ? `<div class="card vazio">Carregando…</div>` : pend.length ? `<div class="card ig-lista">${pend.map(linhaFila).join("")}</div>` : `<div class="card vazio">Nada agendado. Vá em <a href="#pauta">Pauta do Instagram</a> e toque em 📅 Agendar numa arte.</div>`}
-    <h2 class="mv-t">Publicados</h2>${pub.length ? `<div class="card ig-lista">${pub.map(linhaPub).join("")}</div>` : `<div class="card vazio">Os posts publicados pelo robô aparecem aqui, com curtidas, comentários, alcance e salvos.</div>`}`;
+  if (setup) return head("Instagram: números", "Crescimento do perfil, desempenho de cada post e agenda.") + `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Instagram ainda não conectado"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : `<p class="sub">Carregando…</p>`}</div>`;
+
+  const per = IGF.per, T = igDias(c), L = T.slice(-per), ant = T.slice(-2 * per, -per);
+  const M = (c.midias || []).slice().sort((a, b) => b.quando.localeCompare(a.quando));
+  const postsDia = {}; M.forEach(m => { const d = new Date(new Date(m.quando.replace("+0000", "Z")).getTime() - 3 * 36e5).toISOString().slice(0, 10); postsDia[d] = (postsDia[d] || 0) + 1; });
+  const ent = igSoma(L, "seguiram"), sai = igSoma(L, "deixaram"), liq = ent - sai;
+  const alc = igSoma(L, "alcance"), alcA = igSoma(ant, "alcance"), int_ = igSoma(L, "interacoes"), intA = igSoma(ant, "interacoes");
+  const pct = (a, b) => b ? `${a >= b ? "▲" : "▼"} ${Math.abs(Math.round((a / b - 1) * 100))}% vs ${per} dias antes` : "sem comparação ainda";
+  const ord = { recentes: () => 0, alcance: (a, b) => (b.alcance || 0) - (a.alcance || 0), curtidas: (a, b) => (b.curtidas || 0) - (a.curtidas || 0), salvos: (a, b) => (b.salvos || 0) + (b.compartilhamentos || 0) - (a.salvos || 0) - (a.compartilhamentos || 0), seguiram: (a, b) => (b.seguiram || 0) - (a.seguiram || 0) }[IGF.ord];
+  const MP = IGF.ord === "recentes" ? M : M.slice().sort(ord);
+  const faltaHist = L.filter(d => !d.tem).length;
+  return head("Instagram: números", `@${esc(c.usuario || "")} · atualiza sozinho a cada hora · última leitura ${haQuanto(c.quando)}`, `<button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
+    `<div class="ig-bar">${pills("igper", String(per), [["7", "7 dias"], ["14", "14 dias"], ["30", "30 dias"]])}</div>
+    <div class="grid kpis ig-k4">${kpi("Seguidores", milN(c.seguidores || 0), `<span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias`, true, "users")}
+      ${kpi("Entraram × saíram", `<span class="pos">+${milN(ent)}</span> <span class="neg">−${milN(sai)}</span>`, `média de ${(ent / per).toFixed(0)} entrando e ${(sai / per).toFixed(0)} saindo por dia`, false, "swap")}
+      ${kpi("Alcance", milN(alc), pct(alc, alcA), false, "globe")}
+      ${kpi("Interações", milN(int_), pct(int_, intA), false, "star")}</div>
+    ${faltaHist ? `<p class="sub">Completando o histórico: ${per - faltaHist} de ${per} dias carregados (o resto chega nas próximas horas).</p>` : ""}
+    <div class="card ig-diag"><h3>Como estamos</h3><ul>${igDiagnostico(c, L, ant, M).map(([k, t]) => `<li class="${k}">${t}</li>`).join("")}</ul></div>
+    <div class="ig-graf"><div class="card"><h3>Seguidores</h3>${igSvgLinha(L.map(d => ({ v: d.seg, l: dataCurta(d.dia).toLowerCase() })))}</div>
+      <div class="card"><h3>Quem entrou e quem saiu, por dia</h3>${igSvgBarras(L, postsDia)}<div class="ig-leg"><span><i style="background:#22A06B"></i>entraram</span><span><i style="background:#E5484D"></i>deixaram de seguir</span><span><i style="background:#7C5CE0;border-radius:50%"></i>dia com post</span></div></div>
+      <div class="card"><h3>Alcance da conta por dia</h3>${igSvgLinha(L.map(d => ({ v: d.alcance || 0, l: dataCurta(d.dia).toLowerCase() })), "#0EA5E9")}</div></div>
+    <div class="ig-sec"><h2 class="mv-t">Posts (${M.length})</h2>${pills("igord", IGF.ord, [["recentes", "Recentes"], ["alcance", "Mais alcance"], ["curtidas", "Mais curtidas"], ["salvos", "Mais salvos/compart."], ["seguiram", "Mais seguidores"]])}</div>
+    ${MP.length ? `<div class="ig-posts">${MP.slice(0, 30).map(igPostCard).join("")}</div>` : `<div class="card vazio">Nenhum post no perfil ainda.</div>`}
+    ${(c.stories || []).length ? `<h2 class="mv-t">Stories recentes</h2><div class="ig-posts">${c.stories.slice(0, 12).map(s => igPostCard({ ...s, tipo: "story", legenda: "Story" })).join("")}</div>` : ""}
+    <details class="card ig-ag" ${pend.length ? "open" : ""}><summary><b>Agenda do robô</b> <small>${pend.length ? `${pend.length} na fila` : "vazia"} · publica sozinho o que estiver aprovado</small></summary>
+      ${F == null ? `<div class="vazio">Carregando…</div>` : pend.length ? `<div class="ig-lista">${pend.map(linhaFila).join("")}</div>` : `<div class="vazio">Nada agendado. Se quiser que o robô publique, use 📅 Agendar nas artes da Pauta.</div>`}</details>`;
 }
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="ig"]'); if (!b) return; if (b.dataset.g === "igper") IGF.per = +b.dataset.v; else if (b.dataset.g === "igord") IGF.ord = b.dataset.v; });
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="ig"]'); if (!b) return;
   const act = b.dataset.act;

@@ -732,6 +732,8 @@ async function mcVer(id) {
     <div class="ej-acts"><button class="bt pri lg" data-act="mcagora" data-id="${esc(id)}">⚡ Postar agora</button><button class="bt lg" data-act="mcvadd" data-id="${esc(id)}">${n >= 0 ? "Tirar da lista" : "+ Escolher esse"}</button><button class="bt" data-act="mcvbaixar">${ic("down")}Baixar</button><button class="bt ghost" data-act="mcvfechar">Fechar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
   const box = document.getElementById("mcv-t");
+  if (p.video && p.overlay) { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d"));
+    box.innerHTML = `<div class="rv-prev"><video src="${p.video}" autoplay muted loop playsinline></video><img src="${o.toDataURL("image/png")}" alt=""></div>`; return; }
   for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
 }
 function mcFecharVer() { const d = document.getElementById("mcv"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
@@ -1005,28 +1007,34 @@ async function fCarrH(x) {
 const REELS = [
   { id: "r-pensar", clip: "janela-1", t: "A promoção: dura 2 horas.\nEu: pensando por 3 dias.", leg: "E depois reclama que só tem preço caro 😂 No nosso radar o aviso chega na hora." },
   { id: "r-memoria", clip: "asa-1", t: "Não é gasto.\nÉ memória que ninguém tira de você.", leg: "Viajar é o único gasto que te deixa mais rico ✈️ Concorda?" },
-  { id: "r-cardio", clip: "aeroporto-3", t: "Meu único cardio:\ncorrer no aeroporto pra não perder a conexão.", leg: "Quem nunca? 🏃‍♂️✈️ Marca quem é assim!" },
+  { id: "r-tempo", clip: "janela-3", t: "Dinheiro a gente recupera.\nTempo, não.", leg: "Bora marcar essa viagem? ✈️" },
   { id: "r-janelinha", clip: "janela-2", t: "Não é sobre o destino.\nÉ sobre a janelinha.", leg: "Janela ou corredor? Comenta aqui 👇" },
-  { id: "r-mundo", clip: "nuvens-2", t: "Fortaleza é linda.\nMas o mundo também é.", leg: "Bora conhecer? 🌎 Passagem barata saindo de FOR todo dia no nosso radar." },
-  { id: "r-14", clip: "asa-2", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", leg: "Admite que você também faz isso 😂👇" },
-  { id: "r-mala", clip: "mala-3", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", leg: "Clássico 😂 Marca quem é assim!" },
+  { id: "r-rico", clip: "asa-2", t: "A gente não é rico.\nMas acha passagem barata saindo de Fortaleza.", leg: "Quem se identifica? 😂✈️ O radar avisa quando aparece." },
+  { id: "r-14", clip: "asa-1", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", leg: "Admite que você também faz isso 😂👇" },
+  { id: "r-mala", clip: "aeroporto-2", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", leg: "Clássico 😂 Marca quem é assim!" },
   { id: "r-milha", clip: "pouso-2", t: "Tem gente que junta pra trocar de carro.\nEu junto milha.", leg: "Prioridades 😌✈️ Você é de qual time?" },
-  { id: "r-praia", clip: "praia-1", t: "Morar em Fortaleza e ainda sonhar com praia nas férias.", leg: "Cearense não cansa de mar, né? 🌊" },
-  { id: "r-conexao", clip: "janela-3", t: "Voo direto: R$ 1.900.\nCom 2 conexões e 14 horas: R$ 640.\nEu: perfeito.", leg: "Quem encara a conexão pra economizar? 🙋‍♂️" },
+  { id: "r-segunda", clip: "janela-1", t: "Trabalhe duro.\nNão pelo celular do ano.\nPor segundas-feiras com vista assim.", leg: "Essa é a meta ✈️☁️" },
+  { id: "r-conexao", clip: "janela-3", t: "Voo direto: R$ 1.900.\nCom 2 conexões: R$ 640.\nEu: perfeito.", leg: "Quem encara a conexão pra economizar? 🙋‍♂️" },
 ];
-function textoReels(c, t) { const L = t.split("\n"), fs = 74, lh = fs * 1.22, linhas = L.flatMap(l => quebrar(c, l, SW - 220, fs, MARCA.corpo, 800));
-  let y = SH * .46 - (linhas.length * lh) / 2 + fs; c.save(); c.shadowColor = "rgba(0,0,0,.55)"; c.shadowBlur = 18;
-  linhas.forEach(l => { T(c, l, SW / 2, y, fs, MARCA.corpo, "#fff", "center", 800); y += lh; }); c.restore();
-  T(c, "@partiu.085", SW / 2, SH - 330, 32, MARCA.corpo, "rgba(255,255,255,.9)", "center", 800); }
-function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.addColorStop(0, "rgba(0,0,0,.15)"); g.addColorStop(.5, "rgba(0,0,0,.45)"); g.addColorStop(1, "rgba(0,0,0,.2)"); c.fillStyle = g; c.fillRect(0, 0, SW, SH); textoReels(c, t); }
+const FONTE_REELS = '"Instrument Serif", "Playfair Display", Georgia, serif';
+function textoReels(c, t) {
+  const fs = 118, lh = fs * 1.0, L = t.split("\n").flatMap(l => quebrar(c, l, SW - 170, fs, FONTE_REELS, 400));
+  let y = SH * .47 - (L.length * lh) / 2 + fs * .8;
+  c.save(); c.shadowColor = "rgba(0,0,0,.45)"; c.shadowBlur = 24;
+  L.forEach(l => { T(c, l, SW / 2, y, fs, FONTE_REELS, "#F6EBD0", "center", 400); y += lh; }); c.restore();
+  c.save(); c.globalAlpha = .85; T(c, "PARTIU 085", 90, 250, 24, MARCA.corpo, "#F6EBD0", "left", 700, 4); T(c, "//", SW / 2, 250, 24, MARCA.corpo, "#F6EBD0", "center", 700);
+  T(c, "VIAJAR", SW - 90, 250, 24, MARCA.corpo, "#F6EBD0", "right", 700, 4); T(c, "@PARTIU.085", SW / 2, SH - 360, 24, MARCA.corpo, "#F6EBD0", "center", 700, 4); c.restore();
+}
+function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.addColorStop(0, "rgba(0,0,0,.25)"); g.addColorStop(.5, "rgba(0,0,0,.35)"); g.addColorStop(1, "rgba(0,0,0,.3)"); c.fillStyle = g; c.fillRect(0, 0, SW, SH); textoReels(c, t); }
 async function fReels(x) {
+  try { await document.fonts.load(`400 118px ${FONTE_REELS}`); } catch (e) { }
   const fr = await fotoMidia("clip-v-" + x.clip);
-  return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.split("\n")[0].slice(0, 60), porque: "Reels com vídeo real alcança quem ainda não te segue. Se postar pelo celular, dá pra pôr música em alta.", fmt: "Reels 9:16 · 9s",
+  return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.replace(/\n/g, " ").slice(0, 60), porque: "Clique pra ver o vídeo rodando. Pelo celular dá pra pôr música em alta antes de postar.", fmt: "Reels 9:16 · 9s",
     overlay: c => camadaReels(c, x.t),
     telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (fr) cobrir(c, fr, 0, 0, SW, SH); camadaReels(c, x.t); }],
     legenda: `${x.leg}\n\n✈️ Segue o @partiu.085: passagem barata saindo de Fortaleza\n\n${HASH}` };
 }
-async function postsHumor() { return [...(await Promise.all(CARR_H.map(fCarrH))), ...(await Promise.all(REELS.map(fReels))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
+async function postsHumor() { return Promise.all(REELS.map(fReels)); }
 
 /* ================= página ================= */
 async function ideiasHoje() {
@@ -1051,7 +1059,7 @@ function pPauta() {
   PA.lista = null;
   setTimeout(montarPauta, 0);
   return head("Pauta do Instagram", PA.aba === "montar" ? "Todos os posts prontos de um lado. Escolha os que vão sair, arraste pra ordem que quiser e agende tudo de uma vez." : "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto.") +
-    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["prova", "🏆 Prova"], ["humor", "😂 Humor"], ["biblioteca", "Guias"]])}
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["humor", "😂 Humor"], ["biblioteca", "Guias"]])}
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
     ${PA.aba === "noticia" ? noticiaHTML() : ""}${PA.aba === "prova" ? provaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><div class="al-acts" style="margin-bottom:10px"><button class="bt pri" data-act="iglote" data-s="1">${ic("calendar")}Agendar a semana 1 inteira (2 por dia)</button><button class="bt" data-act="iglote" data-s="2">${ic("calendar")}Agendar a semana 2</button></div><b>Plano:</b> semana 1 aquece o perfil (2 posts por dia, 12h e 19h, cores em rodízio 🟦⬜🟨 pra o grid ficar organizado) + stories. Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}

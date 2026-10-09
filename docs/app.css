@@ -997,3 +997,4 @@ body.ej-on{overflow:hidden}
 .ig-auto{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}.au-h{display:flex;align-items:center;gap:6px;font-size:13px}.au-h input{width:150px;height:36px;border:0;border-radius:99px;padding:0 14px;background:var(--tile);color:inherit;font:inherit}
 .ig-ver{cursor:zoom-in}.ig-legv{white-space:pre-wrap;max-height:260px;overflow:auto;padding:12px;border-radius:12px;background:var(--tile);font-size:13px;line-height:1.45}
 .mc-telas img{flex:0 0 auto;width:min(78vw,380px);height:auto;border-radius:12px;scroll-snap-align:start;box-shadow:0 6px 18px rgba(0,0,0,.2)}.mc-telas.vert img{width:min(60vw,280px)}
+.rv-prev{position:relative;width:min(70vw,340px);aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000;flex:0 0 auto}.rv-prev video,.rv-prev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}

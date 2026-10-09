@@ -1,5 +1,20 @@
 {
  "prioridades": {
+  "SAO": {
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
+  },
+  "RIO": {
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
+  },
+  "BSB": {
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
+  },
   "BHZ": {
    "prioridade": "alta",
    "auto": "alta",
@@ -36,6 +51,11 @@
    "motivo": "voo todo dia, preço muda muito"
   },
   "SLZ": {
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "voo todo dia, preço muda muito"
+  },
+  "THE": {
    "prioridade": "alta",
    "auto": "alta",
    "motivo": "voo todo dia, preço muda muito"
@@ -251,7 +271,7 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-09T11:09-03:00",
+ "quando": "2026-10-09T11:20-03:00",
  "ultimo_lote": [
   "SAO",
   "RIO",

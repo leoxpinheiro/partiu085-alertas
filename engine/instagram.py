@@ -173,8 +173,11 @@ def montar_oferta(p: dict, st: dict) -> dict:
 
 def fazer_reels(quadro: bytes, pid: str) -> str:
     """Vídeo de 7s (zoom lento) a partir do quadro 9:16. Vai pro site (GitHub Pages), que serve video/mp4."""
+    import shutil
     import subprocess
     import tempfile
+    if not shutil.which("ffmpeg"):
+        subprocess.run("sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg", shell=True, check=False)
     d = Path(tempfile.mkdtemp())
     (d / "q.jpg").write_bytes(quadro)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-loop", "1", "-i", str(d / "q.jpg"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",

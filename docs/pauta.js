@@ -650,13 +650,14 @@ const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p;
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
-const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|rv|ch|fr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("ct-") ? "conteudo" : /^(hu|hr|rv|ch|fr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
   add(await campanha(), "");
   add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
+  add(postsConteudo(), "Conteúdo");
   add(await postsHumor(), "Humor");
   add(EDU.map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
@@ -668,7 +669,7 @@ function mcCard(p, i) {
   const n = CAL.sel.indexOf(p.id), f = p.sit ? null : CAL.feitos[p.id], vivo = aoVivo(p), sit = p.sit;
   return `<div class="mc-card ${n >= 0 ? "on" : ""} ${sit ? "feito" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${(CAL.f !== "todos" && CAL.f !== mcGrupo(p)) || (sit && !CAL.verFeitos) ? "hidden" : ""}>
     <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${p.reels ? SH : PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
-    <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
+    <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.data ? ` · <b class="mc-vivo">📅 postar dia ${p.data.slice(8, 10)}/${p.data.slice(5, 7)}</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
 function slotsCal(n) { const hs = lerHorarios(CAL.hs); if (!CAL.ini || !hs.length) return [];
@@ -1082,7 +1083,7 @@ function pPauta() {
   PA.lista = null;
   setTimeout(montarPauta, 0);
   return head("Pauta do Instagram", PA.aba === "montar" ? "Todos os posts prontos de um lado. Escolha os que vão sair, arraste pra ordem que quiser e agende tudo de uma vez." : "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto.") +
-    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["humor", "😂 Humor"], ["biblioteca", "Guias"]])}
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor"], ["biblioteca", "Guias"]])}
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
     ${PA.aba === "noticia" ? noticiaHTML() : ""}${PA.aba === "prova" ? provaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><div class="al-acts" style="margin-bottom:10px"><button class="bt pri" data-act="iglote" data-s="1">${ic("calendar")}Agendar a semana 1 inteira (2 por dia)</button><button class="bt" data-act="iglote" data-s="2">${ic("calendar")}Agendar a semana 2</button></div><b>Plano:</b> semana 1 aquece o perfil (2 posts por dia, 12h e 19h, cores em rodízio 🟦⬜🟨 pra o grid ficar organizado) + stories. Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
@@ -1094,7 +1095,7 @@ async function montarPauta() {
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
   if (PA.aba === "montar") return montarBoard(g);
-  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await postsHumor() : EDU.map(x => fGuia(x));
+  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await postsHumor() : PA.aba === "conteudo" ? postsConteudo() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";

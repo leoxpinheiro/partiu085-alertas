@@ -92,7 +92,9 @@ def pistas_blogs(rotas: dict) -> list[dict]:
     return out
 
 
-NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia"]
+NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia",
+              "Fraport Fortaleza", "aeroporto Pinto Martins", "aeroporto Jericoacoara voos", "aeroporto Juazeiro do Norte voos",
+              "Fortaleza Lisboa voo", "Fortaleza Paris voo", "Ceará turismo voos alta estação", "ANAC regra bagagem passageiro"]
 
 
 def decodificar_gnews(url: str) -> str:
@@ -191,7 +193,7 @@ def noticias() -> None:
     itens, vistos = [], set()
     lim = datetime.now(timezone.utc) - timedelta(days=10)
     urls = ["https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=" + requests.utils.quote(q + " when:10d") for q in NOTICIAS_Q]
-    urls += ["https://aeroin.net/feed/", "https://www.aeroflap.com.br/feed/", "https://passageirodeprimeira.com/feed/", "https://www.melhoresdestinos.com.br/feed"]
+    urls += ["https://aeroin.net/feed/", "https://www.aeroflap.com.br/feed/", "https://passageirodeprimeira.com/feed/", "https://www.melhoresdestinos.com.br/feed", "https://pontospravoar.com/feed/"]
     for url in urls:
         try:
             x = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
@@ -206,7 +208,8 @@ def noticias() -> None:
             except Exception:  # noqa: BLE001
                 continue
             tl = sem_acento(tit)
-            if dt < lim or not re.search(r"fortaleza|ceara|nordeste", tl) or not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
+            regra = re.search(r"\banac\b.*(bagage|mala|power ?bank|carregador|liquido|passageiro)|mala de mao|power ?bank|bagagem de mao", tl)
+            if dt < lim or (not regra and not re.search(r"fortaleza|ceara|nordeste|jericoacoara|jeri\b|juazeiro", tl)) or not regra and not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):
                 continue
             chave = re.sub(r"\W+", "", tit.lower())[:60]
             if chave in vistos:

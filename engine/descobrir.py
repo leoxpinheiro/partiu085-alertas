@@ -3,6 +3,7 @@ de Fortaleza pra QUALQUER destino. Serve de 'pista': o robô principal confirma 
 from __future__ import annotations
 
 import json
+import time
 import os
 import sys
 from datetime import datetime, timedelta, timezone
@@ -94,6 +95,23 @@ def pistas_blogs(rotas: dict) -> list[dict]:
 NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Fortaleza nova rota aérea", "Fortaleza voos internacionais companhia"]
 
 
+def decodificar_gnews(url: str) -> str:
+    """Link do Google News -> link da matéria (mesmo método do site deles: pega assinatura e pede a URL)."""
+    import re
+    gid = url.split("/articles/")[1].split("?")[0]
+    h = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124 Safari/537.36"}
+    pg = requests.get(f"https://news.google.com/articles/{gid}", headers=h, timeout=15).text
+    sg = re.search(r'data-n-a-sg="([^"]+)"', pg)
+    ts = re.search(r'data-n-a-ts="([^"]+)"', pg)
+    if not (sg and ts):
+        return ""
+    req = [[["Fbv4je", f'["garturlreq",[["X","X",["X","X"],null,null,1,1,"US:en",null,1,null,null,null,null,null,0,1],"X","X",1,[1,1,1],1,1,null,0,0,null,0],"{gid}",{ts.group(1)},"{sg.group(1)}"]', None, "generic"]]]
+    r = requests.post("https://news.google.com/_/DotsSplashUi/data/batchexecute", headers={**h, "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"},
+                      data={"f.req": json.dumps(req)}, timeout=15).text
+    m = re.search(r'garturlres\\",\\"(https?://[^\\"]+)', r)
+    return m.group(1) if m else ""
+
+
 def fotos_noticias(itens: list) -> None:
     """Baixa a foto de cada notícia (do feed ou da página da matéria) e guarda pequena no site, pra usar de fundo na arte."""
     import hashlib
@@ -117,10 +135,10 @@ def fotos_noticias(itens: list) -> None:
             elif decod < 12:
                 decod += 1
                 try:
-                    from googlenewsdecoder import gnewsdecoder
-                    r = gnewsdecoder(it["link"], interval=1)
-                    if r.get("status"):
-                        it["link_real"] = r["decoded_url"]
+                    real = decodificar_gnews(it["link"])
+                    if real:
+                        it["link_real"] = real
+                    time.sleep(1)
                 except Exception as e:  # noqa: BLE001
                     print(f"! link google news: {e}")
             if not it.get("link_real"):

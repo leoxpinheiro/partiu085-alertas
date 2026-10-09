@@ -651,7 +651,7 @@ const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); }
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|ch)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|rv|ch)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
@@ -756,7 +756,7 @@ async function mcPostarAgora(id, bt) {
   if (p.sit && !confirm(`Esse post já foi ${p.sit.tipo}. Postar de novo agora?`)) return;
   bt.disabled = true; bt.textContent = "Enviando…";
   try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-    await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
+    await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels, video: p.video || "", overlay: p.overlay ? (() => { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d")); return o; })() : null }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
     await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
     const outros = (IGF.fila || []).filter(x => x.origem === p.id && ((IGF.st || {})[x.id] || {}).status !== "publicado" && x.quando > isoLocal(new Date()));
     mcFecharVer(); toast(`Enviado! O robô publica em 1 a 3 minutos.${outros.length ? ` Ele também estava agendado pra ${outros.map(x => x.quando.slice(8, 10) + "/" + x.quando.slice(5, 7) + " " + x.quando.slice(11, 16)).join(", ")}: nesse horário vai sair uma 💲 oferta do dia no lugar, sem duplicar.` : ""}`, 9000); render(); }
@@ -773,7 +773,7 @@ async function mcAgendar(bt) {
     for (let k = 0; k < L.length; k++) { const p = L[k];
       if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, reels: !!CAL.reels, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
       const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels }); }
+      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels, video: p.video || "", overlay: p.overlay ? (() => { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d")); return o; })() : null }); }
     const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
     L.forEach((p, k) => { if (!ehVaga(p.id)) CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
@@ -955,44 +955,78 @@ async function fHumorReels(x) {
 }
 /* 🧳 carrosséis humanizados (salvamento e compartilhamento) */
 const CARR_H = [
-  { id: "nao-viajo-sem", tema: ["amarelo", "creme"], capa: "7 coisas que eu não viajo sem", sub: "A 4ª salvou minha viagem mais de uma vez.", kick: "Mala pronta", itens: [
-    ["🔌", "Carregador portátil", "Celular sem bateria no aeroporto é desespero na certa. Leve um com pelo menos 10.000 mAh."],
-    ["🧴", "Kit de frasquinhos", "Shampoo e creme em frascos de até 100 ml: passa na mala de mão e não vaza."],
-    ["😴", "Travesseiro de pescoço", "Voo longo ou madrugada no aeroporto: seu pescoço agradece."],
-    ["📄", "Print de tudo", "Passagem, reserva e documentos salvos no celular. Sem internet, o print salva."],
-    ["🧥", "Casaquinho", "Avião é sempre frio, até saindo de Fortaleza no meio do dia."],
-    ["💧", "Garrafinha vazia", "Passa vazia no raio-x e você enche depois. Água de aeroporto é cara."],
-    ["🔒", "Cadeado de mala", "Mala despachada com cadeado dá mais tranquilidade."]],
+  { id: "nao-viajo-sem", foto: "mala-4", tema: ["amarelo", "creme"], capa: "7 coisas que eu não viajo sem", sub: "A 4ª salvou minha viagem mais de uma vez.", kick: "Mala pronta", itens: [
+    ["power-bank-3", "Carregador portátil", "Celular sem bateria no aeroporto é desespero na certa. Leve um com pelo menos 10.000 mAh."],
+    ["frascos-1", "Kit de frasquinhos", "Shampoo e creme em frascos de até 100 ml: passa na mala de mão e não vaza."],
+    ["passageiros-3", "Travesseiro de pescoço", "Voo longo ou madrugada no aeroporto: seu pescoço agradece."],
+    ["documentos-1", "Print de tudo", "Passagem, reserva e documentos salvos no celular. Sem internet, o print salva."],
+    ["casaco-1", "Casaquinho", "Avião é sempre frio, até saindo de Fortaleza no meio do dia."],
+    ["garrafa-3", "Garrafinha vazia", "Passa vazia no raio-x e você enche depois. Água de aeroporto é cara."],
+    ["cadeado-3", "Cadeado de mala", "Mala despachada com cadeado dá mais tranquilidade."]],
     fim: "Qual desses você não larga de jeito nenhum?", leg: "🧳 7 COISAS QUE EU NÃO VIAJO SEM\n\n🔌 Carregador portátil\n🧴 Kit de frasquinhos\n😴 Travesseiro de pescoço\n📄 Print de tudo\n🧥 Casaquinho\n💧 Garrafinha vazia\n🔒 Cadeado de mala\n\n📌 Salva pra conferir antes da próxima viagem!\n💬 Faltou alguma? Comenta aqui 👇" },
-  { id: "tipos-passageiro", tema: ["escuro", "creme"], capa: "Tipos de passageiro que você encontra em todo voo", sub: "Marca quem é o número 3 😂", kick: "Seja sincero", itens: [
-    ["👏", "O que aplaude no pouso", "Pousou? Palmas. Não importa se foi Fortaleza ➜ Recife de 1 hora."],
-    ["📸", "O fotógrafo da asa", "37 fotos da mesma asa. Todas iguais. Todas incríveis."],
-    ["😴", "O que dorme antes de decolar", "Sentou, apagou. Acorda só com o barulho do trem de pouso."],
-    ["🧍", "O que levanta antes de parar", "O avião ainda tá andando e ele já tá de pé com a mala na mão."],
-    ["🥜", "O fã do lanchinho", "Pede biscoito extra, guarda na bolsa e ainda pergunta se tem mais."],
-    ["🪟", "O dono da janelinha", "Fecha a janela no pôr do sol mais bonito da viagem."]],
+  { id: "tipos-passageiro", foto: "passageiros-3", tema: ["escuro", "creme"], capa: "Tipos de passageiro que você encontra em todo voo", sub: "Marca quem é o número 3 😂", kick: "Seja sincero", itens: [
+    ["passageiros-1", "O que aplaude no pouso", "Pousou? Palmas. Não importa se foi Fortaleza ➜ Recife de 1 hora."],
+    ["janela-4", "O fotógrafo da asa", "37 fotos da mesma asa. Todas iguais. Todas incríveis."],
+    ["janela-3", "O que dorme antes de decolar", "Sentou, apagou. Acorda só com o barulho do trem de pouso."],
+    ["passageiros-2", "O que levanta antes de parar", "O avião ainda tá andando e ele já tá de pé com a mala na mão."],
+    ["passageiros-4", "O fã do lanchinho", "Pede biscoito extra, guarda na bolsa e ainda pergunta se tem mais."],
+    ["janela-1", "O dono da janelinha", "Fecha a janela no pôr do sol mais bonito da viagem."]],
     fim: "E você, qual desses é?", leg: "✈️ TIPOS DE PASSAGEIRO QUE VOCÊ ENCONTRA EM TODO VOO\n\n👏 O que aplaude no pouso\n📸 O fotógrafo da asa\n😴 O que dorme antes de decolar\n🧍 O que levanta antes de parar\n🥜 O fã do lanchinho\n🪟 O dono da janelinha\n\n😂 Marca aquele amigo que é o número 4!\n💬 Qual é o seu? Comenta aqui 👇" },
-  { id: "precisa-ferias", tema: ["creme", "amarelo"], capa: "Sinais de que você precisa de férias urgente", sub: "Se marcou 3, já pode olhar passagem.", kick: "Teste rápido", itens: [
-    ["📅", "Você conta os dias pro feriado", "E já sabe de cabeça quantos faltam pro próximo."],
-    ["✈️", "Olha passagem no horário de trabalho", "Só pra olhar. Várias vezes por dia."],
-    ["🏖️", "Sonha com mar mesmo morando em Fortaleza", "Mas outro mar. Um mar de férias."],
-    ["😮‍💨", "Segunda-feira pesa uma tonelada", "E a sexta parece que nunca chega."],
-    ["📱", "Seu feed é só viagem", "E você salva tudo pra 'um dia'."]],
+  { id: "precisa-ferias", foto: "ferias-3", tema: ["creme", "amarelo"], capa: "Sinais de que você precisa de férias urgente", sub: "Se marcou 3, já pode olhar passagem.", kick: "Teste rápido", itens: [
+    ["calendario-2", "Você conta os dias pro feriado", "E já sabe de cabeça quantos faltam pro próximo."],
+    ["celular-viagem-1", "Olha passagem no horário de trabalho", "Só pra olhar. Várias vezes por dia."],
+    ["praia-3", "Sonha com mar mesmo morando em Fortaleza", "Mas outro mar. Um mar de férias."],
+    ["trabalho-1", "Segunda-feira pesa uma tonelada", "E a sexta parece que nunca chega."],
+    ["ferias-4", "Seu feed é só viagem", "E você salva tudo pra 'um dia'."]],
     fim: "Quantos você marcou? Comenta o número!", leg: "🏖️ SINAIS DE QUE VOCÊ PRECISA DE FÉRIAS URGENTE\n\n📅 Conta os dias pro feriado\n✈️ Olha passagem no horário de trabalho\n🏖️ Sonha com mar mesmo morando em Fortaleza\n😮‍💨 Segunda pesa uma tonelada\n📱 Seu feed é só viagem\n\n💬 Quantos você marcou? Comenta o número 👇\n📌 Manda pra quem precisa ver isso!" },
 ];
-function fCarrH(x) {
+const MIDIA = {}; function fotoMidia(n) { if (!n) return Promise.resolve(null); if (!MIDIA[n]) MIDIA[n] = new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = `midia/${n}.jpg`; }); return MIDIA[n]; }
+function cobrir(c, im, x, y, w, h) { const sc = Math.max(w / im.naturalWidth, h / im.naturalHeight); c.save(); c.beginPath(); c.rect(x, y, w, h); c.clip(); c.drawImage(im, x + (w - im.naturalWidth * sc) / 2, y + (h - im.naturalHeight * sc) / 2, im.naturalWidth * sc, im.naturalHeight * sc); c.restore(); }
+async function fCarrH(x) {
   const n = x.itens.length + 2, ROD = "Siga @partiu.085 · ative o sininho 🔔";
-  const telas = [c => { capaTema(c, x.tema[0], x.kick, x.capa, x.sub, `1/${n}`, ROD); T(c, "ARRASTA ➜", PW - M, PH - 170, 26, MARCA.corpo, TEMA[x.tema[0]].kk, "right", 800, 3); }];
-  x.itens.forEach(([em, tit, txt], i) => telas.push(c => { const k = TEMA[x.tema[1]]; k.bg(c, PW, PH); marca(c, PW, k.dk, `${i + 2}/${n}`);
-    T(c, String(i + 1).padStart(2, "0"), M - 6, 450, 190, MARCA.titulo, k.ac);
-    c.font = `290px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; c.textAlign = "right"; c.fillText(em, PW - M + 10, 520); c.textAlign = "left";
-    const y = titulo(c, tit, M, 640, PW - 2 * M, 112, 70, k.tx, 3) + 56;
-    paragrafo(c, txt, M, y, PW - 2 * M, 46, MARCA.corpo, k.sub, 600, 1.4, 6);
+  const capa = await fotoMidia(x.foto), fotos = await Promise.all(x.itens.map(i => fotoMidia(i[0])));
+  const telas = [c => { c.fillStyle = COR.navy; c.fillRect(0, 0, PW, PH); if (capa) cobrir(c, capa, 0, 0, PW, PH);
+    const g = c.createLinearGradient(0, PH * .25, 0, PH); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.55, "rgba(11,36,64,.88)"); g.addColorStop(1, "rgba(11,36,64,.98)"); c.fillStyle = g; c.fillRect(0, 0, PW, PH);
+    marca(c, PW, true, `1/${n}`); kicker(c, x.kick, M, PH - 600, COR.am);
+    const y = titulo(c, x.capa, M, PH - 570, PW - 2 * M, 118, 64, "#fff", 3) + 30; paragrafo(c, x.sub, M, y + 20, PW - 2 * M, 36, MARCA.corpo, "rgba(255,255,255,.85)", 600, 1.3, 2);
+    T(c, "ARRASTA ➜", PW - M, PH - 90, 26, MARCA.corpo, COR.am, "right", 800, 3); }];
+  x.itens.forEach(([foto, tit, txt], i) => telas.push(c => { const k = TEMA[x.tema[1]], fh = Math.round(PH * .56), im = fotos[i];
+    k.bg(c, PW, PH); if (im) cobrir(c, im, 0, 0, PW, fh); else { c.fillStyle = COR.navy; c.fillRect(0, 0, PW, fh); }
+    const g = c.createLinearGradient(0, 0, 0, 260); g.addColorStop(0, "rgba(0,0,0,.45)"); g.addColorStop(1, "rgba(0,0,0,0)"); c.fillStyle = g; c.fillRect(0, 0, PW, 260);
+    marca(c, PW, true, `${i + 2}/${n}`);
+    c.fillStyle = COR.am; c.beginPath(); c.arc(M + 60, fh, 62, 0, 7); c.fill(); T(c, String(i + 1), M + 60, fh + 26, 76, MARCA.titulo, COR.tinta, "center");
+    const y = titulo(c, tit, M, fh + 96, PW - 2 * M, 104, 64, k.tx, 2) + 40;
+    paragrafo(c, txt, M, y + 14, PW - 2 * M, 44, MARCA.corpo, k.sub, 600, 1.38, 4);
     rodapeP(c, PW, PH, k.dk, "Salva pra depois"); }));
   telas.push(c => capaTema(c, "escuro", "Comenta aqui 👇", x.fim, "Salva esse post e manda pra quem viaja com você.", `${n}/${n}`, ROD));
-  return { id: "ch-" + x.id, grupo: "feed", tipo: "Carrossel humor", rot: "Humor · carrossel", titulo: "🧳 " + x.capa, porque: "Carrossel leve e identificável: muito salvo, compartilhado e marcado.", fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
+  return { id: "ch-" + x.id, grupo: "feed", tipo: "Carrossel humor", rot: "Humor · carrossel", titulo: "🧳 " + x.capa, porque: "Carrossel leve e identificável, com fotos reais: muito salvo, compartilhado e marcado.", fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
 }
-async function postsHumor() { return [...CARR_H.map(fCarrH), ...(await Promise.all(HUMOR.map(fHumorReels))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
+/* 🎬 Reels com vídeo real (janela, asa, aeroporto…) e frase por cima */
+const REELS = [
+  { id: "r-pensar", clip: "janela-1", t: "A promoção: dura 2 horas.\nEu: pensando por 3 dias.", leg: "E depois reclama que só tem preço caro 😂 No nosso radar o aviso chega na hora." },
+  { id: "r-memoria", clip: "asa-1", t: "Não é gasto.\nÉ memória que ninguém tira de você.", leg: "Viajar é o único gasto que te deixa mais rico ✈️ Concorda?" },
+  { id: "r-cardio", clip: "aeroporto-3", t: "Meu único cardio:\ncorrer no aeroporto pra não perder a conexão.", leg: "Quem nunca? 🏃‍♂️✈️ Marca quem é assim!" },
+  { id: "r-janelinha", clip: "janela-2", t: "Não é sobre o destino.\nÉ sobre a janelinha.", leg: "Janela ou corredor? Comenta aqui 👇" },
+  { id: "r-mundo", clip: "nuvens-2", t: "Fortaleza é linda.\nMas o mundo também é.", leg: "Bora conhecer? 🌎 Passagem barata saindo de FOR todo dia no nosso radar." },
+  { id: "r-14", clip: "asa-2", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", leg: "Admite que você também faz isso 😂👇" },
+  { id: "r-mala", clip: "mala-3", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", leg: "Clássico 😂 Marca quem é assim!" },
+  { id: "r-milha", clip: "pouso-2", t: "Tem gente que junta pra trocar de carro.\nEu junto milha.", leg: "Prioridades 😌✈️ Você é de qual time?" },
+  { id: "r-praia", clip: "praia-1", t: "Morar em Fortaleza e ainda sonhar com praia nas férias.", leg: "Cearense não cansa de mar, né? 🌊" },
+  { id: "r-conexao", clip: "janela-3", t: "Voo direto: R$ 1.900.\nCom 2 conexões e 14 horas: R$ 640.\nEu: perfeito.", leg: "Quem encara a conexão pra economizar? 🙋‍♂️" },
+];
+function textoReels(c, t) { const L = t.split("\n"), fs = 74, lh = fs * 1.22, linhas = L.flatMap(l => quebrar(c, l, SW - 220, fs, MARCA.corpo, 800));
+  let y = SH * .46 - (linhas.length * lh) / 2 + fs; c.save(); c.shadowColor = "rgba(0,0,0,.55)"; c.shadowBlur = 18;
+  linhas.forEach(l => { T(c, l, SW / 2, y, fs, MARCA.corpo, "#fff", "center", 800); y += lh; }); c.restore();
+  T(c, "@partiu.085", SW / 2, SH - 330, 32, MARCA.corpo, "rgba(255,255,255,.9)", "center", 800); }
+function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.addColorStop(0, "rgba(0,0,0,.15)"); g.addColorStop(.5, "rgba(0,0,0,.45)"); g.addColorStop(1, "rgba(0,0,0,.2)"); c.fillStyle = g; c.fillRect(0, 0, SW, SH); textoReels(c, t); }
+async function fReels(x) {
+  const fr = await fotoMidia("clip-v-" + x.clip);
+  return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.split("\n")[0].slice(0, 60), porque: "Reels com vídeo real alcança quem ainda não te segue. Se postar pelo celular, dá pra pôr música em alta.", fmt: "Reels 9:16 · 9s",
+    overlay: c => camadaReels(c, x.t),
+    telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (fr) cobrir(c, fr, 0, 0, SW, SH); camadaReels(c, x.t); }],
+    legenda: `${x.leg}\n\n✈️ Segue o @partiu.085: passagem barata saindo de Fortaleza\n\n${HASH}` };
+}
+async function postsHumor() { return [...(await Promise.all(CARR_H.map(fCarrH))), ...(await Promise.all(REELS.map(fReels))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
 
 /* ================= página ================= */
 async function ideiasHoje() {

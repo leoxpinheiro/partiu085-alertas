@@ -323,25 +323,22 @@ function extrairPontos(texto) {
     .filter(x => x.length > 8 && x.length < 140 && (DIAS_SEM_RE.test(x) || /\d/.test(x) || nomes.some(n => x.toLowerCase().includes(n)))).slice(0, 5).join("\n");
 }
 function noticiaHTML() {
-  const N = PA.nt, lista = (PA.noticias || []).slice(0, 8);
+  const N = PA.nt, lista = (PA.noticias || []).slice(0, 10);
   if (!PA.noticias) getJSON("noticias.json", { itens: [] }).then(d => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
-  return `<div class="card pa-nt">
-    <h3>Transformar uma novidade em post</h3>
-    <div class="desc">Viu uma novidade (ex.: post do aeroporto com rota nova e dias da semana)? Cole o link e o texto do post. A gente separa os pontos principais e monta a arte com a nossa marca, citando a fonte.</div>
-    <div class="form pa-nt-f">
-      <div class="field"><label>Link do post (Instagram, site, notícia)</label><input data-nt="link" value="${esc(N.link)}" placeholder="https://www.instagram.com/p/…"></div>
+  return `<div class="card pa-nt"><h3>📰 Notícias que o robô achou</h3>
+    <div class="desc">Toque em <b>✨ Virar carrossel</b> e a IA monta o post explicando a novidade, com a nossa cara. Viu outra novidade no Instagram? Use <a href="#criar"><b>✨ Criar post com IA</b></a> e cole o print.</div>
+    ${lista.length ? `<div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni"><div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
+      <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm pri" data-act="ntia" data-i="${i}">✨ Virar carrossel</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
+  </div>
+  <details class="card pa-nt"><summary><b>Modo manual</b> (arte única, sem IA)</summary>
+    <div class="form pa-nt-f" style="margin-top:12px">
       <div class="field"><label>Fonte (aparece na arte)</label><input data-nt="fonte" value="${esc(N.fonte)}" placeholder="@aeroportodefortaleza"></div>
-      <div class="field" style="grid-column:1/-1"><label>Texto do post (cole a legenda aqui)</label><textarea data-nt="texto" rows="4" placeholder="Cole aqui a legenda do post ou o texto da notícia…">${esc(N.texto)}</textarea></div>
       <div class="field"><label>Etiqueta</label><input data-nt="kicker" value="${esc(N.kicker)}"></div>
-      <div class="field"><label>Título da arte</label><input data-nt="titulo" value="${esc(N.titulo)}" placeholder="Ex.: Novo voo direto Fortaleza ➜ Recife"></div>
+      <div class="field" style="grid-column:1/-1"><label>Título da arte</label><input data-nt="titulo" value="${esc(N.titulo)}" placeholder="Ex.: Novo voo direto Fortaleza ➜ Recife"></div>
       <div class="field" style="grid-column:1/-1"><label>Pontos principais (1 por linha)</label><textarea data-nt="pontos" rows="4" placeholder="Ex.: Voos às segundas, quartas e sextas&#10;Começa em dezembro">${esc(N.pontos)}</textarea></div>
       <div class="field"><label>Foto de fundo (opcional)</label><input type="file" accept="image/*" data-nt-foto></div>
-      <div class="field" style="align-self:end"><button class="bt" data-act="ntextrair">✨ Separar os pontos do texto</button> <button class="bt pri" data-act="ntgerar">Gerar arte</button></div>
-    </div>
-    <p class="sub">Dica: no Instagram, toque nos 3 pontinhos do post › Copiar link. Pra copiar a legenda, abra o post no navegador do computador. A arte é nossa, com crédito à fonte; não repostamos a imagem dos outros.</p>
-  </div>
-  ${lista.length ? `<div class="card pa-nt"><h3>Notícias recentes que o robô achou</h3><div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni"><div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
-    <a class="bt sm ghost" href="${esc(x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm" data-act="ntusar" data-i="${i}">Usar</button></div>`).join("")}</div></div>` : ""}`;
+      <div class="field" style="align-self:end"><button class="bt pri" data-act="ntgerar">Gerar arte</button></div>
+    </div></details>`;
 }
 async function postNoticia() {
   const N = PA.nt; if (!N.titulo && !N.pontos) return [];
@@ -365,6 +362,7 @@ document.addEventListener("change", e => { if (e.target.dataset && e.target.data
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
   if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
   else if (b.dataset.act === "ntgerar") { if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
+  else if (b.dataset.act === "ntia") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; crAbrirCom(`${x.titulo}${x.resumo ? "\n" + x.resumo : ""}\nLink: ${x.link}`, x.fonte || "", "noticia"); }
   else if (b.dataset.act === "ntusar") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; Object.assign(PA.nt, { link: x.link, fonte: x.fonte || "", texto: x.titulo + (x.resumo ? "\n" + x.resumo : ""), titulo: curto(x.titulo, 70), kicker: "Novidade" }); PA.nt.pontos = extrairPontos(PA.nt.texto) || x.titulo; render(); } });
 
 /* ================= página ================= */
@@ -405,7 +403,7 @@ async function montarPauta() {
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
-  g.innerHTML = !L.length ? `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
+  g.innerHTML = !L.length ? PA.aba === "noticia" ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
     : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";

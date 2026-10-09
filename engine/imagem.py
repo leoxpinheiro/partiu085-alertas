@@ -241,5 +241,5 @@ def story_post(post: bytes) -> bytes:
     d = ImageDraw.Draw(img)
     yb = min(SH - 200, y + h + 70)
     d.rounded_rectangle((SW / 2 - 300, yb, SW / 2 + 300, yb + 96), 48, fill=AM)
-    d.text((SW / 2, yb + 62), "TOCA NO PERFIL 👆", font=jak(34, 800), fill=NAVY, anchor="ms")
+    d.text((SW / 2, yb + 62), "VEM VER NO PERFIL", font=jak(34, 800), fill=NAVY, anchor="ms")
     return png(img)

@@ -11,6 +11,7 @@ async function carregarIG(forcar) {
     if (token()) { try { const r = await gh(`/contents/docs/ig_fila.json?ref=main&t=${Date.now()}`); IGF.fila = JSON.parse(decodeURIComponent(escape(atob(r.content.replace(/\n/g, ""))))); } catch (e) { IGF.fila = []; } }
     else IGF.fila = await getJSON("ig_fila.json", []);
     IGF.st = await getJSON("ig_status.json", {}); IGF.conta = await getJSON("ig_conta.json", null);
+    IGF.dm = await getJSON("ig_dm.json", { itens: [] }); IGF.dmcfg = { ...DM_PADRAO, ...(await getJSON("ig_dm_cfg.json", {})) };
   } finally { IGF.carregando = false; }
   if (/#instagram/.test(location.hash)) render();
 }
@@ -62,6 +63,37 @@ async function confirmarAgendar(agora) {
   } catch (e) { toast("Não agendou: " + e.message, 6000); if (bt) { bt.disabled = false; bt.textContent = "Agendar"; } }
 }
 function dataHora(q) { return `${q.slice(8, 10)}/${q.slice(5, 7)} às ${q.slice(11, 16)}`; }
+
+
+/* ---------- direct automático */
+const DM_PADRAO = { ativo: true, palavras: ["QUERO", "EU QUERO", "LINK"],
+  mensagem: "Oi! Aqui é o Partiu 085 ✈️\n\nVocê pediu, então você entra antes de todo mundo: esse é o grupo GRÁTIS com as passagens baratas saindo de Fortaleza 👇\n{link}\n\nTodos os nossos links: {bio}",
+  resposta: "Te mandei no direct 📩 Se não aparecer, olha em Solicitações de mensagem!" };
+const BIO = () => `https://${REPO.split("/")[0]}.github.io/${REPO.split("/")[1]}/links.html`;
+function dmTexto(cfg) { return (cfg.mensagem || "").replace("{link}", linkGrupo()).replace("{bio}", BIO()); }
+function dmHTML() {
+  const cfg = IGF.dmcfg || DM_PADRAO, L = (IGF.dm && IGF.dm.itens) || [];
+  const ok = L.filter(x => x.dm === "ok").length, err = L.filter(x => x.dm === "erro");
+  const chip = x => x.dm === "ok" ? `<span class="st verde">✓ direct enviado</span>` : x.dm === "expirado" ? `<span class="st">mais de 7 dias</span>` : `<span class="st vermelho" title="${esc(x.erro || "")}">não enviou</span>`;
+  return `<details class="card ig-dm" ${L.length ? "" : "open"}><summary><b>📩 Direct automático</b> <small>${cfg.ativo ? `ligado · palavras: ${esc(cfg.palavras.join(", "))}` : "desligado"} · ${ok} enviado${ok === 1 ? "" : "s"}</small></summary>
+    <p class="sub">Quem comentar uma das palavras em qualquer post dos últimos 30 dias recebe a mensagem no direct (o robô confere a cada 15 min) e ganha uma resposta no comentário. <code>{link}</code> = link do grupo grátis · <code>{bio}</code> = sua página de links.</p>
+    <div class="form ig-dmf"><label class="chk"><input type="checkbox" id="dm-ativo" ${cfg.ativo ? "checked" : ""}> Ligado</label>
+      <div class="field"><label>Palavras (separe por vírgula)</label><input id="dm-pal" value="${esc(cfg.palavras.join(", "))}"></div>
+      <div class="field" style="grid-column:1/-1"><label>Mensagem do direct</label><textarea id="dm-msg" rows="6">${esc(cfg.mensagem)}</textarea></div>
+      <div class="field" style="grid-column:1/-1"><label>Resposta no comentário (deixe vazio pra não responder)</label><input id="dm-resp" value="${esc(cfg.resposta)}"></div>
+      <div class="al-acts"><button class="bt pri" data-act="igdmsalvar">${ic("save")}Salvar</button><button class="bt" data-act="igdmcopiar">${ic("copy")}Copiar mensagem</button><a class="bt ghost" href="links.html" target="_blank" rel="noopener">${ic("ext")}Ver página da bio</a></div></div>
+    ${err.length ? `<div class="aviso warn"><span>${err.length} direct${err.length > 1 ? "s" : ""} não ${err.length > 1 ? "saíram" : "saiu"} pelo robô (o Instagram ainda pode estar bloqueando). Responda à mão: toque em <b>Abrir direct</b> e cole a mensagem.</span></div>` : ""}
+    ${L.length ? `<div class="ig-lista">${L.slice(0, 40).map(x => `<div class="ig-row dm"><div class="ig-i"><b>@${esc(x.usuario || "?")}</b><small>“${esc(x.texto)}” · ${dataHora(x.quando)} ${chip(x)}</small></div>
+      <div class="ig-a">${x.dm !== "ok" && x.usuario ? `<button class="bt sm" data-act="igdmcopiar">${ic("copy")}Copiar</button><a class="bt sm pri" href="https://ig.me/m/${encodeURIComponent(x.usuario)}" target="_blank" rel="noopener">${ic("send")}Abrir direct</a>` : ""}${x.post ? `<a class="bt sm ghost" href="${esc(x.post)}" target="_blank" rel="noopener">post</a>` : ""}</div></div>`).join("")}</div>`
+      : `<div class="vazio">Ninguém comentou as palavras ainda. Quando comentarem, aparece aqui.</div>`}
+  </details>`;
+}
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="igdm"]'); if (!b) return;
+  if (b.dataset.act === "igdmcopiar") { await copiar(dmTexto({ mensagem: ($("#dm-msg") || {}).value || (IGF.dmcfg || DM_PADRAO).mensagem })); toast("Mensagem copiada (já com o link)."); return; }
+  if (!token()) { toast("Conecte o token do GitHub em Ajustes."); return; }
+  const cfg = { ativo: $("#dm-ativo").checked, palavras: $("#dm-pal").value.split(",").map(x => x.trim()).filter(Boolean), mensagem: $("#dm-msg").value, resposta: $("#dm-resp").value.trim() };
+  if (!cfg.palavras.length) { toast("Coloque pelo menos uma palavra."); return; }
+  b.disabled = true; try { await salvarArquivo("docs/ig_dm_cfg.json", cfg, "Instagram: direct automático"); IGF.dmcfg = cfg; toast("Salvo. Vale a partir da próxima checagem (até 15 min)."); } catch (err) { toast("Erro: " + err.message, 6000); } b.disabled = false; });
 
 /* ---------- página: números do perfil + agenda */
 IGF.per = 7; IGF.ord = "recentes";
@@ -161,6 +193,7 @@ function pInstagram() {
     <div class="ig-sec"><h2 class="mv-t">Posts (${M.length})</h2>${pills("igord", IGF.ord, [["recentes", "Recentes"], ["alcance", "Mais alcance"], ["curtidas", "Mais curtidas"], ["salvos", "Mais salvos/compart."], ["seguiram", "Mais seguidores"]])}</div>
     ${MP.length ? `<div class="ig-posts">${MP.slice(0, 30).map(igPostCard).join("")}</div>` : `<div class="card vazio">Nenhum post no perfil ainda.</div>`}
     ${(c.stories || []).length ? `<h2 class="mv-t">Stories recentes</h2><div class="ig-posts">${c.stories.slice(0, 12).map(s => igPostCard({ ...s, tipo: "story", legenda: "Story" })).join("")}</div>` : ""}
+    ${dmHTML()}
     <details class="card ig-ag" ${pend.length ? "open" : ""}><summary><b>Agenda do robô</b> <small>${pend.length ? `${pend.length} na fila` : "vazia"} · publica sozinho o que estiver aprovado</small></summary>
       ${F == null ? `<div class="vazio">Carregando…</div>` : pend.length ? `<div class="ig-lista">${pend.map(linhaFila).join("")}</div>` : `<div class="vazio">Nada agendado. Se quiser que o robô publique, use 📅 Agendar nas artes da Pauta.</div>`}</details>`;
 }

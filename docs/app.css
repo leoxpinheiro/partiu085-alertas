@@ -933,3 +933,6 @@ body.ej-on{overflow:hidden}
 .ig-pi .ig-m{display:flex;flex-wrap:wrap;gap:8px;font-size:12px}
 .ig-ag summary{cursor:pointer}.ig-ag summary small{color:var(--text-tertiary);margin-left:6px}
 .pos{color:#1F8F5F}.neg{color:#D93F44}
+.ig-dm summary{cursor:pointer}.ig-dm summary small{color:var(--text-tertiary);margin-left:6px}.ig-dm{margin-bottom:14px}
+.ig-dmf{grid-template-columns:auto 1fr;margin:10px 0}.ig-dmf .field textarea{min-height:130px}
+.ig-row.dm .ig-i{flex:1}

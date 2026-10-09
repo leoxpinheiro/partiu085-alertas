@@ -99,6 +99,7 @@ function marca(c, W, escuro = true, dir = "") {
   if (dir) kicker(c, dir, W - M, 106, escuro ? COR.am : COR.tinta, "right");
 }
 function rodapeP(c, W, H, escuro = true, txt = "Alertas grátis saindo de Fortaleza · link na bio") {
+  if (PA.rod && /grupo|grátis|link na bio/i.test(txt)) txt = PA.rod;
   const y = H - 100;
   c.fillStyle = escuro ? COR.linha : "rgba(15,42,71,.15)"; c.fillRect(M, y - 46, W - 2 * M, 2);
   T(c, "@partiu.085", M, y, 26, MARCA.corpo, escuro ? "#fff" : COR.tinta, "left", 800);
@@ -280,7 +281,86 @@ function fGuia(x) {
     legenda: legenda(`${x.capa.toUpperCase()} ✈️\n\n${x.slides.map(([h, t]) => `▪️ ${h}: ${t}`).join("\n\n")}\n\n📌 Salva esse post pra consultar depois.`) };
 }
 
-/* ================= campanha de lançamento ================= */
+
+/* ================= semana 1: aquecimento (sem falar do grupo ainda) ================= */
+const EDU_ERROS = { id: "erros", cat: "VIAGEM", capa: "5 erros que deixam sua passagem mais cara", sub: "O 3º quase todo mundo comete.", slides: [
+  ["Comprar em cima da hora", "Perto da data o preço sobe. Promoção boa costuma aparecer semanas ou meses antes."],
+  ["Olhar uma data só", "Mudar a viagem 1 ou 2 dias pode cortar o preço pela metade. Olhe o mês inteiro."],
+  ["Esquecer da volta", "A ida tá barata, mas a volta custa o triplo. O que importa é o total de ida e volta."],
+  ["Não somar a bagagem", "A tarifa mais barata quase nunca inclui mala despachada. Some antes de fechar."],
+  ["Deixar milha vencer", "Milha parada vence. Confira a validade no app do programa e use antes."]] };
+function celular(c, x, y, w, h) {
+  c.save(); c.shadowColor = "rgba(0,0,0,.45)"; c.shadowBlur = 60; c.shadowOffsetY = 30;
+  c.fillStyle = "#050E1A"; rr(c, x, y, w, h, 70); c.fill(); c.restore();
+  c.fillStyle = "#10345C"; rr(c, x + 16, y + 16, w - 32, h - 32, 56); c.fill();
+  c.fillStyle = "#050E1A"; rr(c, x + w / 2 - 70, y + 34, 140, 36, 18); c.fill();
+}
+function notif(c, x, y, w, linhas, destaque) {
+  c.fillStyle = destaque ? "rgba(255,255,255,.96)" : "rgba(255,255,255,.18)"; rr(c, x, y, w, 150, 30); c.fill();
+  const ink = destaque ? COR.tinta : "#fff";
+  c.fillStyle = COR.am; c.beginPath(); c.arc(x + 52, y + 50, 26, 0, 7); c.fill(); aviao(c, x + 52, y + 50, 26, COR.tinta, Math.PI / 4);
+  T(c, "PARTIU 085", x + 94, y + 46, 22, MARCA.corpo, ink, "left", 800, 2); T(c, "agora", x + w - 26, y + 46, 20, MARCA.corpo, destaque ? "rgba(15,42,71,.5)" : "rgba(255,255,255,.6)", "right", 600);
+  T(c, linhas[0], x + 94, y + 84, 26, MARCA.corpo, ink, "left", 800);
+  c.fillStyle = destaque ? "rgba(15,42,71,.16)" : "rgba(255,255,255,.22)"; (linhas[1] || []).forEach(([bx, bw]) => { rr(c, x + 94 + bx, y + 104, bw, 22, 11); c.fill(); });
+}
+async function semana1() {
+  const nRotas = (S.rotas || []).filter(r => r.ativo !== false).length || 40;
+  const promos30 = (S.alertas || []).filter(a => a.criado.slice(0, 10) >= diaMenos(hojeISO(), 29)).length;
+  const P = (id, dia, titulo_, porque, telas, leg) => ({ id: "aq-" + id, semana: 1, grupo: "feed", tipo: dia, titulo: titulo_, porque, fmt: telas.length > 1 ? `Carrossel · ${telas.length} telas` : "Feed 4:5", telas, legenda: `${leg}\n\n${HASH}` });
+  const L = [];
+  L.push(P("voltamos", "Dia 1", "Voltamos", "Reacende o perfil sem pedir nada. Quem esqueceu de você volta a te ver.", [c => { bgNavy(c, PW, PH); marca(c, PW, true, "VOLTAMOS");
+    kicker(c, "Sumimos um tempo…", M, 420); const y = titulo(c, "Mas o radar não parou nem um dia", M, 446, PW - 2 * M, 130, 80, "#fff", 3) + 60;
+    paragrafo(c, "Tem novidade chegando pra quem viaja saindo de Fortaleza. Ativa o sininho do perfil pra não perder.", M, y, PW - 2 * M - 220, 38, MARCA.corpo, COR.cinza, 600, 1.35, 4);
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Ativa as notificações 🔔"); }],
+    "VOLTAMOS ✈️\n\nA gente ficou um tempo quietinho por aqui, mas o radar continuou ligado, olhando preço de passagem saindo de Fortaleza todo santo dia.\n\nEssa semana tem novidade chegando. Ativa o sininho 🔔 pra não perder.\n\n💬 Pra onde você quer viajar em 2027? Conta aqui!"));
+  const [imA, imB] = await Promise.all([fotoPronta("NAT"), fotoPronta("FLN")]);
+  L.push(P("prefere", "Dia 2", "Você prefere? Natal ou Floripa", "Pergunta fácil de responder: enche os comentários e o algoritmo entrega pra mais gente.", [c => {
+    c.fillStyle = COR.navy; c.fillRect(0, 0, PW, PH);
+    [[imA, 0], [imB, PW / 2]].forEach(([im, x]) => { if (!im) return; c.save(); c.beginPath(); c.rect(x, 0, PW / 2, PH); c.clip(); const s = Math.max((PW / 2) / im.naturalWidth, PH / im.naturalHeight); c.drawImage(im, x + (PW / 2 - im.naturalWidth * s) / 2, (PH - im.naturalHeight * s) / 2, im.naturalWidth * s, im.naturalHeight * s); c.restore(); });
+    let g = c.createLinearGradient(0, 0, 0, 420); g.addColorStop(0, "rgba(8,22,40,.85)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, PW, 420);
+    g = c.createLinearGradient(0, PH - 520, 0, PH); g.addColorStop(0, "rgba(8,22,40,0)"); g.addColorStop(1, "rgba(8,22,40,.95)"); c.fillStyle = g; c.fillRect(0, PH - 520, PW, 520);
+    c.fillStyle = COR.am; c.fillRect(PW / 2 - 3, 340, 6, PH - 480);
+    marca(c, PW, true, ""); T(c, "VOCÊ PREFERE?", PW / 2, 290, 120, MARCA.titulo, "#fff", "center");
+    c.fillStyle = COR.am; c.beginPath(); c.arc(PW / 2, PH / 2 + 40, 70, 0, 7); c.fill(); T(c, "OU", PW / 2, PH / 2 + 66, 72, MARCA.titulo, COR.tinta, "center");
+    T(c, "1", PW / 4, PH - 300, 110, MARCA.titulo, COR.am, "center"); T(c, "NATAL", PW / 4, PH - 200, 76, MARCA.titulo, "#fff", "center");
+    T(c, "2", PW * .75, PH - 300, 110, MARCA.titulo, COR.am, "center"); T(c, "FLORIPA", PW * .75, PH - 200, 76, MARCA.titulo, "#fff", "center");
+    c.fillStyle = COR.am; rr(c, PW / 2 - 190, PH - 146, 380, 66, 33); c.fill(); T(c, "COMENTA 1 OU 2 👇", PW / 2, PH - 101, 30, MARCA.corpo, COR.tinta, "center", 800); }],
+    "VOCÊ PREFERE? 🤔\n\n1️⃣ Natal: pertinho, praia, camarão e passeio de buggy\n2️⃣ Floripa: 42 praias, lagoa e frio gostoso no inverno\n\nComenta 1 ou 2 e marca quem vai com você 👇"));
+  L.push(P("teaser1", "Dia 3", "Tá chegando (teaser 1)", "Cria curiosidade e já junta uma lista de interessados: quem comenta EU QUERO recebe o direct automático.", [c => { bgNavy(c, PW, PH); marca(c, PW, true, "EM BREVE");
+    kicker(c, "Tá chegando", M, 250); titulo(c, "Algo novo pra quem sai do 085", M, 276, PW - 2 * M, 104, 70, "#fff", 2);
+    const px = 250, pw = 580; celular(c, px, 560, pw, 900);
+    notif(c, px + 40, 680, pw - 80, ["PROMOÇÃO ENCONTRADA 🔥", [[0, 180], [196, 120]]], true);
+    notif(c, px + 40, 850, pw - 80, ["Fortaleza ➜ ???", [[0, 240], [256, 90]]], false);
+    notif(c, px + 40, 1020, pw - 80, ["Ida e volta por R$ ???", [[0, 150]]], false);
+    c.fillStyle = "rgba(8,22,40,.0)"; }],
+    "TÁ CHEGANDO… 👀\n\nFaz tempo que a gente vem preparando uma coisa pra quem viaja saindo de Fortaleza. Ela avisa na hora quando aparece passagem barata de verdade.\n\nAinda não posso mostrar tudo. Mas quem comentar EU QUERO aqui embaixo entra na lista e recebe primeiro no direct. 📩"));
+  const g = fGuia(EDU_ERROS); g.telas[g.telas.length - 1] = c => { bgNavy(c, PW, PH); marca(c, PW, true, "");
+    kicker(c, "Gostou?", M, 430); const y = titulo(c, "Salva e manda pra quem vai viajar", M, 456, PW - 2 * M, 120, 76, "#fff", 3) + 60;
+    paragrafo(c, "Segue o @partiu.085: semana que vem tem novidade pra quem sai de Fortaleza.", M, y, PW - 2 * M - 160, 38, MARCA.corpo, COR.cinza, 600, 1.35, 3);
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Siga @partiu.085 · ative o sininho 🔔"); };
+  const semGrupo = fns => fns.map(fn => async c => { PA.rod = "Siga @partiu.085 · ative o sininho 🔔"; try { await fn(c); } finally { PA.rod = ""; } });
+  g.telas = semGrupo(g.telas); L.push({ ...g, id: "aq-erros", semana: 1, tipo: "Dia 4", titulo: "Carrossel: 5 erros que encarecem a passagem", porque: "Conteúdo que ajuda é o mais salvo e compartilhado: traz seguidor novo.", legenda: g.legenda.replace(/\n\n🔔[\s\S]*$/, "") + `\n\n${HASH}` });
+  L.push(P("bastidor", "Dia 5", "Bastidores do radar (teaser 2)", "Mostra o sistema trabalhando com números reais: dá credibilidade antes de abrir o grupo.", [c => { bgCreme(c, PW, PH); marca(c, PW, false, "BASTIDORES");
+    kicker(c, "Enquanto você dorme…", M, 300, "#C9971C"); let y = titulo(c, "O radar trabalha por você", M, 326, PW - 2 * M, 112, 70, COR.tinta, 2) + 50;
+    [[String(nRotas), "destinos vigiados saindo de Fortaleza"], ["24h", "pesquisando preço, todo dia, sem parar"], [promos30 ? String(promos30) : "+", promos30 ? "promoções de verdade achadas em 30 dias" : "promoções de verdade achadas toda semana"]]
+      .forEach(([n, t]) => { T(c, n, M, y + 110, 130, MARCA.titulo, "#C9971C"); paragrafo(c, t, M + 300, y + 50, PW - 2 * M - 300, 38, MARCA.corpo, COR.tinta, 700, 1.25, 2); y += 200; });
+    rodapeP(c, PW, PH, false, "Semana que vem você vai ver"); }],
+    `BASTIDORES DO RADAR 🛰️\n\nEnquanto você dorme, ele trabalha:\n\n✈️ ${nRotas} destinos vigiados saindo de Fortaleza\n🔎 Pesquisa de preço o dia inteiro\n🔥 ${promos30 ? promos30 + " promoções de verdade achadas nos últimos 30 dias" : "Promoções de verdade achadas toda semana"}\n\nSemana que vem você vai ver como isso chega até você.\n\n💬 Comenta EU QUERO pra entrar na lista.`));
+  const q = await fQuanto(); if (q) L.push({ ...q, telas: semGrupo(q.telas), id: "aq-quanto", semana: 1, tipo: "Dia 6", titulo: "Quanto custa voar (dados do radar)", legenda: q.legenda.replace(/\n\n🔔[\s\S]*$/, "") + `\n\n${HASH}` });
+  L.push(P("contagem", "Dia 7", "Segunda abre (teaser 3)", "Fecha a semana com data marcada: quem está curioso ativa o sininho e volta na segunda.", [c => { bgNavy(c, PW, PH); marca(c, PW, true, "CONTAGEM");
+    kicker(c, "Anota aí", M, 330); const y = titulo(c, "Segunda-feira abre. E é de graça.", M, 356, PW - 2 * M, 130, 80, "#fff", 3) + 70;
+    ["Passagem barata saindo de FOR", "Aviso na hora, no celular", "Ida e volta de verdade"].forEach((it, i) => { bola(c, M + 20, y + i * 70 - 12); T(c, it, M + 60, y + i * 70, 36, MARCA.corpo, "#fff", "left", 700); });
+    desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Ativa o sininho 🔔"); }],
+    "SEGUNDA-FEIRA ABRE 🗓️\n\nO que a gente vem preparando chega segunda. De graça.\n\n✅ Passagem barata saindo de Fortaleza\n✅ Aviso na hora, direto no seu celular\n✅ Ida e volta de verdade, sem pegadinha\n\nComenta EU QUERO que eu te mando primeiro no direct 📩"));
+  return L;
+}
+const STORIES_S1 = [
+  "Todo dia: 1 story com enquete ou caixinha (ex.: \"Pra onde você quer ir em 2027?\", \"Você já perdeu promoção por demorar?\"). Responda as respostas: isso aumenta o alcance.",
+  "Dia 3 e dia 7: compartilhe o post do teaser no story com o texto \"Comenta EU QUERO lá 👀\".",
+  "Dia 5: grave 10 segundos mostrando o painel/alertas no celular, sem mostrar os preços: \"olha o que vem aí\".",
+];
+
+/* ================= campanha de lançamento (semana 2) ================= */
 async function campanha() {
   const simples = (id, titulo_, porque, desenhar, leg) => ({ id: "camp-" + id, grupo: "feed", tipo: "Lançamento", titulo: titulo_, porque, fmt: "Feed 4:5", telas: [desenhar], legenda: legenda(leg) });
   const L = [
@@ -307,7 +387,8 @@ async function campanha() {
     ["Passagens em dinheiro", "Promoções de milhas", "Datas mais baratas de ida e volta"].forEach(it => { bola(c, M + 20, y - 12); T(c, it, M + 60, y, 36, MARCA.corpo, "#fff", "left", 700); y += 70; });
     desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, "Link do grupo na bio"); },
     "🔔 PROMOÇÃO BOA SOME EM HORAS\n\nEntra no grupo grátis e ativa as notificações do perfil pra não perder a próxima.\n\n✅ Passagens em dinheiro\n✅ Promoções de milhas\n✅ Datas mais baratas de ida e volta"));
-  return L.map((p, i) => ({ ...p, titulo: `${i + 1}. ${p.titulo}` }));
+  const S1 = await semana1();
+  return S1.concat(L.map((p, i) => ({ ...p, semana: 2, titulo: `${i + 1}. ${p.titulo}` })));
 }
 const STORIES_LEO = [
   "Story 1 (vídeo falando): \"Gente, criei um radar que avisa quando aparece passagem barata saindo de Fortaleza. Vou mostrar como funciona.\"",
@@ -390,7 +471,7 @@ function pPauta() {
     `<div class="pa-bar">${pills("paaba", PA.aba, [["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["biblioteca", "Guias"]])}
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
     ${PA.aba === "noticia" ? noticiaHTML() : ""}
-    ${PA.aba === "campanha" ? `<div class="card pa-dica"><b>Como usar:</b> poste na ordem, 1 por dia, pra o grid começar bonito. No seu perfil pessoal, no dia do lançamento:<ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
+    ${PA.aba === "campanha" ? `<div class="card pa-dica"><b>Plano:</b> semana 1 aquece o perfil (1 post por dia + stories). Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
     <div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
 }
 async function montarPauta() {
@@ -404,9 +485,10 @@ async function montarPauta() {
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
   g.innerHTML = !L.length ? PA.aba === "noticia" ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
     : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
+    : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
-    p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { fn(cv.getContext("2d")); } catch (e) { console.error(e); } box.appendChild(cv); }); });
+    p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { const r = fn(cv.getContext("2d")); if (r && r.catch) r.catch(e => console.error(e)); } catch (e) { console.error(e); } box.appendChild(cv); }); });
 }
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="pa"]'); if (!b || b.dataset.act === "pill") return;

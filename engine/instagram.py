@@ -223,6 +223,83 @@ def ler_dias(conta: dict) -> None:
     conta["dias"] = dict(sorted(dias.items())[-120:])
 
 
+# ---------- direct automático: quem comenta a palavra-chave recebe o link no direct ----------
+DM_CFG, DM_LOG = DOCS / "ig_dm_cfg.json", DOCS / "ig_dm.json"
+DM_PADRAO = {"ativo": True, "palavras": ["QUERO", "EU QUERO", "LINK"],
+             "mensagem": "Oi! Aqui é o Partiu 085 ✈️\n\nVocê pediu, então você entra antes de todo mundo: esse é o grupo GRÁTIS com as passagens baratas saindo de Fortaleza 👇\n{link}\n\nTodos os nossos links: {bio}",
+             "resposta": "Te mandei no direct 📩 Se não aparecer, olha em Solicitações de mensagem!"}
+
+
+def link_grupo() -> str:
+    for g in ler(DOCS / "grupos.json", []) or []:
+        if g.get("id") == "gratis" and g.get("link"):
+            return g["link"]
+    return "https://bit.ly/radar085"
+
+
+def direct_automatico(conta: dict) -> None:
+    cfg = {**DM_PADRAO, **ler(DM_CFG, {})}
+    log = ler(DM_LOG, {"itens": []})
+    if not cfg.get("ativo"):
+        return
+    palavras = [p.strip().upper() for p in cfg.get("palavras", []) if p.strip()]
+    feitos = {x["id"] for x in log.get("itens", [])}
+    agora = datetime.now(FUSO)
+    lim_post = (agora - timedelta(days=30)).isoformat()
+    lim_com = agora - timedelta(days=6, hours=20)  # a resposta privada só vale até 7 dias depois do comentário
+    msg = cfg["mensagem"].replace("{link}", link_grupo()).replace("{bio}", f"https://{REPO.split('/')[0]}.github.io/{REPO.split('/')[1]}/links.html")
+    novos, enviados = [], 0
+    midias = [m for m in conta.get("midias", []) if (m.get("quando") or "")[:19] >= lim_post[:19]][:15]
+    for m in midias:
+        try:
+            coms = api("GET", f"{m['id']}/comments", fields="id,text,timestamp,username,from", limit=50).get("data", [])
+        except Exception as e:  # noqa: BLE001
+            print("comentários:", e)
+            continue
+        for cm in coms:
+            if cm["id"] in feitos or enviados >= 30:
+                continue
+            txt = (cm.get("text") or "").upper()
+            if not any(p in txt for p in palavras):
+                continue
+            usuario = cm.get("username") or (cm.get("from") or {}).get("username", "")
+            if usuario and usuario.lower() == (conta.get("usuario") or "").lower():
+                continue
+            try:
+                quando = datetime.fromisoformat(cm["timestamp"].replace("+0000", "+00:00"))
+            except Exception:  # noqa: BLE001
+                quando = agora
+            reg = {"id": cm["id"], "usuario": usuario, "texto": cm.get("text", "")[:120], "quando": quando.astimezone(FUSO).isoformat(timespec="minutes"), "post": m.get("link", "")}
+            if quando < lim_com:
+                reg["dm"] = "expirado"
+            else:
+                try:
+                    r = requests.post(f"{API}/{USER}/messages", headers={"Authorization": f"Bearer {TOKEN}"},
+                                      json={"recipient": {"comment_id": cm["id"]}, "message": {"text": msg}}, timeout=30)
+                    j = r.json() if r.content else {}
+                    if not r.ok or "error" in j:
+                        raise RuntimeError((j.get("error") or {}).get("message") or f"HTTP {r.status_code}")
+                    reg["dm"] = "ok"
+                    enviados += 1
+                except Exception as e:  # noqa: BLE001
+                    reg["dm"] = "erro"
+                    reg["erro"] = str(e)[:160]
+                if cfg.get("resposta") and reg["dm"] == "ok":
+                    try:
+                        api("POST", f"{cm['id']}/replies", message=cfg["resposta"])
+                        reg["resposta"] = "ok"
+                    except Exception as e:  # noqa: BLE001
+                        reg["resposta"] = "erro"
+                        reg["erro_resp"] = str(e)[:120]
+            reg["processado"] = agora.isoformat(timespec="minutes")
+            novos.append(reg)
+            feitos.add(cm["id"])
+            print(f"direct @{usuario}: {reg['dm']} {reg.get('erro', '')}")
+    if novos:
+        log["itens"] = (novos + log.get("itens", []))[:500]
+        salvar(DM_LOG, log)
+
+
 def main():
     fila = ler(FILA, [])
     st = ler(STATUS, {})
@@ -252,6 +329,10 @@ def main():
         except Exception as e:  # noqa: BLE001
             st[p["id"]] = {"status": "erro", "erro": str(e)[:200], "tentativa": int(p.get("tentativa", 0)), "quando": agora}
             print(f"! {p.get('titulo')}: {e}")
+    try:
+        direct_automatico(conta)
+    except Exception as e:  # noqa: BLE001
+        print("direct:", e)
     velho = (datetime.now(FUSO) - timedelta(minutes=55)).isoformat()
     if not feitos and conta.get("ok") and conta.get("quando", "") > velho and not APENAS:
         salvar(STATUS, st)

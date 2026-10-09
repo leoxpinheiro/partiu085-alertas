@@ -102,19 +102,50 @@ def fotos_noticias(itens: list) -> None:
     pasta = DOCS / "noticias_img"
     pasta.mkdir(exist_ok=True)
     usados, baixados = set(), 0
+    import html as _html
+    antigos = {}
+    try:
+        antigos = {x["titulo"]: x for x in json.loads((DOCS / "noticias.json").read_text("utf-8")).get("itens", [])}
+    except Exception:  # noqa: BLE001
+        pass
+    decod = 0
     for it in itens:
+        ant = antigos.get(it["titulo"]) or {}
         if "news.google" in it["link"]:
-            it.pop("img_url", None)
-            continue
+            if ant.get("link_real"):
+                it["link_real"] = ant["link_real"]
+            elif decod < 12:
+                decod += 1
+                try:
+                    from googlenewsdecoder import gnewsdecoder
+                    r = gnewsdecoder(it["link"], interval=1)
+                    if r.get("status"):
+                        it["link_real"] = r["decoded_url"]
+                except Exception as e:  # noqa: BLE001
+                    print(f"! link google news: {e}")
+            if not it.get("link_real"):
+                it.pop("img_url", None)
+                continue
+        if ant.get("resumo") and not it.get("resumo"):
+            it["resumo"] = ant["resumo"]
+        real = it.get("link_real") or it["link"]
         nome = hashlib.sha1(it["link"].encode()).hexdigest()[:16] + ".jpg"
         alvo = pasta / nome
-        if not alvo.exists() and baixados < 15:
+        if (not alvo.exists() or not it.get("resumo")) and baixados < 15 and decod + baixados < 40:
             url = it.get("img_url") or ""
             try:
-                if not url:
-                    pg = requests.get(it["link"], timeout=20, headers={"User-Agent": "Mozilla/5.0 partiu085"}).text
-                    m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', pg) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image', pg)
-                    url = m.group(1) if m else ""
+                if not url or not it.get("resumo"):
+                    decod += 1
+                    pg = requests.get(real, timeout=15, headers={"User-Agent": "Mozilla/5.0 (Macintosh) partiu085"}).text
+                    if not url:
+                        m = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)', pg) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image', pg)
+                        url = m.group(1) if m else ""
+                    if not it.get("resumo"):
+                        m = re.search(r'<meta[^>]+(?:property|name)=["\'](?:og:)?description["\'][^>]+content=["\']([^"\']+)', pg) or re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:property|name)=["\'](?:og:)?description', pg)
+                        if m:
+                            it["resumo"] = _html.unescape(m.group(1)).strip()[:400]
+                if alvo.exists():
+                    url = ""
                 if url:
                     from PIL import Image
                     b = requests.get(url, timeout=25, headers={"User-Agent": "Mozilla/5.0 partiu085"}).content

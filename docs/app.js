@@ -252,7 +252,14 @@ function render() {
 window.addEventListener("hashchange", render);
 
 /* ------------------------------------------------------------ componentes */
+function avisoRadar() {
+  if (!S.ultima) return ""; const h = (Date.now() - new Date(S.ultima).getTime()) / 36e5;
+  return h > 5 ? `<div class="aviso warn conta">${ic("bell")}<span><b>O radar está parado há ${Math.floor(h)} horas.</b> Nenhuma rodada nova terminou desde ${haQuanto(S.ultima)}. Toque em Rodar radar agora; se continuar, me avise.</span></div>` : "";
+}
 function avisoConta() {
+  return avisoRadar() + avisoConta0();
+}
+function avisoConta0() {
   if (!token()) return `<div class="aviso warn conta">${ic("key")}<span>Este aparelho não está conectado: o que você marcar como enviado fica só aqui e não aparece no celular/computador. </span><a class="bt sm" href="#ajustes">Conectar</a></div>`;
   if (S.tokenVence != null && S.tokenVence <= 10) return `<div class="aviso warn conta">${ic("key")}<span>Seu token do GitHub vence em ${S.tokenVence} dia${S.tokenVence === 1 ? "" : "s"}. Depois disso o painel para de salvar (o radar continua rodando). Gere um novo e cole em Ajustes.</span><a class="bt sm" href="#ajustes">Ajustes</a></div>`;
   return "";

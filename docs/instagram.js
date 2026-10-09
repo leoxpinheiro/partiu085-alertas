@@ -154,7 +154,7 @@ async function agendarItens(itens, slots, ok, prog) {
   for (let k = 0; k < itens.length; k++) {
     const it = itens[k], id = `ig-${base}-${k + 1}`;
     const item = it.vaga ? { id, titulo: "💲 Oferta do dia (o robô escolhe na hora)", tipo: "oferta_dia", imagens: [], legenda: "", rodape: it.rodape || "", ...(it.reels ? { reels: true } : {}), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "vaga" }
-      : { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "", ...(it.valido ? { valido_ate: it.valido } : {}) };
+      : { id, titulo: it.titulo, tipo: it.reels ? "reels" : it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "", ...(it.valido ? { valido_ate: it.valido } : {}) };
     for (let j = 0; j < (it.cvs || []).length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
     IGF.fila.push(item);
   }

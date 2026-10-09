@@ -651,13 +651,13 @@ const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); }
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("hu-") ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|ch)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
   add(await campanha(), "");
   add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
-  add(await Promise.all(HUMOR.map(fHumor)), "Humor");
+  add(await postsHumor(), "Humor");
   add(EDU.map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
   await carregarOcultas();
@@ -667,7 +667,7 @@ async function mcTodos() {
 function mcCard(p, i) {
   const n = CAL.sel.indexOf(p.id), f = p.sit ? null : CAL.feitos[p.id], vivo = aoVivo(p), sit = p.sit;
   return `<div class="mc-card ${n >= 0 ? "on" : ""} ${sit ? "feito" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${(CAL.f !== "todos" && CAL.f !== mcGrupo(p)) || (sit && !CAL.verFeitos) ? "hidden" : ""}>
-    <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
+    <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${p.reels ? SH : PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
     <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
@@ -732,7 +732,7 @@ async function mcVer(id) {
     <div class="ej-acts"><button class="bt pri lg" data-act="mcagora" data-id="${esc(id)}">⚡ Postar agora</button><button class="bt lg" data-act="mcvadd" data-id="${esc(id)}">${n >= 0 ? "Tirar da lista" : "+ Escolher esse"}</button><button class="bt" data-act="mcvbaixar">${ic("down")}Baixar</button><button class="bt ghost" data-act="mcvfechar">Fechar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
   const box = document.getElementById("mcv-t");
-  for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
+  for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
 }
 function mcFecharVer() { const d = document.getElementById("mcv"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
 function mcSituacao(p) { const F = (IGF.fila || []).filter(x => x.origem === p.id); if (!F.length) return null;
@@ -755,8 +755,8 @@ async function mcPostarAgora(id, bt) {
   const p = PA.lista.find(x => x.id === id); if (!p) return;
   if (p.sit && !confirm(`Esse post já foi ${p.sit.tipo}. Postar de novo agora?`)) return;
   bt.disabled = true; bt.textContent = "Enviando…";
-  try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-    await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
+  try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+    await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
     await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
     const outros = (IGF.fila || []).filter(x => x.origem === p.id && ((IGF.st || {})[x.id] || {}).status !== "publicado" && x.quando > isoLocal(new Date()));
     mcFecharVer(); toast(`Enviado! O robô publica em 1 a 3 minutos.${outros.length ? ` Ele também estava agendado pra ${outros.map(x => x.quando.slice(8, 10) + "/" + x.quando.slice(5, 7) + " " + x.quando.slice(11, 16)).join(", ")}: nesse horário vai sair uma 💲 oferta do dia no lugar, sem duplicar.` : ""}`, 9000); render(); }
@@ -772,8 +772,8 @@ async function mcAgendar(bt) {
     const semGrupoAinda = L.some(p => p.semana === 1) && !L.some(p => p.semana === 2);
     for (let k = 0; k < L.length; k++) { const p = L[k];
       if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, reels: !!CAL.reels, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
-      const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }); }
+      const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels }); }
     const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
     L.forEach((p, k) => { if (!ehVaga(p.id)) CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
@@ -943,6 +943,57 @@ async function fHumor(x) {
     legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
 }
 
+
+/* 🎬 Reels de humor: mesma frase em tela cheia 9:16; o robô transforma em vídeo de 8s (zoom lento) e publica como Reels */
+async function fHumorReels(x) {
+  const im = await fotoPronta(x.f);
+  return { id: "hr-" + x.id, reels: true, grupo: "feed", tipo: "Reels", rot: "Reels de humor", titulo: "🎬 " + x.t.split("\n")[0].slice(0, 60), porque: "Reels alcança quem ainda não te segue. Dica: se postar pelo celular, coloque uma música em alta.", fmt: "Reels 9:16 · vídeo 8s",
+    telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (im) { const sc = Math.max(SW / im.naturalWidth, SH / im.naturalHeight); c.drawImage(im, (SW - im.naturalWidth * sc) / 2, (SH - im.naturalHeight * sc) / 2, im.naturalWidth * sc, im.naturalHeight * sc); }
+      if (x.e === "bolha") { c.save(); c.translate(0, SH * .1); textoHumor(c, x, SW, SH * .8); c.restore(); } else textoHumor(c, x, SW, SH);
+      T(c, "@partiu.085", SW / 2, SH - 330, 34, MARCA.corpo, "#fff", "center", 800); }],
+    legenda: `${x.leg}\n\n✈️ Segue o @partiu.085: passagem barata saindo de Fortaleza\n\n${HASH}` };
+}
+/* 🧳 carrosséis humanizados (salvamento e compartilhamento) */
+const CARR_H = [
+  { id: "nao-viajo-sem", tema: ["amarelo", "creme"], capa: "7 coisas que eu não viajo sem", sub: "A 4ª salvou minha viagem mais de uma vez.", kick: "Mala pronta", itens: [
+    ["🔌", "Carregador portátil", "Celular sem bateria no aeroporto é desespero na certa. Leve um com pelo menos 10.000 mAh."],
+    ["🧴", "Kit de frasquinhos", "Shampoo e creme em frascos de até 100 ml: passa na mala de mão e não vaza."],
+    ["😴", "Travesseiro de pescoço", "Voo longo ou madrugada no aeroporto: seu pescoço agradece."],
+    ["📄", "Print de tudo", "Passagem, reserva e documentos salvos no celular. Sem internet, o print salva."],
+    ["🧥", "Casaquinho", "Avião é sempre frio, até saindo de Fortaleza no meio do dia."],
+    ["💧", "Garrafinha vazia", "Passa vazia no raio-x e você enche depois. Água de aeroporto é cara."],
+    ["🔒", "Cadeado de mala", "Mala despachada com cadeado dá mais tranquilidade."]],
+    fim: "Qual desses você não larga de jeito nenhum?", leg: "🧳 7 COISAS QUE EU NÃO VIAJO SEM\n\n🔌 Carregador portátil\n🧴 Kit de frasquinhos\n😴 Travesseiro de pescoço\n📄 Print de tudo\n🧥 Casaquinho\n💧 Garrafinha vazia\n🔒 Cadeado de mala\n\n📌 Salva pra conferir antes da próxima viagem!\n💬 Faltou alguma? Comenta aqui 👇" },
+  { id: "tipos-passageiro", tema: ["escuro", "creme"], capa: "Tipos de passageiro que você encontra em todo voo", sub: "Marca quem é o número 3 😂", kick: "Seja sincero", itens: [
+    ["👏", "O que aplaude no pouso", "Pousou? Palmas. Não importa se foi Fortaleza ➜ Recife de 1 hora."],
+    ["📸", "O fotógrafo da asa", "37 fotos da mesma asa. Todas iguais. Todas incríveis."],
+    ["😴", "O que dorme antes de decolar", "Sentou, apagou. Acorda só com o barulho do trem de pouso."],
+    ["🧍", "O que levanta antes de parar", "O avião ainda tá andando e ele já tá de pé com a mala na mão."],
+    ["🥜", "O fã do lanchinho", "Pede biscoito extra, guarda na bolsa e ainda pergunta se tem mais."],
+    ["🪟", "O dono da janelinha", "Fecha a janela no pôr do sol mais bonito da viagem."]],
+    fim: "E você, qual desses é?", leg: "✈️ TIPOS DE PASSAGEIRO QUE VOCÊ ENCONTRA EM TODO VOO\n\n👏 O que aplaude no pouso\n📸 O fotógrafo da asa\n😴 O que dorme antes de decolar\n🧍 O que levanta antes de parar\n🥜 O fã do lanchinho\n🪟 O dono da janelinha\n\n😂 Marca aquele amigo que é o número 4!\n💬 Qual é o seu? Comenta aqui 👇" },
+  { id: "precisa-ferias", tema: ["creme", "amarelo"], capa: "Sinais de que você precisa de férias urgente", sub: "Se marcou 3, já pode olhar passagem.", kick: "Teste rápido", itens: [
+    ["📅", "Você conta os dias pro feriado", "E já sabe de cabeça quantos faltam pro próximo."],
+    ["✈️", "Olha passagem no horário de trabalho", "Só pra olhar. Várias vezes por dia."],
+    ["🏖️", "Sonha com mar mesmo morando em Fortaleza", "Mas outro mar. Um mar de férias."],
+    ["😮‍💨", "Segunda-feira pesa uma tonelada", "E a sexta parece que nunca chega."],
+    ["📱", "Seu feed é só viagem", "E você salva tudo pra 'um dia'."]],
+    fim: "Quantos você marcou? Comenta o número!", leg: "🏖️ SINAIS DE QUE VOCÊ PRECISA DE FÉRIAS URGENTE\n\n📅 Conta os dias pro feriado\n✈️ Olha passagem no horário de trabalho\n🏖️ Sonha com mar mesmo morando em Fortaleza\n😮‍💨 Segunda pesa uma tonelada\n📱 Seu feed é só viagem\n\n💬 Quantos você marcou? Comenta o número 👇\n📌 Manda pra quem precisa ver isso!" },
+];
+function fCarrH(x) {
+  const n = x.itens.length + 2, ROD = "Siga @partiu.085 · ative o sininho 🔔";
+  const telas = [c => { capaTema(c, x.tema[0], x.kick, x.capa, x.sub, `1/${n}`, ROD); T(c, "ARRASTA ➜", PW - M, PH - 170, 26, MARCA.corpo, TEMA[x.tema[0]].kk, "right", 800, 3); }];
+  x.itens.forEach(([em, tit, txt], i) => telas.push(c => { const k = TEMA[x.tema[1]]; k.bg(c, PW, PH); marca(c, PW, k.dk, `${i + 2}/${n}`);
+    T(c, String(i + 1).padStart(2, "0"), M - 6, 450, 190, MARCA.titulo, k.ac);
+    c.font = `290px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`; c.textAlign = "right"; c.fillText(em, PW - M + 10, 520); c.textAlign = "left";
+    const y = titulo(c, tit, M, 640, PW - 2 * M, 112, 70, k.tx, 3) + 56;
+    paragrafo(c, txt, M, y, PW - 2 * M, 46, MARCA.corpo, k.sub, 600, 1.4, 6);
+    rodapeP(c, PW, PH, k.dk, "Salva pra depois"); }));
+  telas.push(c => capaTema(c, "escuro", "Comenta aqui 👇", x.fim, "Salva esse post e manda pra quem viaja com você.", `${n}/${n}`, ROD));
+  return { id: "ch-" + x.id, grupo: "feed", tipo: "Carrossel humor", rot: "Humor · carrossel", titulo: "🧳 " + x.capa, porque: "Carrossel leve e identificável: muito salvo, compartilhado e marcado.", fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
+}
+async function postsHumor() { return [...CARR_H.map(fCarrH), ...(await Promise.all(HUMOR.map(fHumorReels))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
+
 /* ================= página ================= */
 async function ideiasHoje() {
   const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
@@ -951,9 +1002,9 @@ async function ideiasHoje() {
 }
 function feito(id) { return S.marcados && S.marcados["ig-" + id]; }
 function cardPauta(p, i) {
-  return `<article class="card pa-c ${p.stories ? "pa-st" : ""} ${feito(p.id) ? "feito" : ""}">
+  return `<article class="card pa-c ${p.stories || p.reels ? "pa-st" : ""} ${feito(p.id) ? "feito" : ""}">
     <div class="pa-h"><span class="tag">${esc(p.tipo)}</span><b>${esc(p.titulo)}</b><small>${esc(p.fmt)}</small></div>
-    <div class="pa-telas ${p.stories ? "pa-vert" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
+    <div class="pa-telas ${p.stories || p.reels ? "pa-vert" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
     <div class="pa-porque">💡 ${esc(p.porque)}</div>
     <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
     <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}</button>
@@ -978,7 +1029,7 @@ async function montarPauta() {
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
   if (PA.aba === "montar") return montarBoard(g);
-  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await Promise.all(HUMOR.map(fHumor)) : EDU.map(x => fGuia(x));
+  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await postsHumor() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
@@ -987,7 +1038,7 @@ async function montarPauta() {
     : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
-    p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories ? SW : PW; cv.height = p.stories ? SH : PH; try { const r = fn(cv.getContext("2d")); if (r && r.catch) r.catch(e => console.error(e)); } catch (e) { console.error(e); } box.appendChild(cv); }); });
+    p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories || p.reels ? SW : PW; cv.height = p.stories || p.reels ? SH : PH; try { const r = fn(cv.getContext("2d")); if (r && r.catch) r.catch(e => console.error(e)); } catch (e) { console.error(e); } box.appendChild(cv); }); });
 }
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="pa"]'); if (!b || b.dataset.act === "pill") return;

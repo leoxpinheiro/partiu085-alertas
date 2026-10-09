@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-09T03:45+00:00",
+ "atualizado": "2026-10-09T13:32+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -12,6 +12,7 @@
   "POA",
   "REC",
   "RIO",
+  "SAO",
   "THE"
  ],
  "blogs": [],
@@ -71,11 +72,11 @@
   {
    "iata": "CWB",
    "rt": {
-    "preco": 892,
+    "preco": 965,
     "ida": "2026-12-10",
     "volta": "2027-01-29",
-    "paradas": 2,
-    "visto": "2026-10-08T07:47:08Z"
+    "paradas": 1,
+    "visto": "2026-10-09T11:08:03Z"
    },
    "ow": {
     "preco": 411,
@@ -102,6 +103,26 @@
    "pista": true
   },
   {
+   "iata": "SAO",
+   "rt": {
+    "preco": 1213,
+    "ida": "2027-01-16",
+    "volta": "2027-01-24",
+    "paradas": 1,
+    "visto": "2026-10-09T04:16:52Z"
+   },
+   "ow": {
+    "preco": 557,
+    "ida": "2026-12-11",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-09T07:13:44Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
+  },
+  {
    "iata": "RIO",
    "rt": {
     "preco": 1217,
@@ -111,11 +132,11 @@
     "visto": "2026-10-06T23:38:46Z"
    },
    "ow": {
-    "preco": 641,
-    "ida": "2026-11-08",
+    "preco": 883,
+    "ida": "2026-10-24",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-05T11:55:51Z"
+    "paradas": 1,
+    "visto": "2026-10-07T02:42:09Z"
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
@@ -161,26 +182,6 @@
    "pista": false
   },
   {
-   "iata": "SAO",
-   "rt": {
-    "preco": 1528,
-    "ida": "2026-12-08",
-    "volta": "2026-12-16",
-    "paradas": 0,
-    "visto": "2026-10-06T19:56:24Z"
-   },
-   "ow": {
-    "preco": 613,
-    "ida": "2026-12-02",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-05T18:16:37Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
-   "pista": false
-  },
-  {
    "iata": "POA",
    "rt": {
     "preco": 1637,
@@ -212,6 +213,19 @@
    "rastreada": true,
    "nome": "Madri",
    "pista": true
+  },
+  {
+   "iata": "BVB",
+   "rt": {
+    "preco": 2170,
+    "ida": "2026-12-15",
+    "volta": "2027-01-02",
+    "paradas": 2,
+    "visto": "2026-10-09T06:56:47Z"
+   },
+   "rastreada": false,
+   "nome": "BVB",
+   "pista": false
   },
   {
    "iata": "PNZ",
@@ -263,19 +277,6 @@
    },
    "rastreada": false,
    "nome": "MOW",
-   "pista": false
-  },
-  {
-   "iata": "CMN",
-   "ow": {
-    "preco": 3068,
-    "ida": "2027-02-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-05T05:59:32Z"
-   },
-   "rastreada": false,
-   "nome": "CMN",
    "pista": false
   },
   {
@@ -342,19 +343,6 @@
    },
    "rastreada": false,
    "nome": "ATL",
-   "pista": false
-  },
-  {
-   "iata": "TAS",
-   "rt": {
-    "preco": 8985,
-    "ida": "2026-12-28",
-    "volta": "2027-01-11",
-    "paradas": 2,
-    "visto": "2026-10-05T05:24:55Z"
-   },
-   "rastreada": false,
-   "nome": "TAS",
    "pista": false
   },
   {

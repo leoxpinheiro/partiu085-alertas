@@ -821,6 +821,51 @@ async function fDestinoSemana() {
     legenda: `📍 DESTINO DA SEMANA: ${nome.toUpperCase()}\n\nQuanto custa voar de Fortaleza, mês a mês (menor preço do trecho que o radar viu):\n\n${ms.map(([m, p]) => `${p === mn ? "⭐" : "▫️"} ${MESES_LONGO[+m.slice(5, 7) - 1]}: a partir de ${brl(p)}`).join("\n")}\n\n📅 Datas mais baratas agora: ${datas.map(d => `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`).join(", ")}\n\n⚠️ Preços de ${hoje}, mudam a qualquer momento.\n💬 Comenta EU QUERO que eu te mando os próximos no direct!\n\n${HASH}` };
 }
 
+
+/* ================= 🏆 prova de resultado (quem comprou pelo alerta) ================= */
+PA.pv = { nome: "", destino: "", preco: "", tipo: "ida e volta", normal: "", quando: "", frase: "", foto: null };
+function provaHTML() {
+  const V = PA.pv, f = (k, l, ph, w) => `<div class="field" ${w ? 'style="grid-column:1/-1"' : ""}><label>${l}</label><input data-pv="${k}" value="${esc(V[k])}" placeholder="${ph}"></div>`;
+  return `<div class="card pa-nt"><h3>🏆 Post de prova: quem comprou pelo alerta</h3>
+    <div class="desc">Alguém do grupo comprou por causa de um alerta? Pede o print e a autorização pra postar. É o post que mais convence gente nova a entrar (e depois a pagar o VIP). Só use casos reais.</div>
+    <div class="form pa-nt-f" style="margin-top:12px">
+      ${f("nome", "Nome ou @ (com autorização)", "Ex.: Ana, @ana.viaja ou 'Um membro do grupo'")}${f("destino", "Destino", "Ex.: São Paulo")}
+      ${f("preco", "Quanto pagou (R$)", "Ex.: 590")}<div class="field"><label>Tipo</label><select data-pv="tipo">${["ida e volta", "só ida"].map(x => `<option ${V.tipo === x ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+      ${f("normal", "Preço normal da rota (opcional, R$)", "Ex.: 1400")}${f("quando", "Quando vai viajar (opcional)", "Ex.: novembro")}
+      ${f("frase", "O que a pessoa disse (opcional)", "Ex.: Vi o alerta às 7h e comprei na hora!", true)}
+      <div class="field"><label>Print da compra ou foto da viagem (opcional)</label><input type="file" accept="image/*" data-pv-foto></div>
+      <div class="field" style="align-self:end"><button class="bt pri" data-act="pvgerar">Gerar post</button></div>
+    </div></div>`;
+}
+async function postProva() {
+  const V = PA.pv; if (!V.destino || !V.preco) return [];
+  const im = V.foto ? await carregarFotoPv(V.foto) : await fotoPronta(Object.keys(IATA).find(k => (IATA[k] || "").toLowerCase().startsWith(V.destino.toLowerCase())) || "");
+  const preco = brl(String(V.preco).replace(/\D/g, "")), normal = V.normal ? brl(String(V.normal).replace(/\D/g, "")) : "", quem = V.nome || "Um membro do grupo";
+  const eco = V.normal ? Math.round((1 - (+String(V.preco).replace(/\D/g, "")) / (+String(V.normal).replace(/\D/g, ""))) * 100) : 0;
+  const desenha = (W, H, story) => c => {
+    const fh = Math.round(H * (story ? .42 : .44));
+    c.fillStyle = COR.am; c.fillRect(0, 0, W, H); grao(c, W, H, .04, "#0F2A47");
+    if (im) { c.save(); rr(c, M, 170, W - 2 * M, fh - 140, 36); c.clip(); const s = Math.max((W - 2 * M) / im.naturalWidth, (fh - 140) / im.naturalHeight);
+      c.drawImage(im, M + (W - 2 * M - im.naturalWidth * s) / 2, 170 + (fh - 140 - im.naturalHeight * s) / 2, im.naturalWidth * s, im.naturalHeight * s); c.restore(); }
+    marca(c, W, false, "RESULTADO REAL");
+    let y = im ? fh + 110 : (story ? 520 : 360);
+    kicker(c, `${quem} comprou pelo alerta`, M, y, COR.tinta);
+    T(c, preco, M - 6, y + 175, caber(c, preco, W - 2 * M, 170, MARCA.titulo, 400, 100), MARCA.titulo, COR.tinta);
+    T(c, `Fortaleza ➜ ${V.destino} · ${V.tipo}${V.quando ? " · " + V.quando : ""}`, M, y + 228, 34, MARCA.corpo, COR.tinta, "left", 800);
+    y += 270;
+    if (normal) { T(c, `Normal: ${normal}${eco > 0 ? `  ·  economizou ${eco}%` : ""}`, M, y + 10, 30, MARCA.corpo, "rgba(15,42,71,.75)", "left", 700); y += 50; }
+    if (V.frase) { c.fillStyle = COR.tinta; c.fillRect(M, y + 10, 8, 100); paragrafo(c, `“${V.frase}”`, M + 34, y + 46, W - 2 * M - 40, 34, MARCA.corpo, COR.tinta, 600, 1.3, 3); }
+    if (story) espacoLink(c, W, H); else rodapeP(c, W, H, false, "Entre no grupo grátis · link na bio"); };
+  const leg = `🏆 RESULTADO REAL DO GRUPO\n\n${quem} viu o alerta e comprou Fortaleza ➜ ${V.destino} por ${preco} (${V.tipo})${normal ? `, quando o normal é ${normal}` : ""}! ✈️${V.frase ? `\n\n💬 "${V.frase}"` : ""}\n\nÉ isso que o radar faz: avisa na hora que o preço cai. Promoção boa some em horas.\n\n🔔 Entre no grupo grátis: link na bio\n💬 Comenta EU QUERO que eu te mando no direct\n\n${HASH}`;
+  return [{ id: "pv-feed-" + V.destino + V.preco, grupo: "feed", tipo: "Prova", titulo: "Prova de resultado · feed", porque: "Prova social: o post que mais leva gente pro grupo.", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg },
+    { id: "pv-story-" + V.destino + V.preco, grupo: "stories", tipo: "Prova", titulo: "Prova de resultado · story", porque: "No story, com o adesivo de link do grupo.", fmt: "Story 9:16", stories: true, telas: [desenha(SW, SH, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+}
+function carregarFotoPv(src) { return new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => ok(null); im.src = src; }); }
+document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.pv; if (k) PA.pv[k] = e.target.value; });
+document.addEventListener("change", e => { const k = e.target.dataset && e.target.dataset.pv; if (k) PA.pv[k] = e.target.value;
+  if (e.target.dataset && e.target.dataset.pvFoto !== undefined) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { PA.pv.foto = r.result; toast("Foto carregada. Toque em Gerar post."); }; r.readAsDataURL(f); } });
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="pvgerar"]'); if (!b) return; if (!PA.pv.destino || !PA.pv.preco) { toast("Preencha pelo menos destino e preço."); return; } render(); });
+
 /* ================= página ================= */
 async function ideiasHoje() {
   const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
@@ -844,9 +889,9 @@ function pPauta() {
   PA.lista = null;
   setTimeout(montarPauta, 0);
   return head("Pauta do Instagram", PA.aba === "montar" ? "Todos os posts prontos de um lado. Escolha os que vão sair, arraste pra ordem que quiser e agende tudo de uma vez." : "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto.") +
-    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["biblioteca", "Guias"]])}
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["prova", "🏆 Prova"], ["biblioteca", "Guias"]])}
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
-    ${PA.aba === "noticia" ? noticiaHTML() : ""}
+    ${PA.aba === "noticia" ? noticiaHTML() : ""}${PA.aba === "prova" ? provaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><div class="al-acts" style="margin-bottom:10px"><button class="bt pri" data-act="iglote" data-s="1">${ic("calendar")}Agendar a semana 1 inteira (2 por dia)</button><button class="bt" data-act="iglote" data-s="2">${ic("calendar")}Agendar a semana 2</button></div><b>Plano:</b> semana 1 aquece o perfil (2 posts por dia, 12h e 19h, cores em rodízio 🟦⬜🟨 pra o grid ficar organizado) + stories. Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
     <div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
 }
@@ -856,11 +901,11 @@ async function montarPauta() {
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
   if (PA.aba === "montar") return montarBoard(g);
-  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : EDU.map(x => fGuia(x));
+  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
-  g.innerHTML = !L.length ? PA.aba === "noticia" ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
+  g.innerHTML = !L.length ? (PA.aba === "noticia" || PA.aba === "prova") ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
     : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
     : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;

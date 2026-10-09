@@ -11,7 +11,7 @@ async function carregarIG(forcar) {
     if (token()) { try { const r = await gh(`/contents/docs/ig_fila.json?ref=main&t=${Date.now()}`); IGF.fila = JSON.parse(decodeURIComponent(escape(atob(r.content.replace(/\n/g, ""))))); } catch (e) { IGF.fila = []; } }
     else IGF.fila = await getJSON("ig_fila.json", []);
     IGF.st = await getJSON("ig_status.json", {}); IGF.conta = await getJSON("ig_conta.json", null);
-    IGF.dm = await getJSON("ig_dm.json", { itens: [] }); IGF.dmcfg = { ...DM_PADRAO, ...(await getJSON("ig_dm_cfg.json", {})) };
+    IGF.dm = await getJSON("ig_dm.json", { itens: [] }); IGF.mb = await getJSON("grupo_membros.json", { hist: [] }); IGF.dmcfg = { ...DM_PADRAO, ...(await getJSON("ig_dm_cfg.json", {})) };
   } finally { IGF.carregando = false; }
   if (/#instagram/.test(location.hash)) render();
 }
@@ -181,6 +181,27 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (b.dataset.act === "iglfechar") { const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
   else if (b.dataset.act === "iglsalvar") salvarLote(+b.dataset.s, b); });
 
+
+/* ---------- membros do grupo (você digita 1x por dia) */
+function membrosHTML(postsDia) {
+  const H = ((IGF.mb && IGF.mb.hist) || []).slice().sort((a, b) => a.dia.localeCompare(b.dia)), u = H[H.length - 1], hoje = hojeISO();
+  const ant = d => { const x = H.filter(h => h.dia <= diaMenos(hoje, d)); return x.length ? x[x.length - 1].n : null; };
+  const d7 = u && ant(7) != null ? u.n - ant(7) : null, d1 = u && ant(1) != null && u.dia === hoje ? u.n - ant(1) : null;
+  const pts = H.slice(-30).map(h => ({ v: h.n, l: dataCurta(h.dia).toLowerCase() }));
+  return `<div class="card ig-mb"><div class="ig-mb-h"><div><h3>👥 Grupo grátis no WhatsApp</h3><small class="sub">Digite quantos membros o grupo tem, 1 vez por dia (de preferência à noite). É o número que mais importa.</small></div>
+      <div class="ig-mb-f"><input type="number" id="mb-n" min="0" placeholder="${u ? u.n : "Ex.: 120"}"><button class="bt pri" data-act="mbsalvar">${ic("save")}Salvar hoje</button></div></div>
+    <div class="grid kpis ig-k4">${kpi("Membros", u ? milN(u.n) : "–", u ? `atualizado ${u.dia === hoje ? "hoje" : dataCurta(u.dia).toLowerCase()}` : "digite o primeiro número", true, "users")}
+      ${kpi("Hoje", d1 == null ? "–" : `${d1 >= 0 ? "+" : ""}${d1}`, "desde ontem", false, "up")}
+      ${kpi("7 dias", d7 == null ? "–" : `${d7 >= 0 ? "+" : ""}${d7}`, "entraram na semana", false, "chart")}
+      ${kpi("Meta VIP", u ? `${Math.min(100, Math.round(u.n / 3))}%` : "–", "de 300 membros pra abrir o VIP", false, "star")}</div>
+    ${pts.length >= 2 ? igSvgLinha(pts, "#22A06B") : ""}</div>`;
+}
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act="mbsalvar"]'); if (!b) return;
+  const n = parseInt(($("#mb-n") || {}).value, 10); if (!(n >= 0)) { toast("Digite o número de membros."); return; }
+  if (!token()) { toast("Conecte o token do GitHub em Ajustes."); return; }
+  b.disabled = true; const hoje = hojeISO(); const H = ((IGF.mb && IGF.mb.hist) || []).filter(h => h.dia !== hoje).concat({ dia: hoje, n });
+  try { await salvarArquivo("docs/grupo_membros.json", { hist: H.slice(-400) }, "Grupo: membros de hoje"); IGF.mb = { hist: H }; toast("Salvo!"); render(); } catch (err) { toast("Erro: " + err.message, 6000); b.disabled = false; } });
+
 /* ---------- página: números do perfil + agenda */
 IGF.per = 7; IGF.ord = "recentes"; IGF.numAberto = false;
 document.addEventListener("toggle", e => { if (e.target.classList && e.target.classList.contains("ig-num")) IGF.numAberto = e.target.open; }, true);
@@ -283,6 +304,7 @@ function pInstagram() {
         : `<div class="vazio">Nada agendado. Vá em <a href="#pauta">Pauta do Instagram › 🚀 Lançamento</a> e toque em <b>Agendar a semana inteira</b>.</div>`}
       ${pubs.length ? `<details class="ig-pubs"><summary>Publicados pelo robô (${pubs.length})</summary><div class="ig-lista">${pubs.map(linhaPub).join("")}</div></details>` : ""}
     </div>
+    ${membrosHTML()}
     <div class="ig-num"><div class="ig-sec"><h2 class="mv-t">📊 Números do perfil <small class="sub">atualizado ${haQuanto(c.quando)}</small></h2></div>
     <div class="ig-bar">${pills("igper", String(per), [["7", "7 dias"], ["14", "14 dias"], ["30", "30 dias"]])}</div>
     <div class="grid kpis ig-k4">${kpi("Seguidores", milN(c.seguidores || 0), `<span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias`, true, "users")}

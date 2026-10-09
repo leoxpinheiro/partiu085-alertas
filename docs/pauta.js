@@ -3,7 +3,7 @@
    Feed = o que tem valor duradouro (oportunidade rara, resumo da semana, bônus forte, quanto custa, guias).
    Usa MARCA/img/caber/quebrar/rr/aviao/desenhaImg do Criar arte e as fotos reais das cidades (fotos/IATA.jpg). */
 "use strict";
-const PA = { aba: "campanha", tipo: "feed", nt: { link: "", kicker: "Novidade no aeroporto de Fortaleza", titulo: "", pontos: "", fonte: "", texto: "", foto: null } };
+const PA = { aba: "montar", tipo: "feed", nt: { link: "", kicker: "Novidade no aeroporto de Fortaleza", titulo: "", pontos: "", fonte: "", texto: "", foto: null } };
 try { PA.tipo = localStorage.getItem("p085_pa_tipo") || "feed"; } catch (e) { }
 const PW = 1080, PH = 1350, SW = 1080, SH = 1920, M = 90;
 const COR = { navy: "#0B2440", am: "#F5C531", creme: "#F6F1E4", tinta: "#0F2A47", cinza: "rgba(255,255,255,.62)", linha: "rgba(255,255,255,.14)" };
@@ -70,7 +70,15 @@ function legenda(corpo) { return `${corpo}\n\n🔔 Grupo GRÁTIS de alertas de p
 function curto(t, n = 70) { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1).replace(/[\s,.;:-]+\S*$/, "") + "…" : t; }
 function T(c, t, x, y, size, fam, cor, al = "left", peso = 400, ls = 0) { c.font = `${peso} ${size}px ${fam}`; c.fillStyle = cor; c.textAlign = al; c.textBaseline = "alphabetic"; if ("letterSpacing" in c) c.letterSpacing = ls + "px"; c.fillText(t, x, y); if ("letterSpacing" in c) c.letterSpacing = "0px"; }
 function paragrafo(c, t, x, y, w, size, fam, cor, peso = 400, lh = 1.12, max = 8) { const L = quebrar(c, t, w, size, fam, peso).slice(0, max); L.forEach((l, i) => T(c, l, x, y + i * size * lh, size, fam, cor, "left", peso)); return y + L.length * size * lh; }
-function kicker(c, t, x, y, cor = COR.am, al = "left") { T(c, t.toUpperCase(), x, y, 24, MARCA.corpo, cor, al, 800, 4); }
+function kicker(c, t, x, y, cor = COR.am, al = "left") {
+  if (al !== "left") { T(c, t.toUpperCase(), x, y, 24, MARCA.corpo, cor, al, 800, 4); return; }
+  t = t.toUpperCase(); c.font = `800 28px ${MARCA.corpo}`; if ("letterSpacing" in c) c.letterSpacing = "3px"; const w = c.measureText(t).width; if ("letterSpacing" in c) c.letterSpacing = "0px";
+  const txt = cor === COR.am ? COR.tinta : cor === COR.tinta ? COR.am : "#fff";
+  c.fillStyle = cor; rr(c, x, y - 50, w + 44, 54, 27); c.fill(); T(c, t, x + 22, y - 12, 28, MARCA.corpo, txt, "left", 800, 3);
+}
+function rota(c, W, H, cor, a = .22) { c.save(); c.globalAlpha = a; c.strokeStyle = cor; c.lineWidth = 4; c.setLineDash([14, 16]);
+  c.beginPath(); c.moveTo(-40, H * .62); c.bezierCurveTo(W * .35, H * .30, W * .62, H * .08, W + 40, H * .16); c.stroke(); c.restore();
+  c.save(); c.globalAlpha = Math.min(1, a * 3); aviao(c, W - 150, H * .135, 54, cor, -Math.PI / 10); c.restore(); }
 const FOTOS_P = {};
 function fotoPronta(iata) {
   if (!iata) return Promise.resolve(null);
@@ -310,10 +318,10 @@ const TEMA = {
   amarelo: { bg: (c, W, H) => { c.fillStyle = COR.am; c.fillRect(0, 0, W, H); grao(c, W, H, .04, "#0F2A47"); }, tx: COR.tinta, sub: "rgba(15,42,71,.78)", kk: COR.tinta, ac: COR.tinta, dk: false },
 };
 function capaTema(c, t, kick, tit, sub, dir, rod, mascote = true) {
-  const k = TEMA[t]; k.bg(c, PW, PH); marca(c, PW, k.dk, dir);
-  kicker(c, kick, M, 420, k.kk); const y = titulo(c, tit, M, 446, PW - 2 * M - (mascote ? 60 : 0), 130, 78, k.tx, 4) + 40;
-  c.fillStyle = k.ac; c.fillRect(M, y, 140, 12);
-  if (sub) paragrafo(c, sub, M, y + 80, PW - 2 * M - (mascote ? 240 : 0), 38, MARCA.corpo, k.sub, 600, 1.35, 4);
+  const k = TEMA[t]; k.bg(c, PW, PH); rota(c, PW, PH, k.dk ? COR.am : COR.tinta, k.dk ? .22 : .16); marca(c, PW, k.dk, dir);
+  kicker(c, kick, M, 400, k.kk); const y = titulo(c, tit, M, 436, PW - 2 * M - (mascote ? 40 : 0), 156, 92, k.tx, 4) + 40;
+  c.fillStyle = k.ac; c.fillRect(M, y, 160, 14);
+  if (sub) paragrafo(c, sub, M, y + 90, PW - 2 * M - (mascote ? 250 : 0), 44, MARCA.corpo, k.sub, 600, 1.32, 4);
   if (mascote) desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230);
   rodapeP(c, PW, PH, k.dk, rod);
 }
@@ -356,7 +364,12 @@ async function semana1() {
   const L = [];
   // 1 escuro
   L.push(P("voltamos", "escuro", "Voltamos", "Reacende o perfil sem pedir nada. Quem esqueceu de você volta a te ver.",
-    [c => capaTema(c, "escuro", "Sumimos um tempo…", "Mas o radar não parou nem um dia", "Tem novidade chegando pra quem viaja saindo de Fortaleza. Ativa o sininho do perfil pra não perder.", "VOLTAMOS", ROD)],
+    [c => { bgNavy(c, PW, PH); rota(c, PW, PH, COR.am, .25); marca(c, PW, true, "");
+      kicker(c, "Depois de um tempo…", M, 330, COR.am);
+      T(c, "VOLTAMOS", M - 6, 600, caber(c, "VOLTAMOS", PW - 2 * M, 300, MARCA.titulo, 400, 160), MARCA.titulo, COR.am);
+      const y = titulo(c, "E o radar não parou nem um dia", M, 640, PW - 2 * M - 40, 100, 70, "#fff", 2) + 90;
+      paragrafo(c, "Tem novidade chegando pra quem viaja saindo de Fortaleza. Ativa o sininho 🔔", M, y, PW - 2 * M - 250, 44, MARCA.corpo, "rgba(255,255,255,.85)", 600, 1.3, 3);
+      desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, true, ROD); }],
     "VOLTAMOS ✈️\n\nA gente ficou um tempo quietinho por aqui, mas o radar continuou ligado, olhando preço de passagem saindo de Fortaleza todo santo dia.\n\nEssa semana tem novidade chegando. Ativa o sininho 🔔 pra não perder.\n\n💬 Pra onde você quer viajar em 2027? Conta aqui!"));
   // 2 creme
   L.push(deGuia(guiaTema(EDU_MITOS, "creme", ROD), "mitos", "creme", "Carrossel: mito ou verdade", "Quebra de mito gera discussão nos comentários e muito compartilhamento."));
@@ -383,10 +396,10 @@ async function semana1() {
   // 8 creme — bastidores
   L.push(P("bastidor", "creme", "Teaser 2: bastidores do radar", "Mostra o sistema trabalhando com números reais: dá credibilidade antes de abrir o grupo.", [c => { bgCreme(c, PW, PH); marca(c, PW, false, "BASTIDORES");
     kicker(c, "Enquanto você dorme…", M, 300, "#C9971C"); let y = titulo(c, "O radar trabalha por você", M, 326, PW - 2 * M, 112, 70, COR.tinta, 2) + 50;
-    [[String(nRotas), "destinos vigiados saindo de Fortaleza"], ["24h", "pesquisando preço, todo dia, sem parar"], [promos30 ? String(promos30) : "+", promos30 ? "promoções de verdade achadas em 30 dias" : "promoções de verdade achadas toda semana"]]
+    [[String(nRotas), "destinos vigiados saindo de Fortaleza"], ["24h", "de olho no preço, todo dia, sem parar"], ["8x", "por dia o radar refaz todas as buscas"]]
       .forEach(([n, t]) => { T(c, n, M, y + 110, 130, MARCA.titulo, "#C9971C"); paragrafo(c, t, M + 300, y + 50, PW - 2 * M - 300, 38, MARCA.corpo, COR.tinta, 700, 1.25, 2); y += 200; });
     rodapeP(c, PW, PH, false, "Semana que vem você vai ver"); }],
-    `BASTIDORES DO RADAR 🛰️\n\nEnquanto você dorme, ele trabalha:\n\n✈️ ${nRotas} destinos vigiados saindo de Fortaleza\n🔎 Pesquisa de preço o dia inteiro\n🔥 ${promos30 ? promos30 + " promoções de verdade achadas nos últimos 30 dias" : "Promoções de verdade achadas toda semana"}\n\nSemana que vem você vai ver como isso chega até você.\n\n💬 Comenta EU QUERO pra entrar na lista.`));
+    `BASTIDORES DO RADAR 🛰️\n\nEnquanto você dorme, ele trabalha:\n\n✈️ ${nRotas} destinos vigiados saindo de Fortaleza\n🔎 Pesquisa de preço o dia inteiro\n🔁 8 buscas completas por dia: quando o preço cai, ele vê\n\nSemana que vem você vai ver como isso chega até você.\n\n💬 Comenta EU QUERO pra entrar na lista.`));
   // 9 amarelo — tempo de voo
   L.push(P("tempo", "amarelo", "Quanto tempo de voo saindo de Fortaleza", "Curiosidade útil e rápida: muito salvo e enviado pra amigos.", [c => { TEMA.amarelo.bg(c, PW, PH); marca(c, PW, false, "CURIOSIDADE");
     kicker(c, "Voo direto, saindo de Fortaleza", M, 260, COR.tinta); let y = titulo(c, "Quanto tempo até lá?", M, 286, PW - 2 * M, 110, 70, COR.tinta, 2) + 30;
@@ -516,6 +529,103 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (b.dataset.act === "ntgerar") { if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
   else if (b.dataset.act === "ntusar") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; Object.assign(PA.nt, { link: x.link, fonte: x.fonte || "", texto: x.titulo + (x.resumo ? "\n" + x.resumo : ""), titulo: curto(x.titulo, 70), kicker: "Novidade" }); PA.nt.pontos = extrairPontos(PA.nt.texto) || x.titulo; render(); } });
 
+
+/* ================= 🗓️ montar calendário: escolher, ordenar e agendar ================= */
+const CAL = { f: "todos", thumbs: {}, legs: {}, aberto: "" };
+const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p; } catch (e) { return p; } };
+const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
+CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
+CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
+const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["dia", "Do dia"], ["guias", "Guias"]];
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+async function mcTodos() {
+  const vistos = new Set(), L = [];
+  const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
+  add(await campanha(), "");
+  add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
+  add(EDU.map(x => fGuia(x)), "Guia");
+  return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.rot }));
+}
+function mcCard(p, i) {
+  const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id];
+  return `<div class="mc-card ${n >= 0 ? "on" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${CAL.f !== "todos" && CAL.f !== mcGrupo(p) ? "hidden" : ""}>
+    <div class="mc-img"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}</div>
+    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${f ? ` · <b class="pos">já agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
+    <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
+}
+function mcSelHTML() {
+  const L = CAL.sel.map(id => (PA.lista || []).find(p => p.id === id)).filter(Boolean), hs = lerHorarios(CAL.hs);
+  const DS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+  const slot = k => { if (!hs.length || !CAL.ini) return ""; const q = horarioSlot(CAL.ini, hs, k), d = q.slice(0, 10); return `${DS[new Date(d + "T12:00:00Z").getUTCDay()]} ${d.slice(8, 10)}/${d.slice(5, 7)} · ${q.slice(11, 16)}`; };
+  return `<div class="mc-h"><b>Minha programação</b><small>${L.length} post${L.length === 1 ? "" : "s"}${L.length && hs.length ? ` · até ${slot(L.length - 1).split(" · ")[0]}` : ""}</small></div>
+    <div class="mc-cfg"><label>Começa<input type="date" data-mc="ini" value="${CAL.ini}"></label><label>Horários<input data-mc="hs" value="${esc(CAL.hs)}"></label></div>
+    ${L.length ? `<ol class="mc-lista">${L.map((p, k) => `<li class="mc-it" draggable="true" data-k="${k}">
+      <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[p.id] || ""}" alt="">
+      <div class="mc-ii"><small>${slot(k)}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b><button class="lnk" data-act="mcleg" data-id="${esc(p.id)}">${CAL.aberto === p.id ? "fechar legenda" : "ver/editar legenda"}</button>
+        ${CAL.aberto === p.id ? `<textarea class="mc-leg" data-mcleg="${esc(p.id)}" rows="7">${esc(CAL.legs[p.id] ?? p.legenda)}</textarea>` : ""}</div>
+      <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`).join("")}</ol>`
+      : `<div class="mc-vazio">Toque em <b>+ Escolher</b> ou arraste os posts pra cá.<br>A ordem aqui é a ordem em que vão sair.</div>`}
+    ${L.length ? `<label class="chk"><input type="checkbox" data-mc="ok" ${CAL.ok ? "checked" : ""}> Já aprovar (o robô publica sozinho)</label>
+      <div class="al-acts"><button class="bt pri lg" data-act="mcagendar">${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : ""}`;
+}
+function mcAtualizar() { CAL.sel = CAL.sel.filter(id => (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
+  const a = document.getElementById("mc-sel"); if (a) a.innerHTML = mcSelHTML();
+  (PA.lista || []).forEach((p, i) => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
+    el.classList.toggle("on", n >= 0); const b = el.querySelector(".mc-add"); b.className = `bt sm ${n >= 0 ? "ok" : "pri"} mc-add`; b.innerHTML = n >= 0 ? `${ic("check")}Na lista` : "+ Escolher";
+    let pos = el.querySelector(".mc-pos"); if (n >= 0) { if (!pos) { pos = document.createElement("span"); pos.className = "mc-pos"; el.querySelector(".mc-img").appendChild(pos); } pos.textContent = n + 1; } else if (pos) pos.remove(); }); }
+async function montarBoard(g) {
+  if (!CAL.ini) CAL.ini = diaMenos(hojeISO(), -1);
+  const L = await mcTodos(); PA.lista = L;
+  if (!document.getElementById("pa-grade")) return;
+  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.length} posts prontos · escolha os que vão sair e a ordem</small></div><div class="mc-grade">${L.map(mcCard).join("")}</div></div>
+    <aside class="card mc-sel" id="mc-sel">${mcSelHTML()}</aside></div>`;
+  for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
+  mcAtualizar();
+}
+async function mcAgendar(bt) {
+  const L = CAL.sel.map(id => PA.lista.find(p => p.id === id)).filter(Boolean), hs = lerHorarios(CAL.hs);
+  if (!CAL.ini || !hs.length) { toast("Confira o dia de começo e os horários."); return; }
+  const prog = document.getElementById("mc-prog"); bt.disabled = true;
+  try {
+    const itens = [];
+    for (const p of L) { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id }); }
+    const n = await agendarItens(itens, CAL.ini, hs, CAL.ok, t => { if (prog) prog.textContent = t; });
+    L.forEach((p, k) => { CAL.feitos[p.id] = horarioSlot(CAL.ini, hs, k).slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
+    CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
+  } catch (e) { toast("Parou no meio: " + e.message, 8000); bt.disabled = false; }
+}
+document.addEventListener("click", e => {
+  const pf = e.target.closest('[data-act="pill"][data-g="mcf"]'); if (pf) { CAL.f = pf.dataset.v; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x === pf));
+    document.querySelectorAll(".mc-card").forEach(el => { el.hidden = CAL.f !== "todos" && el.dataset.g !== CAL.f; }); e.stopImmediatePropagation(); return; }
+  const b = e.target.closest('[data-act^="mc"]'); if (!b) return; const a = b.dataset.act, k = +b.dataset.k;
+  if (a === "mcadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); }
+  else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);
+  else if (a === "mcdown" && k < CAL.sel.length - 1) CAL.sel.splice(k + 1, 0, CAL.sel.splice(k, 1)[0]);
+  else if (a === "mcrem") CAL.sel.splice(k, 1);
+  else if (a === "mcleg") CAL.aberto = CAL.aberto === b.dataset.id ? "" : b.dataset.id;
+  else if (a === "mclimpar") { if (!confirm("Tirar todos da lista?")) return; CAL.sel = []; }
+  else if (a === "mcagendar") { mcAgendar(b); return; }
+  else return;
+  mcAtualizar();
+}, true);
+document.addEventListener("input", e => { const t = e.target;
+  if (t.dataset && t.dataset.mcleg) CAL.legs[t.dataset.mcleg] = t.value;
+  else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(() => { const f = document.activeElement; mcAtualizar(); const n = document.querySelector('[data-mc="hs"]'); if (n && f && f.dataset.mc === "hs") { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 600); } });
+document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
+  if (t.dataset.mc === "ini") { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; });
+/* arrastar: da biblioteca pra lista, e dentro da lista pra mudar a ordem */
+document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".mc-card"), it = e.target.closest && e.target.closest(".mc-it");
+  if (it) { e.dataTransfer.setData("text/plain", "k:" + it.dataset.k); it.classList.add("arrastando"); } else if (c) e.dataTransfer.setData("text/plain", "id:" + c.dataset.id); });
+document.addEventListener("dragend", e => { document.querySelectorAll(".arrastando,.mc-alvo").forEach(x => x.classList.remove("arrastando", "mc-alvo")); });
+document.addEventListener("dragover", e => { const sel = e.target.closest && e.target.closest("#mc-sel"); if (!sel) return; e.preventDefault();
+  document.querySelectorAll(".mc-alvo").forEach(x => x.classList.remove("mc-alvo")); const it = e.target.closest(".mc-it"); (it || sel).classList.add("mc-alvo"); });
+document.addEventListener("drop", e => { const sel = e.target.closest && e.target.closest("#mc-sel"); if (!sel) return; e.preventDefault();
+  const v = e.dataTransfer.getData("text/plain"), it = e.target.closest(".mc-it"); let pos = it ? +it.dataset.k : CAL.sel.length;
+  if (v.startsWith("id:")) { const id = v.slice(3), n = CAL.sel.indexOf(id); if (n >= 0) { CAL.sel.splice(n, 1); if (n < pos) pos--; } CAL.sel.splice(pos, 0, id); }
+  else if (v.startsWith("k:")) { const de = +v.slice(2); const [x] = CAL.sel.splice(de, 1); CAL.sel.splice(de < pos ? pos - 1 + (it ? 1 : 0) : pos, 0, x); }
+  mcAtualizar(); });
+
 /* ================= página ================= */
 async function ideiasHoje() {
   const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
@@ -538,8 +648,8 @@ function cardPauta(p, i) {
 function pPauta() {
   PA.lista = null;
   setTimeout(montarPauta, 0);
-  return head("Pauta do Instagram", "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto. Tudo com a nossa identidade, chamando pro grupo grátis.") +
-    `<div class="pa-bar">${pills("paaba", PA.aba, [["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["biblioteca", "Guias"]])}
+  return head("Pauta do Instagram", PA.aba === "montar" ? "Todos os posts prontos de um lado. Escolha os que vão sair, arraste pra ordem que quiser e agende tudo de uma vez." : "Stories com o que é do dia. Feed com o que vale por mais tempo: oportunidades raras, resumo da semana e guias de milhas, viagem e aeroporto.") +
+    `<div class="pa-bar">${pills("paaba", PA.aba, [["montar", "🗓️ Montar calendário"], ["campanha", "🚀 Lançamento"], ["hoje", "Pra hoje"], ["noticia", "📰 Notícias"], ["biblioteca", "Guias"]])}
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
     ${PA.aba === "noticia" ? noticiaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><div class="al-acts" style="margin-bottom:10px"><button class="bt pri" data-act="iglote" data-s="1">${ic("calendar")}Agendar a semana 1 inteira (2 por dia)</button><button class="bt" data-act="iglote" data-s="2">${ic("calendar")}Agendar a semana 2</button></div><b>Plano:</b> semana 1 aquece o perfil (2 posts por dia, 12h e 19h, cores em rodízio 🟦⬜🟨 pra o grid ficar organizado) + stories. Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
@@ -550,6 +660,7 @@ async function montarPauta() {
   carregarMilhas();
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
+  if (PA.aba === "montar") return montarBoard(g);
   const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;

@@ -110,26 +110,32 @@ function abrirLote(sem) {
     <div class="ej-acts"><button class="bt pri lg" data-act="iglsalvar" data-s="${sem}">${ic("calendar")}Agendar ${L.length} posts</button><span class="sub" id="igl-prog"></span></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
+function horarioSlot(ini, hs, k) { return `${diaMenos(ini, -Math.floor(k / hs.length))}T${hs[k % hs.length]}-03:00`; }
+function lerHorarios(t) { return String(t || "").split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0")); }
+/* agenda vários posts de uma vez: itens = [{ titulo, cvs, legenda, origem }] */
+async function agendarItens(itens, ini, hs, ok, prog) {
+  if (!token()) throw new Error("Conecte o token do GitHub em Ajustes pra agendar.");
+  IGF.fila = null; await carregarIG(true); IGF.fila = IGF.fila || [];
+  const base = Date.now().toString(36);
+  for (let k = 0; k < itens.length; k++) {
+    const it = itens[k], id = `ig-${base}-${k + 1}`;
+    const item = { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: horarioSlot(ini, hs, k), aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
+    for (let j = 0; j < it.cvs.length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
+    IGF.fila.push(item);
+  }
+  prog("Salvando a agenda…"); await salvarFila(`Instagram: agenda ${itens.length} posts`);
+  return itens.length;
+}
 async function salvarLote(sem, bt) {
-  if (!token()) { toast("Conecte o token do GitHub em Ajustes pra agendar."); return; }
   const L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
-  const ini = $("#igl-ini").value, hs = $("#igl-h").value.split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0"));
+  const ini = $("#igl-ini").value, hs = lerHorarios($("#igl-h").value);
   if (!ini || !hs.length) { toast("Confira o dia e os horários."); return; }
-  const ok = $("#igl-ok").checked, prog = $("#igl-prog"); bt.disabled = true;
+  const prog = $("#igl-prog"); bt.disabled = true;
   try {
-    IGF.fila = null; await carregarIG(true); IGF.fila = IGF.fila || [];
-    const base = Date.now().toString(36);
-    for (let k = 0; k < L.length; k++) {
-      const { p, i } = L[k], cvs = [...document.querySelectorAll(`#pa-t-${i} canvas`)];
-      const dia = diaMenos(ini, -Math.floor(k / hs.length)), quando = `${dia}T${hs[k % hs.length]}-03:00`, id = `ig-${base}-${k + 1}`;
-      const item = { id, titulo: p.titulo, tipo: cvs.length > 1 ? "carrossel" : "feed", imagens: cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(($("#pa-l-" + i) || {}).value || p.legenda), quando, aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: p.id };
-      for (let j = 0; j < cvs.length; j++) { prog.textContent = `Enviando post ${k + 1} de ${L.length} (tela ${j + 1}/${cvs.length})…`; await subirImagem(item.imagens[j], cvs[j]); }
-      IGF.fila.push(item);
-    }
-    prog.textContent = "Salvando a agenda…"; await salvarFila(`Instagram: agenda a semana ${sem} (${L.length} posts)`);
+    const n = await agendarItens(L.map(({ p, i }) => ({ titulo: p.titulo, cvs: [...document.querySelectorAll(`#pa-t-${i} canvas`)], legenda: ($("#pa-l-" + i) || {}).value || p.legenda, origem: p.id })), ini, hs, $("#igl-ok").checked, t => { prog.textContent = t; });
     const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on");
-    toast(`${L.length} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: agenda.`, 6000);
-  } catch (e) { toast("Parou no meio: " + e.message + ". O que já subiu fica salvo; tente de novo.", 8000); bt.disabled = false; }
+    toast(`${n} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: agenda.`, 6000);
+  } catch (e) { toast("Parou no meio: " + e.message + ". Tente de novo.", 8000); bt.disabled = false; }
 }
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="igl"]'); if (!b) return;
   if (b.dataset.act === "iglote") abrirLote(+b.dataset.s);
@@ -238,22 +244,22 @@ function pInstagram() {
         : `<div class="vazio">Nada agendado. Vá em <a href="#pauta">Pauta do Instagram › 🚀 Lançamento</a> e toque em <b>Agendar a semana inteira</b>.</div>`}
       ${pubs.length ? `<details class="ig-pubs"><summary>Publicados pelo robô (${pubs.length})</summary><div class="ig-lista">${pubs.map(linhaPub).join("")}</div></details>` : ""}
     </div>
-    ${dmHTML()}
-    <details class="card ig-num" ${IGF.numAberto ? "open" : ""}><summary><b>📊 Números do perfil</b> <small>${milN(c.seguidores || 0)} seguidores · <span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias · atualizado ${haQuanto(c.quando)}</small></summary>
+    <div class="ig-num"><div class="ig-sec"><h2 class="mv-t">📊 Números do perfil <small class="sub">atualizado ${haQuanto(c.quando)}</small></h2></div>
     <div class="ig-bar">${pills("igper", String(per), [["7", "7 dias"], ["14", "14 dias"], ["30", "30 dias"]])}</div>
     <div class="grid kpis ig-k4">${kpi("Seguidores", milN(c.seguidores || 0), `<span class="${liq < 0 ? "neg" : "pos"}">${liq >= 0 ? "+" : "−"}${milN(Math.abs(liq))}</span> em ${per} dias`, true, "users")}
       ${kpi("Entraram × saíram", `<span class="pos">+${milN(ent)}</span> <span class="neg">−${milN(sai)}</span>`, `média de ${(ent / per).toFixed(0)} entrando e ${(sai / per).toFixed(0)} saindo por dia`, false, "swap")}
       ${kpi("Alcance", milN(alc), pct(alc, alcA), false, "globe")}
       ${kpi("Interações", milN(int_), pct(int_, intA), false, "star")}</div>
     ${faltaHist ? `<p class="sub">Completando o histórico: ${per - faltaHist} de ${per} dias carregados.</p>` : ""}
-    <div class="ig-diag"><h3>Como estamos</h3><ul>${igDiagnostico(c, L, ant, M).map(([k, t]) => `<li class="${k}">${t}</li>`).join("")}</ul></div>
+    <div class="card ig-diag"><h3>Como estamos</h3><ul>${igDiagnostico(c, L, ant, M).map(([k, t]) => `<li class="${k}">${t}</li>`).join("")}</ul></div>
     <div class="ig-graf"><div class="card"><h3>Seguidores</h3>${igSvgLinha(L.map(d => ({ v: d.seg, l: dataCurta(d.dia).toLowerCase() })))}</div>
       <div class="card"><h3>Quem entrou e quem saiu</h3>${igSvgBarras(L, postsDia)}<div class="ig-leg"><span><i style="background:#22A06B"></i>entraram</span><span><i style="background:#E5484D"></i>saíram</span><span><i style="background:#7C5CE0;border-radius:50%"></i>dia com post</span></div></div>
       <div class="card"><h3>Alcance por dia</h3>${igSvgLinha(L.map(d => ({ v: d.alcance || 0, l: dataCurta(d.dia).toLowerCase() })), "#0EA5E9")}</div></div>
     <div class="ig-sec"><h3>Posts (${M.length})</h3>${pills("igord", IGF.ord, [["recentes", "Recentes"], ["alcance", "Mais alcance"], ["curtidas", "Mais curtidas"], ["salvos", "Mais salvos"], ["seguiram", "Mais seguidores"]])}</div>
     ${MP.length ? `<div class="ig-posts">${MP.slice(0, 30).map(igPostCard).join("")}</div>` : `<div class="vazio">Nenhum post no perfil ainda.</div>`}
     ${(c.stories || []).length ? `<h3>Stories recentes</h3><div class="ig-posts">${c.stories.slice(0, 12).map(s => igPostCard({ ...s, tipo: "story", legenda: "Story" })).join("")}</div>` : ""}
-    </details>`;
+    </div>
+    ${dmHTML()}`;
 }
 document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="ig"]'); if (!b) return; if (b.dataset.g === "igper") IGF.per = +b.dataset.v; else if (b.dataset.g === "igord") IGF.ord = b.dataset.v; });
 document.addEventListener("click", async e => {

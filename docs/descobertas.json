@@ -1,9 +1,10 @@
 {
- "atualizado": "2026-10-08T23:03+00:00",
+ "atualizado": "2026-10-09T01:01+00:00",
  "pistas": [
   "BEL",
   "BSB",
   "BUE",
+  "CGB",
   "CWB",
   "FLN",
   "LIS",
@@ -11,7 +12,6 @@
   "POA",
   "REC",
   "RIO",
-  "SAO",
   "THE"
  ],
  "blogs": [],
@@ -89,6 +89,19 @@
    "pista": true
   },
   {
+   "iata": "CGB",
+   "rt": {
+    "preco": 974,
+    "ida": "2026-11-19",
+    "volta": "2026-11-24",
+    "paradas": 1,
+    "visto": "2026-10-09T00:21:06Z"
+   },
+   "rastreada": true,
+   "nome": "Cuiabá",
+   "pista": true
+  },
+  {
    "iata": "RIO",
    "rt": {
     "preco": 1217,
@@ -157,15 +170,15 @@
     "visto": "2026-10-06T19:56:24Z"
    },
    "ow": {
-    "preco": 535,
-    "ida": "2026-12-12",
+    "preco": 613,
+    "ida": "2026-12-02",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-05T00:16:41Z"
+    "paradas": 1,
+    "visto": "2026-10-05T18:16:37Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "POA",
@@ -329,6 +342,19 @@
    },
    "rastreada": false,
    "nome": "ATL",
+   "pista": false
+  },
+  {
+   "iata": "OXB",
+   "ow": {
+    "preco": 7339,
+    "ida": "2026-10-08",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-05T21:40:16Z"
+   },
+   "rastreada": false,
+   "nome": "OXB",
    "pista": false
   },
   {

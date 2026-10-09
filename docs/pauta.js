@@ -319,9 +319,15 @@ const TEMA = {
 };
 function capaTema(c, t, kick, tit, sub, dir, rod, mascote = true) {
   const k = TEMA[t]; k.bg(c, PW, PH); rota(c, PW, PH, k.dk ? COR.am : COR.tinta, k.dk ? .22 : .16); marca(c, PW, k.dk, dir);
-  kicker(c, kick, M, 400, k.kk); const y = titulo(c, tit, M, 436, PW - 2 * M - (mascote ? 40 : 0), 156, 92, k.tx, 4) + 40;
+  const tw = PW - 2 * M - (mascote ? 40 : 0), lim = PH - 200; // não encostar no rodapé
+  let tmax = 156, lmax = 4, y0 = 400;
+  const altura = (mx, lm) => { let z = mx; while (z > 76 && quebrar(c, tit.toUpperCase(), tw, z, MARCA.titulo).length > lm) z -= 6; return Math.min(lm, quebrar(c, tit.toUpperCase(), tw, z, MARCA.titulo).length) * z * .98; };
+  const precisa = () => 36 + altura(tmax, lmax) + 40 + 14 + (sub ? 90 + 44 * 1.32 * 2 : 0);
+  while (y0 + precisa() > lim && tmax > 96) tmax -= 10;
+  if (y0 + precisa() > lim) y0 = Math.max(260, lim - precisa());
+  kicker(c, kick, M, y0, k.kk); const y = titulo(c, tit, M, y0 + 36, tw, tmax, 76, k.tx, lmax) + 40;
   c.fillStyle = k.ac; c.fillRect(M, y, 160, 14);
-  if (sub) paragrafo(c, sub, M, y + 90, PW - 2 * M - (mascote ? 250 : 0), 44, MARCA.corpo, k.sub, 600, 1.32, 4);
+  if (sub) { const n = Math.max(1, Math.min(4, Math.floor((lim - (y + 90)) / (44 * 1.32)) + 1)); paragrafo(c, sub, M, y + 90, PW - 2 * M - (mascote ? 250 : 0), 44, MARCA.corpo, k.sub, 600, 1.32, n); }
   if (mascote) desenhaImg(c, "mascote", PW - M - 120, PH - 450, 230);
   rodapeP(c, PW, PH, k.dk, rod);
 }
@@ -646,10 +652,10 @@ async function mcTodos() {
   return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.noticia ? "Notícia" : p.rot }));
 }
 function mcCard(p, i) {
-  const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id], vivo = aoVivo(p);
-  return `<div class="mc-card ${n >= 0 ? "on" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${CAL.f !== "todos" && CAL.f !== mcGrupo(p) ? "hidden" : ""}>
+  const n = CAL.sel.indexOf(p.id), f = p.sit ? null : CAL.feitos[p.id], vivo = aoVivo(p), sit = p.sit;
+  return `<div class="mc-card ${n >= 0 ? "on" : ""} ${sit ? "feito" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${(CAL.f !== "todos" && CAL.f !== mcGrupo(p)) || (sit && !CAL.verFeitos) ? "hidden" : ""}>
     <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
-    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
+    <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
 function slotsCal(n) { const hs = lerHorarios(CAL.hs); if (!CAL.ini || !hs.length) return [];
@@ -710,23 +716,37 @@ async function mcVer(id) {
     <div class="mc-telas" id="mcv-t"></div>
     ${p.porque ? `<div class="pa-porque">💡 ${esc(p.porque)}</div>` : ""}
     <div class="field"><label>Legenda (o que muda aqui vai junto no agendamento)</label><textarea class="mc-leg" data-mcleg="${esc(id)}" rows="9">${esc(CAL.legs[id] ?? p.legenda)}</textarea></div>
-    <div class="ej-acts"><button class="bt ${n >= 0 ? "" : "pri"} lg" data-act="mcvadd" data-id="${esc(id)}">${n >= 0 ? "Tirar da lista" : "+ Escolher esse"}</button><button class="bt" data-act="mcvbaixar">${ic("down")}Baixar</button><button class="bt ghost" data-act="mcvfechar">Fechar</button></div></div>`;
+    <div class="ej-acts"><button class="bt pri lg" data-act="mcagora" data-id="${esc(id)}">⚡ Postar agora</button><button class="bt lg" data-act="mcvadd" data-id="${esc(id)}">${n >= 0 ? "Tirar da lista" : "+ Escolher esse"}</button><button class="bt" data-act="mcvbaixar">${ic("down")}Baixar</button><button class="bt ghost" data-act="mcvfechar">Fechar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
   const box = document.getElementById("mcv-t");
   for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
 }
 function mcFecharVer() { const d = document.getElementById("mcv"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
+function mcSituacao(p) { const F = (IGF.fila || []).filter(x => x.origem === p.id); if (!F.length) return null;
+  const pub = F.find(x => ((IGF.st || {})[x.id] || {}).status === "publicado"); if (pub) return { tipo: "postado", quando: (IGF.st[pub.id].publicado_em || pub.quando) };
+  const ag = F.find(x => ((IGF.st || {})[x.id] || {}).status !== "expirado"); return ag ? { tipo: "agendado", quando: ag.quando } : null; }
 async function montarBoard(g) {
   if (!CAL.ini) CAL.ini = diaMenos(hojeISO(), -1);
-  const L = await mcTodos(); PA.lista = L;
+  IGF.fila = null; await carregarIG(true);
+  let L = await mcTodos(); L.forEach(p => { p.sit = mcSituacao(p); });
+  L = L.filter(p => !p.sit).concat(L.filter(p => p.sit)); PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
-  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.length} posts prontos · escolha os que vão sair e a ordem</small></div><div class="mc-grade"><div class="mc-card mc-vg" draggable="true" data-id="vaga-novo" data-g="dia"><div class="mc-img"><canvas id="mc-cv-vaga" width="${PW}" height="${PH}"></canvas></div>
+  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.filter(p => !p.sit).length} posts novos · ${L.filter(p => p.sit).length} já postados/agendados</small><label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div><div class="mc-grade"><div class="mc-card mc-vg" draggable="true" data-id="vaga-novo" data-g="dia"><div class="mc-img"><canvas id="mc-cv-vaga" width="${PW}" height="${PH}"></canvas></div>
       <div class="mc-i"><small>Pode usar várias vezes</small><b>💲 Oferta do dia (o robô escolhe na hora)</b></div><button class="bt sm pri mc-add" data-act="mcvaga">+ Adicionar vaga</button></div>${L.map(mcCard).join("")}</div></div>
     <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
   { const cv = document.getElementById("mc-cv-vaga"); if (cv) { desenhaVaga(cv.getContext("2d")); CAL.thumbs.vaga = cv.toDataURL("image/jpeg", .55); } }
   for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
   mcAtualizar();
 }
+async function mcPostarAgora(id, bt) {
+  const p = PA.lista.find(x => x.id === id); if (!p) return;
+  if (p.sit && !confirm(`Esse post já foi ${p.sit.tipo}. Postar de novo agora?`)) return;
+  bt.disabled = true; bt.textContent = "Enviando…";
+  try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+    await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
+    await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
+    mcFecharVer(); toast("Enviado! O robô publica em 1 a 3 minutos.", 6000); render(); }
+  catch (e) { toast("Não foi: " + e.message, 7000); bt.disabled = false; bt.textContent = "⚡ Postar agora"; } }
 async function mcAgendar(bt) {
   const L = mcSelecionados(), hs = lerHorarios(CAL.hs);
   if (!CAL.ini || !hs.length) { toast("Confira o dia de começo e os horários."); return; }
@@ -747,7 +767,7 @@ async function mcAgendar(bt) {
 }
 document.addEventListener("click", e => {
   const pf = e.target.closest('[data-act="pill"][data-g="mcf"]'); if (pf) { CAL.f = pf.dataset.v; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x === pf));
-    document.querySelectorAll(".mc-card").forEach(el => { el.hidden = CAL.f !== "todos" && el.dataset.g !== CAL.f; }); e.stopImmediatePropagation(); return; }
+    document.querySelectorAll(".mc-card").forEach(el => { el.hidden = (CAL.f !== "todos" && el.dataset.g !== CAL.f) || (el.classList.contains("feito") && !CAL.verFeitos); }); e.stopImmediatePropagation(); return; }
   const b = e.target.closest('[data-act^="mc"]'); if (!b) return; const a = b.dataset.act, k = +b.dataset.k;
   if (a === "mcadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); }
   else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);
@@ -755,6 +775,7 @@ document.addEventListener("click", e => {
   else if (a === "mcrem") CAL.sel.splice(k, 1);
   else if (a === "mcver") { e.preventDefault(); mcVer(b.dataset.id); return; }
   else if (a === "mcvfechar") { mcFecharVer(); return; }
+  else if (a === "mcagora") { mcPostarAgora(b.dataset.id, b); return; }
   else if (a === "mcvadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); mcFecharVer(); }
   else if (a === "mcvbaixar") { [...document.querySelectorAll("#mcv-t canvas")].forEach((cv, j) => setTimeout(() => { const l = document.createElement("a"); l.download = `partiu085-${j + 1}.png`; l.href = cv.toDataURL("image/png"); l.click(); }, j * 350)); return; }
   else if (a === "mchs") { CAL.hs = b.dataset.v; mcGravar("p085_mc_hs", CAL.hs); const i = document.querySelector('[data-mc="hs"]'); if (i) i.value = CAL.hs; document.querySelectorAll('[data-act="mchs"]').forEach(x => x.classList.toggle("on", x === b)); }
@@ -771,7 +792,8 @@ document.addEventListener("input", e => { const t = e.target;
   else if (t.dataset && t.dataset.mc === "arr") { CAL.arr = Math.max(0, Math.min(9, +t.value || 0)); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 300); }
   else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
-  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; else if (t.dataset.mc === "reels") { CAL.reels = t.checked; mcGravar("p085_mc_reels", CAL.reels); } });
+  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; else if (t.dataset.mc === "verfeitos") { CAL.verFeitos = t.checked; document.querySelectorAll(".mc-card.feito").forEach(el => { el.hidden = !CAL.verFeitos || (CAL.f !== "todos" && el.dataset.g !== CAL.f); }); }
+  else if (t.dataset.mc === "reels") { CAL.reels = t.checked; mcGravar("p085_mc_reels", CAL.reels); } });
 /* arrastar: da biblioteca pra lista, e dentro da lista pra mudar a ordem */
 document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".mc-card"), it = e.target.closest && e.target.closest(".mc-it");
   if (it) { e.dataTransfer.setData("text/plain", "k:" + it.dataset.k); it.classList.add("arrastando"); } else if (c) e.dataTransfer.setData("text/plain", "id:" + c.dataset.id); });

@@ -188,6 +188,24 @@ def fazer_reels(quadro: bytes, pid: str) -> str:
     return caminho
 
 
+def reels_video(p: dict) -> str:
+    """Vídeo real (docs/midia/clip-*.mp4) + camada com a frase (PNG) = Reels de 9s."""
+    import shutil
+    import subprocess
+    import tempfile
+    if not shutil.which("ffmpeg"):
+        subprocess.run("sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg", shell=True, check=False)
+    d = Path(tempfile.mkdtemp())
+    (d / "o.png").write_bytes(requests.get(url_img(p["overlay"]), timeout=30).content)
+    src = DOCS / p["video_fundo"]
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-i", str(d / "o.png"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+                    "-filter_complex", "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[v];[v][1:v]overlay=0:0,format=yuv420p",
+                    "-t", "9", "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+    caminho = f"ig/{p['id']}.mp4"
+    subir_github(caminho, (d / "r.mp4").read_bytes())
+    return caminho
+
+
 def url_site(caminho: str) -> str:
     dono, nome = REPO.split("/")
     return f"https://{dono}.github.io/{nome}/{caminho}"
@@ -532,8 +550,11 @@ def main():
                 extra = montar_oferta(p, st)
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
             if p.get("tipo") == "reels" and not extra:
-                quadro = requests.get(url_img(p["imagens"][0]), timeout=30).content
-                extra = {"video": fazer_reels(quadro, p["id"]), "imagens": p["imagens"], "titulo": p.get("titulo")}
+                if p.get("video_fundo") and p.get("overlay"):
+                    extra = {"video": reels_video(p), "imagens": p["imagens"], "titulo": p.get("titulo")}
+                else:
+                    quadro = requests.get(url_img(p["imagens"][0]), timeout=30).content
+                    extra = {"video": fazer_reels(quadro, p["id"]), "imagens": p["imagens"], "titulo": p.get("titulo")}
             res = publicar_reels(extra["video"], p["legenda"]) if extra.get("video") else publicar(p)
             st[p["id"]] = {"status": "publicado", **res, **({"trocado_de": p["trocado_de"]} if p.get("trocado_de") else {}), **({"escolhido": extra.get("titulo"), "destino": extra.get("destino"), "imagem": extra["imagens"][0], "formato": "reels" if extra.get("video") else "feed"} if extra else {})}
             if not extra and p.get("story_junto") and p.get("imagens"):

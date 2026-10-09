@@ -11,7 +11,7 @@ async function carregarIG(forcar) {
     if (token()) { try { const r = await gh(`/contents/docs/ig_fila.json?ref=main&t=${Date.now()}`); IGF.fila = JSON.parse(decodeURIComponent(escape(atob(r.content.replace(/\n/g, ""))))); } catch (e) { IGF.fila = []; } }
     else IGF.fila = await getJSON("ig_fila.json", []);
     IGF.st = await getJSON("ig_status.json", {}); IGF.conta = await getJSON("ig_conta.json", null);
-    IGF.dm = await getJSON("ig_dm.json", { itens: [] }); IGF.mb = await getJSON("grupo_membros.json", { hist: [] }); IGF.dmcfg = { ...DM_PADRAO, ...(await getJSON("ig_dm_cfg.json", {})) };
+    IGF.dm = await getJSON("ig_dm.json", { itens: [] }); IGF.mb = await getJSON("grupo_membros.json", { hist: [] }); IGF.auto = { pausado: false, auto_oferta: true, horarios_oferta: ["19:00"], rodape: "", ...(await getJSON("ig_auto.json", {})) }; IGF.autoFila = await getJSON("ig_auto_fila.json", []); IGF.dmcfg = { ...DM_PADRAO, ...(await getJSON("ig_dm_cfg.json", {})) };
   } finally { IGF.carregando = false; }
   if (/#instagram/.test(location.hash)) render();
 }
@@ -182,6 +182,16 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (b.dataset.act === "iglsalvar") salvarLote(+b.dataset.s, b); });
 
 
+/* ---------- piloto automático e pausa geral */
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act="igpausa"],[data-act="igausalvar"]'); if (!b) return;
+  if (!token()) { toast("Conecte o token do GitHub em Ajustes."); return; }
+  const cfg = { ...IGF.auto };
+  if (b.dataset.act === "igpausa") cfg.pausado = !cfg.pausado;
+  else { cfg.auto_oferta = $("#au-on").checked; cfg.horarios_oferta = lerHorarios($("#au-h").value); }
+  b.disabled = true;
+  try { await salvarArquivo("docs/ig_auto.json", cfg, "Instagram: piloto automático"); IGF.auto = cfg; toast(b.dataset.act === "igpausa" ? (cfg.pausado ? "Robô pausado. Nada sai até você retomar." : "Robô ligado de novo.") : "Piloto automático salvo."); render(); }
+  catch (err) { toast("Erro: " + err.message, 6000); b.disabled = false; } });
+
 /* ---------- membros do grupo (você digita 1x por dia) */
 function membrosHTML(postsDia) {
   const H = ((IGF.mb && IGF.mb.hist) || []).slice().sort((a, b) => a.dia.localeCompare(b.dia)), u = H[H.length - 1], hoje = hojeISO();
@@ -269,14 +279,15 @@ function pInstagram() {
   const st = p => (S_[p.id] || {}).status || (p.aprovado ? "agendado" : "rascunho");
   const chip = s => ({ expirado: `<span class="st">não saiu: notícia/promoção passou</span>`, agendado: `<span class="st verde">agendado</span>`, rascunho: `<span class="st">rascunho · falta aprovar</span>`, publicado: `<span class="st verde">✓ publicado</span>`, erro: `<span class="st vermelho">erro</span>` }[s]);
   const thumb = p => { const im = p.imagens[0] || (S_[p.id] || {}).imagem; return im ? `https://raw.githubusercontent.com/${REPO}/main/docs/${im}` : "marca/icone.png"; };
-  const pend = (F || []).filter(p => st(p) !== "publicado").sort((a, b) => a.quando.localeCompare(b.quando));
+  const ids = new Set((F || []).map(x => x.id));
+  const pend = (F || []).concat((IGF.autoFila || []).filter(x => !ids.has(x.id))).filter(p => st(p) !== "publicado" && p.quando >= isoLocal(new Date(Date.now() - 2 * 36e5))).sort((a, b) => a.quando.localeCompare(b.quando));
   const jaSaiu = p => p.origem && !["vaga", "story"].includes(p.origem) && p.tipo !== "story" && (F || []).some(x => x.id !== p.id && x.origem === p.origem && st(x) === "publicado");
   const linhaFila = p => { const s = st(p), e = S_[p.id] || {};
     return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${p.tipo === "story" ? "Story" : p.tipo === "oferta_dia" ? "💲 Oferta do dia: o robô escolhe a melhor promoção fresca na hora" : p.tipo === "carrossel" ? `Carrossel · ${p.imagens.length} telas` : "Feed"} · ${dataHora(p.quando)} ${chip(s)}</small>
       ${s === "erro" ? `<small class="neg">${esc(e.erro || "")}</small>` : ""}${s !== "publicado" && jaSaiu(p) ? `<small class="mc-vivo">⚠️ Esse post já saiu antes: nesse horário vai sair uma 💲 oferta do dia no lugar (não duplica).</small>` : ""}${e.trocado_de ? `<small class="sub">Saiu oferta do dia no lugar de "${esc(e.trocado_de)}", que já tinha sido postado.</small>` : ""}</div>
-      <div class="ig-a">${s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
+      <div class="ig-a">${p.auto ? `<span class="st">🤖 piloto automático</span>` : ""}${p.auto ? "" : s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
         ${s === "erro" ? `<button class="bt sm pri" data-act="igtentar" data-id="${p.id}">${ic("refresh")}Tentar de novo</button>` : ""}
-        <button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button></div></div>`; };
+        ${p.auto ? "" : `<button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button>`}</div></div>`; };
   if (setup) return head("Instagram: agenda", "Crescimento do perfil, desempenho de cada post e agenda.") + `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Instagram ainda não conectado"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : `<p class="sub">Carregando…</p>`}</div>`;
 
   const per = IGF.per, T = igDias(c), L = T.slice(-per), ant = T.slice(-2 * per, -per);
@@ -297,7 +308,10 @@ function pInstagram() {
   const linhaPub = p => { const e = S_[p.id] || {}, m = e.metricas || {};
     return `<div class="ig-row"><img src="${thumb(p)}" alt="" loading="lazy"><div class="ig-i"><b>${esc(p.titulo)}</b><small>${e.publicado_em ? dataHora(e.publicado_em) : ""}${e.link ? ` · <a href="${esc(e.link)}" target="_blank" rel="noopener">ver no Instagram ↗</a>` : ""}</small></div>
       <div class="ig-m">${[["curtidas", "❤️"], ["comentarios", "💬"], ["alcance", "👀"], ["salvos", "🔖"], ["compartilhamentos", "↗️"]].map(([k, e_]) => m[k] != null ? `<span>${e_} <b>${milN(m[k])}</b></span>` : "").join("") || `<span class="sub">números em até 1h</span>`}</div></div>`; };
-  return head("Instagram: agenda", `@${esc(c.usuario || "")} · o robô publica sozinho o que estiver aprovado, no horário`, `<a class="bt pri" href="#pauta">${ic("calendar")}Agendar posts</a><button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
+  return head("Instagram: agenda", `@${esc(c.usuario || "")} · o robô publica sozinho o que estiver aprovado, no horário`, `<button class="bt ${IGF.auto.pausado ? "pri" : ""}" data-act="igpausa">${IGF.auto.pausado ? "▶ Retomar robô" : "⏸ Pausar robô"}</button><a class="bt pri" href="#pauta">${ic("calendar")}Agendar posts</a><button class="bt" data-act="igrecarregar">${ic("refresh")}Atualizar</button>`) +
+    (IGF.auto.pausado ? `<div class="aviso warn"><span><b>⏸ Robô pausado.</b> Nada é publicado até você tocar em Retomar. A agenda fica guardada.</span></div>` : "") +
+    `<div class="card ig-auto"><b>🤖 Piloto automático</b><label class="chk"><input type="checkbox" id="au-on" ${IGF.auto.auto_oferta ? "checked" : ""}> Todo dia, se o horário estiver vazio, o robô posta a melhor <b>💲 oferta do dia</b> (feed + story)</label>
+      <label class="au-h">Horários <input id="au-h" value="${esc((IGF.auto.horarios_oferta || []).join(", "))}" placeholder="19:00"></label><button class="bt sm" data-act="igausalvar">${ic("save")}Salvar</button></div>` +
     `<div class="card ig-ag2">
       <div class="ig-resumo"><span><b>${nAg}</b> agendado${nAg === 1 ? "" : "s"}</span>${nRas ? `<span class="warn"><b>${nRas}</b> esperando aprovação</span>` : ""}${nErr ? `<span class="neg"><b>${nErr}</b> com erro</span>` : ""}
         <span>${prox ? `Próximo: <b>${diaRot(prox.quando.slice(0, 10)).toLowerCase()} às ${prox.quando.slice(11, 16)}</b>` : "Nenhum post programado"}</span></div>

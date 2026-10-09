@@ -1031,7 +1031,7 @@ function camadaReels(c, t) { const g = c.createLinearGradient(0, 0, 0, SH); g.ad
 async function fReels(x) {
   try { await document.fonts.load(`400 112px ${FONTE_REELS}`); } catch (e) { }
   const fr = await fotoMidia("clip-v-" + x.clip);
-  return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.replace(/\n/g, " ").slice(0, 60), porque: "Clique pra ver o vídeo rodando. Pelo celular dá pra pôr música em alta antes de postar.", fmt: "Reels 9:16 · 9s",
+  return { id: "rv-" + x.id, reels: true, video: `midia/clip-v-${x.clip}.mp4`, texto: x.t.split("\n").map(l => l.charAt(0).toLowerCase() + l.slice(1)).join(" ").replace(/\. /g, ", ").replace(/\.$/, ""), grupo: "feed", tipo: "Reels", rot: "Reels · vídeo real", titulo: "🎬 " + x.t.replace(/\n/g, " ").slice(0, 60), porque: "Clique pra ver o vídeo rodando. Pelo celular dá pra pôr música em alta antes de postar.", fmt: "Reels 9:16 · 9s",
     overlay: c => camadaReels(c, x.t),
     telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (fr) cobrir(c, fr, 0, 0, SW, SH); camadaReels(c, x.t); }],
     legenda: `${x.leg}\n\n✈️ Segue o @partiu.085: passagem barata saindo de Fortaleza\n\n${HASH}` };
@@ -1051,7 +1051,7 @@ function cardPauta(p, i) {
     <div class="pa-telas ${p.stories || p.reels ? "pa-vert" : ""}" id="pa-t-${i}"><div class="vazio">desenhando…</div></div>
     <div class="pa-porque">💡 ${esc(p.porque)}</div>
     <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
-    <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}</button>
+    <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}${p.video ? "Abrir no estúdio" : `Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}`}</button>
       <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
       <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}">${ic("calendar")}Agendar</button>
       <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
@@ -1082,14 +1082,18 @@ async function montarPauta() {
     : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
     : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
+    if (p.video) { box.innerHTML = `<div class="rv-prev rv-play" data-act="rvplay"><video src="${p.video}" poster="${p.video.replace(".mp4", ".jpg")}" muted loop playsinline preload="none"></video><canvas width="540" height="960"></canvas><span class="rv-btn">▶</span></div>`;
+      const o = box.querySelector("canvas"), oc = o.getContext("2d"); oc.scale(.5, .5); p.overlay(oc); return; }
     p.telas.forEach(fn => { const cv = document.createElement("canvas"); cv.width = p.stories || p.reels ? SW : PW; cv.height = p.stories || p.reels ? SH : PH; try { const r = fn(cv.getContext("2d")); if (r && r.catch) r.catch(e => console.error(e)); } catch (e) { console.error(e); } box.appendChild(cv); }); });
 }
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="pa"]'); if (!b || b.dataset.act === "pill") return;
   const p = (PA.lista || [])[+b.dataset.i]; if (!p) return;
+  if (b.dataset.act === "pabaixar" && p.video) { abrirEstudio(p.video, p.texto); return; }
   if (b.dataset.act === "pabaixar") { [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)].forEach((cv, j) => setTimeout(() => { const a = document.createElement("a"); a.download = `partiu085-${p.id}-${j + 1}.png`; a.href = cv.toDataURL("image/png"); a.click(); }, j * 350)); }
   else if (b.dataset.act === "pacopiar") { await copiar(p.stories ? linkGrupo() : (($("#pa-l-" + b.dataset.i) || {}).value || p.legenda)); toast(p.stories ? "Link do grupo copiado (pro adesivo de link)." : "Legenda copiada."); }
   else if (b.dataset.act === "pafeito") { marcar("ig-" + p.id, !feito(p.id)); const card = b.closest(".pa-c"); card.classList.toggle("feito", !!feito(p.id)); b.classList.toggle("ok", !!feito(p.id)); b.innerHTML = `${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}`; }
 });
 document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="pa"]'); if (!b) return;
   if (b.dataset.g === "paaba") PA.aba = b.dataset.v; else if (b.dataset.g === "patipo") { PA.tipo = b.dataset.v; try { localStorage.setItem("p085_pa_tipo", PA.tipo); } catch (x) { } } }, true);
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="rvplay"]'); if (!b) return; const v = b.querySelector("video"); if (v.paused) { v.play(); b.classList.add("tocando"); } else { v.pause(); b.classList.remove("tocando"); } });

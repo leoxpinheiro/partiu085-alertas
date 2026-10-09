@@ -198,9 +198,9 @@ def reels_video(p: dict) -> str:
     d = Path(tempfile.mkdtemp())
     (d / "o.png").write_bytes(requests.get(url_img(p["overlay"]), timeout=30).content)
     src = DOCS / p["video_fundo"]
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-i", str(d / "o.png"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-stream_loop", "-1", "-i", str(src), "-i", str(d / "o.png"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
                     "-filter_complex", "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[v];[v][1:v]overlay=0:0,format=yuv420p",
-                    "-t", "9", "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+                    "-t", str(p.get("dur") or 9), "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
     caminho = f"ig/{p['id']}.mp4"
     subir_github(caminho, (d / "r.mp4").read_bytes())
     return caminho

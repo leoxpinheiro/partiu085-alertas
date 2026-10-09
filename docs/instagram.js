@@ -53,7 +53,7 @@ async function confirmarAgendar(agora) {
   const id = `ig-${Date.now().toString(36)}`;
   const quando = agora ? isoLocal(new Date()) : ($("#igm-qd").value + "-03:00");
   const item = { id, titulo: o.titulo, tipo: o.tipo === "story" ? "story" : o.cvs.length > 1 ? "carrossel" : "feed", imagens: o.cvs.map((_, i) => `ig/${id}-${i + 1}.jpg`),
-    legenda: o.tipo === "story" ? "" : (($("#igm-leg") || {}).value || ""), quando, aprovado: agora || $("#igm-ok").checked, tentativa: 0, criado: isoLocal(new Date()), origem: o.id || "" };
+    legenda: o.tipo === "story" ? "" : (($("#igm-leg") || {}).value || ""), quando, aprovado: agora || $("#igm-ok").checked, tentativa: 0, criado: isoLocal(new Date()), origem: o.id || "", ...(o.valido ? { valido_ate: o.valido } : {}) };
   const bt = document.querySelector('[data-act="igmsalvar"]'); if (bt) { bt.disabled = true; bt.textContent = "Enviando imagens…"; }
   try {
     for (let i = 0; i < o.cvs.length; i++) await subirImagem(item.imagens[i], o.cvs[i]);
@@ -154,7 +154,7 @@ async function agendarItens(itens, slots, ok, prog) {
   for (let k = 0; k < itens.length; k++) {
     const it = itens[k], id = `ig-${base}-${k + 1}`;
     const item = it.vaga ? { id, titulo: "💲 Oferta do dia (o robô escolhe na hora)", tipo: "oferta_dia", imagens: [], legenda: "", rodape: it.rodape || "", quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "vaga" }
-      : { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "" };
+      : { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "", ...(it.valido ? { valido_ate: it.valido } : {}) };
     for (let j = 0; j < (it.cvs || []).length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
     IGF.fila.push(item);
   }
@@ -246,7 +246,7 @@ function pInstagram() {
   const c = IGF.conta, F = IGF.fila, S_ = IGF.st || {};
   const setup = !c || !c.ok;
   const st = p => (S_[p.id] || {}).status || (p.aprovado ? "agendado" : "rascunho");
-  const chip = s => ({ agendado: `<span class="st verde">agendado</span>`, rascunho: `<span class="st">rascunho · falta aprovar</span>`, publicado: `<span class="st verde">✓ publicado</span>`, erro: `<span class="st vermelho">erro</span>` }[s]);
+  const chip = s => ({ expirado: `<span class="st">não saiu: notícia/promoção passou</span>`, agendado: `<span class="st verde">agendado</span>`, rascunho: `<span class="st">rascunho · falta aprovar</span>`, publicado: `<span class="st verde">✓ publicado</span>`, erro: `<span class="st vermelho">erro</span>` }[s]);
   const thumb = p => { const im = p.imagens[0] || (S_[p.id] || {}).imagem; return im ? `https://raw.githubusercontent.com/${REPO}/main/docs/${im}` : "marca/icone.png"; };
   const pend = (F || []).filter(p => st(p) !== "publicado").sort((a, b) => a.quando.localeCompare(b.quando));
   const linhaFila = p => { const s = st(p), e = S_[p.id] || {};
@@ -307,7 +307,7 @@ document.addEventListener("click", async e => {
   if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)$/.test(act)) return;
   try {
     if (act === "igagendar") {
-      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
+      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, valido: p.valido || "", cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
       else { const i = +b.dataset.i, it = CV.itens[i], cv = $("#cv-cv-" + i); if (!cv) { toast("Ligue “Fazer imagem” pra agendar."); return; }
         abrirAgendar({ id: "cv-" + i, titulo: it.tipo === "promo" ? "Promoção de milhas" : `Fortaleza ➜ ${(it.c || it.r).nome || ""}`, tipo: "feed", cvs: [cv], legenda: (($("#cv-t-" + i) || {}).value || it.texto) + `\n\n${typeof HASH !== "undefined" ? HASH : ""}` }); }
       return;

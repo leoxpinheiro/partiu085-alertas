@@ -488,12 +488,16 @@ function extrairPontos(texto) {
     .filter(x => x.length > 8 && x.length < 140 && (DIAS_SEM_RE.test(x) || /\d/.test(x) || nomes.some(n => x.toLowerCase().includes(n)))).slice(0, 5).join("\n");
 }
 function noticiaHTML() {
-  const N = PA.nt, lista = (PA.noticias || []).slice(0, 10);
-  if (!PA.noticias) getJSON("noticias.json", { itens: [] }).then(d => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
-  return `<div class="card pa-nt"><h3>📰 Notícias que o robô achou</h3>
-    <div class="desc">O robô atualiza a lista várias vezes por dia. Toque em <b>Criar post</b>: a arte sai com a foto da matéria (quando tem) ou do destino, título limpo e resumo. Notícia quente: agende pra daqui a 10 min ou toque em Publicar agora.</div>
-    ${lista.length ? `<div class="pa-nl">${lista.map((x, i) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""}</small></div>
-      <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button></div>`).join("")}</div>` : `<div class="vazio">Nenhuma notícia nova agora. O robô procura a cada rodada.</div>`}
+  const N = PA.nt;
+  if (!PA.noticias || !PA.ntOcultas) Promise.all([getJSON("noticias.json", { itens: [] }), carregarOcultas()]).then(([d]) => { PA.noticias = d.itens || []; if (location.hash.startsWith("#pauta") && PA.aba === "noticia") render(); });
+  const h = hojeISO(), todas = (PA.noticias || []).map((x, i) => ({ x, i, v: validadeNoticia(x) }));
+  const lista = todas.filter(o => !ntOculta(o.x) && o.v.ate >= h).slice(0, 14), velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
+  const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
+      <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
+  return `<div class="card pa-nt"><h3>📰 Notícias pra postar</h3>
+    <div class="desc">O robô atualiza a lista várias vezes por dia. Aqui só aparece o que ainda está quente: <b>notícia vale no dia e no dia seguinte</b>, e promoção com data (ex.: "até 12/10") some sozinha depois do último dia. Já postou ou não quer? Toque no ✕.</div>
+    ${PA.noticias == null ? `<div class="vazio">Carregando…</div>` : lista.length ? `<div class="pa-nl">${lista.map(o => linha(o, true)).join("")}</div>` : `<div class="vazio">Nenhuma notícia quente agora. O robô procura de novo na próxima rodada.</div>`}
+    ${velhas.length ? `<details class="pa-velhas"><summary>Antigas e removidas (${velhas.length})</summary><div class="pa-nl">${velhas.slice(0, 20).map(o => linha(o, false)).join("")}</div></details>` : ""}
   </div>
   <details class="card pa-nt" id="pa-man" ${N.titulo ? "open" : ""}><summary><b>Montar arte da notícia</b></summary>
     <div class="form pa-nt-f" style="margin-top:12px">
@@ -505,6 +509,29 @@ function noticiaHTML() {
       <div class="field" style="align-self:end"><button class="bt pri" data-act="ntgerar">Gerar arte</button></div>
     </div></details>`;
 }
+
+
+/* validade das notícias: some sozinha depois da data da promoção (ex.: "até 12/10") ou no dia seguinte ao que foi publicada */
+const MESN = { janeiro: 1, fevereiro: 2, "março": 3, marco: 3, abril: 4, maio: 5, junho: 6, julho: 7, agosto: 8, setembro: 9, outubro: 10, novembro: 11, dezembro: 12 };
+const MESRE = "(janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)";
+function validadeNoticia(x) {
+  const t = (x.titulo + " " + (x.resumo || "")).toLowerCase(), pub = (x.data || new Date().toISOString()).slice(0, 10);
+  const mk = (d, m) => { d = +d; if (!(d >= 1 && d <= 31)) return null; let y = +pub.slice(0, 4), mm = m ? +m : +pub.slice(5, 7); if (!(mm >= 1 && mm <= 12)) return null;
+    let r = `${y}-${String(mm).padStart(2, "0")}-${String(d).padStart(2, "0")}`; if (r < pub) { if (m) r = `${y + 1}${r.slice(4)}`; else { mm = mm === 12 ? 1 : mm + 1; if (mm === 1) y++; r = `${y}-${String(mm).padStart(2, "0")}-${String(d).padStart(2, "0")}`; } } return r; };
+  let m, r = null;
+  if ((m = t.match(/at[ée] (?:o dia |dia )?(\d{1,2})\/(\d{1,2})/))) r = mk(m[1], m[2]);
+  else if ((m = t.match(new RegExp(`at[ée] (?:o dia |dia )?(\\d{1,2}) de ${MESRE}`)))) r = mk(m[1], MESN[m[2]]);
+  else if ((m = t.match(new RegExp(`\\b(?:de|entre) \\d{1,2}(?:/\\d{1,2})? (?:a|e|até) (\\d{1,2})(?:/(\\d{1,2})| de ${MESRE})?`)))) r = mk(m[1], m[2] || (m[3] ? MESN[m[3]] : null));
+  else if ((m = t.match(/at[ée] (?:o dia |dia |a )?(\d{1,2})\b(?!\s?(?:%|mil|h\b|horas|dias|vezes|meses|anos|x\b|pontos|milhas|reais|voos))/))) r = mk(m[1], null);
+  return { ate: r || diaMenos(pub, -1), explicita: !!r };
+}
+function ntChave(x) { return x.link || x.titulo; }
+function ntOculta(x) { return (PA.ntOcultas || []).includes(ntChave(x)); }
+function noticiasValidas() { const h = hojeISO(); return (PA.noticias || []).filter(x => !ntOculta(x) && validadeNoticia(x).ate >= h); }
+async function salvarOcultas() { try { localStorage.setItem("p085_nt_ocultas", JSON.stringify(PA.ntOcultas)); } catch (e) { }
+  if (token()) { try { await salvarArquivo("docs/noticias_ocultas.json", { ocultas: PA.ntOcultas.slice(-300) }, "Notícias: remove da lista"); } catch (e) { toast("Removida só neste aparelho: " + e.message); } } }
+async function carregarOcultas() { if (PA.ntOcultas) return; let L = []; try { L = JSON.parse(localStorage.getItem("p085_nt_ocultas")) || []; } catch (e) { }
+  const d = await getJSON("noticias_ocultas.json", { ocultas: [] }); PA.ntOcultas = [...new Set([...(d.ocultas || []), ...L])]; }
 
 /* ================= notícia premium (foto real da matéria ou foto do destino, título limpo, resumo) ================= */
 const FOTOS_OK = "AJU AMS BCN BEL BHZ BOG BPS BSB BUE CGB CGR CTG CUN CWB FEN FLN FRA GYN IGU JDO JPA LIM LIS LON MAD MAO MCZ MDE MIA MIL MVD NAT NVT NYC OPO ORL PAR POA PTY PUJ REC RIO ROM SAO SCL SDQ SID SLZ SSA UDI VCP VIX".split(" ");
@@ -535,27 +562,30 @@ async function postsDaNoticia(x) {
   const iata = x.img ? "" : ntFotoIata(x);
   const im = await ntImg(x.img || (iata ? `fotos/${iata}.jpg` : ""));
   const credito = x.img ? `Foto: ${x.fonte}` : iata ? "Foto ilustrativa" : "";
+  const tema = ["escuro", "creme", "amarelo"][[...(x.link || tit)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 9973, 7) % 3], K = TEMA[tema];
+  const BASE = tema === "escuro" ? [11, 36, 64] : tema === "creme" ? [246, 241, 228] : [245, 197, 49], base = `rgb(${BASE})`, baseA = a => `rgba(${BASE},${a})`;
   const desenha = (W, H, story) => c => {
     const hh = Math.round(H * (story ? .46 : .44));
     if (im) { c.fillStyle = COR.navy; c.fillRect(0, 0, W, H); const s = Math.max(W / im.naturalWidth, (hh + 160) / im.naturalHeight); c.drawImage(im, (W - im.naturalWidth * s) / 2, 0, im.naturalWidth * s, im.naturalHeight * s); }
     else { c.save(); c.beginPath(); c.rect(0, 0, W, hh + 160); c.clip(); prog && cat === "MILHAS" ? heroPrograma(c, W, hh + 160, prog) : heroAviao(c, W, hh + 160); c.restore(); c.fillStyle = COR.navy; c.fillRect(0, hh + 160, W, H); }
     let g = c.createLinearGradient(0, 0, 0, 300); g.addColorStop(0, "rgba(8,22,40,.7)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, W, 300);
-    g = c.createLinearGradient(0, hh - 220, 0, hh + 170); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.75, "rgba(11,36,64,.96)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 220, W, 400);
-    c.fillStyle = COR.navy; c.fillRect(0, hh + 170, W, H);
+    g = c.createLinearGradient(0, hh - 220, 0, hh + 170); g.addColorStop(0, baseA(0)); g.addColorStop(.75, baseA(.97)); g.addColorStop(1, base); c.fillStyle = g; c.fillRect(0, hh - 220, W, 400);
+    c.fillStyle = base; c.fillRect(0, hh + 170, W, H); if (tema !== "escuro") grao(c, W, H, .03, "#0F2A47");
     marca(c, W, true, "NOTÍCIA");
     if (credito) T(c, credito, W - M, hh - 30, 20, MARCA.corpo, "rgba(255,255,255,.7)", "right", 600);
     const fim = story ? H - 380 : H - 190;   // onde acaba o espaço de texto (antes da fonte e do rodapé)
-    kicker(c, cat, M, hh + 40, COR.am);
-    let y = titulo(c, tit, M, hh + 60, W - 2 * M, story ? 104 : 86, 54, "#fff", 4) + 34;
+    kicker(c, cat, M, hh + 40, tema === "escuro" ? COR.am : COR.tinta);
+    let y = titulo(c, tit, M, hh + 60, W - 2 * M, story ? 104 : 86, 54, K.tx, 4) + 34;
     const fs = story ? 38 : 31, lh = fs * 1.32, cabe = Math.floor((fim - 50 - y) / lh);
-    if (res && cabe >= 2) { const n = Math.min(story ? 5 : 4, cabe); c.fillStyle = COR.am; c.fillRect(M, y, 6, n * lh + 6); y = paragrafo(c, res, M + 30, y + fs, W - 2 * M - 30, fs, MARCA.corpo, "rgba(255,255,255,.86)", 600, 1.32, n); }
+    if (res && cabe >= 2) { const n = Math.min(story ? 5 : 4, cabe); c.fillStyle = tema === "escuro" ? COR.am : COR.tinta; c.fillRect(M, y, 6, n * lh + 6); y = paragrafo(c, res, M + 30, y + fs, W - 2 * M - 30, fs, MARCA.corpo, K.dk ? "rgba(255,255,255,.86)" : "rgba(15,42,71,.85)", 600, 1.32, n); }
     const t = `FONTE: ${String(x.fonte || "").toUpperCase()}`; c.font = `800 20px ${MARCA.corpo}`; const fw = c.measureText(t).width + 48, fy = Math.min(y + 24, fim);
-    c.strokeStyle = "rgba(255,255,255,.35)"; c.lineWidth = 2; rr(c, M, fy, fw, 42, 21); c.stroke(); T(c, t, M + 22, fy + 28, 20, MARCA.corpo, "rgba(255,255,255,.8)", "left", 800, 1.5);
-    if (story) espacoLink(c, W, H); else rodapeP(c, W, H, true, "Siga @partiu.085 · ative o sininho 🔔");
+    c.strokeStyle = K.dk ? "rgba(255,255,255,.35)" : "rgba(15,42,71,.35)"; c.lineWidth = 2; rr(c, M, fy, fw, 42, 21); c.stroke(); T(c, t, M + 22, fy + 28, 20, MARCA.corpo, K.dk ? "rgba(255,255,255,.8)" : "rgba(15,42,71,.8)", "left", 800, 1.5);
+    if (story) espacoLink(c, W, H); else rodapeP(c, W, H, K.dk, "Siga @partiu.085 · ative o sininho 🔔");
   };
   const leg = `📰 ${tit.toUpperCase()}\n\n${res || ""}${res ? "\n\n" : ""}Fonte: ${x.fonte}\n\n💬 O que você achou dessa novidade? Comenta aqui!\n\n${HASH}`;
   const id = "nt-" + (x.link || tit).replace(/\W+/g, "").slice(-28);
-  return [{ id, grupo: "feed", tipo: "Notícia", rot: "Notícia", titulo: `Notícia: ${curto(tit, 60)}`, porque: "Notícia quente: poste o quanto antes (dá pra agendar pra daqui a 10 min).", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg, noticia: true },
+  const valido = validadeNoticia(x).ate;
+  return [{ id, valido, grupo: "feed", tipo: "Notícia", rot: "Notícia", titulo: `Notícia: ${curto(tit, 60)}`, porque: "Notícia quente: poste o quanto antes (dá pra agendar pra daqui a 10 min).", fmt: "Feed 4:5", telas: [desenha(PW, PH, false)], legenda: leg, noticia: true },
     { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Versão pro story, com espaço pro link do grupo.", fmt: "Story 9:16", stories: true, telas: [desenha(SW, SH, true)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
 }
 
@@ -591,6 +621,8 @@ document.addEventListener("change", e => { if (e.target.dataset && e.target.data
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
   if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
   else if (b.dataset.act === "ntgerar") { PA.ntSel = null; if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
+  else if (b.dataset.act === "ntrem" || b.dataset.act === "ntvolta") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; const k = ntChave(x);
+    PA.ntOcultas = b.dataset.act === "ntrem" ? [...new Set([...(PA.ntOcultas || []), k])] : (PA.ntOcultas || []).filter(z => z !== k); if (PA.ntSel === +b.dataset.i) PA.ntSel = null; salvarOcultas(); render(); }
   else if (b.dataset.act === "ntusar") { if (!(PA.noticias || [])[+b.dataset.i]) return; PA.ntSel = +b.dataset.i; render(); setTimeout(() => { const g = document.getElementById("pa-grade"); if (g) g.scrollIntoView({ behavior: "smooth" }); }, 500); } });
 
 
@@ -609,14 +641,15 @@ async function mcTodos() {
   add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
   add(EDU.map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
-  for (const x of PA.noticias.slice(0, 8)) add([(await postsDaNoticia(x))[0]], "Notícia");
+  await carregarOcultas();
+  for (const x of noticiasValidas().slice(0, 10)) add([(await postsDaNoticia(x))[0]], "Notícia");
   return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.noticia ? "Notícia" : p.rot }));
 }
 function mcCard(p, i) {
   const n = CAL.sel.indexOf(p.id), f = CAL.feitos[p.id], vivo = aoVivo(p);
   return `<div class="mc-card ${n >= 0 ? "on" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${CAL.f !== "todos" && CAL.f !== mcGrupo(p) ? "hidden" : ""}>
     <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
-    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
+    <div class="mc-i"><small>${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
     <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
 }
 function slotsCal(n) { const hs = lerHorarios(CAL.hs); if (!CAL.ini || !hs.length) return [];
@@ -648,11 +681,12 @@ function mcCfgHTML() {
 function mcListaHTML() {
   const L = mcSelecionados(), slots = slotsCal(L.length), hoje = hojeISO();
   const r = document.getElementById("mc-resumo"); if (r) r.textContent = `${L.length} post${L.length === 1 ? "" : "s"}${L.length && slots.length ? ` · até ${rotSlot(slots[slots.length - 1]).split(" · ")[0]}` : ""}`;
-  const errado = [];
+  const errado = L.filter((p, k) => p.valido && (slots[k] || "9").slice(0, 10) > p.valido);
   return (L.length ? `<ol class="mc-lista">${L.map((p, k) => { const ruim = errado.includes(p);
       return `<li class="mc-it ${ruim ? "ruim" : ""}" draggable="true" data-k="${k}">
       <span class="mc-arr" title="arraste pra mudar a ordem">⋮⋮</span><img src="${CAL.thumbs[ehVaga(p.id) ? "vaga" : p.id] || ""}" alt="" data-act="mcver" data-id="${esc(p.id)}" title="ver o post">
       <div class="mc-ii"><small>${rotSlot(slots[k])}${aoVivo(p) || ehVaga(p.id) ? " · 💲 preço do dia" : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b>
+        ${ruim ? `<span class="mc-aviso">Notícia vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}: suba ela na lista ou tire.</span>` : ""}
         ${vira(p, slots[k]) ? `<span class="mc-aviso2">Cai em outro dia: no dia, vira 💲 oferta do dia (o robô troca pela melhor promoção fresca).</span>` : ehVaga(p.id) ? `<span class="mc-aviso2">O robô escolhe a melhor promoção fresca na hora.</span>` : ""}
         ${ehVaga(p.id) ? "" : `<button class="lnk" data-act="mcver" data-id="${esc(p.id)}">ver post e legenda</button>`}</div>
       <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`; }).join("")}</ol>`
@@ -696,6 +730,7 @@ async function mcAgendar(bt) {
   const L = mcSelecionados(), hs = lerHorarios(CAL.hs);
   if (!CAL.ini || !hs.length) { toast("Confira o dia de começo e os horários."); return; }
   const slots = slotsCal(L.length);
+  if (L.some((p, k) => p.valido && slots[k].slice(0, 10) > p.valido)) { toast("Tem notícia marcada pra depois do prazo dela."); return; }
   const prog = document.getElementById("mc-prog"); bt.disabled = true;
   try {
     const itens = [];
@@ -703,7 +738,7 @@ async function mcAgendar(bt) {
     for (let k = 0; k < L.length; k++) { const p = L[k];
       if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
       const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id }); }
+      itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }); }
     const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
     L.forEach((p, k) => { if (!ehVaga(p.id)) CAL.feitos[p.id] = slots[k].slice(0, 10); }); mcGravar("p085_mc_feitos", CAL.feitos);
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();

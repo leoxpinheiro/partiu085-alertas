@@ -1019,3 +1019,7 @@ body.ej-on{overflow:hidden}
 .rv-play{cursor:pointer}.rv-play canvas{position:absolute;inset:0;width:100%;height:100%}.rv-btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;font-size:24px}
 .rv-play.tocando .rv-btn{opacity:0}
 .rv-prev canvas,.rv-prev video{position:absolute!important;inset:0;width:100%!important;height:100%!important;max-width:none!important;border-radius:0!important;box-shadow:none!important}
+.est-bib{margin-top:16px;display:flex;flex-direction:column;gap:12px}.est-tit{display:flex;flex-direction:column}
+.est-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.est-card{display:flex;flex-direction:column;gap:6px}.est-card .rv-prev{width:100%;aspect-ratio:9/16}.est-card p{margin:0;font-size:12px;line-height:1.35;color:var(--text-body)}
+.est-bts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}

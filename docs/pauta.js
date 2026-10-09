@@ -651,7 +651,7 @@ const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); }
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|rv|ch)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : /^(hu|hr|rv|ch|fr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
@@ -1035,7 +1035,29 @@ async function fReels(x) {
     telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (fr) cobrir(c, fr, 0, 0, SW, SH); camadaReels(c, x.t); }],
     legenda: `${x.leg}\n\n✈️ Segue o @partiu.085: passagem barata saindo de Fortaleza\n\n${HASH}` };
 }
-async function postsHumor() { return Promise.all(REELS.map(fReels)); }
+
+/* 🖤 carrossel de frases (estilo editorial escuro, sobre fotos reais de dentro do avião) */
+const FRASES_C = [
+  { id: "frases-viajar", capa: "Motivos pra viajar mais", telas: [["janela-1", "Só se vive uma vez."], ["asa-2", "Dinheiro a gente recupera, tempo não."], ["nuvens-3", "É investimento em memória."], ["janela-3", "O mundo é grande demais pra ficar parado."], ["asa-1", "A melhor vista vem depois da subida."]],
+    fim: "Salva e manda pra quem precisa ler isso.", leg: "✈️ MOTIVOS PRA VIAJAR MAIS\n\nSó se vive uma vez. Dinheiro a gente recupera, tempo não. Viajar é investimento em memória.\n\n📌 Salva e manda pra quem precisa ler isso hoje." },
+  { id: "frases-fortaleza", capa: "Pra quem sai de Fortaleza", telas: [["asa-2", "Fortaleza é linda. Mas o mundo também é."], ["janela-2", "Janela do avião: a melhor tela do mundo."], ["pouso-2", "Toda volta pra casa começa com uma ida."], ["janela-1", "Passagem barata é só o começo da história."]],
+    fim: "Pra onde você vai em 2027?", leg: "🌎 PRA QUEM SAI DE FORTALEZA\n\nFortaleza é linda. Mas o mundo também é. Toda volta pra casa começa com uma ida.\n\n💬 Pra onde você vai em 2027? Comenta aqui!" },
+];
+function telaFrase(fundo, frase, pos, n) { return async c => {
+  const im = await fotoMidia("clip-v-" + fundo); c.fillStyle = "#0b0d10"; c.fillRect(0, 0, PW, PH); if (im) cobrir(c, im, 0, 0, PW, PH);
+  c.fillStyle = "rgba(6,8,12,.55)"; c.fillRect(0, 0, PW, PH);
+  const cr = "#F3E7C9"; c.save(); c.globalAlpha = .9;
+  T(c, "PARTIU 085", M, 110, 22, MARCA.corpo, cr, "left", 700, 4); T(c, "//", PW / 2, 110, 22, MARCA.corpo, cr, "center", 700); T(c, "VIAJAR", PW - M, 110, 22, MARCA.corpo, cr, "right", 700, 4);
+  T(c, "@PARTIU.085", M, PH - 80, 22, MARCA.corpo, cr, "left", 700, 4); T(c, "//", PW / 2, PH - 80, 22, MARCA.corpo, cr, "center", 700); T(c, `${pos}/${n}`, PW - M, PH - 80, 22, MARCA.corpo, cr, "right", 700, 2); c.restore();
+  const fs = frase.length > 40 ? 96 : 116, lh = fs * 1.0; c.font = `800 ${fs}px ${MARCA.corpo}`; if ("letterSpacing" in c) c.letterSpacing = `${-fs * .06}px`;
+  const L = quebrar(c, frase, PW - 2 * M - 40, fs, MARCA.corpo, 800); let y = PH / 2 - (L.length * lh) / 2 + fs * .78;
+  c.fillStyle = cr; c.textAlign = "center"; L.forEach(l => { c.fillText(l, PW / 2, y); y += lh; }); if ("letterSpacing" in c) c.letterSpacing = "0px"; c.textAlign = "left";
+}; }
+function fFrases(x) {
+  const n = x.telas.length + 2, telas = [telaFrase(x.telas[0][0], x.capa, 1, n), ...x.telas.map(([f, t], i) => telaFrase(f, t, i + 2, n)), telaFrase("asa-1", x.fim, n, n)];
+  return { id: "fr-" + x.id, grupo: "feed", tipo: "Frases", rot: "Humor · frases", titulo: "🖤 " + x.capa, porque: "Carrossel de frases sobre foto real de avião: muito salvo e compartilhado.", fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
+}
+async function postsHumor() { return [...FRASES_C.map(fFrases), ...(await Promise.all(CARR_H.map(fCarrH))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
 
 /* ================= página ================= */
 async function ideiasHoje() {

@@ -8,8 +8,8 @@ const FONTES_EST = [
   ["Cormorant Garamond", "Serifada fina"], ["Patrick Hand", "Escrita à mão"], ["Caveat", "Caneta"], ["Montserrat", "Moderna (negrito)"],
   ["Plus Jakarta Sans", "Moderna (marca)"], ["Anton", "Cartaz"], ["Bebas Neue", "Cartaz fina"]];
 const FONTE_PESO = { "Montserrat": 800, "Plus Jakarta Sans": 800, "Cormorant Garamond": 600, "Caveat": 600 };
-try { Object.assign(EST, JSON.parse(localStorage.getItem("p085_est") || "{}"), { video: "", poster: "", arquivo: null, gravando: false, lista: null, fontesExtra: null }); } catch (e) { }
-function estGuardar() { try { const { video, poster, arquivo, gravando, lista, fontesExtra, ...r } = EST; localStorage.setItem("p085_est", JSON.stringify(r)); } catch (e) { } }
+try { Object.assign(EST, JSON.parse(localStorage.getItem("p085_est") || "{}"), { arquivo: null, gravando: false, lista: null, fontesExtra: null }); if (/^blob:/.test(EST.video)) EST.video = ""; } catch (e) { }
+function estGuardar() { try { const { arquivo, gravando, lista, fontesExtra, ap, ...r } = EST; localStorage.setItem("p085_est", JSON.stringify(r)); } catch (e) { } }
 
 async function estCarregar() {
   if (!EST.lista) { const m = await getJSON("midia.json", { videos: {} }); EST.lista = Object.entries(m.videos || {}).flatMap(([k, L]) => L.filter(v => /clip-/.test(v.arq)).map(v => ({ src: v.arq, poster: v.quadro || "", nome: k.replace("v-", "") })));
@@ -123,11 +123,11 @@ async function estSubirFonte(f) {
 }
 
 function pEstudio() {
-  if (!EST.lista || !EST.fontesExtra) { estCarregar().then(() => { if (/#estudio/.test(location.hash)) render(); }); }
-  setTimeout(estPrevia, 0);
+  if (!EST.lista || !EST.fontesExtra || !EST.ap) { Promise.all([estCarregar(), carregarAp()]).then(() => { if (/#estudio/.test(location.hash)) render(); }); }
+  setTimeout(() => { estPrevia(); desenharMinis(); }, 0);
   const rng = (k, l, min, max, step = 1) => `<label class="est-r"><span>${l}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${EST[k]}" data-est="${k}"></label>`;
   const amanha = isoLocal(new Date(Date.now() + 864e5)).slice(0, 10) + "T19:00";
-  return head("🎬 Estúdio de Reels", "Escolha o vídeo (do banco ou o seu), escreva a frase e a fonte. A prévia roda aqui mesmo. Depois é só baixar ou agendar.") +
+  return head("🎬 Reels", "Crie no editor, aprove os prontos e vá postando. Tudo de Reels fica aqui.") +
     `<div class="est">
       <div class="est-prev"><div class="est-tela"><video id="est-v" src="${esc(EST.video)}" poster="${esc(EST.poster)}" autoplay muted loop playsinline></video><canvas id="est-cv" width="540" height="960"></canvas></div>
         <small class="sub">${EST.arquivo ? "Seu vídeo" : esc(EST.nome)} · a prévia roda em loop, sem som</small></div>
@@ -142,11 +142,11 @@ function pEstudio() {
           <div class="est-cores">${["#FFFDF8", "#F6EBD0", "#F5C531", "#FFFFFF", "#111111"].map(c => `<button class="est-cor ${c === EST.cor ? "on" : ""}" data-act="estcor" data-c="${c}" style="background:${c}"></button>`).join("")}
             <label class="chk"><input type="checkbox" data-est="brilho" ${EST.brilho ? "checked" : ""}> sombra</label><label class="chk"><input type="checkbox" data-est="arroba" ${EST.arroba ? "checked" : ""}> @partiu.085</label></div></div>
         <div class="card"><b>4. Pronto</b><div class="est-fim"><label class="est-r"><span>Duração (s)</span><input type="number" id="est-dur" min="3" max="30" value="9"></label>
-          <button class="bt pri lg" data-act="estbaixar">${ic("down")}Baixar vídeo</button></div>
+          <button class="bt pri lg" data-act="estbaixar">${ic("down")}Baixar vídeo</button><button class="bt lg" data-act="estaprovaratual">✓ Aprovar pra postar depois</button></div>
           <details><summary>Ou agendar pro robô postar</summary><div class="field"><label>Legenda</label><textarea id="est-leg" rows="4">Quem se identifica? 😂✈️\n\nPassagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}</textarea></div>
             <div class="est-fim"><input type="datetime-local" id="est-q" value="${amanha}"><button class="bt" data-act="estagendar">Agendar no Instagram</button></div>
             <small class="sub">Pelo robô o Reels sai sem música. Pra pôr música em alta, baixe e poste pelo celular.</small></details></div>
-      </div></div>`;
+      </div></div>${EST.ap ? bibliotecaHTML() : ""}`;
 }
 document.addEventListener("input", e => { const t = e.target;
   if (t.id === "est-txt") { EST.texto = t.value; estGuardar(); estPrevia(); }
@@ -160,5 +160,42 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (a === "estcor") { EST.cor = b.dataset.c; estGuardar(); document.querySelectorAll(".est-cor").forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
   else if (a === "estbaixar") estExportar(b);
   else if (a === "estagendar") estAgendar(b); });
+
+/* ---------- biblioteca: Reels prontos (pra aprovar), aprovados e postados ---------- */
+const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho"];
+EST.ap = null;
+function cfgAtual() { const o = {}; CFG_K.forEach(k => o[k] = EST[k]); return o; }
+function comCfg(cfg, fn) { const b = cfgAtual(); Object.assign(EST, cfg); try { return fn(); } finally { Object.assign(EST, b); } }
+function prontos() { return (typeof REELS !== "undefined" ? REELS : []).map(x => ({ id: "pr-" + x.id, video: `midia/clip-v-${x.clip}.mp4`, poster: `midia/clip-v-${x.clip}.jpg`,
+  texto: x.t.split("\n").map(l => l.charAt(0).toLowerCase() + l.slice(1)).join(" ").replace(/\. /g, ", ").replace(/\.$/, ""), legenda: x.leg,
+  fonte: "Instrument Serif", tam: 92, cor: "#FFFDF8", y: 50, larg: 82, brilho: 1, escuro: 25, arroba: true, minusc: false, maiusc: false, olho: 55 })); }
+async function carregarAp() { if (EST.ap) return; let L = []; try { L = JSON.parse(localStorage.getItem("p085_reels_ap") || "[]"); } catch (e) { }
+  const d = await getJSON("reels_aprovados.json", null); EST.ap = d || L; }
+async function salvarAp(msg) { try { localStorage.setItem("p085_reels_ap", JSON.stringify(EST.ap)); } catch (e) { } if (token()) { try { await salvarArquivo("docs/reels_aprovados.json", EST.ap, msg); } catch (e) { toast("Salvo só neste aparelho: " + e.message); } } }
+function miniReels(cfg, extra) { return `<div class="rv-prev rv-play est-mini" data-act="rvplay"><video src="${esc(cfg.video)}" poster="${esc(cfg.poster || "")}" muted loop playsinline preload="none"></video><canvas width="270" height="480" data-cfg='${esc(JSON.stringify(cfg))}'></canvas><span class="rv-btn">▶</span>${extra || ""}</div>`; }
+function desenharMinis() { document.querySelectorAll(".est-mini canvas[data-cfg]").forEach(cv => { const cfg = JSON.parse(cv.dataset.cfg);
+  document.fonts.load(`400 40px "${cfg.fonte}"`).then(() => { const c = cv.getContext("2d"); c.clearRect(0, 0, cv.width, cv.height); comCfg(cfg, () => estDesenhar(c, cv.width, cv.height)); }); }); }
+function bibliotecaHTML() {
+  const ap = EST.ap || [], idsAp = new Set(ap.map(x => x.origem)), pr = prontos().filter(x => !idsAp.has(x.id));
+  const pend = ap.filter(x => !x.postado), post = ap.filter(x => x.postado);
+  const card = (cfg, bts) => `<div class="est-card">${miniReels(cfg)}<p>${esc(cfg.texto.slice(0, 90))}</p><div class="est-bts">${bts}</div></div>`;
+  return `<div class="card est-bib"><div class="est-tit"><b>✅ Aprovados pra postar (${pend.length})</b><small class="sub">Abra, baixe e poste pelo celular com música. Depois marque "Postei".</small></div>
+      ${pend.length ? `<div class="est-grade">${pend.map(x => card(x, `<button class="bt sm pri" data-act="estabrir" data-id="${x.id}">Abrir e baixar</button><button class="bt sm" data-act="estpostei" data-id="${x.id}">✓ Postei</button><button class="bt sm ghost" data-act="esttira" data-id="${x.id}">✕</button>`)).join("")}</div>` : `<div class="vazio">Nada aprovado ainda. Aprove os prontos abaixo ou crie um no editor e toque em "Aprovar".</div>`}</div>
+    <div class="card est-bib"><div class="est-tit"><b>🎬 Reels prontos pra aprovar (${pr.length})</b><small class="sub">Toque ▶ pra ver rodando. Gostou? Aprovar. Quer mudar? Editar.</small></div>
+      ${pr.length ? `<div class="est-grade">${pr.map(x => card(x, `<button class="bt sm pri" data-act="estaprovar" data-id="${x.id}">✓ Aprovar</button><button class="bt sm" data-act="esteditar" data-id="${x.id}">Editar</button>`)).join("")}</div>` : `<div class="vazio">Todos os prontos já foram aprovados. Me pede mais frases que eu crio.</div>`}</div>
+    ${post.length ? `<details class="card est-bib"><summary><b>Já postados (${post.length})</b></summary><div class="est-grade">${post.map(x => card(x, `<span class="sub">postado ${x.postado.slice(8, 10)}/${x.postado.slice(5, 7)}</span><button class="bt sm ghost" data-act="estdesposta" data-id="${x.id}">desfazer</button>`)).join("")}</div></details>` : ""}`;
+}
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="est"]'); if (!b || !EST.ap) return; const a = b.dataset.act, id = b.dataset.id;
+  const pr = prontos().find(x => x.id === id), ap = EST.ap.find(x => x.id === id);
+  if (a === "estaprovar" && pr) { EST.ap.unshift({ ...pr, id: "ap-" + Date.now().toString(36), origem: pr.id, aprovado: hojeISO() }); await salvarAp("Reels: aprova"); toast("Aprovado! Está em Aprovados pra postar."); render(); }
+  else if (a === "esteditar" && pr) { Object.assign(EST, pr, { arquivo: null, origemEd: pr.id }); estGuardar(); render(); scrollTo({ top: 0, behavior: "smooth" }); }
+  else if (a === "estabrir" && ap) { Object.assign(EST, ap, { arquivo: null }); estGuardar(); render(); scrollTo({ top: 0, behavior: "smooth" }); toast("Carregado no editor. Toque em Baixar vídeo."); }
+  else if (a === "estpostei" && ap) { ap.postado = isoLocal(new Date()); await salvarAp("Reels: postado"); render(); }
+  else if (a === "estdesposta" && ap) { delete ap.postado; await salvarAp("Reels: desfaz postado"); render(); }
+  else if (a === "esttira" && ap) { EST.ap = EST.ap.filter(x => x !== ap); await salvarAp("Reels: remove"); render(); }
+  else if (a === "estaprovaratual") { if (EST.arquivo) { toast("Vídeo seu: baixe direto (ele não fica salvo no banco)."); return; }
+    EST.ap.unshift({ ...cfgAtual(), id: "ap-" + Date.now().toString(36), origem: EST.origemEd || "editor", aprovado: hojeISO(), legenda: "" }); await salvarAp("Reels: aprova do editor"); toast("Aprovado!"); render(); }
+});
+
 /* abrir o estúdio já com um vídeo e uma frase (dos Reels prontos da Pauta) */
 function abrirEstudio(video, texto) { EST.video = video; EST.poster = video.replace(".mp4", ".jpg"); EST.nome = ""; EST.arquivo = null; if (texto) EST.texto = texto; estGuardar(); location.hash = "#estudio"; }

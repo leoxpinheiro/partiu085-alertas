@@ -1,0 +1,37 @@
+name: Relógio do Instagram
+
+# Chama o robô do Instagram a cada 10 min (o agendador "schedule" do GitHub atrasa ou pula).
+# Roda ~5h40 e depois dá corda em si mesmo.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "17 */4 * * *"   # religa se parar
+
+permissions:
+  actions: write
+
+concurrency:
+  group: relogio-ig
+  cancel-in-progress: true
+
+jobs:
+  tique:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Chamar o Instagram a cada 10 min
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 34); do
+            curl -s -o /dev/null -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/instagram.yml/dispatches" -d '{"ref":"main"}' || true
+            sleep 600
+          done
+      - name: Dar corda de novo
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -sf -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/relogio-ig.yml/dispatches" -d '{"ref":"main"}'

@@ -121,7 +121,9 @@ function pConversor() {
         <button class="bt sm ghost" data-act="cvatual" data-i="${i}">${ic("refresh")}Atualizar</button></div>
       ${err.length ? `<div class="aviso warn"><span>Não achei: ${err.join(", ")}. Preencha acima e toque em Atualizar.</span></div>` : ""}
       <div class="cv-g ${CV.img ? "" : "sem"}"><div><textarea class="ev-texto" id="cv-t-${i}">${esc(it.texto)}</textarea>
-          <div class="al-acts"><button class="bt sm pri" data-act="cvcopiar" data-i="${i}">${ic("copy")}Copiar texto</button>${it.tipo === "milhas" && !err.length ? `<button class="bt sm" data-act="cvsalvar" data-i="${i}" ${it.salvo ? "disabled" : ""}>${ic("save")}${it.salvo ? "Salvo no banco" : "Salvar no banco e na fila"}</button>` : ""}</div></div>
+          <div class="al-acts"><button class="bt sm pri" data-act="cvcopiar" data-i="${i}">${ic("copy")}Copiar texto</button>${it.tipo === "milhas" && !err.length ? (it.salvo ? `<span class="cv-ok">✓ No banco de milhas e no Modo envio</span>` : `<button class="bt sm" data-act="cvsalvar" data-i="${i}">${ic("save")}Salvar no banco</button>`) : ""}
+          <button class="bt sm" data-act="cvtg" data-i="${i}" data-canal="${it.tipo === "dinheiro" ? "dinheiro" : "milhas"}" ${it.tg ? "disabled" : ""}>${ic("send")}${it.tg ? "✓ Enviado no Telegram" : "Enviar no Telegram"}</button></div>
+          ${(() => { const d = it.salvo ? it.dup : jaNoBanco(it); return d ? `<div class="aviso warn" style="margin-top:8px"><span>${d.igual ? "⚠️ <b>Repetido:</b>" : "ℹ️ Já mandamos"} ${esc(d.o.destino || it.r.nome)} por ${milN(d.o.milhas)} milhas (${esc((d.o.programas || [d.o.para]).join(", "))}) em ${(d.o.publicado || "").slice(8, 10)}/${(d.o.publicado || "").slice(5, 7)}.${d.igual ? " Talvez não valha mandar de novo." : ""}</span></div>` : ""; })()}</div>
         ${CV.img ? `<div><canvas class="cv-cv" id="cv-cv-${i}"></canvas><div class="al-acts"><button class="bt sm" data-act="cvcopimg" data-i="${i}">${ic("copy")}Copiar imagem</button><button class="bt sm ghost" data-act="cvbaixar" data-i="${i}">${ic("down")}Baixar</button><button class="bt sm" data-act="igagendar" data-src="cv" data-i="${i}">${ic("calendar")}Instagram</button></div></div>` : ""}</div>
     </div>`; }).join("")}`;
 }
@@ -131,12 +133,38 @@ function refazer(it) {
   if (it.tipo === "dinheiro") { const c = it.c; c.nome = c.iata ? ((S.rotas.find(x => x.iata === c.iata) || {}).nome || IATA[c.iata] || c.iata).split(" (")[0] : ""; c.erros = [!c.iata && "destino", !c.preco && "preço"].filter(Boolean); }
   it.texto = textoItem(it);
 }
+
+/* banco de milhas: avisa se já mandamos esse destino/programa nos últimos 14 dias */
+function jaNoBanco(it) {
+  if (it.tipo !== "milhas" || !it.r || !it.r.iata) return null; const lim = new Date(Date.now() - 14 * 864e5).toISOString().slice(0, 10);
+  const L = ((S.mi && S.mi.ofertas) || []).filter(o => (o.iata === it.r.iata || o.aeroporto === it.r.iata) && (o.publicado || "").slice(0, 10) >= lim && (!it.r.prog || (o.programas || [o.para]).join(" ").toLowerCase().includes(String(it.r.prog).toLowerCase().split(" ")[0])));
+  if (!L.length) return null; const o = L.sort((a, b) => (b.publicado || "").localeCompare(a.publicado || ""))[0];
+  return { o, igual: +o.milhas === +it.r.milhas };
+}
+async function salvarMilhasAuto() {
+  if (!token()) return; const novos = CV.itens.filter(it => it.tipo === "milhas" && !it.salvo && !((it.r && it.r.erros) || []).length);
+  if (!novos.length) return;
+  novos.forEach(it => { it.dup = jaNoBanco(it); });
+  const os_ = novos.map(it => { const o = paraOferta(it.r, it.texto); o.texto0 = textoResgate(it.r); return o; });
+  try { await salvarImportados(os_); if (S.mi && !S.mi.carregando) juntarImportados(os_); novos.forEach(it => { it.salvo = true; }); toast(`${novos.length} resgate${novos.length > 1 ? "s" : ""} guardado${novos.length > 1 ? "s" : ""} no banco de milhas.`); render(); }
+  catch (e) { toast("Não salvou no banco: " + e.message, 5000); }
+}
+async function enviarTelegram(i, canal, b) {
+  const it = CV.itens[i]; if (!token()) { toast("Conecte o token do GitHub em Ajustes."); return; }
+  b.disabled = true; const t0 = b.innerHTML; b.textContent = "Enviando…";
+  try { let img = ""; const cv = $("#cv-cv-" + i);
+    if (cv) { img = `tg/${Date.now().toString(36)}.jpg`; await gh(`/contents/docs/${img}`, { method: "PUT", body: JSON.stringify({ message: "Telegram: imagem do painel", content: cv.toDataURL("image/jpeg", .9).split(",")[1], branch: "main" }) }); }
+    await gh("/actions/workflows/telegram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { texto: (($("#cv-t-" + i) || {}).value || it.texto).slice(0, 4000), imagem: img, canal } }) });
+    it.tg = true; toast(`Enviado pro canal de ${canal} no Telegram (chega em ~1 min).`, 5000); b.innerHTML = "✓ Enviado no Telegram"; }
+  catch (e) { toast("Não enviou: " + e.message, 6000); b.disabled = false; b.innerHTML = t0; }
+}
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="cv"]'); if (!b) return;
   const i = +b.dataset.i, it = CV.itens[i];
   try {
-    if (b.dataset.act === "cvler") { CV.txt = $("#cv-txt").value; CV.itens = dividirBlocos(CV.txt).map(entenderBloco); CV.itens.forEach(refazer); if (!CV.itens.length) toast("Cole algum texto primeiro."); render(); }
+    if (b.dataset.act === "cvler") { CV.txt = $("#cv-txt").value; CV.itens = dividirBlocos(CV.txt).map(entenderBloco); CV.itens.forEach(refazer); if (!CV.itens.length) toast("Cole algum texto primeiro."); render(); salvarMilhasAuto(); }
     else if (b.dataset.act === "cvatual") { refazer(it); render(); }
+    else if (b.dataset.act === "cvtg") { await enviarTelegram(i, b.dataset.canal, b); }
     else if (b.dataset.act === "cvcopiar") { await copiar(($("#cv-t-" + i) || {}).value || it.texto); toast("Texto copiado."); }
     else if (b.dataset.act === "cvbaixar") { const cv = $("#cv-cv-" + i); const a = document.createElement("a"); a.download = `partiu085-${it.tipo}-${i + 1}.png`; a.href = cv.toDataURL("image/png"); a.click(); }
     else if (b.dataset.act === "cvcopimg") { const cv = $("#cv-cv-" + i); const blob = await new Promise(ok => cv.toBlob(ok, "image/png")); await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]); toast("Imagem copiada: cole no WhatsApp e depois o texto."); }

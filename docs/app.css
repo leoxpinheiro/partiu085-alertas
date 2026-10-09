@@ -986,3 +986,7 @@ body.ej-on{overflow:hidden}
 .pa-ni{display:flex;align-items:center;gap:12px}.pa-ni>div{flex:1}.pa-ni.on{background:rgba(34,160,107,.08);border-radius:12px}
 .pa-nimg{width:72px;height:54px;object-fit:cover;border-radius:10px;flex:0 0 auto}.pa-nimg.vazio{display:grid;place-items:center;background:var(--tile);font-size:22px}
 .pa-ni.velha{opacity:.55}.pa-velhas summary{cursor:pointer;margin-top:12px;font-weight:600;color:var(--text-tertiary)}
+/* respostas prontas */
+.rs-preco{margin-bottom:14px;display:flex;flex-direction:column;gap:10px}.rs-f{display:flex;gap:8px;flex-wrap:wrap}.rs-f select{height:var(--control-md);padding:0 16px;border:0;border-radius:var(--radius-pill);background:var(--tile);color:inherit;font:inherit;min-width:200px}
+.rs-grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}.rs-c{display:flex;flex-direction:column;gap:8px}
+.rs-c textarea,.rs-preco textarea{width:100%;border:0;border-radius:14px;padding:12px;background:var(--tile);color:inherit;font:inherit;font-size:13px;line-height:1.45;resize:vertical}

@@ -211,7 +211,7 @@ const MENU = [
   ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
-  ["Divulgação", [["pauta", "star", "Pauta do Instagram"], ["instagram", "calendar", "Instagram: agenda"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
+  ["Divulgação", [["pauta", "star", "Pauta do Instagram"], ["instagram", "calendar", "Instagram: agenda"], ["respostas", "send", "Respostas prontas"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
   ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8"],
 ];
 const PAGS = MENU.flatMap(g => g[1]);
@@ -240,7 +240,7 @@ function navs() {
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash, instagram: typeof pInstagram === "function" ? pInstagram : pDash }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash, instagram: typeof pInstagram === "function" ? pInstagram : pDash, respostas: typeof pRespostas === "function" ? pRespostas : pDash }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);
@@ -1096,5 +1096,5 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
   if (mc) { store("p085_token", mc[1]); history.replaceState(null, "", location.pathname + "#dashboard"); setTimeout(() => toast("✓ Aparelho conectado. Pode usar normalmente."), 800); }
   await carregar(); render(); checarRodando();
   if (token()) fetch(API, { headers: { Authorization: "Bearer " + token() } }).then(r => { const h = r.headers.get("github-authentication-token-expiration"); if (h) { S.tokenVence = Math.floor((new Date(h.replace(" UTC", "Z").replace(" ", "T")) - Date.now()) / 864e5); if (S.tokenVence <= 10) render(); } }).catch(() => { });
-  setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas/.test(location.hash)) render(); } }, 120000);
+  setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas|pauta|respostas/.test(location.hash)) render(); } }, 120000);
 })();

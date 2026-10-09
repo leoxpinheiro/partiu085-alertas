@@ -631,7 +631,7 @@ const CAL = { f: "todos", thumbs: {}, legs: {}, aberto: "" };
 const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p; } catch (e) { return p; } };
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
-CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
+CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["dia", "Do dia"], ["guias", "Guias"]];
 function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
@@ -692,6 +692,7 @@ function mcListaHTML() {
       <div class="mc-bts"><button data-act="mcup" data-k="${k}" title="subir">↑</button><button data-act="mcdown" data-k="${k}" title="descer">↓</button><button data-act="mcrem" data-k="${k}" title="tirar">✕</button></div></li>`; }).join("")}</ol>`
     : `<div class="mc-vazio">Toque em <b>+ Escolher</b> ou arraste os posts pra cá.<br>A ordem aqui é a ordem em que vão sair.<br>Clique na imagem de qualquer post pra ver todas as telas e a legenda.</div>`)
     + (L.length ? `<label class="chk"><input type="checkbox" data-mc="ok" ${CAL.ok ? "checked" : ""}> Já aprovar (o robô publica sozinho)</label>
+      ${L.some((p, k) => ehVaga(p.id) || vira(p, slots[k])) ? `<label class="chk"><input type="checkbox" data-mc="reels" ${CAL.reels ? "checked" : ""}> 🎬 Ofertas do dia saem como Reels (vídeo de 7s) + story</label>` : ""}
       <div class="al-acts"><button class="bt pri lg" data-act="mcagendar" ${errado.length ? "disabled" : ""}>${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : "");
 }
 function mcAtualizar() { CAL.sel = CAL.sel.filter(id => ehVaga(id) || (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
@@ -736,7 +737,7 @@ async function mcAgendar(bt) {
     const itens = [];
     const semGrupoAinda = L.some(p => p.semana === 1) && !L.some(p => p.semana === 2);
     for (let k = 0; k < L.length; k++) { const p = L[k];
-      if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
+      if (ehVaga(p.id) || vira(p, slots[k])) { itens.push({ vaga: true, reels: !!CAL.reels, origem: p.id, rodape: semGrupoAinda ? "🔔 Ativa o sininho: semana que vem tem novidade pra quem sai de Fortaleza" : "" }); continue; }
       const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
       itens.push({ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }); }
     const n = await agendarItens(itens, slots, CAL.ok, t => { if (prog) prog.textContent = t; });
@@ -770,7 +771,7 @@ document.addEventListener("input", e => { const t = e.target;
   else if (t.dataset && t.dataset.mc === "arr") { CAL.arr = Math.max(0, Math.min(9, +t.value || 0)); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 300); }
   else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
-  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; });
+  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; else if (t.dataset.mc === "reels") { CAL.reels = t.checked; mcGravar("p085_mc_reels", CAL.reels); } });
 /* arrastar: da biblioteca pra lista, e dentro da lista pra mudar a ordem */
 document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".mc-card"), it = e.target.closest && e.target.closest(".mc-it");
   if (it) { e.dataTransfer.setData("text/plain", "k:" + it.dataset.k); it.classList.add("arrastando"); } else if (c) e.dataTransfer.setData("text/plain", "id:" + c.dataset.id); });
@@ -784,10 +785,46 @@ document.addEventListener("drop", e => { const sel = e.target.closest && e.targe
   else if (v.startsWith("k:")) { const de = +v.slice(2); const [x] = CAL.sel.splice(de, 1); CAL.sel.splice(de < pos ? pos - 1 + (it ? 1 : 0) : pos, 0, x); }
   mcAtualizar(); });
 
+
+/* ================= destino da semana (carrossel com dados do radar) ================= */
+async function fDestinoSemana() {
+  const R = S.status.rotas || {}, ks = DESTINOS_PAUTA.filter(k => R[k]); if (!ks.length) return null;
+  const sem = Math.floor(nDia() / 7), k = ks[sem % ks.length];
+  await carregarCal(k); const cal = S.cal[k]; if (!cal || !cal.ida || cal.ida.length < 5) return null;
+  const nome = (S.rotas.find(r => r.iata === k) || {}).nome || IATA[k] || k, rf = refDe(k), im = await fotoPronta(k);
+  const pm = {}; cal.ida.forEach(d => { const m = d.dia.slice(0, 7); pm[m] = Math.min(d.preco, pm[m] || 1e9); });
+  const ms = Object.entries(pm).sort().slice(0, 5), mn = Math.min(...ms.map(m => m[1])), mx = Math.max(...ms.map(m => m[1]));
+  const datas = cal.ida.slice().sort((a, b) => a.preco - b.preco).slice(0, 6).sort((a, b) => a.dia.localeCompare(b.dia));
+  const n = 5, hoje = dataCurta(hojeISO()).toLowerCase();
+  const telas = [
+    c => { bgFoto(c, PW, PH, im, .58); marca(c, PW, true, `1/${n}`);
+      kicker(c, "Destino da semana", M, PH * .58 - 130, COR.am); const y = titulo(c, nome, M, PH * .58 - 100, PW - 2 * M, 170, 90, "#fff", 2) + 30;
+      if (rf && rf.texto) paragrafo(c, rf.texto, M, y + 10, PW - 2 * M, 34, MARCA.corpo, "rgba(255,255,255,.85)", 600, 1.3, 2);
+      T(c, "Quando é mais barato ir saindo de Fortaleza? ARRASTA ➜", M, PH - 100, 26, MARCA.corpo, COR.am, "left", 800, 1); },
+    c => { bgNavy(c, PW, PH); marca(c, PW, true, `2/${n}`); kicker(c, "Menor preço por mês (só ida)", M, 300, COR.am);
+      titulo(c, "Qual mês sai mais em conta", M, 330, PW - 2 * M, 100, 64, "#fff", 2); let y = 600;
+      ms.forEach(([m, p]) => { const best = p === mn, w = 140 + (p / mx) * (PW - 2 * M - 200 - 380);
+        T(c, MESES[+m.slice(5, 7) - 1].toUpperCase(), M, y + 50, 40, MARCA.titulo, best ? COR.am : "#fff");
+        c.fillStyle = best ? COR.am : "rgba(255,255,255,.16)"; rr(c, M + 200, y + 12, w, 52, 26); c.fill();
+        T(c, brl(p), M + 200 + w + 20, y + 52, 40, MARCA.titulo, best ? COR.am : "#fff"); y += 92; });
+      T(c, `Preços que o radar viu em ${hoje}. Mudam a toda hora.`, M, y + 30, 22, MARCA.corpo, COR.cinza, "left", 600); rodapeP(c, PW, PH, true, "Salva pra consultar depois"); },
+    c => { bgCreme(c, PW, PH); marca(c, PW, false, `3/${n}`); kicker(c, "As datas mais baratas agora", M, 300, COR.tinta);
+      titulo(c, "Se for, vá nessas datas", M, 330, PW - 2 * M, 100, 64, COR.tinta, 2); let y = 560;
+      datas.forEach((d, i) => { linhaLista(c, PW, y, String(i + 1).padStart(2, "0"), `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`, ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"][new Date(d.dia + "T12:00:00Z").getUTCDay()], brl(d.preco), "só ida", false, 108); y += 108; });
+      rodapeP(c, PW, PH, false, "Preços de hoje, podem mudar"); },
+    c => { TEMA.amarelo.bg(c, PW, PH); marca(c, PW, false, `4/${n}`); kicker(c, "Dica do radar", M, 360, COR.tinta);
+      const y = titulo(c, `O melhor mês pra ${nome} é ${MESES_LONGO[+ms.find(m => m[1] === mn)[0].slice(5, 7) - 1].toLowerCase()}`, M, 390, PW - 2 * M, 112, 70, COR.tinta, 3) + 50;
+      paragrafo(c, "Olhe sempre a ida e a volta juntas e seja rápido: preço bom some em horas. Quem tem alerta ligado compra primeiro.", M, y, PW - 2 * M, 40, MARCA.corpo, "rgba(15,42,71,.85)", 600, 1.35, 4);
+      rodapeP(c, PW, PH, false, "Siga @partiu.085"); },
+    c => capaTema(c, "escuro", "Quer receber na hora?", `Comenta EU QUERO que eu te mando os alertas de ${nome}`, "Todo dia tem passagem barata saindo de Fortaleza. Salva esse post e manda pra quem vai com você.", "", "Siga @partiu.085 · ative o sininho 🔔") ];
+  return { id: "f-destsem-" + k + "-" + hojeISO(), grupo: "feed", tipo: "Destino da semana", titulo: `Destino da semana: ${nome}`, porque: "Carrossel com dado que só a gente tem: muito salvo e compartilhado. Bom pra toda segunda.", fmt: `Carrossel · ${n} telas`, telas,
+    legenda: `📍 DESTINO DA SEMANA: ${nome.toUpperCase()}\n\nQuanto custa voar de Fortaleza, mês a mês (menor preço do trecho que o radar viu):\n\n${ms.map(([m, p]) => `${p === mn ? "⭐" : "▫️"} ${MESES_LONGO[+m.slice(5, 7) - 1]}: a partir de ${brl(p)}`).join("\n")}\n\n📅 Datas mais baratas agora: ${datas.map(d => `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`).join(", ")}\n\n⚠️ Preços de ${hoje}, mudam a qualquer momento.\n💬 Comenta EU QUERO que eu te mando os próximos no direct!\n\n${HASH}` };
+}
+
 /* ================= página ================= */
 async function ideiasHoje() {
   const st = [sTop5(), sMilhas(), await sAchado(), sChamada()].filter(Boolean);
-  const fd = [await fOportunidade(), fBonus(), fGuia(), await fQuanto(), fSemana()].filter(Boolean);
+  const fd = [await fOportunidade(), await fDestinoSemana(), fBonus(), fGuia(), await fQuanto(), fSemana()].filter(Boolean);
   return st.concat(fd);
 }
 function feito(id) { return S.marcados && S.marcados["ig-" + id]; }

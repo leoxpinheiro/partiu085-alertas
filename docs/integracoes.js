@@ -14,6 +14,7 @@ const INTEG = [
   { grupo: "Envio automático", itens: [
     { nome: "TELEGRAM_BOT_TOKEN", t: "Bot do Telegram", d: "O robô que posta os alertas.", link: "https://t.me/BotFather", uso: "ativa" },
     { nome: "TELEGRAM_CHAT_ID", t: "Canal grátis no Telegram", d: "ID do canal dos alertas em dinheiro (ex.: -100123…).", uso: "ativa" },
+    { nome: "TELEGRAM_ADMIN_ID", t: "Seu Telegram (avisos do robô)", d: "Seu número de usuário no Telegram. O robô te avisa se o radar parar, se um post não sair ou se a conexão do Instagram precisar ser refeita. Pra descobrir: no Telegram abra @userinfobot e copie o Id. Depois mande /start pro bot do radar.", link: "https://t.me/userinfobot", uso: "ativa" },
     { nome: "TELEGRAM_CHAT_MILHAS", t: "Canal de milhas no Telegram", d: "ID do canal que recebe os alertas de milhas.", uso: "ativa" },
     { nome: "WHATSAPP_API_KEY", t: "WhatsApp (envio automático)", d: "Para quando tivermos um serviço de envio no WhatsApp. Espaço reservado.", uso: "reservada" },
   ] },

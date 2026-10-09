@@ -143,7 +143,7 @@ function gerarSlots(ini, hs, n) { /* horários em sequência a partir do dia esc
   const out = [], lim = isoLocal(new Date(Date.now() + 10 * 6e4)).slice(0, 16);
   for (let d = 0; out.length < n && d < 400; d++) { const dia = diaMenos(ini, -d); for (const h of hs) { const q = `${dia}T${h}`; if (q <= lim) continue; out.push(q + "-03:00"); if (out.length >= n) break; } }
   return out; }
-const AO_VIVO = /^(f-op|f-quanto|aq-quanto|aq-feriadao|aq-teaser3|camp-op|camp-quanto)/;
+const AO_VIVO = /^(f-destsem|f-op|f-quanto|aq-quanto|aq-feriadao|aq-teaser3|camp-op|camp-quanto)/;
 const aoVivo = p => !!(p && (p.aoVivo || AO_VIVO.test(p.id || p.origem || "")));
 function lerHorarios(t) { return String(t || "").split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0")); }
 /* agenda vários posts de uma vez: itens = [{ titulo, cvs, legenda, origem }] */
@@ -153,7 +153,7 @@ async function agendarItens(itens, slots, ok, prog) {
   const base = Date.now().toString(36);
   for (let k = 0; k < itens.length; k++) {
     const it = itens[k], id = `ig-${base}-${k + 1}`;
-    const item = it.vaga ? { id, titulo: "💲 Oferta do dia (o robô escolhe na hora)", tipo: "oferta_dia", imagens: [], legenda: "", rodape: it.rodape || "", quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "vaga" }
+    const item = it.vaga ? { id, titulo: "💲 Oferta do dia (o robô escolhe na hora)", tipo: "oferta_dia", imagens: [], legenda: "", rodape: it.rodape || "", ...(it.reels ? { reels: true } : {}), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "vaga" }
       : { id, titulo: it.titulo, tipo: it.cvs.length > 1 ? "carrossel" : "feed", imagens: it.cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(it.legenda), quando: slots[k], aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: it.origem || "", ...(it.valido ? { valido_ate: it.valido } : {}) };
     for (let j = 0; j < (it.cvs || []).length; j++) { prog(`Enviando post ${k + 1} de ${itens.length} (tela ${j + 1}/${it.cvs.length})…`); await subirImagem(item.imagens[j], it.cvs[j]); }
     IGF.fila.push(item);

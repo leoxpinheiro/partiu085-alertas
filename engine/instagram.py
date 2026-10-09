@@ -409,7 +409,13 @@ def main():
             continue
         if s_.get("status") == "erro" and int(s_.get("tentativa", 0)) >= int(p.get("tentativa", 0)) and p.get("id") != APENAS:
             continue
+        if s_.get("status") == "expirado":
+            continue
         pronto = p.get("aprovado") and (p.get("quando", "9") <= agora or p.get("id") == APENAS)
+        if pronto and p.get("valido_ate") and p["valido_ate"] < agora[:10]:
+            st[p["id"]] = {"status": "expirado", "quando": agora}
+            print(f"expirado (não postei): {p.get('titulo')}")
+            continue
         if not pronto or feitos >= 5:
             continue
         try:

@@ -37,7 +37,10 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ROTAS_AGORA: ${{ github.event.inputs.rotas }}
-        run: python engine/run.py
+        run: |
+          set -o pipefail
+          mkdir -p data
+          python engine/run.py 2>&1 | tee data/ultima_rodada.log
       - name: Radar de milhas
         continue-on-error: true
         env:
@@ -50,6 +53,7 @@ jobs:
           python engine/milhas.py
           python engine/milhas_busca.py
       - name: Salvar resultados
+        if: always()
         run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"

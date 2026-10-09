@@ -99,8 +99,8 @@ NOTICIAS_Q = ["aeroporto de Fortaleza", "voo direto Fortaleza nova rota", "Forta
 MILHAS_Q = ["Livelo bônus transferência", "Esfera bônus transferência", "Smiles bônus transferência pontos", "LATAM Pass bônus transferência",
             "Azul Fidelidade bônus transferência", "Livelo pontos por real promoção", "compra de pontos desconto Livelo", "compra de milhas desconto Smiles",
             "aniversário Azul Fidelidade promoção", "aniversário LATAM Pass promoção", "Livelo parceiro pontos por real", "sala VIP aeroporto Fortaleza",
-            "sala VIP nova aeroporto", "Priority Pass sala VIP cartão"]
-MILHAS_RE = r"\b(livelo|esfera|smiles|latam ?pass|azul fidelidade|tudo ?azul|iupp|inter loop|milhas?|pontos? por real|bonus|bônus|sala vip|salas vip|lounge|priority pass|loungekey)\b"
+            "cartão de crédito acesso sala VIP", "Priority Pass cartão acessos"]
+MILHAS_RE = r"\b(livelo|esfera|smiles|latam ?pass|azul fidelidade|tudo ?azul|iupp|inter loop|milhas?|pontos? por real|bonus|bônus)\b"
 
 
 def decodificar_gnews(url: str) -> str:
@@ -216,7 +216,10 @@ def noticias() -> None:
                 continue
             tl = sem_acento(tit)
             regra = re.search(r"\banac\b.*(bagage|mala|power ?bank|carregador|liquido|passageiro)|mala de mao|power ?bank|bagagem de mao", tl)
-            milha = re.search(MILHAS_RE, tl) and dt >= datetime.now(timezone.utc) - timedelta(days=5)
+            vip = re.search(r"\bsalas? vip\b|lounge|priority pass|loungekey", tl)
+            if vip and not re.search(r"fortaleza|ceara|pinto martins|cart(ao|oes)|priority pass|loungekey", tl):
+                continue  # sala VIP de outro aeroporto não interessa; só de Fortaleza ou cartão que dá acesso
+            milha = (re.search(MILHAS_RE, tl) or vip) and dt >= datetime.now(timezone.utc) - timedelta(days=5)
             if milha:
                 regra = True  # milhas/pontos/sala vip: nacional, entra sem precisar citar Fortaleza
             if dt < lim or (not regra and not re.search(r"fortaleza|ceara|nordeste|jericoacoara|jeri\b|juazeiro", tl)) or not regra and not re.search(r"\b(voos?|aere[oa]s?|aeroporto|rotas?|companhias?|latam|gol|azul|tap|passage(m|ns)|embarque|conex(ao|oes)|aviao|avioes|turistas?|turismo|cruzeiro)\b", tl):

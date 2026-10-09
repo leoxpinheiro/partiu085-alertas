@@ -745,7 +745,8 @@ async function mcPostarAgora(id, bt) {
   try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
     await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "" }], [isoLocal(new Date())], true, t => { bt.textContent = t; });
     await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
-    mcFecharVer(); toast("Enviado! O robô publica em 1 a 3 minutos.", 6000); render(); }
+    const outros = (IGF.fila || []).filter(x => x.origem === p.id && ((IGF.st || {})[x.id] || {}).status !== "publicado" && x.quando > isoLocal(new Date()));
+    mcFecharVer(); toast(`Enviado! O robô publica em 1 a 3 minutos.${outros.length ? ` Ele também estava agendado pra ${outros.map(x => x.quando.slice(8, 10) + "/" + x.quando.slice(5, 7) + " " + x.quando.slice(11, 16)).join(", ")}: nesse horário vai sair uma 💲 oferta do dia no lugar, sem duplicar.` : ""}`, 9000); render(); }
   catch (e) { toast("Não foi: " + e.message, 7000); bt.disabled = false; bt.textContent = "⚡ Postar agora"; } }
 async function mcAgendar(bt) {
   const L = mcSelecionados(), hs = lerHorarios(CAL.hs);

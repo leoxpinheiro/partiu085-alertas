@@ -95,6 +95,47 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
   if (!cfg.palavras.length) { toast("Coloque pelo menos uma palavra."); return; }
   b.disabled = true; try { await salvarArquivo("docs/ig_dm_cfg.json", cfg, "Instagram: direct automático"); IGF.dmcfg = cfg; toast("Salvo. Vale a partir da próxima checagem (até 15 min)."); } catch (err) { toast("Erro: " + err.message, 6000); } b.disabled = false; });
 
+
+/* ---------- agendar uma semana inteira de uma vez */
+function abrirLote(sem) {
+  const L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
+  if (!L.length) { toast("Espere as artes terminarem de desenhar."); return; }
+  const amanha = diaMenos(hojeISO(), -1);
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "igl";
+  d.innerHTML = `<div class="ej" role="dialog" aria-label="Agendar semana"><div class="ej-h"><div><b>Agendar a semana ${sem}</b><small>${L.length} posts · ${sem === 1 ? "2 por dia" : "1 por dia"}</small></div><button class="bt sm ghost" data-act="iglfechar">✕</button></div>
+    <div class="igm-thumbs">${L.map(x => { const cv = document.querySelector(`#pa-t-${x.i} canvas`); return cv ? `<img src="${cv.toDataURL("image/jpeg", .5)}" alt="">` : ""; }).join("")}</div>
+    <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Começa no dia</label><input type="date" id="igl-ini" value="${amanha}"></div>
+      <div class="field"><label>Horários (separe por vírgula)</label><input id="igl-h" value="${sem === 1 ? "12:00, 19:00" : "12:00"}"></div>
+      <div class="field" style="grid-column:1/-1"><label class="chk"><input type="checkbox" id="igl-ok" checked> Já aprovar: o robô publica sozinho no horário (dá pra pausar ou editar cada um na agenda)</label></div></div>
+    <div class="ej-acts"><button class="bt pri lg" data-act="iglsalvar" data-s="${sem}">${ic("calendar")}Agendar ${L.length} posts</button><span class="sub" id="igl-prog"></span></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+}
+async function salvarLote(sem, bt) {
+  if (!token()) { toast("Conecte o token do GitHub em Ajustes pra agendar."); return; }
+  const L = (PA.lista || []).map((p, i) => ({ p, i })).filter(x => x.p.semana === sem);
+  const ini = $("#igl-ini").value, hs = $("#igl-h").value.split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0"));
+  if (!ini || !hs.length) { toast("Confira o dia e os horários."); return; }
+  const ok = $("#igl-ok").checked, prog = $("#igl-prog"); bt.disabled = true;
+  try {
+    IGF.fila = null; await carregarIG(true); IGF.fila = IGF.fila || [];
+    const base = Date.now().toString(36);
+    for (let k = 0; k < L.length; k++) {
+      const { p, i } = L[k], cvs = [...document.querySelectorAll(`#pa-t-${i} canvas`)];
+      const dia = diaMenos(ini, -Math.floor(k / hs.length)), quando = `${dia}T${hs[k % hs.length]}-03:00`, id = `ig-${base}-${k + 1}`;
+      const item = { id, titulo: p.titulo, tipo: cvs.length > 1 ? "carrossel" : "feed", imagens: cvs.map((_, j) => `ig/${id}-${j + 1}.jpg`), legenda: paraInsta(($("#pa-l-" + i) || {}).value || p.legenda), quando, aprovado: ok, tentativa: 0, criado: isoLocal(new Date()), origem: p.id };
+      for (let j = 0; j < cvs.length; j++) { prog.textContent = `Enviando post ${k + 1} de ${L.length} (tela ${j + 1}/${cvs.length})…`; await subirImagem(item.imagens[j], cvs[j]); }
+      IGF.fila.push(item);
+    }
+    prog.textContent = "Salvando a agenda…"; await salvarFila(`Instagram: agenda a semana ${sem} (${L.length} posts)`);
+    const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on");
+    toast(`${L.length} posts agendados a partir de ${ini.slice(8, 10)}/${ini.slice(5, 7)}. Veja em Instagram: números › Agenda.`, 6000);
+  } catch (e) { toast("Parou no meio: " + e.message + ". O que já subiu fica salvo; tente de novo.", 8000); bt.disabled = false; }
+}
+document.addEventListener("click", e => { const b = e.target.closest('[data-act^="igl"]'); if (!b) return;
+  if (b.dataset.act === "iglote") abrirLote(+b.dataset.s);
+  else if (b.dataset.act === "iglfechar") { const d = $("#igl"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
+  else if (b.dataset.act === "iglsalvar") salvarLote(+b.dataset.s, b); });
+
 /* ---------- página: números do perfil + agenda */
 IGF.per = 7; IGF.ord = "recentes";
 const igN = v => v == null ? "–" : milN(v);

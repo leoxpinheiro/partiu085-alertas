@@ -88,7 +88,9 @@ def topo(img: Image.Image, d: ImageDraw.ImageDraw, etiqueta: str, cor):
     d.text((W - 60 - ew / 2, 101), etiqueta, font=f, fill=BRANCO if cor != AM else NAVY, anchor="mm")
 
 
-def card_alerta(a: dict) -> bytes:
+def card_alerta(a: dict, alto: bool = False) -> bytes:
+    H = 1350 if alto else W
+    FH = 700 if alto else globals()["FH"]
     img = Image.new("RGBA", (W, H), NAVY + (255,))
     foto = DOCS / "fotos" / f"{a['destino']}.jpg"
     tem_foto = foto.exists()
@@ -131,30 +133,38 @@ def card_alerta(a: dict) -> bytes:
         d.text((cx, by + bh - 24), "somando ida + volta", font=jak(20, 600), fill=(200, 208, 218), anchor="ms")
     yd = max(yb + 96, by + bh + 52)
 
+    if alto:
+        yd += 40
+        d.text((64, yd - 6), "DATAS PRA VIAJAR (dia de embarque)", font=jak(26, 800), fill=(205, 212, 222), anchor="ls")
+        d.line((64, yd + 10, W - 64, yd + 10), fill=(60, 86, 116), width=2)
+        yd += 60
+    fs_m, fs_d, passo = (30, 30, 50) if alto else (24, 24, 42)
+
     def coluna(titulo, meses, x, w):
-        d.text((x, yd), titulo, font=jak(24, 800), fill=AM, anchor="ls")
-        yy, resto = yd + 44, 0
-        cabe = max(1, int((H - 44 - yy) // 42) + 1)
+        d.text((x, yd), titulo, font=jak(28 if alto else 24, 800), fill=AM, anchor="ls")
+        yy, resto = yd + (52 if alto else 44), 0
+        cabe = max(1, int((H - 44 - yy) // passo) + 1)
         mostra = cabe - 1 if len(meses) > cabe else len(meses)
         for i, g in enumerate(meses):
             if i >= mostra:
                 resto += len(g["dias"])
                 continue
             mes, ano = (g["mes"].split(" ") + [""])[:2]
-            d.text((x, yy), f"{mes[:3].upper()}/{ano[2:]}", font=jak(24, 800), fill=BRANCO, anchor="ls")
+            d.text((x, yy), f"{mes[:3].upper()}/{ano[2:]}", font=jak(fs_m, 800), fill=BRANCO, anchor="ls")
             dias = list(g["dias"])
-            f = jak(24, 500)
-            while len(dias) > 1 and d.textlength(" · ".join(dias), font=f) > w - 110:
+            f = jak(fs_d, 600)
+            dx = 130 if alto else 104
+            while len(dias) > 1 and d.textlength(" · ".join(dias), font=f) > w - dx - 6:
                 dias.pop()
                 resto += 1
-            d.text((x + 104, yy), " · ".join(dias), font=f, fill=(230, 235, 240), anchor="ls")
-            yy += 42
+            d.text((x + dx, yy), " · ".join(dias), font=f, fill=(230, 235, 240), anchor="ls")
+            yy += passo
         if resto:
             d.text((x, yy), f"+ {resto} data{'s' if resto > 1 else ''} no texto", font=jak(22, 600), fill=(170, 180, 195), anchor="ls")
 
-    coluna("IDA", a.get("ida_meses") or [], 64, 470)
+    coluna("IDA (sai de Fortaleza)" if alto else "IDA", a.get("ida_meses") or [], 64, 470)
     if a.get("volta_meses"):
-        coluna("VOLTA", a["volta_meses"], 564, 470)
+        coluna("VOLTA (pra Fortaleza)" if alto else "VOLTA", a["volta_meses"], 564, 470)
     return png(img)
 
 

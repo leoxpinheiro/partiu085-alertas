@@ -123,14 +123,16 @@ def montar_oferta(p: dict, st: dict) -> dict:
     a = escolher_oferta(st)
     agora = datetime.now(FUSO)
     if a:
-        img = imagem.card_alerta(a)
+        img = imagem.card_alerta(a, alto=True)
         rt = a["preco"] + (a.get("preco_volta") or 0)
-        meses = " · ".join(f"{g['mes'].split(' ')[0][:3].lower()}: {', '.join(g['dias'][:6])}" for g in (a.get("ida_meses") or [])[:3])
+        meses = "; ".join(f"{g['mes'].split(' ')[0][:3].lower()} {', '.join(g['dias'][:8])}" for g in (a.get("ida_meses") or [])[:3])
+        meses_v = "; ".join(f"{g['mes'].split(' ')[0][:3].lower()} {', '.join(g['dias'][:8])}" for g in (a.get("volta_meses") or [])[:3])
         quando = a.get("criado", "")
         leg = (f"🔥 ACHADO DO DIA\n\n✈️ Fortaleza ➜ {a['destino_nome']}\n💰 {brl(a['preco'])} o trecho"
                + (f"\n🔁 Ida e volta a partir de {brl(rt)}" if a.get("preco_volta") else "")
                + f"\n🛫 {a.get('cia_nome') or ''}"
-               + (f"\n📅 Datas de ida: {meses}" if meses else "")
+               + (f"\n\n📅 Datas de ida (saindo de Fortaleza): {meses}" if meses else "")
+               + (f"\n📅 Datas de volta: {meses_v}" if meses_v else "")
                + f"\n\n🕐 Visto pelo radar em {quando[8:10]}/{quando[5:7]} às {quando[11:16]}. Preço muda a qualquer momento, corre!")
         titulo, destino = f"Oferta do dia: {a['destino_nome']}", a["destino"]
     else:

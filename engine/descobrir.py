@@ -296,6 +296,8 @@ if __name__ == "__main__":
         noticias()
     except Exception as e:  # noqa: BLE001
         print(f"! notícias: {e}")
+    if "--noticias" in sys.argv:
+        sys.exit(0)
     if not TOKEN:
         print("sem TRAVELPAYOUTS_TOKEN")
         sys.exit(0)

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-09T18:40+00:00",
+ "atualizado": "2026-10-09T20:38+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -20,7 +20,7 @@
   {
    "iata": "REC",
    "ow": {
-    "preco": 388,
+    "preco": 389,
     "ida": "2026-10-19",
     "volta": "",
     "paradas": 0,
@@ -72,7 +72,7 @@
   {
    "iata": "CWB",
    "rt": {
-    "preco": 958,
+    "preco": 959,
     "ida": "2026-12-10",
     "volta": "2027-01-29",
     "paradas": 1,
@@ -92,7 +92,7 @@
   {
    "iata": "CGB",
    "rt": {
-    "preco": 966,
+    "preco": 968,
     "ida": "2026-11-19",
     "volta": "2026-11-24",
     "paradas": 1,
@@ -103,16 +103,29 @@
    "pista": true
   },
   {
+   "iata": "SCL",
+   "ow": {
+    "preco": 1032,
+    "ida": "2027-03-13",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-06T01:05:03Z"
+   },
+   "rastreada": true,
+   "nome": "Santiago",
+   "pista": false
+  },
+  {
    "iata": "SAO",
    "rt": {
-    "preco": 1203,
+    "preco": 1205,
     "ida": "2027-01-16",
     "volta": "2027-01-24",
     "paradas": 1,
     "visto": "2026-10-09T04:16:52Z"
    },
    "ow": {
-    "preco": 553,
+    "preco": 554,
     "ida": "2026-12-11",
     "volta": "",
     "paradas": 1,
@@ -217,7 +230,7 @@
   {
    "iata": "BVB",
    "rt": {
-    "preco": 2152,
+    "preco": 2156,
     "ida": "2026-12-15",
     "volta": "2027-01-02",
     "paradas": 2,
@@ -226,6 +239,19 @@
    "rastreada": false,
    "nome": "BVB",
    "pista": false
+  },
+  {
+   "iata": "BUE",
+   "rt": {
+    "preco": 2326,
+    "ida": "2026-12-14",
+    "volta": "2026-12-20",
+    "paradas": 1,
+    "visto": "2026-10-09T19:58:46Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
   },
   {
    "iata": "PNZ",
@@ -239,19 +265,6 @@
    "rastreada": false,
    "nome": "PNZ",
    "pista": false
-  },
-  {
-   "iata": "BUE",
-   "rt": {
-    "preco": 2656,
-    "ida": "2026-12-09",
-    "volta": "2026-12-16",
-    "paradas": 1,
-    "visto": "2026-10-06T16:45:50Z"
-   },
-   "rastreada": true,
-   "nome": "Buenos Aires",
-   "pista": true
   },
   {
    "iata": "PHX",
@@ -277,26 +290,6 @@
    },
    "rastreada": false,
    "nome": "MOW",
-   "pista": false
-  },
-  {
-   "iata": "SCL",
-   "rt": {
-    "preco": 3440,
-    "ida": "2026-10-10",
-    "volta": "2026-10-18",
-    "paradas": 1,
-    "visto": "2026-10-05T18:59:16Z"
-   },
-   "ow": {
-    "preco": 1032,
-    "ida": "2027-03-13",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-06T01:05:03Z"
-   },
-   "rastreada": true,
-   "nome": "Santiago",
    "pista": false
   },
   {

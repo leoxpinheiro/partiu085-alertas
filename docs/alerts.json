@@ -1,6 +1,78 @@
 {
- "atualizado": "2026-10-09T16:10-03:00",
+ "atualizado": "2026-10-09T18:10-03:00",
  "alertas": [
+  {
+   "id": "FOR-NVT-2026-11-07-1791580248",
+   "criado": "2026-10-09T18:10-03:00",
+   "rota": "FOR-NVT",
+   "destino": "NVT",
+   "destino_nome": "Navegantes",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 728,
+   "preco_volta": 693,
+   "preco_tipico": 1146,
+   "desconto": 0.365,
+   "classe": "otima",
+   "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2026-11-07",
+   "volta": "2026-11-11",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-07",
+     "preco": 728
+    },
+    {
+     "dia": "2026-11-08",
+     "preco": 728
+    },
+    {
+     "dia": "2026-11-09",
+     "preco": 728
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-11",
+     "preco": 693
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "07",
+      "08",
+      "09"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "11"
+     ]
+    }
+   ],
+   "meses": [
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMDdqBRIDRk9ScgUSA05WVEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0711NVT11111?marker=677880",
+   "base": {
+    "dias": 1,
+    "menor_visto": 767
+   },
+   "recorde": false,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Navegantes* (NVT)\n📍 _Aeroporto de Balneário Camboriú e Itajaí (SC)_\n💰 *R$ 728* o trecho\n🔁 Ida e volta a partir de *R$ 1.421*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 07, 08, 09\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-CGB-2026-12-03-1791573027",
    "criado": "2026-10-09T16:10-03:00",
@@ -61,7 +133,12 @@
    },
    "recorde": false,
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Cuiabá* (CGB)\n📍 _Porta do Pantanal e da Chapada dos Guimarães (MT)_\n💰 *R$ 508* o trecho\n🔁 Ida e volta a partir de *R$ 1.395*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 03\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 09\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-09T18:10-03:00",
+    "preco": 508,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-BEL-2026-11-19-1791502410",
@@ -2816,7 +2893,7 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Juazeiro do Norte (JDO)\n💰 A partir de *R$ 342* o trecho\n🔥 IMPERDÍVEL · 91% abaixo da média\n🛫 LATAM · voo direto\n\n*Datas de ida:*\nNovembro 2026: 07\n\n*Datas de volta:*\nDezembro 2026: 13\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-09T12:37-03:00",
+    "quando": "2026-10-09T18:10-03:00",
     "preco": 342,
     "status": "valendo"
    }
@@ -2893,7 +2970,7 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Fernando de Noronha (FEN)\n💰 A partir de *R$ 1.476* o trecho\n🔥 IMPERDÍVEL · 62% abaixo da média\n🛫 Gol · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 07, 11, 14\n\n*Datas de volta:*\nDezembro 2026: 13, 31\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-09T12:37-03:00",
+    "quando": "2026-10-09T18:10-03:00",
     "preco": 1622,
     "status": "valendo"
    }
@@ -3000,8 +3077,8 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Goiânia (GYN)\n💰 A partir de *R$ 780* o trecho\n⭐ ÓTIMA OPORTUNIDADE · 31% abaixo da média\n🛫 Azul · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 04, 06, 07, 18, 20\n\n*Datas de volta:*\nNovembro 2026: 07, 09, 10, 16, 23, 27\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-09T12:37-03:00",
-    "preco": 693,
+    "quando": "2026-10-09T18:10-03:00",
+    "preco": 682,
     "status": "valendo"
    }
   },
@@ -3200,8 +3277,8 @@
    "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Florianópolis (FLN)\n💰 A partir de *R$ 588* o trecho\n🔥 IMPERDÍVEL · 44% abaixo da média\n🛫 LATAM · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 08, 09\n\n*Datas de volta:*\nDezembro 2026: 11\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-09T12:37-03:00",
-    "preco": 620,
+    "quando": "2026-10-09T18:10-03:00",
+    "preco": 559,
     "status": "valendo"
    }
   },

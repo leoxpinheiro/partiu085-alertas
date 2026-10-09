@@ -29,7 +29,7 @@ jobs:
       - name: Esperar (seg–qua ~55min · qui–sex ~1h10 · fim de semana ~1h40)
         run: |
           d=$(TZ=America/Fortaleza date +%u)
-          if [ "$d" -le 3 ]; then s=3300; elif [ "$d" -le 5 ]; then s=4200; else s=6000; fi
+          if [ "$d" -le 3 ]; then s=3600; elif [ "$d" -le 5 ]; then s=4200; else s=6000; fi
           echo "dia $d: esperando $s segundos"; sleep $s
       - name: Dar corda de novo
         env:

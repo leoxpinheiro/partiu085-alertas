@@ -154,7 +154,7 @@ def fotos_noticias(itens: list) -> None:
                 continue
         if ant.get("resumo") and not it.get("resumo"):
             it["resumo"] = ant["resumo"]
-        if not it.get("det") and (ant.get("det") or {}).get("v") == 5:
+        if not it.get("det") and (ant.get("det") or {}).get("v") == 6:
             it["det"] = ant["det"]
         if not it.get("det") and it.get("cat") == "milhas" and baixados + decod < 40:
             try:
@@ -239,7 +239,8 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     det = {}
     for tit, its in secoes:
         t = sem_acento(tit)
-        if "lista" not in det and (re.search(r"parceir|lojas|elegive|participant|onde (vale|usar)|destinos|trechos|rotas|cartoes|bancos", t) or (not tit and sum(len(i) < 45 for i in its) >= 4)):
+        curtos = sum(len(i) for i in its) / len(its) <= 40
+        if "lista" not in det and curtos and (re.search(r"parceir|lojas|elegive|participant|onde (vale|usar)|destinos|trechos|rotas|cartoes|bancos", t) or (not tit and sum(len(i) < 45 for i in its) >= 4)):
             det["lista_tit"], det["lista"] = tit, its[:16]
         elif "lista" not in det and tit in ("Faixas de bônus", "Detalhes"):
             det["lista_tit"], det["lista"] = tit, its[:12]
@@ -258,7 +259,7 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     m = re.search(r"(somente|so|apenas) (hoje|neste \w+|nesta \w+)|valid[ao]s? ate (?:o dia )?(\d{1,2}/\d{1,2}(?:/\d{2,4})?|\d{1,2} de \w+)|ate (?:as \d{1,2}h\d* )?(?:do dia |de )?(\d{1,2}/\d{1,2})", txt)
     if m:
         det["prazo"] = m.group(0)
-    det["v"] = 5
+    det["v"] = 6
     return det
 
 

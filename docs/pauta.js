@@ -614,11 +614,15 @@ function ntEd(x) { const d = x.det || {}, e = (PA.ntEd || {})[ntChave(x)] || {},
   return { ...A, kick: e.kick ?? A.kick, titulo: e.titulo ?? A.tit, prazo: e.prazo ?? A.prazo, gancho: e.gancho ?? (A.gancho ? A.gancho.join("\n") : ""),
     listaTit: e.listaTit ?? (ehTier ? "Quanto você ganha" : A.tipo === "porreal" ? "Onde pontuar" : (d.lista_tit && d.lista_tit.length < 40 ? d.lista_tit : "Onde vale")),
     lista: e.lista ?? curta.slice(0, 16), tier: (e.lista ? e.lista.filter(i => /·/.test(i) && /\d/.test(i)).length >= 2 : ehTier), passos: e.passos ?? passos, avisos: e.avisos ?? ((d.avisos || []).filter(a => a.length < 120).slice(0, 2)) }; }
-function telaMiCapa(x, E, W, H) { return c => {
-  const cor = E.prog ? E.prog[2] : "#0B4EA2", story = H > W * 1.5, hh = H * (story ? .42 : .4);
+const MI_FOTOS = { porreal: ["compras-1", "compras-2", "compras-3", "trabalho-1"], bonus: ["cartao-1", "cartao-2", "celular-viagem-1"], compra: ["cartao-1", "celular-viagem-1"], passagem: ["janela-1", "ferias-1", "ferias-3"], desconto_voo: ["janela-2", "ferias-2", "ferias-4"], geral: ["celular-viagem-1", "ferias-1"] };
+function miFoto(x, E) { const h = [...(x.link || x.titulo)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 9973, 7); if (h % 2) return null; // de vez em quando (metade dos posts)
+  const L = MI_FOTOS[E.tipo] || MI_FOTOS.geral; return L[h % L.length]; }
+function telaMiCapa(x, E, W, H) { return async c => {
+  const cor = E.prog ? E.prog[2] : "#0B4EA2", story = H > W * 1.5, hh = H * (story ? .42 : .4), fn = miFoto(x, E), foto = fn ? await fotoMidia(fn) : null;
   c.fillStyle = cor; c.fillRect(0, 0, W, H);
+  if (foto) { cobrir(c, foto, 0, 0, W, hh + 200); c.save(); c.globalAlpha = .5; c.fillStyle = cor; c.fillRect(0, 0, W, hh + 200); c.restore(); }
   const g0 = c.createRadialGradient(W * .85, H * .08, 20, W * .85, H * .08, W * 1.1); g0.addColorStop(0, "rgba(255,255,255,.28)"); g0.addColorStop(1, "rgba(0,0,0,.25)"); c.fillStyle = g0; c.fillRect(0, 0, W, H);
-  c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .12, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore();
+  if (!foto) { c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .12, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore(); }
   const g = c.createLinearGradient(0, hh - 120, 0, hh + 200); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 120, W, 320); c.fillStyle = COR.navy; c.fillRect(0, hh + 198, W, H);
   marca(c, W, true, (E.prog ? E.prog[0] : "MILHAS").toUpperCase());
   let y = story ? 330 : 250; kicker(c, E.kick, M, y, COR.am); y += 40;
@@ -649,7 +653,12 @@ function telaMiLista(E, itens, pos, n, tema, cont) { return c => { const K = TEM
       let fs = Math.min(44, lh * .36); c.font = `800 ${fs}px ${MARCA.corpo}`; let L = estQuebrar(c, it, cw - 40); while ((L.length > 2 || L.some(l => c.measureText(l).width > cw - 40)) && fs > 20) { fs -= 2; c.font = `800 ${fs}px ${MARCA.corpo}`; L = estQuebrar(c, it, cw - 40); }
       L = L.slice(0, 2); const ty = cy + lh / 2 - (L.length - 1) * fs * .55 + fs * .35; L.forEach((l, j) => T(c, l, cx + cw / 2, ty + j * fs * 1.1, fs, MARCA.corpo, ink, "center", 800)); }); }
   rodapeP(c, PW, PH, K.dk, "Salva pra lembrar na hora de comprar"); }; }
-function telaMiTexto(tit, linhas, pos, n, tema, numerado) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
+const MI_ALERTA = { porreal: "Nem sempre compensa: compare o preço da loja dentro e fora da campanha. Às vezes o \"bônus\" já vem embutido no valor do produto.",
+  compra: "Faça a conta do milheiro antes: compare com o preço da passagem em dinheiro. Se não for usar logo, pode não valer a pena." };
+function telaMiTexto(tit, linhas, pos, n, tema, numerado, nota) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
+  if (nota) { c.font = `600 28px ${MARCA.corpo}`; const L = estQuebrar(c, nota, PW - 2 * M - 80).slice(0, 3), hN = L.length * 38 + 40, yN = PH - 160 - hN;
+    c.fillStyle = K.dk ? "rgba(255,255,255,.07)" : "rgba(15,42,71,.06)"; rr(c, M, yN, PW - 2 * M, hN, 20); c.fill();
+    T(c, "⚠️", M + 24, yN + 50, 26, MARCA.corpo, K.tx); L.forEach((l, i) => T(c, l, M + 66, yN + 48 + i * 38, 26, MARCA.corpo, K.dk ? "rgba(255,255,255,.75)" : "rgba(15,42,71,.72)", "left", 600)); }
   let y = titulo(c, tit, M, 240, PW - 2 * M, 110, 60, K.tx, 2) + 70;
   linhas.forEach((l, i) => { const ny = y; if (numerado) T(c, String(i + 1).padStart(2, "0"), M, ny + 60, 76, MARCA.titulo, K.ac); else { c.fillStyle = K.ac; c.fillRect(M, ny + 4, 10, 60); }
     y = paragrafo(c, l, M + (numerado ? 120 : 40), ny + 48, PW - 2 * M - (numerado ? 120 : 40), 44, MARCA.corpo, K.tx, 700, 1.28, 3) + 56; });
@@ -660,11 +669,11 @@ function postsMilhaNossos(x) {
   const temGancho = !!E.gancho.trim(), n = 1 + (temGancho ? 1 : 0) + partes.length + (E.passos.length ? 1 : 0) + (E.avisos.length ? 1 : 0) + 1; let pos = 2, k = 0; const tm = ["creme", "escuro"];
   if (temGancho) telas.push(telaMiGancho(E, pos++, n));
   partes.forEach((pt, j) => telas.push(telaMiLista(E, pt, pos++, n, tm[k++ % 2], j > 0)));
-  if (E.passos.length) telas.push(telaMiTexto("Como aproveitar", E.passos, pos++, n, tm[k++ % 2], true));
+  if (E.passos.length) telas.push(telaMiTexto("Como aproveitar", E.passos, pos++, n, tm[k++ % 2], true, MI_ALERTA[E.tipo]));
   if (E.avisos.length) telas.push(telaMiTexto("Fique de olho", E.avisos, pos++, n, tm[k++ % 2], false));
   telas.push(c => capaTema(c, "amarelo", "Não guarda só pra você", "Marca quem precisa ver isso 👇", "Promoção boa some rápido. Segue o @partiu.085 e ativa o sininho que a gente avisa.", "", "Siga @partiu.085 · ative o sininho 🔔"));
   const vd = validadeNoticia(x), g = E.gancho.split("\n");
-  const leg = `🔥 ${E.titulo.toUpperCase()}${E.prazo ? ` (${E.prazo.toLowerCase()})` : ""}\n\n${temGancho ? `💡 Na prática: ${g[0]} ${g[1] || ""}\n\n` : ""}${E.lista.length ? `📍 ${E.listaTit}:\n${E.lista.map(i => "▪️ " + i).join("\n")}\n\n` : ""}${E.passos.length ? `✅ Como aproveitar:\n${E.passos.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n` : ""}${E.avisos.length ? `⚠️ ${E.avisos.join(" ")}\n\n` : ""}Confira as regras no site ou app do programa antes.\n\n👇 Marca aquele amigo que junta pontos e não pode perder essa.\n\n${HASH}`;
+  const leg = `🔥 ${E.titulo.toUpperCase()}${E.prazo ? ` (${E.prazo.toLowerCase()})` : ""}\n\n${temGancho ? `💡 Na prática: ${g[0]} ${g[1] || ""}\n\n` : ""}${E.lista.length ? `📍 ${E.listaTit}:\n${E.lista.map(i => "▪️ " + i).join("\n")}\n\n` : ""}${E.passos.length ? `✅ Como aproveitar:\n${E.passos.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n` : ""}${E.avisos.length ? `⚠️ ${E.avisos.join(" ")}\n\n` : ""}${MI_ALERTA[E.tipo] ? `⚠️ ${MI_ALERTA[E.tipo]}\n\n` : ""}Confira as regras no site ou app do programa antes.\n\n👇 Marca aquele amigo que junta pontos e não pode perder essa.\n\n${HASH}`;
   const id = "nt-" + (x.link || x.titulo).replace(/\W+/g, "").slice(-28);
   return [{ id, valido: vd.ate, grupo: "feed", tipo: "Notícia · milhas", rot: "Notícia", titulo: `💳 ${curto(E.titulo, 56)}`, porque: "Post nosso, montado com os fatos da promoção. Dá pra mudar título, lista e passos no quadro ✏️ Ajustar o post.", fmt: `Carrossel · ${telas.length} telas`, telas, legenda: leg, noticia: true },
     { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Capa em formato story.", fmt: "Story 9:16", stories: true, telas: [telaMiCapa(x, E, SW, SH)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];

@@ -154,7 +154,7 @@ def fotos_noticias(itens: list) -> None:
                 continue
         if ant.get("resumo") and not it.get("resumo"):
             it["resumo"] = ant["resumo"]
-        if not it.get("det") and (ant.get("det") or {}).get("v") == 6:
+        if not it.get("det") and (ant.get("det") or {}).get("v") == 7:
             it["det"] = ant["det"]
         if not it.get("det") and it.get("cat") == "milhas" and baixados + decod < 40:
             try:
@@ -214,10 +214,12 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     for tag, corpo in re.findall(r"(?is)<(h[1-6]|ul|ol|p)[^>]*>(.*?)</\1>", h):
         if tag.lower().startswith("h"):
             sec = limpa(corpo)
+            if titulo and sem_acento(sec)[:25] == sem_acento(titulo)[:25]:
+                sec = ""  # é o título da própria matéria, não uma seção
             continue
         if tag.lower() in ("ul", "ol"):
             its = [limpa(x) for x in re.findall(r"(?is)<li[^>]*>(.*?)</li>", corpo)]
-            lixo = r"(?i)gerir|cookie|fornecedor|prop[oó]sito|privacidade|newsletter|inscreva|compartilh|whatsapp|telegram|facebook|instagram|twitter|youtube|^promo[cç][oõ]es$|^passagens a[eé]reas$|^milhas$|^not[ií]cias$|^cart[oõ]es|^in[ií]cio$|^home$|leia (tamb[eé]m|mais)|\{|\}"
+            lixo = r"(?i)gerir|cookie|^ouvir$|leitura:|minutos? de leitura|^compartilhe|^copiar link|fornecedor|prop[oó]sito|privacidade|newsletter|inscreva|compartilh|whatsapp|telegram|facebook|instagram|twitter|youtube|^promo[cç][oõ]es$|^passagens a[eé]reas$|^milhas$|^not[ií]cias$|^cart[oõ]es|^in[ií]cio$|^home$|leia (tamb[eé]m|mais)|\{|\}"
             its = [re.sub(r"\s*\((?:link|clique aqui)\)$", "", i, flags=re.I) for i in its if 1 < len(i) <= 170 and not re.search(lixo, i)]
             if len(its) < 2:
                 continue
@@ -259,7 +261,7 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     m = re.search(r"(somente|so|apenas) (hoje|neste \w+|nesta \w+)|valid[ao]s? ate (?:o dia )?(\d{1,2}/\d{1,2}(?:/\d{2,4})?|\d{1,2} de \w+)|ate (?:as \d{1,2}h\d* )?(?:do dia |de )?(\d{1,2}/\d{1,2})", txt)
     if m:
         det["prazo"] = m.group(0)
-    det["v"] = 6
+    det["v"] = 7
     return det
 
 

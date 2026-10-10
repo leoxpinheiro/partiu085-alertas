@@ -19,6 +19,7 @@ FOTOS = {
     "cadeado": "luggage lock suitcase", "mala": "suitcase packing", "aeroporto": "airport terminal window", "janela": "airplane window view",
     "asa": "airplane wing clouds", "passageiros": "airplane cabin passengers", "praia": "tropical beach", "ferias": "woman relaxing beach vacation",
     "trabalho": "tired office worker laptop", "calendario": "calendar planning travel", "celular-viagem": "smartphone travel booking",
+    "compras": "shopping bags woman happy", "cartao": "credit card payment smartphone",
 }
 VIDEOS = {
     "v-janela": "airplane window", "v-asa": "airplane wing clouds", "v-decolagem": "airplane takeoff", "v-aeroporto": "airport terminal people",

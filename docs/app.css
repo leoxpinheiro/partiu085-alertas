@@ -1044,3 +1044,14 @@ body.ej-on{overflow:hidden}
 .cr-f{aspect-ratio:4/5;border-radius:10px;border:2px solid transparent;background-size:cover;background-position:center;cursor:pointer;position:relative;background-color:var(--tile)}.cr-f.on{border-color:#F5C531}
 .cr-card canvas{width:100%;height:auto;border-radius:10px;display:block}.cr-card.on{outline:2px solid #F5C531;border-radius:12px}
 .cr .est-prev{min-width:0;max-width:100%}.cr-tiras{max-width:100%}
+/* montar calendário: prateleiras por categoria */
+.mc-dica{display:block;margin:-4px 0 12px}
+.mc-sec{margin-bottom:18px}.mc-sec[hidden]{display:none}
+.mc-sh{display:flex;gap:10px;align-items:baseline;margin:0 2px 8px}.mc-sh b{font-size:15px}.mc-sh small{color:var(--text-tertiary);font-size:12px}.mc-sh .lnk{margin-left:auto;font-size:12px;font-weight:700;color:var(--text-secondary,inherit);background:none;border:0;cursor:pointer}
+.mc-sec:not(.aberta) .mc-grade{display:flex;overflow-x:auto;gap:10px;scroll-snap-type:x proximity;padding:2px 2px 8px}
+.mc-sec:not(.aberta) .mc-card{flex:0 0 148px;scroll-snap-align:start}
+.mc-sec.aberta .mc-grade{grid-template-columns:repeat(auto-fill,minmax(148px,1fr))}
+.mc-card{padding:6px;gap:6px}.mc-i b{font-size:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.mc-i small{font-size:10.5px}
+.mc-add{position:absolute;right:6px;bottom:6px;width:34px;height:34px;border-radius:50%;border:0;background:#2563EB;color:#fff;font:800 20px/1 "Plus Jakarta Sans",sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35);display:grid;place-items:center;z-index:2}
+.mc-add.on{background:#22A06B}.mc-add:hover{transform:scale(1.08)}
+.mc-pos{left:6px;right:auto}

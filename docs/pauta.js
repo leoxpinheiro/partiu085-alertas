@@ -651,14 +651,16 @@ const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p;
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
 CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
-const CAL_F = [["todos", "Tudo"], ["s1", "🚀 Semana 1"], ["s2", "🚀 Semana 2"], ["noticias", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor"], ["dia", "Do dia"], ["guias", "Guias"]];
-function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("ct-") ? "conteudo" : /^(hu|hr|rv|ch|fr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
+const CAL_F = [["todos", "Tudo"], ["dia", "💲 Do dia"], ["noticias", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor"], ["guias", "📘 Guias"], ["s2", "🚀 Semana 2"], ["s1", "🚀 Semana 1"]];
+function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("ct-") ? "conteudo" : /^(hu|hr|rv|ch|fr|cr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
   const vistos = new Set(), L = [];
   const add = (arr, rot) => arr.filter(Boolean).forEach(p => { if (p.stories || vistos.has(p.id)) return; vistos.add(p.id); L.push({ ...p, rot }); });
   add(await campanha(), "");
   add((await ideiasHoje()).filter(p => p.grupo === "feed"), "Do dia");
   add(postsConteudo(), "Conteúdo");
+  try { const cars = (await getJSON("carrosseis.json", [])).filter(x => x.estado === "aprovado" && x.telas && x.telas.length);
+    add(cars.map(car => ({ id: car.id, grupo: "feed", tipo: "Meu carrossel", rot: "🖼️ Meu carrossel", titulo: "🖼️ " + (car.titulo || car.telas[0].texto || "Carrossel"), porque: "Carrossel que você montou e aprovou em 🖼️ Carrosséis.", fmt: `Carrossel · ${car.telas.length} telas`, telas: car.telas.map((_, i) => c => crDesenhar(c, car, i)), legenda: car.legenda || "" })), "Meu carrossel"); } catch (e) { }
   add(await postsHumor(), "Humor");
   add(EDU.map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
@@ -668,10 +670,9 @@ async function mcTodos() {
 }
 function mcCard(p, i) {
   const n = CAL.sel.indexOf(p.id), f = p.sit ? null : CAL.feitos[p.id], vivo = aoVivo(p), sit = p.sit;
-  return `<div class="mc-card ${n >= 0 ? "on" : ""} ${sit ? "feito" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${(CAL.f !== "todos" && CAL.f !== mcGrupo(p)) || (sit && !CAL.verFeitos) ? "hidden" : ""}>
-    <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${p.reels ? SH : PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span></div>
-    <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.data ? ` · <b class="mc-vivo">📅 postar dia ${p.data.slice(8, 10)}/${p.data.slice(5, 7)}</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div>
-    <button class="bt sm ${n >= 0 ? "ok" : "pri"} mc-add" data-act="mcadd" data-id="${esc(p.id)}">${n >= 0 ? `${ic("check")}Na lista` : "+ Escolher"}</button></div>`;
+  return `<div class="mc-card ${n >= 0 ? "on" : ""} ${sit ? "feito" : ""}" draggable="true" data-id="${esc(p.id)}" data-g="${mcGrupo(p)}" ${sit && !CAL.verFeitos ? "hidden" : ""}>
+    <div class="mc-img" data-act="mcver" data-id="${esc(p.id)}" title="ver o post"><canvas id="mc-cv-${i}" width="${PW}" height="${p.reels ? SH : PH}"></canvas>${p.telas.length > 1 ? `<span class="mc-n">${p.telas.length} telas</span>` : ""}${n >= 0 ? `<span class="mc-pos">${n + 1}</span>` : ""}<span class="mc-lupa">🔍 ver</span><button class="mc-add ${n >= 0 ? "on" : ""}" data-act="mcadd" data-id="${esc(p.id)}" title="${n >= 0 ? "tirar da lista" : "escolher"}">${n >= 0 ? "✓" : "+"}</button></div>
+    <div class="mc-i"><small>${sit ? `<b class="${sit.tipo === "postado" ? "pos" : "mc-vivo"}">${sit.tipo === "postado" ? "✅ postado" : "📅 agendado"} ${sit.quando.slice(8, 10)}/${sit.quando.slice(5, 7)} ${sit.quando.slice(11, 16)}</b> · ` : ""}${esc(p.rot || p.tipo)}${vivo ? ` · <b class="mc-vivo">💲 só pra hoje</b>` : ""}${p.data ? ` · <b class="mc-vivo">📅 postar dia ${p.data.slice(8, 10)}/${p.data.slice(5, 7)}</b>` : ""}${p.valido ? ` · <b class="mc-vivo">vale até ${p.valido.slice(8, 10)}/${p.valido.slice(5, 7)}</b>` : ""}${f ? ` · <b class="pos">agendado ${f.slice(8, 10)}/${f.slice(5, 7)}</b>` : ""}</small><b>${esc(p.titulo.replace(/^\d+\.\s*/, ""))}</b></div></div>`;
 }
 function slotsCal(n) { const hs = lerHorarios(CAL.hs); if (!CAL.ini || !hs.length) return [];
   const out = [], arr = Math.min(n, Math.max(0, +CAL.arr || 0));
@@ -690,6 +691,10 @@ function desenhaVaga(c) { bgNavy(c, PW, PH); rota(c, PW, PH, COR.am, .25); marca
   paragrafo(c, "Na hora de postar, o robô escolhe a melhor promoção fresca e cria a arte com o preço do momento.", M, y, PW - 2 * M - 60, 44, MARCA.corpo, "#fff", 600, 1.32, 4);
   T(c, "💲", PW - M - 60, PH - 260, 160, MARCA.corpo, "#fff", "center"); rodapeP(c, PW, PH, true, "Preço sempre fresco"); }
 const vira = (p, q) => !ehVaga(p.id) && aoVivo(p) && (q || "").slice(0, 10) !== hojeISO();
+function mcSecoes() { document.querySelectorAll(".mc-sec").forEach(sec => { const gk = sec.dataset.g, novos = sec.querySelectorAll(".mc-card:not(.feito):not(.mc-vg)").length;
+  sec.hidden = (CAL.f !== "todos" && CAL.f !== gk) || (!novos && !CAL.verFeitos && gk !== "dia"); sec.classList.toggle("aberta", CAL.f === gk);
+  const l = sec.querySelector('[data-act="mcabre"]'); if (l) { l.dataset.g = CAL.f === gk ? "todos" : gk; l.textContent = CAL.f === gk ? "← todas as seções" : "ver todos ➜"; }
+  sec.querySelectorAll(".mc-card.feito").forEach(el => el.hidden = !CAL.verFeitos); }); }
 function mcCfgHTML() {
   const h = hojeISO(), am = diaMenos(h, -1);
   return `<div class="mc-h"><b>Minha programação</b><small id="mc-resumo"></small></div>
@@ -720,7 +725,7 @@ function mcAtualizar() { CAL.sel = CAL.sel.filter(id => ehVaga(id) || (PA.lista 
   const a = document.getElementById("mc-lista"); if (a) a.innerHTML = mcListaHTML();
   document.querySelectorAll('[data-act="mcdia"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.ini));
   (PA.lista || []).forEach(p => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
-    el.classList.toggle("on", n >= 0); const b = el.querySelector(".mc-add"); b.className = `bt sm ${n >= 0 ? "ok" : "pri"} mc-add`; b.innerHTML = n >= 0 ? `${ic("check")}Na lista` : "+ Escolher";
+    el.classList.toggle("on", n >= 0); const b = el.querySelector(".mc-add"); b.className = `mc-add ${n >= 0 ? "on" : ""}`; b.innerHTML = n >= 0 ? "✓" : "+";
     let pos = el.querySelector(".mc-pos"); if (n >= 0) { if (!pos) { pos = document.createElement("span"); pos.className = "mc-pos"; el.querySelector(".mc-img").appendChild(pos); } pos.textContent = n + 1; } else if (pos) pos.remove(); }); }
 /* ver o post: todas as telas grandes + legenda editável */
 async function mcVer(id) {
@@ -748,8 +753,15 @@ async function montarBoard(g) {
   let L = await mcTodos(); L.forEach(p => { p.sit = mcSituacao(p); });
   L = L.filter(p => !p.sit).concat(L.filter(p => p.sit)); PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
-  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<small class="sub">${L.filter(p => !p.sit).length} posts novos · ${L.filter(p => p.sit).length} já postados/agendados</small><label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div><div class="mc-grade"><div class="mc-card mc-vg" draggable="true" data-id="vaga-novo" data-g="dia"><div class="mc-img"><canvas id="mc-cv-vaga" width="${PW}" height="${PH}"></canvas></div>
-      <div class="mc-i"><small>Pode usar várias vezes</small><b>💲 Oferta do dia (o robô escolhe na hora)</b></div><button class="bt sm pri mc-add" data-act="mcvaga">+ Adicionar vaga</button></div>${L.map(mcCard).join("")}</div></div>
+  const GRP = [["dia", "💲 Do dia"], ["noticias", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor e frases"], ["guias", "📘 Guias"], ["s2", "🚀 Lançamento · semana 2"], ["s1", "🚀 Semana 1 · aquecimento"]];
+  const vagaCard = `<div class="mc-card mc-vg" draggable="true" data-id="vaga-novo" data-g="dia"><div class="mc-img"><canvas id="mc-cv-vaga" width="${PW}" height="${PH}"></canvas><button class="mc-add" data-act="mcvaga" title="adicionar vaga">+</button></div><div class="mc-i"><small>pode usar várias vezes</small><b>💲 Oferta do dia (robô escolhe)</b></div></div>`;
+  const secs = GRP.map(([gk, nome]) => { const its = L.map((p, i) => [p, i]).filter(([p]) => mcGrupo(p) === gk), novos = its.filter(([p]) => !p.sit).length;
+    if (!its.length && gk !== "dia") return "";
+    return `<section class="mc-sec ${CAL.f === gk ? "aberta" : ""}" data-g="${gk}" ${(CAL.f !== "todos" && CAL.f !== gk) || (!novos && !CAL.verFeitos && gk !== "dia") ? "hidden" : ""}>
+      <div class="mc-sh"><b>${nome}</b><small>${novos} novo${novos === 1 ? "" : "s"}</small><button class="lnk" data-act="mcabre" data-g="${CAL.f === gk ? "todos" : gk}">${CAL.f === gk ? "← todas as seções" : "ver todos ➜"}</button></div>
+      <div class="mc-grade">${gk === "dia" ? vagaCard : ""}${its.map(([p, i]) => mcCard(p, i)).join("")}</div></section>`; }).join("");
+  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div>
+      <small class="sub mc-dica">Toque no <b>+</b> pra escolher · toque na imagem pra ver · deslize pro lado em cada linha</small>${secs}</div>
     <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
   { const cv = document.getElementById("mc-cv-vaga"); if (cv) { desenhaVaga(cv.getContext("2d")); CAL.thumbs.vaga = cv.toDataURL("image/jpeg", .55); } }
   for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
@@ -785,7 +797,8 @@ async function mcAgendar(bt) {
 }
 document.addEventListener("click", e => {
   const pf = e.target.closest('[data-act="pill"][data-g="mcf"]'); if (pf) { CAL.f = pf.dataset.v; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x === pf));
-    document.querySelectorAll(".mc-card").forEach(el => { el.hidden = (CAL.f !== "todos" && el.dataset.g !== CAL.f) || (el.classList.contains("feito") && !CAL.verFeitos); }); e.stopImmediatePropagation(); return; }
+    mcSecoes(); e.stopImmediatePropagation(); return; }
+  const ab = e.target.closest('[data-act="mcabre"]'); if (ab) { CAL.f = ab.dataset.g; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.f)); mcSecoes(); const sec = document.querySelector(".mc-lib"); if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   const b = e.target.closest('[data-act^="mc"]'); if (!b) return; const a = b.dataset.act, k = +b.dataset.k;
   if (a === "mcadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); }
   else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);
@@ -810,7 +823,7 @@ document.addEventListener("input", e => { const t = e.target;
   else if (t.dataset && t.dataset.mc === "arr") { CAL.arr = Math.max(0, Math.min(9, +t.value || 0)); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 300); }
   else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
-  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; else if (t.dataset.mc === "verfeitos") { CAL.verFeitos = t.checked; document.querySelectorAll(".mc-card.feito").forEach(el => { el.hidden = !CAL.verFeitos || (CAL.f !== "todos" && el.dataset.g !== CAL.f); }); }
+  if (t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; mcAtualizar(); } else if (t.dataset.mc === "ok") CAL.ok = t.checked; else if (t.dataset.mc === "verfeitos") { CAL.verFeitos = t.checked; mcSecoes(); }
   else if (t.dataset.mc === "reels") { CAL.reels = t.checked; mcGravar("p085_mc_reels", CAL.reels); } });
 /* arrastar: da biblioteca pra lista, e dentro da lista pra mudar a ordem */
 document.addEventListener("dragstart", e => { const c = e.target.closest && e.target.closest(".mc-card"), it = e.target.closest && e.target.closest(".mc-it");

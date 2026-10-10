@@ -154,17 +154,15 @@ def fotos_noticias(itens: list) -> None:
                 continue
         if ant.get("resumo") and not it.get("resumo"):
             it["resumo"] = ant["resumo"]
-        if not it.get("det") and (ant.get("det") or {}).get("v") == 3:
+        if not it.get("det") and (ant.get("det") or {}).get("v") == 4:
             it["det"] = ant["det"]
         if not it.get("det") and it.get("cat") == "milhas" and baixados + decod < 40:
             try:
                 decod += 1
                 pg0 = requests.get(it.get("link_real") or it["link"], timeout=15, headers={"User-Agent": "Mozilla/5.0 (Macintosh) partiu085"}).text
-                m0 = re.search(r"(?is)<article[^>]*>(.*?)</article>", pg0) or re.search(r'(?is)class="[^"]*(?:entry-content|post-content|article-content|single-content)[^"]*"[^>]*>(.*)', pg0)
-                it["det"] = detalhes_materia(m0.group(1) if m0 else pg0, it["titulo"])
-                if "10x1" in it["titulo"].lower().replace("×", "x"):  # DEBUG temporário
-                    i0 = pg0.lower().find("eleg")
-                    it["det"]["dbg"] = f"len={len(pg0)} art={bool(m0)} " + pg0[max(0, i0 - 200):i0 + 1800]
+                arts = re.findall(r"(?is)<article[^>]*>(.*?)</article>", pg0)  # a matéria é o maior <article> (os outros são cards)
+                corpo = max(arts, key=len) if arts and len(max(arts, key=len)) > 3000 else pg0[max(0, pg0.lower().find("<h1")):]
+                it["det"] = detalhes_materia(corpo, it["titulo"])
             except Exception as e:  # noqa: BLE001
                 print(f"! detalhes notícia: {e}")
         real = it.get("link_real") or it["link"]
@@ -257,7 +255,7 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     m = re.search(r"(somente|so|apenas) (hoje|neste \w+|nesta \w+)|valid[ao]s? ate (?:o dia )?(\d{1,2}/\d{1,2}(?:/\d{2,4})?|\d{1,2} de \w+)|ate (?:as \d{1,2}h\d* )?(?:do dia |de )?(\d{1,2}/\d{1,2})", txt)
     if m:
         det["prazo"] = m.group(0)
-    det["v"] = 3
+    det["v"] = 4
     return det
 
 

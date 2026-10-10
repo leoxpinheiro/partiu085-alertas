@@ -260,7 +260,7 @@ function avisoConta() {
   return avisoRadar() + avisoConta0();
 }
 function avisoConta0() {
-  if (!token()) return `<div class="aviso warn conta">${ic("key")}<span>Este aparelho não está conectado: o que você marcar como enviado fica só aqui e não aparece no celular/computador. </span><a class="bt sm" href="#ajustes">Conectar</a></div>`;
+  if (!token()) return `<div class="aviso warn conta">${ic("key")}<span>Este aparelho não está conectado: o que você marcar como enviado fica só aqui e não aparece no celular/computador. </span><span class="tok-rap"><input id="tok-rapido" type="password" placeholder="cole o código de conexão" autocomplete="off"><button class="bt sm pri" data-act="tokcolar">Conectar</button></span></div>`;
   if (S.tokenVence != null && S.tokenVence <= 10) return `<div class="aviso warn conta">${ic("key")}<span>Seu token do GitHub vence em ${S.tokenVence} dia${S.tokenVence === 1 ? "" : "s"}. Depois disso o painel para de salvar (o radar continua rodando). Gere um novo e cole em Ajustes.</span><a class="bt sm" href="#ajustes">Ajustes</a></div>`;
   return "";
 }
@@ -912,7 +912,8 @@ function pAjustes() {
     `<div class="card" style="margin-bottom:14px"><h3>Acesso para salvar</h3><div class="desc">O painel é público só para leitura. Para salvar rotas/ajustes e rodar o radar, cole seu token do GitHub (fica guardado só neste navegador).</div>
       <div class="form"><div class="field" style="grid-column:span 2"><label>Token do GitHub</label><input type="password" id="tok" placeholder="github_pat_…" value="${t ? "••••••••••••" + t.slice(-4) : ""}"></div>
       <div class="field"><button class="bt pri" data-act="salvartoken">Salvar e testar</button></div>
-      ${t ? `<div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div></div>
+      ${t ? `<div class="field"><button class="bt" data-act="tokcopiar">📋 Copiar código de conexão</button></div><div class="field"><button class="bt ghost danger" data-act="sairtoken">Remover deste aparelho</button></div>` : ""}</div>
+      ${t ? `<small class="sub">Vai usar o painel pelo ícone na tela do celular? Toque em <b>Copiar código de conexão</b> aqui, abra o app pelo ícone e cole no aviso amarelo do topo. Cada jeito de abrir (navegador, ícone na tela) guarda a conexão separada.</small>` : ""}</div>
     ${integracoesHTML()}
     ${typeof agendaAjustesHTML === "function" ? agendaAjustesHTML() : ""}
     <div class="grid two">
@@ -1024,6 +1025,10 @@ document.addEventListener("click", async e => {
       if (r.permissions && r.permissions.push) { toast("✓ Token funcionando — você já pode salvar e rodar o radar."); render(); }
       else toast("O token não tem permissão de escrita neste repositório.", 5000);
     }
+    else if (act === "tokcopiar") { await copiar(token()); toast("Código copiado. Abra o app pelo ícone e cole no aviso do topo. Não mande esse código pra ninguém.", 6000); }
+    else if (act === "tokcolar") { let v = ($("#tok-rapido") || {}).value || ""; if (!v) { try { v = await navigator.clipboard.readText(); } catch (x) { } }
+      v = (v || "").trim(); if (!/^(github_pat_|ghp_)\w+/.test(v)) { toast("Cole o código de conexão (começa com github_pat_). Pegue em Ajustes, no aparelho que já está conectado.", 6000); return; }
+      store("p085_token", v); try { const r = await gh(""); if (r.permissions && r.permissions.push) { toast("✓ Aparelho conectado!"); await carregar(); render(); } else toast("Esse código não tem permissão de escrita.", 5000); } catch (x) { store("p085_token", ""); toast("Código não funcionou: " + x.message, 6000); } }
     else if (act === "sairtoken") { store("p085_token", ""); IG.lista = null; render(); }
     else if (act === "converter") { S.convIn = $("#conv-in").value; S.conv = extrair(S.convIn); render(); }
     else if (act === "convcopiar") { await copiar(convTextos(S.conv)[b.dataset.k || "grupo"]); toast("Copiado."); }

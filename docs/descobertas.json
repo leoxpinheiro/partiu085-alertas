@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-10T21:25+00:00",
+ "atualizado": "2026-10-10T22:58+00:00",
  "pistas": [
   "BUE",
   "CGB",
@@ -19,6 +19,19 @@
   }
  ],
  "destinos": [
+  {
+   "iata": "SLZ",
+   "ow": {
+    "preco": 579,
+    "ida": "2026-10-20",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-10T20:16:25Z"
+   },
+   "rastreada": true,
+   "nome": "São Luís",
+   "pista": true
+  },
   {
    "iata": "FLN",
    "ow": {
@@ -132,26 +145,6 @@
    "pista": true
   },
   {
-   "iata": "SLZ",
-   "rt": {
-    "preco": 1316,
-    "ida": "2026-12-16",
-    "volta": "2026-12-31",
-    "paradas": 1,
-    "visto": "2026-10-06T22:43:18Z"
-   },
-   "ow": {
-    "preco": 579,
-    "ida": "2026-10-20",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-10T20:16:25Z"
-   },
-   "rastreada": true,
-   "nome": "São Luís",
-   "pista": true
-  },
-  {
    "iata": "STM",
    "ow": {
     "preco": 1494,
@@ -175,19 +168,6 @@
    },
    "rastreada": true,
    "nome": "Foz do Iguaçu",
-   "pista": false
-  },
-  {
-   "iata": "PVH",
-   "ow": {
-    "preco": 1624,
-    "ida": "2026-10-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-09T02:48:16Z"
-   },
-   "rastreada": false,
-   "nome": "PVH",
    "pista": false
   },
   {
@@ -261,6 +241,19 @@
    "rastreada": true,
    "nome": "Buenos Aires",
    "pista": true
+  },
+  {
+   "iata": "BHZ",
+   "ow": {
+    "preco": 2349,
+    "ida": "2026-10-10",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-07T10:38:42Z"
+   },
+   "rastreada": true,
+   "nome": "Belo Horizonte",
+   "pista": false
   },
   {
    "iata": "PNZ",

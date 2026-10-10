@@ -1,6 +1,313 @@
 {
- "atualizado": "2026-10-10T19:10-03:00",
+ "atualizado": "2026-10-10T20:46-03:00",
  "alertas": [
+  {
+   "id": "FOR-JDO-2026-12-12-1791675965",
+   "criado": "2026-10-10T20:46-03:00",
+   "rota": "FOR-JDO",
+   "destino": "JDO",
+   "destino_nome": "Juazeiro do Norte",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 296,
+   "preco_volta": 285,
+   "preco_tipico": 2031,
+   "desconto": 0.854,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2026-12-12",
+   "volta": "2026-12-09",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-07",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-08",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-10",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-14",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-15",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-21",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-26",
+     "preco": 314
+    },
+    {
+     "dia": "2026-11-28",
+     "preco": 314
+    },
+    {
+     "dia": "2026-12-12",
+     "preco": 296
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 296
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-09",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-11",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-15",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-16",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-18",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-22",
+     "preco": 303
+    },
+    {
+     "dia": "2026-11-23",
+     "preco": 303
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 285
+    },
+    {
+     "dia": "2026-12-11",
+     "preco": 285
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 285
+    },
+    {
+     "dia": "2026-12-16",
+     "preco": 285
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "07",
+      "08",
+      "10",
+      "14",
+      "15",
+      "21",
+      "26",
+      "28"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "12",
+      "13"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "09",
+      "11",
+      "15",
+      "16",
+      "18",
+      "22",
+      "23"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "09",
+      "11",
+      "13",
+      "16"
+     ]
+    }
+   ],
+   "meses": [
+    "nov",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMTJqBRIDRk9ScgUSA0pET0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1212JDO09121?marker=677880",
+   "base": {
+    "dias": 4,
+    "menor_visto": 271
+   },
+   "recorde": false,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Juazeiro do Norte* (JDO)\n📍 _Cariri: Juazeiro, Crato e Barbalha_\n💰 *R$ 296* o trecho\n🔁 Ida e volta a partir de *R$ 581*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Novembro/26: 07, 08, 10, 14, 15, 21, 26, 28\n▸ Dezembro/26: 12, 13\n\n🗓️ *VOLTA*\n▸ Novembro/26: 09, 11, 15, 16, 18, 22, 23\n▸ Dezembro/26: 09, 11, 13, 16\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-CWB-2026-11-10-1791675967",
+   "criado": "2026-10-10T20:46-03:00",
+   "rota": "FOR-CWB",
+   "destino": "CWB",
+   "destino_nome": "Curitiba",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 405,
+   "preco_volta": 394,
+   "preco_tipico": 896,
+   "desconto": 0.548,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2026-11-10",
+   "volta": "2026-11-14",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-10",
+     "preco": 405
+    },
+    {
+     "dia": "2026-11-11",
+     "preco": 405
+    },
+    {
+     "dia": "2026-11-12",
+     "preco": 405
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-14",
+     "preco": 394
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "10",
+      "11",
+      "12"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTBqBRIDRk9ScgUSA0NXQkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1011CWB14111?marker=677880",
+   "base": {
+    "dias": 4,
+    "menor_visto": 410
+   },
+   "recorde": true,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Curitiba* (CWB)\n💰 *R$ 405* o trecho\n🔁 Ida e volta a partir de *R$ 799*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n📉 _Menor preço que já vimos nesse trecho (4 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Novembro/26: 10, 11, 12\n\n🗓️ *VOLTA*\n▸ Novembro/26: 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-GYN-2026-11-11-1791675968",
+   "criado": "2026-10-10T20:46-03:00",
+   "rota": "FOR-GYN",
+   "destino": "GYN",
+   "destino_nome": "Goiânia",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 594,
+   "preco_volta": 456,
+   "preco_tipico": 948,
+   "desconto": 0.373,
+   "classe": "otima",
+   "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
+   "cia_nome": "Azul",
+   "escalas": 1,
+   "ida": "2026-11-11",
+   "volta": "2026-11-16",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-11",
+     "preco": 594
+    },
+    {
+     "dia": "2026-11-13",
+     "preco": 643
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-16",
+     "preco": 456
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "11",
+      "13"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "16"
+     ]
+    }
+   ],
+   "meses": [
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTFqBRIDRk9ScgUSA0dZTkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1111GYN16111?marker=677880",
+   "base": {
+    "dias": 4,
+    "menor_visto": 594
+   },
+   "recorde": true,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Goiânia* (GYN)\n💰 *R$ 594* o trecho\n🔁 Ida e volta a partir de *R$ 1.050*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 Azul · 1 parada\n📉 _Menor preço que já vimos nesse trecho (4 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Novembro/26: 11, 13\n\n🗓️ *VOLTA*\n▸ Novembro/26: 16\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-POA-2026-11-07-1791670224",
    "criado": "2026-10-10T19:10-03:00",
@@ -66,7 +373,12 @@
    },
    "recorde": false,
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto Alegre* (POA)\n💰 *R$ 718* o trecho\n🔁 Ida e volta a partir de *R$ 1.439*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 07\n\n🗓️ *VOLTA*\n▸ Novembro/26: 12, 28\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-10T20:46-03:00",
+    "preco": 718,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-FLN-2026-12-08-1791657897",
@@ -145,7 +457,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Florianópolis* (FLN)\n💰 *R$ 434* o trecho\n🔁 Ida e volta a partir de *R$ 1.304*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n📉 _Menor preço que já vimos nesse trecho (4 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 08\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 11, 14\n▸ Janeiro/27: 07\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T16:31-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 434,
     "status": "valendo"
    }
@@ -212,7 +524,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 510* o trecho\n🔁 Ida e volta a partir de *R$ 1.239*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (4 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 12\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 15\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:44-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 510,
     "status": "valendo"
    }
@@ -299,7 +611,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 307* o trecho\n🔁 Ida e volta a partir de *R$ 885*\n🔥 *IMPERDÍVEL*\n🛫 Gol · 1 parada\n📉 _Menor preço que já vimos nesse trecho (4 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Novembro/26: 13\n\n🗓️ *VOLTA*\n▸ Novembro/26: 23, 26, 30\n▸ Dezembro/26: 10\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:44-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 307,
     "status": "valendo"
    }
@@ -376,9 +688,9 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.706* o trecho\n🔁 Ida e volta a partir de *R$ 4.397*\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 22, 23\n\n🗓️ *VOLTA*\n▸ Novembro/26: 20, 25\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
-    "preco": 1706,
-    "status": "valendo"
+    "quando": "2026-10-10T20:46-03:00",
+    "preco": 3885,
+    "status": "subiu"
    }
   },
   {
@@ -543,7 +855,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 569* o trecho\n🔁 Ida e volta a partir de *R$ 1.132*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 07, 08, 10, 11, 12, 13, 14, 17, 18, 19, 20\n\n🗓️ *VOLTA*\n▸ Novembro/26: 09, 10, 11, 12, 14, 15, 16, 17, 21, 24, 25\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 569,
     "status": "valendo"
    }
@@ -895,7 +1207,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Lisboa* (LIS)\n💰 *R$ 1.713* o trecho\n🔁 Ida e volta a partir de *R$ 3.961*\n🔥 *IMPERDÍVEL*\n🛫 Gol · 2 paradas\n\n🗓️ *IDA*\n▸ Novembro/26: 06, 08, 10, 12, 14, 15, 16, 17, 20, 24, 30\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11, 14, 16, 20, 23, 24, 25, 28, 30\n▸ Dezembro/26: 01, 05, 07\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 1716,
     "status": "valendo"
    }
@@ -967,7 +1279,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Florianópolis* (FLN)\n💰 *R$ 559* o trecho\n🔁 Ida e volta a partir de *R$ 1.393*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n📉 _Menor preço que já vimos nesse trecho (3 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 08, 09\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 11\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 434,
     "status": "valendo"
    }
@@ -1111,7 +1423,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Cuiabá* (CGB)\n📍 _Porta do Pantanal e da Chapada dos Guimarães (MT)_\n💰 *R$ 508* o trecho\n🔁 Ida e volta a partir de *R$ 1.395*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 03\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 09\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 507,
     "status": "valendo"
    }
@@ -1224,7 +1536,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 584* o trecho\n🔁 Ida e volta a partir de *R$ 1.190*\n🔥 *IMPERDÍVEL*\n🛫 Azul · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 19\n▸ Dezembro/26: 04, 06\n\n🗓️ *VOLTA*\n▸ Novembro/26: 21, 23, 24, 27, 30\n▸ Dezembro/26: 10\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-10T15:45-03:00",
+    "quando": "2026-10-10T20:46-03:00",
     "preco": 611,
     "status": "valendo"
    }

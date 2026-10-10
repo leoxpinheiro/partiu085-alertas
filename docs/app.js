@@ -977,7 +977,8 @@ document.addEventListener("click", async e => {
     else if (act === "fx") { const k = b.dataset.k; S.F[k] = k === "direto" ? false : k === "dias" ? "" : ""; render(); }
     else if (act === "filtrosab") { S.filtrosAbertos = !S.filtrosAbertos; render(); }
     else if (act === "graficosab") { S.graficosAbertos = !S.graficosAbertos; render(); }
-    else if (act === "recarregar") { document.body.classList.add("voando"); await carregar(); render(); setTimeout(() => { if (!S.rodando) document.body.classList.remove("voando"); }, 900); toast("Atualizado."); }
+    else if (act === "recarregar") { document.body.classList.add("voando"); location.replace(location.pathname + "?r=" + Date.now() + (location.hash || "")); return; }
+    else if (act === "recarregarvelho") { document.body.classList.add("voando"); await carregar(); render(); setTimeout(() => { if (!S.rodando) document.body.classList.remove("voando"); }, 900); toast("Atualizado."); }
     else if (act === "addvip") {
       const iata = $("#vp-iata").value.toUpperCase().trim();
       if (!addRota(iata, { foco: true })) return;
@@ -1028,6 +1029,7 @@ document.addEventListener("click", async e => {
       else toast("O token não tem permissão de escrita neste repositório.", 5000);
     }
     else if (act === "sidegrp") { const g = b.dataset.g, aberto = !b.closest(".side-g").classList.contains("fechado"); store("p085_side_" + g, aberto ? "f" : "a"); navs(); return; }
+    else if (act === "atualizarapp") { b.textContent = "…"; location.replace(location.pathname + "?r=" + Date.now() + (location.hash || "")); return; }
     else if (act === "tokcopiar") { await copiar(token()); toast("Código copiado. Abra o app pelo ícone e cole no aviso do topo. Não mande esse código pra ninguém.", 6000); }
     else if (act === "tokcolar") { let v = ($("#tok-rapido") || {}).value || ""; if (!v) { try { v = await navigator.clipboard.readText(); } catch (x) { } }
       v = (v || "").trim(); if (!/^(github_pat_|ghp_)\w+/.test(v)) { toast("Cole o código de conexão (começa com github_pat_). Pegue em Ajustes, no aparelho que já está conectado.", 6000); return; }

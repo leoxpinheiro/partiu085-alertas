@@ -42,22 +42,38 @@ function abrirAgendar(origem) {
     <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="igm-qd" value="${(origem.cedo ? isoLocal(new Date(Date.now() + 10 * 6e4)) : proximoHorario(story)).slice(0, 16)}">
       <div class="mc-rap" style="margin-top:6px">${[["10", "Daqui 10 min"], ["60", "Em 1 hora"], ["h12", "12h"], ["h19", "19h"]].map(([v, t]) => `<button class="pill" data-act="igmq" data-v="${v}">${t}</button>`).join("")}</div></div>
       <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="igm-ok" checked> Aprovado: publicar sozinho no horário</label></div></div>
-    <div class="ej-acts"><button class="bt pri lg" data-act="igmsalvar">${ic("calendar")}Agendar</button><button class="bt lg" data-act="igmagora">${ic("send")}Publicar agora</button><a class="bt ghost" href="#instagram" data-act="igmfechar">Ver agenda</a></div>
+    ${igJaTem(origem)}
+    <div class="ej-acts">${origem.agora ? `<button class="bt pri lg" data-act="igmagora">⚡ Postar agora</button><button class="bt lg" data-act="igmsalvar">${ic("calendar")}Agendar</button>` : `<button class="bt pri lg" data-act="igmsalvar">${ic("calendar")}Agendar</button><button class="bt lg" data-act="igmagora">⚡ Postar agora</button>`}<a class="bt ghost" href="#instagram" data-act="igmfechar">Ver agenda</a></div>
   </div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
+/* o mesmo post já está na agenda? (evita sair duas vezes) */
+function igMesmo(o) { if (!o || !o.id) return []; return (IGF.fila || []).filter(x => x.origem === o.id && ((IGF.st || {})[x.id] || {}).status !== "expirado"); }
+function igJaTem(o) { const L = igMesmo(o); if (!L.length) return ""; const pub = L.find(x => ((IGF.st || {})[x.id] || {}).status === "publicado"), ag = L.find(x => ((IGF.st || {})[x.id] || {}).status !== "publicado");
+  return `<div class="aviso warn" style="display:block;line-height:1.45">${pub ? `⚠️ Esse post <b>já foi publicado</b> (${dataHora((IGF.st[pub.id] || {}).publicado_em || pub.quando)}). Se continuar, ele sai de novo.` : `📅 Esse post <b>já está agendado</b> pra ${dataHora(ag.quando)}. Se você postar agora ou escolher outro horário, eu <b>mudo o agendamento</b> em vez de criar outro: ele sai uma vez só.`}</div>`; }
 function fecharAgendar() { const d = $("#igm"); if (d) d.remove(); document.body.classList.remove("ej-on"); IGF.modal = null; }
 async function confirmarAgendar(agora) {
   const o = IGF.modal; if (!o) return;
   if (!token()) { toast("Conecte o token do GitHub em Ajustes pra agendar."); return; }
-  const id = `ig-${Date.now().toString(36)}`;
   const quando = agora ? isoLocal(new Date()) : ($("#igm-qd").value + "-03:00");
+  { for (let i = 0; i < 80 && IGF.carregando; i++) await new Promise(r => setTimeout(r, 100));
+    IGF.fila = null; await carregarIG(true); if (!Array.isArray(IGF.fila)) { toast("Não consegui ler a agenda agora. Tente de novo em instantes."); return; }
+    const L = igMesmo(o), ag = L.find(x => ((IGF.st || {})[x.id] || {}).status !== "publicado"), pub = L.find(x => ((IGF.st || {})[x.id] || {}).status === "publicado");
+    if (ag) { // já agendado: só muda o horário (e a legenda), sem criar outro
+      ag.quando = quando; ag.aprovado = agora || $("#igm-ok").checked; if ($("#igm-leg")) ag.legenda = $("#igm-leg").value;
+      if ((IGF.st[ag.id] || {}).status === "erro") ag.tentativa = (ag.tentativa || 0) + 1;
+      try { await salvarFila(`Instagram: ${agora ? "posta agora" : "reagenda"} "${o.titulo}"`);
+        if (agora) await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: ag.id } }) });
+        fecharAgendar(); toast(agora ? "Ele já estava agendado: adiantei pra agora. Publica em 1 a 2 minutos, uma vez só." : `Ele já estava agendado: mudei pra ${dataHora(quando)}.`, 6000); } catch (e) { toast("Não foi: " + e.message, 6000); }
+      return; }
+    if (pub && !confirm("Esse post já foi publicado. Publicar de novo?")) return; }
+  const id = `ig-${Date.now().toString(36)}`;
   const item = { id, titulo: o.titulo, tipo: o.tipo === "story" ? "story" : o.cvs.length > 1 ? "carrossel" : "feed", imagens: o.cvs.map((_, i) => `ig/${id}-${i + 1}.jpg`),
     legenda: o.tipo === "story" ? "" : (($("#igm-leg") || {}).value || ""), quando, aprovado: agora || $("#igm-ok").checked, tentativa: 0, criado: isoLocal(new Date()), origem: o.id || "", ...(o.valido ? { valido_ate: o.valido } : {}) };
   const bt = document.querySelector('[data-act="igmsalvar"]'); if (bt) { bt.disabled = true; bt.textContent = "Enviando imagens…"; }
   try {
     for (let i = 0; i < o.cvs.length; i++) await subirImagem(item.imagens[i], o.cvs[i]);
-    IGF.fila = null; await carregarIG(true); IGF.fila = (IGF.fila || []).concat(item);
+    IGF.fila = IGF.fila.concat(item);
     await salvarFila(`Instagram: agenda "${o.titulo}"`);
     if (agora) await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: id } }) });
     fecharAgendar(); toast(agora ? "Enviado pro robô: publica em 1 a 2 minutos." : `Agendado pra ${dataHora(quando)}.`, 4500);
@@ -365,7 +381,7 @@ document.addEventListener("click", async e => {
   if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)$/.test(act)) return;
   try {
     if (act === "igagendar") {
-      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; abrirAgendar({ id: p.id, valido: p.valido || "", cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
+      if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; if (token()) { try { for (let k = 0; k < 50 && IGF.carregando; k++) await new Promise(r => setTimeout(r, 100)); await carregarIG(true); } catch (x) { } } abrirAgendar({ id: p.id, agora: !!b.dataset.agora, valido: p.valido || "", cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
       else { const i = +b.dataset.i, it = CV.itens[i], cv = $("#cv-cv-" + i); if (!cv) { toast("Ligue “Fazer imagem” pra agendar."); return; }
         abrirAgendar({ id: "cv-" + i, titulo: it.tipo === "promo" ? "Promoção de milhas" : `Fortaleza ➜ ${(it.c || it.r).nome || ""}`, tipo: "feed", cvs: [cv], legenda: (($("#cv-t-" + i) || {}).value || it.texto) + `\n\n${typeof HASH !== "undefined" ? HASH : ""}` }); }
       return;

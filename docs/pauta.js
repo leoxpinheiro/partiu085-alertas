@@ -1216,6 +1216,7 @@ function cardPauta(p, i) {
       <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
       ${/^fr-/.test(p.id) ? `<button class="bt sm pri" data-act="paeditar" data-i="${i}">✏️ Editar</button>` : ""}
       <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}">${ic("calendar")}Agendar</button>
+      <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}" data-agora="1">⚡ Postar agora</button>
       <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
   </article>`;
 }

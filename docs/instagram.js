@@ -41,7 +41,8 @@ function abrirAgendar(origem) {
     ${story ? `<div class="aviso warn"><span>A API do Instagram publica o story sem adesivo de link. Se quiser o link do grupo, poste esse story pelo celular.</span></div>` : `<div class="field"><label>Legenda</label><textarea id="igm-leg" rows="8">${esc(paraInsta(origem.legenda))}</textarea></div>`}
     <div class="form" style="grid-template-columns:1fr 1fr"><div class="field"><label>Dia e hora</label><input type="datetime-local" id="igm-qd" value="${(origem.cedo ? isoLocal(new Date(Date.now() + 10 * 6e4)) : proximoHorario(story)).slice(0, 16)}">
       <div class="mc-rap" style="margin-top:6px">${[["10", "Daqui 10 min"], ["60", "Em 1 hora"], ["h12", "12h"], ["h19", "19h"]].map(([v, t]) => `<button class="pill" data-act="igmq" data-v="${v}">${t}</button>`).join("")}</div></div>
-      <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="igm-ok" checked> Aprovado: publicar sozinho no horário</label></div></div>
+      <div class="field" style="align-self:end"><label class="chk"><input type="checkbox" id="igm-ok" checked> Aprovado: publicar sozinho no horário</label>
+        ${story ? "" : `<label class="chk"><input type="checkbox" id="igm-st" ${load("p085_igm_st") === "1" ? "checked" : ""}> Também postar story avisando do post novo</label>`}</div></div>
     ${igJaTem(origem)}
     <div class="ej-acts">${origem.agora ? `<button class="bt pri lg" data-act="igmagora">⚡ Postar agora</button><button class="bt lg" data-act="igmsalvar">${ic("calendar")}Agendar</button>` : `<button class="bt pri lg" data-act="igmsalvar">${ic("calendar")}Agendar</button><button class="bt lg" data-act="igmagora">⚡ Postar agora</button>`}<a class="bt ghost" href="#instagram" data-act="igmfechar">Ver agenda</a></div>
   </div>`;
@@ -54,13 +55,14 @@ function igJaTem(o) { const L = igMesmo(o); if (!L.length) return ""; const pub 
 function fecharAgendar() { const d = $("#igm"); if (d) d.remove(); document.body.classList.remove("ej-on"); IGF.modal = null; }
 async function confirmarAgendar(agora) {
   const o = IGF.modal; if (!o) return;
+  if ($("#igm-st")) store("p085_igm_st", $("#igm-st").checked ? "1" : "0"); // lembra a última escolha
   if (!token()) { toast("Conecte o token do GitHub em Ajustes pra agendar."); return; }
   const quando = agora ? isoLocal(new Date()) : ($("#igm-qd").value + "-03:00");
   { for (let i = 0; i < 80 && IGF.carregando; i++) await new Promise(r => setTimeout(r, 100));
     IGF.fila = null; await carregarIG(true); if (!Array.isArray(IGF.fila)) { toast("Não consegui ler a agenda agora. Tente de novo em instantes."); return; }
     const L = igMesmo(o), ag = L.find(x => ((IGF.st || {})[x.id] || {}).status !== "publicado"), pub = L.find(x => ((IGF.st || {})[x.id] || {}).status === "publicado");
     if (ag) { // já agendado: só muda o horário (e a legenda), sem criar outro
-      ag.quando = quando; ag.aprovado = agora || $("#igm-ok").checked; if ($("#igm-leg")) ag.legenda = $("#igm-leg").value;
+      ag.quando = quando; ag.aprovado = agora || $("#igm-ok").checked; if ($("#igm-leg")) ag.legenda = $("#igm-leg").value; if ($("#igm-st")) ag.story_junto = $("#igm-st").checked;
       if ((IGF.st[ag.id] || {}).status === "erro") ag.tentativa = (ag.tentativa || 0) + 1;
       try { await salvarFila(`Instagram: ${agora ? "posta agora" : "reagenda"} "${o.titulo}"`);
         if (agora) await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: ag.id } }) });
@@ -69,7 +71,7 @@ async function confirmarAgendar(agora) {
     if (pub && !confirm("Esse post já foi publicado. Publicar de novo?")) return; }
   const id = `ig-${Date.now().toString(36)}`;
   const item = { id, titulo: o.titulo, tipo: o.tipo === "story" ? "story" : o.cvs.length > 1 ? "carrossel" : "feed", imagens: o.cvs.map((_, i) => `ig/${id}-${i + 1}.jpg`),
-    legenda: o.tipo === "story" ? "" : (($("#igm-leg") || {}).value || ""), quando, aprovado: agora || $("#igm-ok").checked, tentativa: 0, criado: isoLocal(new Date()), origem: o.id || "", ...(o.valido ? { valido_ate: o.valido } : {}) };
+    legenda: o.tipo === "story" ? "" : (($("#igm-leg") || {}).value || ""), quando, aprovado: agora || $("#igm-ok").checked, tentativa: 0, criado: isoLocal(new Date()), origem: o.id || "", ...(o.valido ? { valido_ate: o.valido } : {}), ...($("#igm-st") && $("#igm-st").checked ? { story_junto: true } : {}) };
   const bt = document.querySelector('[data-act="igmsalvar"]'); if (bt) { bt.disabled = true; bt.textContent = "Enviando imagens…"; }
   try {
     for (let i = 0; i < o.cvs.length; i++) await subirImagem(item.imagens[i], o.cvs[i]);

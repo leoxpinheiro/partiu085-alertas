@@ -581,7 +581,7 @@ function ntEd(x) { const d = x.det || {}, k = ntChave(x), e = (PA.ntEd || {})[k]
   const passosPad = porReal ? ["Entre no site ou app do programa e faça login", "Escolha a loja e vá pra ela clicando por ali", "Compre normalmente e guarde o comprovante", "Os pontos caem no prazo de cada loja"]
     : bonus ? ["Veja quantos pontos você tem no banco ou cartão", "Transfira dentro do prazo da promoção", "Quem assina o clube costuma ganhar o bônus maior", "As milhas do bônus caem em alguns dias"] : [];
   const prazo = d.prazo ? (/hoje/i.test(d.prazo) ? "Só hoje" : MAIUSC1(d.prazo.replace(/^ate/, "até").replace(/^valid[ao]s? ate/, "válido até"))) : "";
-  return { prog, titulo: e.titulo ?? MAIUSC1((d.destaque || ntTitulo(x.titulo)).replace(/^ate /, "até ").replace(/bonus/, "bônus")), sub: e.sub ?? (prog ? prog[1] : "Milhas"), prazo: e.prazo ?? prazo,
+  return { prog, titulo: e.titulo ?? MAIUSC1((d.destaque || ntTitulo(x.titulo)).replace(/\bate\b/g, "até").replace(/bonus/g, "bônus").replace(/\b(livelo|esfera|smiles|latam pass|azul)\b/gi, w => w.replace(/\b\w/g, l => l.toUpperCase())).replace(/r\$/i, "R$")), sub: e.sub ?? (prog ? prog[1] : "Milhas"), prazo: e.prazo ?? prazo,
     listaTit: e.listaTit ?? (d.lista_tit || "Onde vale"), lista: e.lista ?? (d.lista || []), passos: e.passos ?? ((d.passos && d.passos.length ? d.passos : passosPad).slice(0, 4)), avisos: e.avisos ?? ((d.avisos || []).slice(0, 3)) }; }
 function telaMiCapa(x, E, W, H) { return c => {
   const cor = E.prog ? E.prog[2] : "#0B4EA2", hh = H * .5;

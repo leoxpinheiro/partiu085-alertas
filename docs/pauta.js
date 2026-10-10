@@ -100,11 +100,11 @@ function bgFoto(c, W, H, im, ate = .6) {
   g = c.createLinearGradient(0, H * ate - 460, 0, H * ate + 220); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.65, "rgba(11,36,64,.93)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, H * ate - 460, W, H);
 }
 function marca(c, W, escuro = true, dir = "") {
-  const ico = img("icone");
-  c.save(); c.beginPath(); c.arc(M + 26, 96, 26, 0, 7); c.fillStyle = COR.am; c.fill();
-  if (ico.complete && ico.naturalWidth) { c.beginPath(); c.arc(M + 26, 96, 23, 0, 7); c.clip(); c.drawImage(ico, M + 3, 73, 46, 46); } c.restore();
-  T(c, "PARTIU 085", M + 66, 108, 34, MARCA.titulo, escuro ? "#fff" : COR.tinta, "left", 400, 1);
-  if (dir) kicker(c, dir, W - M, 106, escuro ? COR.am : COR.tinta, "right");
+  const ico = img("icone"), cv = c.canvas, dy = cv && cv.height > cv.width * 1.5 ? 140 : 0; // no story, desce pra não ficar embaixo do nome do perfil
+  c.save(); c.beginPath(); c.arc(M + 26, 96 + dy, 26, 0, 7); c.fillStyle = COR.am; c.fill();
+  if (ico.complete && ico.naturalWidth) { c.beginPath(); c.arc(M + 26, 96 + dy, 23, 0, 7); c.clip(); c.drawImage(ico, M + 3, 73 + dy, 46, 46); } c.restore();
+  T(c, "PARTIU 085", M + 66, 108 + dy, 34, MARCA.titulo, escuro ? "#fff" : COR.tinta, "left", 400, 1);
+  if (dir) kicker(c, dir, W - M, 106 + dy, escuro ? COR.am : COR.tinta, "right");
 }
 function rodapeP(c, W, H, escuro = true, txt = "Alertas grátis saindo de Fortaleza · link na bio") {
   if (PA.rod && /grupo|grátis|link na bio/i.test(txt)) txt = PA.rod;
@@ -153,8 +153,8 @@ function sTop5() {
   const L = typeof top5 === "function" ? top5() : []; if (L.length < 3) return null;
   return { id: "s-top5-" + hojeISO(), grupo: "stories", tipo: "Passagens", titulo: "Top 5 de hoje", porque: "Informação do dia vai pro story: some em 24h, como o preço.", fmt: "Story 9:16", stories: true,
     telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, dataCurta(hojeISO()));
-      kicker(c, "Top 5 de hoje", M, 330);
-      let y = titulo(c, "Os mais baratos saindo de Fortaleza", M, 356, SW - 2 * M, 120, 80) + 60;
+      kicker(c, "Top 5 de hoje", M, 390);
+      let y = titulo(c, "Os mais baratos saindo de Fortaleza", M, 416, SW - 2 * M, 120, 80) + 60;
       L.forEach((x, i) => { linhaLista(c, SW, y, String(i + 1).padStart(2, "0"), x.nome.toUpperCase(), x.mes ? `melhor em ${MESES[+x.mes - 1].toLowerCase()}` : "", brl(x.rt), "ida e volta", true, 150); y += 150; });
       T(c, "Preços de hoje, podem mudar a qualquer momento.", M, y + 60, 24, MARCA.corpo, COR.cinza, "left", 600);
       espacoLink(c, SW, SH); }],
@@ -164,8 +164,8 @@ function sMilhas() {
   const L = promosMilhas().slice(0, 5); if (L.length < 2) return null;
   return { id: "s-milhas-" + hojeISO(), grupo: "stories", tipo: "Milhas", titulo: "Radar de milhas de hoje", porque: "Notícia rápida de milhas: perfeita pra story e puxa quem ama milhas.", fmt: "Story 9:16", stories: true,
     telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, dataCurta(hojeISO()));
-      kicker(c, "Radar de milhas", M, 330);
-      let y = titulo(c, "O que tá rolando hoje", M, 356, SW - 2 * M, 130, 80, "#fff", 2) + 50;
+      kicker(c, "Radar de milhas", M, 390);
+      let y = titulo(c, "O que tá rolando hoje", M, 416, SW - 2 * M, 130, 80, "#fff", 2) + 50;
       L.forEach(o => { const s = selo(o), fs = caber(c, s, 180, 64, MARCA.titulo);
         c.fillStyle = COR.am; rr(c, M, y + 10, 210, 124, 22); c.fill(); T(c, s, M + 105, y + 82, fs, MARCA.titulo, COR.tinta, "center");
         T(c, rotSelo(o).toUpperCase(), M + 105, y + 118, 16, MARCA.corpo, COR.tinta, "center", 800, 2);
@@ -197,8 +197,8 @@ async function sAchado() {
 function sChamada() {
   return { id: "s-chamada-" + hojeISO(), grupo: "stories", tipo: "Grupo", titulo: "Chamada pro grupo grátis", porque: "Story fixo com link: transforma seguidor em membro do grupo.", fmt: "Story 9:16", stories: true,
     telas: [c => { bgNavy(c, SW, SH); marca(c, SW, true, "GRÁTIS");
-      kicker(c, "Grupo de alertas", M, 360);
-      let y = titulo(c, "Passagem barata saindo de Fortaleza no seu WhatsApp", M, 386, SW - 2 * M, 130, 80, "#fff", 4) + 100;
+      kicker(c, "Grupo de alertas", M, 420);
+      let y = titulo(c, "Passagem barata saindo de Fortaleza no seu WhatsApp", M, 446, SW - 2 * M, 130, 80, "#fff", 4) + 100;
       ["Alertas todo dia", "Preço de ida e volta", "As datas mais baratas", "Promoções de milhas"].forEach(it => { bola(c, M + 20, y - 14); T(c, it, M + 64, y, 40, MARCA.corpo, "#fff", "left", 700); y += 84; });
       desenhaMascote(c, SW - M - 160, y - 60, 300);
       espacoLink(c, SW, SH); }],
@@ -625,7 +625,7 @@ function telaMiCapa(x, E, W, H) { return async c => {
   if (!foto) { c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .12, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore(); }
   const g = c.createLinearGradient(0, hh - 120, 0, hh + 200); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 120, W, 320); c.fillStyle = COR.navy; c.fillRect(0, hh + 198, W, H);
   marca(c, W, true, (E.prog ? E.prog[0] : "MILHAS").toUpperCase());
-  let y = story ? 330 : 250; kicker(c, E.kick, M, y, COR.am); y += 40;
+  let y = story ? 420 : 250; kicker(c, E.kick, M, y, COR.am); y += 40;
   if (E.prazo) { const t = "⏰ " + E.prazo.toUpperCase(); c.font = `800 30px ${MARCA.corpo}`; const w = c.measureText(t).width + 50; c.fillStyle = "#E5484D"; rr(c, M, y, w, 58, 29); c.fill(); T(c, t, M + 25, y + 40, 30, MARCA.corpo, "#fff", "left", 800, 1); }
   y = titulo(c, E.titulo, M, Math.max(y + 110, hh - 40), W - 2 * M, story ? 150 : 140, 76, "#fff", 4) + 46;
   const tz = E.lista.length && !E.tier ? `${E.lista.slice(0, 3).map(i => i.split(" · ")[0]).join(", ")}${E.lista.length > 3 ? ` e mais ${E.lista.length - 3}` : ""}` : "";

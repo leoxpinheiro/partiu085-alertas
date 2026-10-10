@@ -222,8 +222,12 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     for tab in re.findall(r"(?is)<table[^>]*>(.*?)</table>", h)[:2]:  # tabelas (faixas de bônus, trechos, preços)
         linhas = []
         for tr in re.findall(r"(?is)<tr[^>]*>(.*?)</tr>", tab):
+            if re.search(r"(?is)<th", tr) and not re.search(r"(?is)<td", tr):
+                continue  # cabeçalho
             cel = [limpa(c) for c in re.findall(r"(?is)<t[dh][^>]*>(.*?)</t[dh]>", tr)]
-            cel = [c for c in cel if c]
+            cel = [c for c in cel if c and not re.fullmatch(r"(?i)(clique aqui|link|acesse|saiba mais|confira)", c)]
+            if cel and (cel[0].isupper() and len(cel[0]) > 3 or re.match(r"(?i)(perfil|parceiro|categoria|plano|faixa|bonifica|pontua|programa)\b", cel[0]) and not re.search(r"\d", " ".join(cel))):
+                continue
             if cel and all(len(c) <= 40 for c in cel) and len(cel) <= 4:
                 linhas.append(" · ".join(cel))
         if 2 <= len(linhas) <= 14:
@@ -239,9 +243,11 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
             det["passos"] = [i[:150] for i in its[:5]]
         elif "avisos" not in det and re.search(r"importante|regras|atencao|condic|regulamento|observac|fique de olho", t):
             det["avisos"] = [i[:150] for i in its[:4]]
-    txt = sem_acento(titulo) + " || " + sem_acento(limpa(h))  # o título manda: o destaque sai dele primeiro
-    for rx in (r"ate \d+ pontos? (?:\w+ )?por (?:real|dolar)", r"ate \d+% de bonus", r"\d+\s*[x×]\s*1", r"\d+% de desconto", r"milheiro a partir de r\$ ?[\d.,]+", r"a partir de [\d.]+ (?:mil )?(?:milhas|pontos)"):
-        m = re.search(rx, txt)
+    txt = sem_acento(limpa(h))
+    rxs = (r"ate \d+ pontos? (?:\w+ )?por (?:real|dolar)", r"\d+ pontos? (?:\w+ )?por (?:real|dolar)", r"ate \d+% de bonus", r"\d+% de bonus", r"\d+\s*[x×]\s*1", r"\d+% de desconto", r"desconto de (?:ate )?\d+%",
+           r"milheiro a partir de r\$ ?[\d.,]+", r"a partir de [\d.]+ (?:mil )?(?:milhas|pontos)")
+    for fonte_txt in (sem_acento(titulo), txt[:1500]):  # o título manda; depois só o começo da matéria
+        m = next((re.search(rx, fonte_txt) for rx in rxs if re.search(rx, fonte_txt)), None)
         if m:
             det["destaque"] = m.group(0)
             break

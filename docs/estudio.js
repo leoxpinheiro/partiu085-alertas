@@ -37,39 +37,26 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
   }
   c.putImageData(dst, x0, y0); return cv;
 }
-/* olho de peixe de verdade (lente esférica): o texto é desenhado nítido em alta resolução e depois
-   "estufado" como numa bola: o meio cresce na largura E na altura, as linhas de cima curvam pra cima e as de baixo pra baixo.
-   A borda da lente fica longe do texto e é contínua, então não aparece emenda. */
+/* olho de peixe "vetorial": cada letra é desenhada nítida, maior no centro e menor nas bordas (lente suave), sem distorcer pixels */
 function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
-  const k = Math.max(0, Math.min(100, forca || 0)) / 100 * .42, S = 3, ls = c.letterSpacing || "0px";
-  c.save(); c.font = fonte; if ("letterSpacing" in c) c.letterSpacing = ls;
-  const maxW = Math.max(1, ...linhas.map(l => c.measureText(l).width)), n = linhas.length;
-  const Rx = Math.min(W / 2 - 4, maxW / 2 * 1.06 + fs * .3), Ry = Math.min(H / 2 - 4, (n * lh / 2 + fs * .3) * (1 + k * 1.6) + fs * .4);
-  const w = Math.ceil(2 * Rx), h = Math.ceil(2 * Ry);
-  const src = document.createElement("canvas"); src.width = w * S; src.height = h * S; const g = src.getContext("2d");
-  g.scale(S, S); g.font = fonte; if ("letterSpacing" in g) g.letterSpacing = ls; g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = cor;
-  let y = Ry - n * lh / 2 + fs * .8; linhas.forEach(l => { g.fillText(l, Rx, y); y += lh; });
-  let out = src, ow = w * S;
-  if (k > 0) {
-    const sd = g.getImageData(0, 0, w * S, h * S).data, dst = document.createElement("canvas"); dst.width = w; dst.height = h; ow = w;
-    const dc = dst.getContext("2d"), im = dc.createImageData(w, h), D = im.data, SW_ = w * S, SH_ = h * S;
-    const amostra = (sx, sy) => { // bilinear na imagem 3x
-      if (sx < 0 || sy < 0 || sx >= SW_ - 1 || sy >= SH_ - 1) return 0; const ix = sx | 0, iy = sy | 0, fx = sx - ix, fy = sy - iy, o = (iy * SW_ + ix) * 4 + 3;
-      return (sd[o] * (1 - fx) + sd[o + 4] * fx) * (1 - fy) + (sd[o + SW_ * 4] * (1 - fx) + sd[o + SW_ * 4 + 4] * fx) * fy; };
-    const sub = [[.25, .25], [.75, .25], [.25, .75], [.75, .75]];
-    for (let py = 0; py < h; py++) for (let px = 0; px < w; px++) {
-      let a = 0;
-      for (const [ox, oy] of sub) { const u = (px + ox - Rx) / Rx, v = (py + oy - Ry) / Ry, q = Math.max(0, 1 - u * u);
-        // cada coluna estica na altura conforme a distância do meio: o centro sobe e desce, as pontas ficam baixinhas
-        const fy = 1 - k * q, fx = 1 - k * .3 * q; a += amostra((u * fx * Rx + Rx) * S, (v * fy * Ry + Ry) * S); }
-      if (a > 0) { const o = (py * w + px) * 4; D[o + 3] = a / 4; } }
-    // cor sólida + alfa calculado
-    const rgb = (() => { const t = document.createElement("canvas").getContext("2d"); t.fillStyle = cor; t.fillRect(0, 0, 1, 1); return t.getImageData(0, 0, 1, 1).data; })();
-    for (let o = 0; o < D.length; o += 4) { D[o] = rgb[0]; D[o + 1] = rgb[1]; D[o + 2] = rgb[2]; }
-    dc.putImageData(im, 0, 0); out = dst;
-  }
+  const a = Math.max(0, Math.min(100, forca || 0)) / 100, ls = parseFloat(c.letterSpacing) || 0;
+  const fam = fonte.replace(/^.*?\d+(\.\d+)?px\s*/, ""), peso = (fonte.match(/^(\d{3}|bold|normal)/) || ["400"])[0];
+  const F = sz => `${peso} ${sz}px ${fam}`;
+  c.save(); c.font = F(fs); if ("letterSpacing" in c) c.letterSpacing = "0px";
+  const L = linhas.map(l => { const ch = Array.from(l); return { ch, w: ch.map(x => c.measureText(x).width + ls) }; });
+  const maxW = Math.max(1, ...L.map(l => l.w.reduce((p, q) => p + q, 0))), n = L.length, meiaA = n * lh / 2 + fs * .25;
+  const esc = (nx, ny) => (1 - a * .38) + a * 1.05 * Math.exp(-(nx * nx * 1.5 + ny * ny * 1.9)); // centro até ~1.7x, bordas ~0.6x
+  L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), yc = yCentro - n * lh / 2 + lh * (j + .5); let x = W / 2 - tot / 2;
+    l.s = l.w.map(w => { const cx = x + w / 2; x += w; return esc((cx - W / 2) / (maxW / 2), (yc - yCentro) / meiaA); });
+    l.h = lh * l.s.reduce((p, q) => p + q, 0) / Math.max(1, l.s.length); });
+  const larga = Math.max(...L.map(l => l.w.reduce((p, w, k) => p + w * l.s[k], 0))), kf = Math.min(1, W * .92 / larga); // nunca sai da tela
+  if (kf < 1) L.forEach(l => { l.s = l.s.map(v => v * kf); l.h *= kf; });
+  const altura = L.reduce((p, l) => p + l.h, 0); let y = yCentro - altura / 2;
   if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; }
-  c.drawImage(out, 0, 0, ow, out.height, W / 2 - Rx, yCentro - Ry, w, h);
+  c.fillStyle = cor; c.textAlign = "left"; c.textBaseline = "alphabetic";
+  L.forEach(l => { const tot = l.w.reduce((p, w, k) => p + w * l.s[k], 0); let x = W / 2 - tot / 2; const meio = y + l.h / 2;
+    l.ch.forEach((ch, k) => { const s = l.s[k], sz = fs * s; c.font = F(sz); c.fillText(ch, x + ls * s / 2, meio + sz * .3); x += l.w[k] * s; });
+    y += l.h; });
   c.restore();
 }
 /* desenha o texto (mesma função na prévia e no vídeo final) */

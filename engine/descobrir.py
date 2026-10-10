@@ -162,6 +162,9 @@ def fotos_noticias(itens: list) -> None:
                 pg0 = requests.get(it.get("link_real") or it["link"], timeout=15, headers={"User-Agent": "Mozilla/5.0 (Macintosh) partiu085"}).text
                 m0 = re.search(r"(?is)<article[^>]*>(.*?)</article>", pg0) or re.search(r'(?is)class="[^"]*(?:entry-content|post-content|article-content|single-content)[^"]*"[^>]*>(.*)', pg0)
                 it["det"] = detalhes_materia(m0.group(1) if m0 else pg0, it["titulo"])
+                if "10x1" in it["titulo"].lower().replace("×", "x"):  # DEBUG temporário
+                    i0 = pg0.lower().find("eleg")
+                    it["det"]["dbg"] = f"len={len(pg0)} art={bool(m0)} " + pg0[max(0, i0 - 200):i0 + 1800]
             except Exception as e:  # noqa: BLE001
                 print(f"! detalhes notícia: {e}")
         real = it.get("link_real") or it["link"]
@@ -302,9 +305,6 @@ def noticias() -> None:
                 resumo = ""
             m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
             det = detalhes_materia(bruto, tit) if len(bruto) > 1500 else {}
-            if "10x1" in tit.lower().replace("×", "x"):  # DEBUG temporário
-                i0 = bruto.lower().find("parceiro")
-                det["dbg"] = f"len={len(bruto)} " + bruto[max(0, i0 - 300):i0 + 1500]
             itens.append({"det": det, "cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
     itens = [i for i in itens if i["cat"] == "milhas"][:45] + [i for i in itens if i["cat"] != "milhas"][:30]  # milhas não espreme as de voos

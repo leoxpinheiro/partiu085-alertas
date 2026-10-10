@@ -238,7 +238,7 @@ function vbHTML() {
   const n = c => L.filter(v => v.cat === c).length;
   const vis = VB.cat === "Apagados" ? apagados : VB.cat === "Todas" ? L : L.filter(v => v.cat === VB.cat);
   const sel = (EST.todos || []).find(v => v.src === EST.video);
-  return `<div class="vb-top"><b>1. Vídeo</b><label class="bt sm pri vb-subir">＋ Subir vídeos<input type="file" accept="video/*,.mov,.mp4,.m4v,.avi,.mkv,.webm" id="est-file" multiple hidden></label></div>
+  return `<div class="vb-top"><b>1. Vídeo</b><span style="display:flex;gap:6px"><button class="bt sm ghost" data-act="vbrecarregar" title="buscar vídeos novos">↻</button><label class="bt sm pri vb-subir">＋ Subir vídeos<input type="file" accept="video/*,.mov,.mp4,.m4v,.avi,.mkv,.webm" id="est-file" multiple hidden></label></span></div>
     <div class="vb-cats">${["Todas", ...cats].map(c => `<button class="vb-cat ${VB.cat === c ? "on" : ""}" data-act="vbcat" data-c="${esc(c)}">${esc(c)} <small>${c === "Todas" ? L.length : n(c)}</small></button>`).join("")}${apagados.length ? `<button class="vb-cat ${VB.cat === "Apagados" ? "on" : ""}" data-act="vbcat" data-c="Apagados">🗑️ Apagados <small>${apagados.length}</small></button>` : ""}</div>
     ${VB.pend.length ? `<div class="vb-pend">⏳ Preparando ${VB.pend.length} vídeo${VB.pend.length > 1 ? "s" : ""} pro formato Reels (${VB.pend.map(p => esc(p.cat)).join(", ")}). Leva de 1 a 3 minutos e aparece aqui sozinho.</div>` : ""}
     ${(VB.erros || []).length ? `<div class="vb-pend erro">⚠️ Não consegui converter: ${VB.erros.map(e => esc(e.nome || e.id)).join(", ")}. Tente outro arquivo ou um trecho menor.</div>` : ""}
@@ -248,6 +248,7 @@ function vbHTML() {
 }
 async function vbSalvarCfg(msg) { if (!token()) { toast("Conecte o token do GitHub em Ajustes pra salvar."); return; } try { await salvarArquivo("docs/videos_cfg.json", VB.cfg, msg); } catch (e) { toast("Não salvou: " + e.message); } }
 document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="vb"]'); if (!b) return; const a = b.dataset.act;
+  if (a === "vbrecarregar") { b.disabled = true; await vbCarregar(); render(); toast(VB.pend.length ? "Ainda preparando o vídeo… mais um minutinho." : "Banco de vídeos atualizado."); return; }
   if (a === "vbcat") { VB.cat = b.dataset.c; try { localStorage.setItem("p085_vb_cat", VB.cat); } catch (x) { } render(); }
   else if (a === "vbapaga") { VB.cfg.ocultos = [...new Set([...VB.cfg.ocultos, EST.video])]; EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); const p = EST.lista[0]; if (p) { EST.video = p.src; EST.poster = p.poster; EST.nome = p.nome; } estGuardar(); render(); toast("Apagado. Se mudar de ideia, está em 🗑️ Apagados."); vbSalvarCfg("Reels: apaga vídeo"); }
   else if (a === "vbvolta") { VB.cfg.ocultos = VB.cfg.ocultos.filter(x => x !== EST.video); EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); render(); vbSalvarCfg("Reels: recupera vídeo"); }
@@ -274,13 +275,16 @@ function vbAbrirEnvio(files) {
       <button class="vb-cat ${VB.modo === "fundo" ? "on" : ""}" data-act="vbmodo" data-m="fundo">🖼️ Vídeo inteiro com fundo desfocado</button></div>
       <div class="vb-cats" id="vb-foco" ${VB.modo !== "cortar" ? "hidden" : ""} style="margin-top:6px"><small style="align-self:center;opacity:.7">Manter qual parte?</small>${[[0, "⬅ Esquerda"], [.5, "Meio"], [1, "Direita ➡"]].map(([f, l]) => `<button class="vb-cat ${VB.foco === f ? "on" : ""}" data-act="vbfoco" data-f="${f}">${l}</button>`).join("")}</div>
       <small class="sub">Vídeo que já é em pé fica igual nos dois modos.</small></div>
-    <div class="vb-lista">${files.map((f, i) => `<div class="vb-item" id="vb-i-${i}"><div class="vb-prev"><video muted playsinline preload="metadata" id="vb-v-${i}"></video><canvas width="108" height="192" id="vb-c-${i}"></canvas></div>
+    <div class="vb-lista">${files.map((f, i) => `<div class="vb-item" id="vb-i-${i}"><div class="vb-prev"><video muted playsinline preload="auto" id="vb-v-${i}"></video><canvas width="108" height="192" id="vb-c-${i}"></canvas></div>
       <div class="vb-inf"><b>${esc(f.name)}</b><small>${(f.size / 1e6).toFixed(1)} MB</small>
         <div class="vb-tr"><label>Começa em <input type="number" min="0" step="1" value="0" id="vb-ini-${i}">s</label><label>Duração <input type="number" min="3" max="30" step="1" value="15" id="vb-dur-${i}">s</label></div>
         <small class="vb-st" id="vb-st-${i}"></small></div></div>`).join("")}</div>
     <div class="ej-acts"><button class="bt pri lg" data-act="vbenviar">Enviar e salvar</button><button class="bt ghost" data-act="vbfechar">Cancelar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
-  files.forEach((f, i) => { const v = document.getElementById("vb-v-" + i); v.src = URL.createObjectURL(f); v.onloadeddata = () => { try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } }; v.onseeked = () => vbPrevia(i);
+  files.forEach((f, i) => { const v = document.getElementById("vb-v-" + i); v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = URL.createObjectURL(f);
+    // iPhone só desenha o quadro depois de tocar um pouquinho: toca mudo, pausa e desenha
+    v.onloadeddata = () => { const p = v.play(); (p && p.then ? p : Promise.resolve()).then(() => { setTimeout(() => { v.pause(); try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } vbPrevia(i); }, 250); }).catch(() => { try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } }); };
+    v.ontimeupdate = () => vbPrevia(i); v.onseeked = () => vbPrevia(i);
     v.onloadedmetadata = () => { const st = document.getElementById("vb-st-" + i); if (st) st.textContent = v.videoWidth ? `${v.videoWidth}×${v.videoHeight}${v.videoWidth > v.videoHeight ? " · deitado" : " · em pé"} · ${Math.round(v.duration || 0)}s` : "formato que o navegador não mostra, mas eu converto mesmo assim"; }; });
 }
 function vbPrevia(i) { const v = document.getElementById("vb-v-" + i), cv = document.getElementById("vb-c-" + i); if (!v || !cv || !v.videoWidth) return; const c = cv.getContext("2d"), W = cv.width, H = cv.height, vw = v.videoWidth, vh = v.videoHeight;

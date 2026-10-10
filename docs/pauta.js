@@ -1076,6 +1076,7 @@ function cardPauta(p, i) {
     <details class="pa-legd"><summary>${p.stories ? "Instruções do story" : "Ver legenda"}</summary><textarea class="pa-leg" id="pa-l-${i}" spellcheck="false">${esc(p.legenda)}</textarea></details>
     <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}${p.video ? "Abrir no estúdio" : `Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}`}</button>
       <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
+      ${/^fr-/.test(p.id) ? `<button class="bt sm pri" data-act="paeditar" data-i="${i}">✏️ Editar</button>` : ""}
       <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}">${ic("calendar")}Agendar</button>
       <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
   </article>`;
@@ -1103,7 +1104,7 @@ async function montarPauta() {
   g.innerHTML = !L.length ? (PA.aba === "noticia" || PA.aba === "prova") ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
     : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
     : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
-    : `<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
+    : `${PA.aba === "humor" ? `<div class="card pa-dica">✏️ Quer mudar frase, fundo ou fonte? Toque em <b>Editar</b> num carrossel de frases, ou <a href="#carrossel"><b>crie o seu do zero em 🖼️ Carrosséis</b></a> (1 a 10 telas).</div>` : ""}<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
     if (p.video) { box.innerHTML = `<div class="rv-prev rv-play" data-act="rvplay"><video src="${p.video}" poster="${p.video.replace(".mp4", ".jpg")}" muted loop playsinline preload="none"></video><canvas width="540" height="960"></canvas><span class="rv-btn">▶</span></div>`;
       const o = box.querySelector("canvas"), oc = o.getContext("2d"); oc.scale(.5, .5); p.overlay(oc); return; }
@@ -1112,6 +1113,7 @@ async function montarPauta() {
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="pa"]'); if (!b || b.dataset.act === "pill") return;
   const p = (PA.lista || [])[+b.dataset.i]; if (!p) return;
+  if (b.dataset.act === "paeditar") { abrirCarrossel(p.id); return; }
   if (b.dataset.act === "pabaixar" && p.video) { abrirEstudio(p.video, p.texto); return; }
   if (b.dataset.act === "pabaixar") { [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)].forEach((cv, j) => setTimeout(() => { const a = document.createElement("a"); a.download = `partiu085-${p.id}-${j + 1}.png`; a.href = cv.toDataURL("image/png"); a.click(); }, j * 350)); }
   else if (b.dataset.act === "pacopiar") { await copiar(p.stories ? linkGrupo() : (($("#pa-l-" + b.dataset.i) || {}).value || p.legenda)); toast(p.stories ? "Link do grupo copiado (pro adesivo de link)." : "Legenda copiada."); }

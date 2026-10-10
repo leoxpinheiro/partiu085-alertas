@@ -30,7 +30,7 @@ def converter(src: Path, job: dict) -> dict:
         f = min(1.0, max(0.0, float(job.get("foco", 0.5))))
         vf = f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920:(iw-1080)*{f}:(ih-1920)/2,fps=30,format=yuv420p"
     sh("ffmpeg", "-y", "-loglevel", "error", "-ss", str(ini), "-i", str(src), "-t", str(dur), "-filter_complex" if "split" in vf else "-vf", vf,
-       "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "20", "-maxrate", "8M", "-bufsize", "16M", "-movflags", "+faststart", str(out))
+       "-an", "-c:v", "libx264", "-preset", "slow", "-crf", "24", "-maxrate", "3500k", "-bufsize", "7M", "-movflags", "+faststart", str(out))
     sh("ffmpeg", "-y", "-loglevel", "error", "-ss", "1", "-i", str(out), "-frames:v", "1", "-q:v", "3", str(cap))
     real = float(sh("ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)).strip() or dur)
     return {"arq": f"midia/clip-u-{vid}.mp4", "quadro": f"midia/clip-u-{vid}.jpg", "w": 1080, "h": 1920, "dur": round(real),

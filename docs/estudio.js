@@ -333,7 +333,7 @@ async function vbGravar(v, ini, dur, prog) {
     if (VB.modo === "fundo" && vw > vh * .7) { const s = Math.max(W / vw, H / vh); c.filter = "blur(40px) brightness(.8)"; c.drawImage(v, (W - vw * s) / 2, (H - vh * s) / 2, vw * s, vh * s); c.filter = "none"; const s2 = Math.min(W / vw, H / vh); c.drawImage(v, (W - vw * s2) / 2, (H - vh * s2) / 2, vw * s2, vh * s2); }
     else { const s = Math.max(W / vw, H / vh); c.drawImage(v, (W - vw * s) * VB.foco, (H - vh * s) / 2, vw * s, vh * s); } };
   v.muted = true; v.loop = false; v.currentTime = Math.min(ini, Math.max(0, (v.duration || ini + 1) - 1)); await new Promise(r => { v.onseeked = r; setTimeout(r, 1500); });
-  const fim = Math.min(v.duration || ini + dur, ini + dur), rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: dur > 15 ? 8e6 : 12e6 }), partes = [];
+  const fim = Math.min(v.duration || ini + dur, ini + dur), rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 5e6 }), partes = [];
   rec.ondataavailable = e => e.data.size && partes.push(e.data); quadro(); rec.start(250); await v.play();
   await new Promise(ok => { const passo = () => { quadro(); prog(Math.round(v.currentTime - ini)); if (v.currentTime >= fim || v.ended) return ok(); requestAnimationFrame(passo); }; passo(); });
   v.pause(); rec.stop(); await new Promise(r => rec.onstop = r);

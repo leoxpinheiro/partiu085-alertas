@@ -277,7 +277,9 @@ function vbAbrirEnvio(files) {
       <small class="sub">Vídeo que já é em pé fica igual nos dois modos.</small></div>
     <div class="vb-lista">${files.map((f, i) => `<div class="vb-item" id="vb-i-${i}"><div class="vb-prev"><video muted playsinline preload="auto" id="vb-v-${i}"></video><canvas width="108" height="192" id="vb-c-${i}"></canvas></div>
       <div class="vb-inf"><b>${esc(f.name)}</b><small>${(f.size / 1e6).toFixed(1)} MB</small>
-        <div class="vb-tr"><label>Começa em <input type="number" min="0" step="1" value="0" id="vb-ini-${i}">s</label><label>Duração <input type="number" min="3" max="30" step="1" value="15" id="vb-dur-${i}">s</label></div>
+        <div class="vb-corte"><label><span>✂️ Começa em <b id="vb-iniT-${i}">0:00</b></span><input type="range" min="0" max="10" step="0.1" value="0" id="vb-ini-${i}" data-vbcorte="${i}"></label>
+          <label><span>Duração <b id="vb-durT-${i}">15s</b></span><input type="range" min="3" max="30" step="1" value="15" id="vb-dur-${i}" data-vbcorte="${i}"></label>
+          <button class="bt sm" data-act="vbtrecho" data-i="${i}">▶ Ver trecho</button></div>
         <small class="vb-st" id="vb-st-${i}"></small></div></div>`).join("")}</div>
     <div class="ej-acts"><button class="bt pri lg" data-act="vbenviar">Enviar e salvar</button><button class="bt ghost" data-act="vbfechar">Cancelar</button></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
@@ -285,7 +287,8 @@ function vbAbrirEnvio(files) {
     // iPhone só desenha o quadro depois de tocar um pouquinho: toca mudo, pausa e desenha
     v.onloadeddata = () => { const p = v.play(); (p && p.then ? p : Promise.resolve()).then(() => { setTimeout(() => { v.pause(); try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } vbPrevia(i); }, 250); }).catch(() => { try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } }); };
     v.ontimeupdate = () => vbPrevia(i); v.onseeked = () => vbPrevia(i);
-    v.onloadedmetadata = () => { const st = document.getElementById("vb-st-" + i); if (st) st.textContent = v.videoWidth ? `${v.videoWidth}×${v.videoHeight}${v.videoWidth > v.videoHeight ? " · deitado" : " · em pé"} · ${Math.round(v.duration || 0)}s` : "formato que o navegador não mostra, mas eu converto mesmo assim"; }; });
+    v.onloadedmetadata = () => { const r = document.getElementById("vb-ini-" + i), rd = document.getElementById("vb-dur-" + i); if (v.duration && r) { r.max = Math.max(0, v.duration - 3).toFixed(1); rd.max = Math.max(3, Math.min(30, Math.floor(v.duration))); if (+rd.value > +rd.max) rd.value = rd.max; vbCorteTxt(i); }
+      const st = document.getElementById("vb-st-" + i); if (st) st.textContent = v.videoWidth ? `${v.videoWidth}×${v.videoHeight}${v.videoWidth > v.videoHeight ? " · deitado" : " · em pé"} · ${Math.round(v.duration || 0)}s` : "formato que o navegador não mostra, mas eu converto mesmo assim"; }; });
 }
 function vbPrevia(i) { const v = document.getElementById("vb-v-" + i), cv = document.getElementById("vb-c-" + i); if (!v || !cv || !v.videoWidth) return; const c = cv.getContext("2d"), W = cv.width, H = cv.height, vw = v.videoWidth, vh = v.videoHeight;
   c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
@@ -330,7 +333,7 @@ async function vbGravar(v, ini, dur, prog) {
     if (VB.modo === "fundo" && vw > vh * .7) { const s = Math.max(W / vw, H / vh); c.filter = "blur(40px) brightness(.8)"; c.drawImage(v, (W - vw * s) / 2, (H - vh * s) / 2, vw * s, vh * s); c.filter = "none"; const s2 = Math.min(W / vw, H / vh); c.drawImage(v, (W - vw * s2) / 2, (H - vh * s2) / 2, vw * s2, vh * s2); }
     else { const s = Math.max(W / vw, H / vh); c.drawImage(v, (W - vw * s) * VB.foco, (H - vh * s) / 2, vw * s, vh * s); } };
   v.muted = true; v.loop = false; v.currentTime = Math.min(ini, Math.max(0, (v.duration || ini + 1) - 1)); await new Promise(r => { v.onseeked = r; setTimeout(r, 1500); });
-  const fim = Math.min(v.duration || ini + dur, ini + dur), rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 7e6 }), partes = [];
+  const fim = Math.min(v.duration || ini + dur, ini + dur), rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: dur > 15 ? 8e6 : 12e6 }), partes = [];
   rec.ondataavailable = e => e.data.size && partes.push(e.data); quadro(); rec.start(250); await v.play();
   await new Promise(ok => { const passo = () => { quadro(); prog(Math.round(v.currentTime - ini)); if (v.currentTime >= fim || v.ended) return ok(); requestAnimationFrame(passo); }; passo(); });
   v.pause(); rec.stop(); await new Promise(r => rec.onstop = r);
@@ -338,3 +341,16 @@ async function vbGravar(v, ini, dur, prog) {
 }
 
 function estAbas(cur) { return `<div class="est-abas">${[["estudio", "🎬 Reels"], ["carrossel", "🖼️ Carrosséis"]].map(([k, n]) => `<a href="#${k}" class="pill ${cur === k ? "on" : ""}">${n}</a>`).join("")}</div>`; }
+
+/* recorte: escolhe o trecho arrastando, vê na miniatura e toca o pedaço antes de enviar */
+const mmss = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+function vbCorteTxt(i) { const r = document.getElementById("vb-ini-" + i), d = document.getElementById("vb-dur-" + i), v = document.getElementById("vb-v-" + i); if (!r) return;
+  const ini = +r.value, dur = Math.min(+d.value, v && v.duration ? v.duration - ini : 99);
+  document.getElementById("vb-iniT-" + i).textContent = mmss(ini); document.getElementById("vb-durT-" + i).textContent = `${Math.max(1, Math.round(dur))}s (até ${mmss(ini + dur)})`; }
+document.addEventListener("input", e => { const i = e.target.dataset && e.target.dataset.vbcorte; if (i === undefined) return; vbCorteTxt(i);
+  if (e.target.id.startsWith("vb-ini-")) { const v = document.getElementById("vb-v-" + i); if (v) { v.pause(); try { v.currentTime = +e.target.value; } catch (x) { } } } });
+document.addEventListener("click", e => { const b = e.target.closest('[data-act="vbtrecho"]'); if (!b) return; const i = b.dataset.i, v = document.getElementById("vb-v-" + i); if (!v) return;
+  if (!v.paused) { v.pause(); b.textContent = "▶ Ver trecho"; return; }
+  const ini = +document.getElementById("vb-ini-" + i).value, fim = ini + +document.getElementById("vb-dur-" + i).value;
+  v.currentTime = ini; v.play(); b.textContent = "⏸ Parar";
+  const passo = () => { vbPrevia(i); if (v.paused || v.currentTime >= fim) { v.pause(); b.textContent = "▶ Ver trecho"; return; } requestAnimationFrame(passo); }; passo(); });

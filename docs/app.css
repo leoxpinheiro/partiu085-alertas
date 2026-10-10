@@ -1060,3 +1060,6 @@ button.side-t{display:flex;align-items:center;justify-content:flex-start;gap:8px
 .side-chev{font-size:10px;opacity:.7;margin-left:auto}.side-g.fechado{padding-bottom:2px}.side-g.fechado .side-t{padding-bottom:5px}
 #cr-txt,#cr-leg,#cr-tit,.cr input[type=datetime-local],.est input[type=datetime-local],.vb-ej input,.vb-tr input{width:100%;border:0;border-radius:12px;padding:12px;background:var(--tile);color:inherit;font:inherit;font-size:15px;box-sizing:border-box}#cr-leg{font-size:13px}.vb-tr input{width:64px;padding:6px 8px}.cr .est-fim input[type=datetime-local]{width:auto}
 .side-bts{display:flex;gap:6px;align-items:center}
+.vb-corte{display:grid;gap:8px;margin-top:4px}.vb-corte label{display:grid;gap:2px;font-size:13px}.vb-corte input[type=range]{width:100%}.vb-corte .bt{justify-self:start}
+.vb-prev canvas{width:90px;height:160px}.vb-prev{width:90px}
+.vb-inf{flex:1}.vb-corte input[type=range]{width:100%;padding:0;background:none;height:28px}

@@ -154,6 +154,16 @@ def fotos_noticias(itens: list) -> None:
                 continue
         if ant.get("resumo") and not it.get("resumo"):
             it["resumo"] = ant["resumo"]
+        if not it.get("det") and ant.get("det"):
+            it["det"] = ant["det"]
+        if not it.get("det") and it.get("cat") == "milhas" and baixados + decod < 40:
+            try:
+                decod += 1
+                pg0 = requests.get(it.get("link_real") or it["link"], timeout=15, headers={"User-Agent": "Mozilla/5.0 (Macintosh) partiu085"}).text
+                m0 = re.search(r"(?is)<article[^>]*>(.*?)</article>", pg0) or re.search(r'(?is)class="[^"]*(?:entry-content|post-content|article-content|single-content)[^"]*"[^>]*>(.*)', pg0)
+                it["det"] = detalhes_materia(m0.group(1) if m0 else pg0)
+            except Exception as e:  # noqa: BLE001
+                print(f"! detalhes notícia: {e}")
         real = it.get("link_real") or it["link"]
         nome = hashlib.sha1(it["link"].encode()).hexdigest()[:16] + ".jpg"
         alvo = pasta / nome
@@ -189,6 +199,45 @@ def fotos_noticias(itens: list) -> None:
     for f in pasta.glob("*.jpg"):
         if f.name not in usados:
             f.unlink()
+
+
+def detalhes_materia(h: str) -> dict:
+    """Tira da matéria só os FATOS pra gente montar o nosso post: lista de parceiros/lojas, passos, avisos, destaque e prazo."""
+    import html as _h
+    import re
+    if not h:
+        return {}
+    h = re.sub(r"(?is)<(script|style|figure|aside|nav|footer|form)[^>]*>.*?</\1>", " ", h)
+    limpa = lambda x: re.sub(r"\s+", " ", _h.unescape(re.sub(r"<[^>]+>", " ", x))).strip(" .;:-–")
+    sec, secoes = "", []
+    for tag, corpo in re.findall(r"(?is)<(h[1-6]|ul|ol|p)[^>]*>(.*?)</\1>", h):
+        if tag.lower().startswith("h"):
+            sec = limpa(corpo)
+            continue
+        if tag.lower() in ("ul", "ol"):
+            its = [limpa(x) for x in re.findall(r"(?is)<li[^>]*>(.*?)</li>", corpo)]
+            its = [re.sub(r"\s*\((?:link|clique aqui)\)$", "", i, flags=re.I) for i in its if 1 < len(i) <= 170]
+            if its:
+                secoes.append((sec, its))
+    det = {}
+    for tit, its in secoes:
+        t = sem_acento(tit)
+        if "lista" not in det and (re.search(r"parceir|lojas|elegive|participant|onde (vale|usar)|destinos|trechos|rotas|cartoes|bancos", t) or (not tit and sum(len(i) < 45 for i in its) >= 4)):
+            det["lista_tit"], det["lista"] = tit, its[:16]
+        elif "passos" not in det and re.search(r"como (aproveitar|participar|transferir|funciona|fazer|comprar|resgatar)|passo", t):
+            det["passos"] = [i[:150] for i in its[:5]]
+        elif "avisos" not in det and re.search(r"importante|regras|atencao|condic|regulamento|observac|fique de olho", t):
+            det["avisos"] = [i[:150] for i in its[:4]]
+    txt = sem_acento(limpa(h))
+    for rx in (r"ate \d+ pontos? (?:\w+ )?por (?:real|dolar)", r"ate \d+% de bonus", r"\d+\s*[x×]\s*1", r"\d+% de desconto", r"milheiro a partir de r\$ ?[\d.,]+", r"a partir de [\d.]+ (?:mil )?(?:milhas|pontos)"):
+        m = re.search(rx, txt)
+        if m:
+            det["destaque"] = m.group(0)
+            break
+    m = re.search(r"(somente|so|apenas) (hoje|neste \w+|nesta \w+)|valid[ao]s? ate (?:o dia )?(\d{1,2}/\d{1,2}(?:/\d{2,4})?|\d{1,2} de \w+)|ate (?:as \d{1,2}h\d* )?(?:do dia |de )?(\d{1,2}/\d{1,2})", txt)
+    if m:
+        det["prazo"] = m.group(0)
+    return det
 
 
 def noticias() -> None:
@@ -234,7 +283,8 @@ def noticias() -> None:
             if "news.google" in url or resumo.lower().startswith(tit.lower()[:30]):
                 resumo = ""
             m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
-            itens.append({"cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
+            det = detalhes_materia(bruto) if len(bruto) > 1500 else {}
+            itens.append({"det": det, "cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
     itens = [i for i in itens if i["cat"] == "milhas"][:45] + [i for i in itens if i["cat"] != "milhas"][:30]  # milhas não espreme as de voos
     itens.sort(key=lambda i: i["data"], reverse=True)

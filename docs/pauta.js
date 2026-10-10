@@ -514,6 +514,7 @@ function noticiaHTML() {
     ${PA.noticias == null ? `<div class="vazio">Carregando…</div>` : lista.length ? `${lmi.length ? `<h4 style="margin:14px 0 6px">💳 Milhas, pontos e sala VIP <small style="opacity:.6">(vale pro Brasil todo)</small></h4><div class="pa-nl">${lmi.map(o => linha(o, true)).join("")}</div>` : ""}${lvo.length ? `<h4 style="margin:14px 0 6px">✈️ Voos e aeroporto</h4><div class="pa-nl">${lvo.map(o => linha(o, true)).join("")}</div>` : ""}` : `<div class="vazio">Nenhuma notícia quente agora. O robô procura de novo na próxima rodada.</div>`}
     ${velhas.length ? `<details class="pa-velhas"><summary>Antigas e removidas (${velhas.length})</summary><div class="pa-nl">${velhas.slice(0, 20).map(o => linha(o, false)).join("")}</div></details>` : ""}
   </div>
+  ${PA.ntSel != null ? ntEdHTML((PA.noticias || [])[PA.ntSel]) : ""}
   <details class="card pa-nt" id="pa-man" ${N.titulo ? "open" : ""}><summary><b>Montar arte da notícia</b></summary>
     <div class="form pa-nt-f" style="margin-top:12px">
       <div class="field"><label>Fonte (aparece na arte)</label><input data-nt="fonte" value="${esc(N.fonte)}" placeholder="@aeroportodefortaleza"></div>
@@ -554,7 +555,7 @@ const PROG_NT = [[/latam pass|latam/i, "LATAM Pass", "#C8102E"], [/azul fidelida
 function ntCategoria(x) { return /sala vip|salas vip|lounge|priority pass/i.test(x.titulo) ? "SALA VIP" : /pontos|milhas|b[oô]nus|transfer|livelo|esfera|smiles|fidelidade|latam pass/i.test(x.titulo) ? "MILHAS" : /aeroporto/i.test(x.titulo) ? "AEROPORTO" : "AVIAÇÃO · CEARÁ"; }
 function ntTitulo(t) { t = String(t || "").replace(/\s+[-|–]\s+[^-|–]{2,40}$/, "").trim(); if (t.length <= 92) return t;
   const corte = Math.max(t.lastIndexOf(";", 92), t.lastIndexOf(":", 92), t.lastIndexOf(",", 92)); return corte > 45 ? t.slice(0, corte) : curto(t, 92); }
-function ntResumo(x) { const r = String(x.resumo || "").replace(/\s+/g, " ").replace(/(Leia mais|Continue lendo|The post|O post).*$/i, "").trim();
+function ntResumo(x) { const r = String(x.resumo || "").replace(/\s+/g, " ").replace(/(Leia mais|Continue lendo|The post|O post|Confira (mais )?(os )?detalhes|Confira na mat|Saiba mais|Veja (mais|os detalhes|como)).*$/i, "").trim();
   const fr = r.split(/(?<=[.!?])\s+/).filter(f => f.length > 25 && !x.titulo.toLowerCase().startsWith(f.toLowerCase().slice(0, 30))); return fr.slice(0, 2).join(" ").slice(0, 230); }
 function ntFotoIata(x) { const t = sem(x.titulo + " " + (x.resumo || ""));
   for (const k of FOTOS_OK) { const n = sem((IATA[k] || "").split(" (")[0]); if (n && n.length > 3 && t.includes(n)) return k; } return ""; }
@@ -572,7 +573,75 @@ function heroAviao(c, W, H) {
   [[.05, .9, .5, .2, 1.05, .35], [-.05, .5, .4, .05, 1.1, .1], [.1, 1.1, .7, .6, 1.05, .7]].forEach(([a, b, cc, d, e, f]) => { c.beginPath(); c.moveTo(W * a, H * b); c.quadraticCurveTo(W * cc, H * d, W * e, H * f); c.stroke(); }); c.restore();
   aviao(c, W * .7, H * .38, Math.min(W, H) * .42, "rgba(255,255,255,.92)", -Math.PI / 7);
 }
+/* ===== notícia de milhas do NOSSO jeito: a gente pega só os fatos (parceiros, regras, prazo) e monta um carrossel próprio ===== */
+const MAIUSC1 = t => { t = String(t || "").trim(); return t.charAt(0).toUpperCase() + t.slice(1); };
+function ntTemDet(x) { const d = x.det || {}; return (d.lista && d.lista.length >= 2) || (x.cat === "milhas" && d.destaque); }
+function ntEd(x) { const d = x.det || {}, k = ntChave(x), e = (PA.ntEd || {})[k] || {}, prog = PROG_NT.find(p => p[0].test(x.titulo + " " + (x.resumo || "")));
+  const porReal = /pontos? (?:\w+ )?por (real|dolar)|\d+\s*[x×]\s*1/i.test((d.destaque || "") + x.titulo), bonus = /b[oô]nus/i.test((d.destaque || "") + x.titulo);
+  const passosPad = porReal ? ["Entre no site ou app do programa e faça login", "Escolha a loja e vá pra ela clicando por ali", "Compre normalmente e guarde o comprovante", "Os pontos caem no prazo de cada loja"]
+    : bonus ? ["Veja quantos pontos você tem no banco ou cartão", "Transfira dentro do prazo da promoção", "Quem assina o clube costuma ganhar o bônus maior", "As milhas do bônus caem em alguns dias"] : [];
+  const prazo = d.prazo ? (/hoje/i.test(d.prazo) ? "Só hoje" : MAIUSC1(d.prazo.replace(/^ate/, "até").replace(/^valid[ao]s? ate/, "válido até"))) : "";
+  return { prog, titulo: e.titulo ?? MAIUSC1((d.destaque || ntTitulo(x.titulo)).replace(/^ate /, "até ").replace(/bonus/, "bônus")), sub: e.sub ?? (prog ? prog[1] : "Milhas"), prazo: e.prazo ?? prazo,
+    listaTit: e.listaTit ?? (d.lista_tit || "Onde vale"), lista: e.lista ?? (d.lista || []), passos: e.passos ?? ((d.passos && d.passos.length ? d.passos : passosPad).slice(0, 4)), avisos: e.avisos ?? ((d.avisos || []).slice(0, 3)) }; }
+function telaMiCapa(x, E, W, H) { return c => {
+  const cor = E.prog ? E.prog[2] : "#0B4EA2", hh = H * .5;
+  c.fillStyle = cor; c.fillRect(0, 0, W, H);
+  const g0 = c.createRadialGradient(W * .85, H * .08, 20, W * .85, H * .08, W * 1.1); g0.addColorStop(0, "rgba(255,255,255,.25)"); g0.addColorStop(1, "rgba(0,0,0,.2)"); c.fillStyle = g0; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .15, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore();
+  const g = c.createLinearGradient(0, hh - 200, 0, hh + 160); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 200, W, 360); c.fillStyle = COR.navy; c.fillRect(0, hh + 158, W, H);
+  marca(c, W, true, "MILHAS");
+  T(c, (E.sub || "").toUpperCase(), M, hh - 120, caber(c, (E.sub || "").toUpperCase(), W - 2 * M, 130, MARCA.titulo, 400, 60), MARCA.titulo, "rgba(255,255,255,.95)");
+  let y = hh + 20;
+  if (E.prazo) { const t = "⏰ " + E.prazo.toUpperCase(); c.font = `800 30px ${MARCA.corpo}`; const w = c.measureText(t).width + 50; c.fillStyle = "#E5484D"; rr(c, M, y, w, 58, 29); c.fill(); T(c, t, M + 25, y + 40, 30, MARCA.corpo, "#fff", "left", 800, 1); y += 90; }
+  y = titulo(c, E.titulo, M, y, W - 2 * M, 130, 70, "#fff", 3) + 40;
+  if (E.lista.length) T(c, H > W * 1.5 ? "Lista completa no nosso post 👆" : `Veja onde vale ➜`, M, Math.min(y + 30, H - 170), 34, MARCA.corpo, COR.am, "left", 800);
+  rodapeP(c, W, H, true, "Siga @partiu.085 · ative o sininho 🔔"); }; }
+function telaMiLista(E, itens, pos, n, tema, cont) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
+  let y = titulo(c, E.listaTit + (cont ? " (cont.)" : ""), M, 200, PW - 2 * M, 96, 60, K.tx, 2) + 50;
+  const duas = itens.length > 7 && itens.every(i => i.length < 17), col = duas ? 2 : 1, porCol = Math.ceil(itens.length / col), cw = (PW - 2 * M) / col, lh = Math.min(118, (PH - 230 - y) / porCol);
+  itens.forEach((it, i) => { const cx = M + Math.floor(i / porCol) * cw, cy = y + (i % porCol) * lh;
+    c.fillStyle = K.ac; c.beginPath(); c.arc(cx + 22, cy + lh / 2 - 8, 20, 0, 7); c.fill(); T(c, "✓", cx + 22, cy + lh / 2 + 1, 24, MARCA.corpo, K.dk ? COR.tinta : (tema === "amarelo" ? COR.am : "#fff"), "center", 800);
+    const fs = Math.min(42, lh * .42); c.font = `700 ${fs}px ${MARCA.corpo}`; let t = it; while (c.measureText(t).width > cw - 80 && t.length > 4) t = t.slice(0, -2); if (t !== it) t = t.trim() + "…";
+    T(c, t, cx + 60, cy + lh / 2 + fs * .32 - 8, fs, MARCA.corpo, K.tx, "left", 700); });
+  rodapeP(c, PW, PH, K.dk, "Salva pra lembrar na hora de comprar"); }; }
+function telaMiTexto(tit, linhas, pos, n, tema, numerado) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
+  let y = titulo(c, tit, M, 220, PW - 2 * M, 104, 60, K.tx, 2) + 60;
+  linhas.forEach((l, i) => { const ny = y; if (numerado) T(c, String(i + 1).padStart(2, "0"), M, ny + 56, 70, MARCA.titulo, K.ac); else { c.fillStyle = K.ac; c.fillRect(M, ny + 6, 10, 56); }
+    y = paragrafo(c, l, M + (numerado ? 110 : 40), ny + 44, PW - 2 * M - (numerado ? 110 : 40), 40, MARCA.corpo, K.tx, 600, 1.3, 3) + 40; });
+  rodapeP(c, PW, PH, K.dk, "Salva e manda pra quem junta pontos"); }; }
+function postsMilhaNossos(x) {
+  const E = ntEd(x), temas = ["creme", "escuro"], telas = [telaMiCapa(x, E, PW, PH)], partes = [];
+  { const np = Math.ceil(E.lista.length / 10), tam = Math.ceil(E.lista.length / Math.max(1, np)); for (let i = 0; i < E.lista.length; i += tam) partes.push(E.lista.slice(i, i + tam)); }
+  const n = 1 + partes.length + (E.passos.length ? 1 : 0) + (E.avisos.length ? 1 : 0) + 1; let pos = 2, k = 0;
+  partes.forEach((pt, j) => telas.push(telaMiLista(E, pt, pos++, n, temas[k++ % 2], j > 0)));
+  if (E.passos.length) telas.push(telaMiTexto("Como aproveitar", E.passos, pos++, n, temas[k++ % 2], true));
+  if (E.avisos.length) telas.push(telaMiTexto("Fique de olho", E.avisos, pos++, n, temas[k++ % 2], false));
+  telas.push(c => capaTema(c, "amarelo", "Promoção boa some rápido", "A gente avisa as melhores de milhas", "Segue o @partiu.085 e ativa o sininho 🔔", "", "Siga @partiu.085 · ative o sininho 🔔"));
+  const vd = validadeNoticia(x), prazoTxt = E.prazo ? `⏰ ${E.prazo}${vd.explicita ? ` (até ${vd.ate.slice(8, 10)}/${vd.ate.slice(5, 7)})` : ""}\n\n` : "";
+  const leg = `💳 ${E.sub.toUpperCase()}: ${E.titulo.toUpperCase()}\n\n${prazoTxt}${E.lista.length ? `📍 ${E.listaTit}:\n${E.lista.map(i => "▪️ " + i).join("\n")}\n\n` : ""}${E.passos.length ? `✅ Como aproveitar:\n${E.passos.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n` : ""}${E.avisos.length ? `⚠️ Fique de olho:\n${E.avisos.map(a => "• " + a).join("\n")}\n\n` : ""}Confira as regras completas no site ou app do programa antes de comprar.\n\n🔔 Segue o @partiu.085 pra não perder a próxima.\n\n${HASH}`;
+  const id = "nt-" + (x.link || x.titulo).replace(/\W+/g, "").slice(-28), sto = telaMiCapa(x, E, SW, SH);
+  return [{ id, valido: vd.ate, grupo: "feed", tipo: "Notícia · milhas", rot: "Notícia", titulo: `💳 ${E.sub}: ${curto(E.titulo, 50)}`, porque: "Post nosso, feito com os fatos da promoção (parceiros, regras, prazo). Dá pra ajustar tudo no quadro ✏️ Ajustar.", fmt: `Carrossel · ${telas.length} telas`, telas, legenda: leg, noticia: true },
+    { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Capa em formato story.", fmt: "Story 9:16", stories: true, telas: [sto], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+}
+function ntEdHTML(x) { if (!x || !ntTemDet(x)) return ""; const E = ntEd(x), ta = (k, v, r) => `<textarea data-nted="${k}" rows="${r}">${esc(v)}</textarea>`;
+  return `<details class="card pa-nt" open><summary><b>✏️ Ajustar o post</b> <small class="sub">o robô tirou os fatos da notícia; confira e mude o que quiser</small></summary>
+    <div class="form pa-nt-f" style="margin-top:12px">
+      <div class="field"><label>Programa / loja (topo da capa)</label><input data-nted="sub" value="${esc(E.sub)}"></div>
+      <div class="field"><label>Prazo</label><input data-nted="prazo" value="${esc(E.prazo)}" placeholder="Só hoje · Até 12/10"></div>
+      <div class="field" style="grid-column:1/-1"><label>Título da capa</label><input data-nted="titulo" value="${esc(E.titulo)}"></div>
+      <div class="field"><label>Título da lista</label><input data-nted="listaTit" value="${esc(E.listaTit)}"></div>
+      <div class="field" style="grid-column:1/-1"><label>Lista (1 por linha: parceiro, loja, destino…)</label>${ta("lista", E.lista.join("\n"), 6)}</div>
+      <div class="field" style="grid-column:1/-1"><label>Como aproveitar (1 passo por linha)</label>${ta("passos", E.passos.join("\n"), 4)}</div>
+      <div class="field" style="grid-column:1/-1"><label>Fique de olho (1 por linha, pode deixar vazio)</label>${ta("avisos", E.avisos.join("\n"), 3)}</div>
+      <div class="field"><button class="bt pri" data-act="ntedok">Atualizar arte</button></div></div></details>`; }
+document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.nted; if (!k) return; const x = (PA.noticias || [])[PA.ntSel]; if (!x) return;
+  PA.ntEd = PA.ntEd || {}; const ch = ntChave(x), o = PA.ntEd[ch] = PA.ntEd[ch] || {}; const v = e.target.value;
+  o[k] = ["lista", "passos", "avisos"].includes(k) ? v.split("\n").map(s => s.trim()).filter(Boolean) : v; try { localStorage.setItem("p085_nt_ed", JSON.stringify(PA.ntEd)); } catch (z) { } });
+document.addEventListener("click", e => { if (e.target.closest('[data-act="ntedok"]')) { render(); setTimeout(() => { const g = document.getElementById("pa-grade"); if (g) g.scrollIntoView({ behavior: "smooth" }); }, 400); } });
+try { PA.ntEd = JSON.parse(localStorage.getItem("p085_nt_ed") || "{}"); } catch (e) { PA.ntEd = {}; }
+
 async function postsDaNoticia(x) {
+  if (ntTemDet(x)) return postsMilhaNossos(x);
   const cat = ntCategoria(x), tit = ntTitulo(x.titulo), res = ntResumo(x), prog = PROG_NT.find(p => p[0].test(x.titulo));
   const iata = x.img ? "" : ntFotoIata(x);
   const im = await ntImg(x.img || (iata ? `fotos/${iata}.jpg` : ""));

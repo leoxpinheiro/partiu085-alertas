@@ -575,64 +575,111 @@ function heroAviao(c, W, H) {
 }
 /* ===== notícia de milhas do NOSSO jeito: a gente pega só os fatos (parceiros, regras, prazo) e monta um carrossel próprio ===== */
 const MAIUSC1 = t => { t = String(t || "").trim(); return t.charAt(0).toUpperCase() + t.slice(1); };
-function ntTemDet(x) { const d = x.det || {}; return (d.lista && d.lista.length >= 2) || (x.cat === "milhas" && d.destaque); }
-function ntEd(x) { const d = x.det || {}, k = ntChave(x), e = (PA.ntEd || {})[k] || {}, prog = PROG_NT.find(p => p[0].test(x.titulo + " " + (x.resumo || "")));
-  const porReal = /pontos? (?:\w+ )?por (real|dolar)|\d+\s*[x×]\s*1/i.test((d.destaque || "") + x.titulo), bonus = /b[oô]nus/i.test((d.destaque || "") + x.titulo);
-  const passosPad = porReal ? ["Entre no site ou app do programa e faça login", "Escolha a loja e vá pra ela clicando por ali", "Compre normalmente e guarde o comprovante", "Os pontos caem no prazo de cada loja"]
-    : bonus ? ["Veja quantos pontos você tem no banco ou cartão", "Transfira dentro do prazo da promoção", "Quem assina o clube costuma ganhar o bônus maior", "As milhas do bônus caem em alguns dias"] : [];
-  const prazo = d.prazo ? (/hoje/i.test(d.prazo) ? "Só hoje" : MAIUSC1(d.prazo.replace(/^ate/, "até").replace(/^valid[ao]s? ate/, "válido até"))) : "";
-  return { prog, titulo: e.titulo ?? MAIUSC1((d.destaque || ntTitulo(x.titulo)).replace(/\bate\b/g, "até").replace(/bonus/g, "bônus").replace(/\b(livelo|esfera|smiles|latam pass|azul)\b/gi, w => w.replace(/\b\w/g, l => l.toUpperCase())).replace(/r\$/i, "R$")), sub: e.sub ?? (prog ? prog[1] : "Milhas"), prazo: e.prazo ?? prazo,
-    listaTit: e.listaTit ?? (d.lista_tit || "Onde vale"), lista: e.lista ?? (d.lista || []), passos: e.passos ?? ((d.passos && d.passos.length ? d.passos : passosPad).slice(0, 4)), avisos: e.avisos ?? ((d.avisos || []).slice(0, 3)) }; }
+function ntTemDet(x) { const d = x.det || {}; return x.cat === "milhas" && ((d.lista && d.lista.length >= 2) || d.destaque || /pontos|milhas|b[oô]nus/i.test(x.titulo)); }
+const PROGS = [["LATAM Pass", /latam ?pass|\blatam\b/i, "#C8102E"], ["Azul Fidelidade", /azul fidelidade|tudo ?azul|\bazul\b/i, "#0B4EA2"], ["Smiles", /smiles/i, "#F26B21"], ["Livelo", /livelo/i, "#D6006E"], ["Esfera", /esfera/i, "#CC092F"],
+  ["ALL Accor", /\ball\b(?: accor| signature)?|accor/i, "#1E1852"], ["TAP Miles&Go", /\btap\b/i, "#1D7A3A"], ["Inter Loop", /\binter\b/i, "#FF7A00"], ["Itaú", /ita[uú]/i, "#EC7000"], ["Banco do Nordeste", /banco do nordeste|\bbnb\b/i, "#A6192E"],
+  ["Uau CAIXA", /uau ?caixa|\bcaixa\b/i, "#005CA9"], ["Bradesco", /bradesco/i, "#CC092F"], ["C6 Átomos", /\bc6\b|[aá]tomos/i, "#242424"], ["Iupp", /iupp/i, "#5E2CA5"], ["Nubank", /nubank/i, "#820AD1"], ["Santander", /santander/i, "#EC0000"], ["BRB", /\bbrb\b/i, "#0057A8"]];
+/* entende o tipo da promoção e cria um título que chama atenção (o painel deixa você mudar tudo) */
+function ntAnalisa(x) {
+  const t = x.titulo || "", s = sem(t), d = x.det || {}, ach = PROGS.map(p => ({ p, i: t.search(p[1]) })).filter(o => o.i >= 0).sort((a, b) => a.i - b.i).map(o => o.p);
+  const para = t.match(/\bpara (?:o |a )?([A-ZÁÉÍÓÚ][\w&áéíóúçãõ ]+?)(?=$| com| e | até| no| na|[!,.])/), daOri = t.match(/\b(?:d[oa]s?|de) (?:pontos )?(?:d[oa] )?([A-ZÁÉÍÓÚ][\w&áéíóúçãõ ]+?)(?=$| para| com| e | até|[!,.])/);
+  const achaP = nome => nome && PROGS.find(p => p[1].test(nome));
+  let destino = achaP(para && para[1]) || null, origem = achaP(daOri && daOri[1]) || null;
+  if (/b[oô]nus/i.test(t) && !destino && ach.length) { destino = ach[0]; origem = origem || ach.find(p => p !== destino) || null; }
+  if (origem === destino) origem = null;
+  const prog = destino || ach[0] || null;
+  const n = rx => { const m = s.match(rx); return m ? +m[1] : 0; };
+  const prazoT = /acaba hoje|so hoje|somente hoje|ultimo dia|apenas hoje/.test(s) ? "Só hoje" : /prorrog/.test(s) ? "Prorrogado" : "";
+  const prazoD = d.prazo ? (/hoje/i.test(d.prazo) ? "Só hoje" : MAIUSC1(d.prazo.replace(/^valid[ao]s? /, "").replace(/\bate\b/g, "até").replace(/o dia /, ""))) : "";
+  const prazo = prazoT || prazoD;
+  let tipo = "geral", N = 0;
+  if ((N = n(/ate (\d+) pontos? (?:\w+ )?por real/) || n(/(\d+) pontos? (?:\w+ )?por real/) || n(/(\d+)\s*[x×]\s*1/))) tipo = "porreal";
+  else if ((N = n(/(\d+)% de bonus/) || n(/bonus de (?:ate )?(\d+)%/))) tipo = /compra de (milhas|pontos)/.test(s) ? "compra" : "bonus";
+  else if ((N = n(/(\d+)% de desconto/) || n(/desconto de (?:ate )?(\d+)%/) || n(/(\d+)% off/))) tipo = /compra de (pontos|milhas)/.test(s) ? "compra" : /passage|voo|emiss/.test(s) ? "desconto_voo" : "compra";
+  else if ((N = n(/a partir de ([\d.]+) mil (?:milhas|pontos)/))) tipo = "passagem";
+  const P = prog ? prog[0] : "", moeda = /smiles|latam|azul|tap/i.test(P) ? "milhas" : "pontos";
+  const limpo = ntTitulo(t).replace(/^(alerta ppv!?|acaba hoje!?|s[oó] hoje!?|[uú]ltimo dia!?|prorrogou!?|prorrogado!?|olho no e-?mail!?|partiu [\wé]+!?|continua!?)\s*/i, "");
+  const H = { porreal: { kick: prazo === "Só hoje" ? "Hoje é dia de pontuar" : "Compre e pontue", tit: `Até ${N} pontos por real${P ? " na " + P : ""}`, gancho: [`R$ 300 de compra`, `= até ${(300 * N).toLocaleString("pt-BR")} pontos`, `Compra que você ia fazer de qualquer jeito, rendendo ${N}x mais.`] },
+    bonus: { kick: "Bônus de transferência", tit: origem && destino ? `${origem[0]} → ${destino[0]}: até ${N}% de bônus` : `Até ${N}% de bônus${P ? " pra " + P : ""}`, gancho: ["10.000 pontos", `viram até ${Math.round(10000 * (1 + N / 100)).toLocaleString("pt-BR")} ${moeda}`, `É o mesmo ponto, rendendo ${N}% a mais. Sem bônus, nunca transfira.`] },
+    compra: { kick: "Pontos em promoção", tit: `${P || "Milhas"} com até ${N}% ${/b[oô]nus/i.test(t) ? "de bônus" : "OFF"} na compra`, gancho: null },
+    desconto_voo: { kick: "Passagem com desconto", tit: `${N}% OFF em passagens${P ? " com " + P : ""}`, gancho: null },
+    passagem: { kick: "Passagem com milhas", tit: limpo, gancho: null }, geral: { kick: "Milhas e pontos", tit: limpo, gancho: null } }[tipo];
+  return { tipo, N, prog, origem, destino, prazo, moeda, ...H };
+}
+function ntEd(x) { const d = x.det || {}, e = (PA.ntEd || {})[ntChave(x)] || {}, A = ntAnalisa(x);
+  const curta = (d.lista || []).filter(i => i.length <= 60), ehTier = curta.filter(i => /·/.test(i) && /\d/.test(i)).length >= 2;
+  const passos = { porreal: ["Entre no site ou app do programa (" + (A.prog ? A.prog[0] : "Livelo, Esfera…") + ") e faça login", "Escolha a loja e clique pra ir até ela por ali", "Compre normal. Os pontos caem no prazo da loja"],
+    bonus: ["Veja quantos pontos você tem no cartão ou no banco", "Faça a transferência dentro do prazo da promoção", "Quem assina clube costuma ganhar a faixa maior"],
+    compra: ["Compare o preço do milheiro antes de comprar", "Só compre se já tiver uma viagem em mente", "Assinante de clube costuma pagar menos"] }[A.tipo] || (d.passos || []).filter(p => p.length < 110).slice(0, 3);
+  return { ...A, kick: e.kick ?? A.kick, titulo: e.titulo ?? A.tit, prazo: e.prazo ?? A.prazo, gancho: e.gancho ?? (A.gancho ? A.gancho.join("\n") : ""),
+    listaTit: e.listaTit ?? (ehTier ? "Quanto você ganha" : A.tipo === "porreal" ? "Onde pontuar" : (d.lista_tit && d.lista_tit.length < 40 ? d.lista_tit : "Onde vale")),
+    lista: e.lista ?? curta.slice(0, 16), tier: (e.lista ? e.lista.filter(i => /·/.test(i) && /\d/.test(i)).length >= 2 : ehTier), passos: e.passos ?? passos, avisos: e.avisos ?? ((d.avisos || []).filter(a => a.length < 120).slice(0, 2)) }; }
 function telaMiCapa(x, E, W, H) { return c => {
-  const cor = E.prog ? E.prog[2] : "#0B4EA2", hh = H * .5;
+  const cor = E.prog ? E.prog[2] : "#0B4EA2", story = H > W * 1.5, hh = H * (story ? .42 : .4);
   c.fillStyle = cor; c.fillRect(0, 0, W, H);
-  const g0 = c.createRadialGradient(W * .85, H * .08, 20, W * .85, H * .08, W * 1.1); g0.addColorStop(0, "rgba(255,255,255,.25)"); g0.addColorStop(1, "rgba(0,0,0,.2)"); c.fillStyle = g0; c.fillRect(0, 0, W, H);
-  c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .15, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore();
-  const g = c.createLinearGradient(0, hh - 200, 0, hh + 160); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 200, W, 360); c.fillStyle = COR.navy; c.fillRect(0, hh + 158, W, H);
-  marca(c, W, true, "MILHAS");
-  T(c, (E.sub || "").toUpperCase(), M, hh - 120, caber(c, (E.sub || "").toUpperCase(), W - 2 * M, 130, MARCA.titulo, 400, 60), MARCA.titulo, "rgba(255,255,255,.95)");
-  let y = hh + 20;
-  if (E.prazo) { const t = "⏰ " + E.prazo.toUpperCase(); c.font = `800 30px ${MARCA.corpo}`; const w = c.measureText(t).width + 50; c.fillStyle = "#E5484D"; rr(c, M, y, w, 58, 29); c.fill(); T(c, t, M + 25, y + 40, 30, MARCA.corpo, "#fff", "left", 800, 1); y += 90; }
-  y = titulo(c, E.titulo, M, y, W - 2 * M, 130, 70, "#fff", 3) + 40;
-  if (E.lista.length) T(c, H > W * 1.5 ? "Lista completa no nosso post 👆" : `Veja onde vale ➜`, M, Math.min(y + 30, H - 170), 34, MARCA.corpo, COR.am, "left", 800);
+  const g0 = c.createRadialGradient(W * .85, H * .08, 20, W * .85, H * .08, W * 1.1); g0.addColorStop(0, "rgba(255,255,255,.28)"); g0.addColorStop(1, "rgba(0,0,0,.25)"); c.fillStyle = g0; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .1; for (let i = 0; i < 8; i++) { c.beginPath(); c.arc(W * .9, H * .12, 120 + i * 95, 0, 7); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(); } c.restore();
+  const g = c.createLinearGradient(0, hh - 120, 0, hh + 200); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, hh - 120, W, 320); c.fillStyle = COR.navy; c.fillRect(0, hh + 198, W, H);
+  marca(c, W, true, (E.prog ? E.prog[0] : "MILHAS").toUpperCase());
+  let y = story ? 330 : 250; kicker(c, E.kick, M, y, COR.am); y += 40;
+  if (E.prazo) { const t = "⏰ " + E.prazo.toUpperCase(); c.font = `800 30px ${MARCA.corpo}`; const w = c.measureText(t).width + 50; c.fillStyle = "#E5484D"; rr(c, M, y, w, 58, 29); c.fill(); T(c, t, M + 25, y + 40, 30, MARCA.corpo, "#fff", "left", 800, 1); }
+  y = titulo(c, E.titulo, M, Math.max(y + 110, hh - 40), W - 2 * M, story ? 150 : 140, 76, "#fff", 4) + 46;
+  const tz = E.lista.length && !E.tier ? `${E.lista.slice(0, 3).map(i => i.split(" · ")[0]).join(", ")}${E.lista.length > 3 ? ` e mais ${E.lista.length - 3}` : ""}` : "";
+  if (tz) y = paragrafo(c, tz, M, y, W - 2 * M, 38, MARCA.corpo, "rgba(255,255,255,.85)", 700, 1.3, 2) + 20;
+  T(c, story ? "Tudo explicado no nosso post 👆" : "Arrasta que a gente explica ➜", M, Math.min(y + 30, H - (story ? 300 : 170)), 34, MARCA.corpo, COR.am, "left", 800);
   rodapeP(c, W, H, true, "Siga @partiu.085 · ative o sininho 🔔"); }; }
+function telaMiGancho(E, pos, n) { return c => { const K = TEMA.amarelo; K.bg(c, PW, PH); rota(c, PW, PH, COR.tinta, .12); marca(c, PW, false, `${pos}/${n}`);
+  const [a, b, r] = E.gancho.split("\n"); kicker(c, "Na prática", M, 380, COR.tinta);
+  let y = titulo(c, a || "", M, 420, PW - 2 * M, 130, 70, COR.tinta, 2) + 10;
+  { const B = (b || "").toUpperCase(); let sz = 116; while (sz > 60 && quebrar(c, B, PW - 2 * M - 70, sz, MARCA.titulo).length > 2) sz -= 6; const nl = Math.min(2, quebrar(c, B, PW - 2 * M - 70, sz, MARCA.titulo).length);
+    c.fillStyle = COR.tinta; rr(c, M - 6, y + 14, PW - 2 * M + 12, nl * sz * .98 + 44, 26); c.fill(); y = titulo(c, B, M + 30, y + 34, PW - 2 * M - 70, sz, 60, COR.am, 2) + 80; }
+  if (r) paragrafo(c, r, M, y, PW - 2 * M - 200, 40, MARCA.corpo, "rgba(15,42,71,.85)", 700, 1.3, 3);
+  desenhaMascote(c, PW - M - 120, PH - 450, 230); rodapeP(c, PW, PH, false, "Manda pra quem junta pontos"); }; }
+/* quadro de lojas/parceiros em "plaquinhas" (ou tabela de faixas de bônus) */
 function telaMiLista(E, itens, pos, n, tema, cont) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
-  let y = titulo(c, E.listaTit + (cont ? " (cont.)" : ""), M, 200, PW - 2 * M, 96, 60, K.tx, 2) + 50;
-  const duas = itens.length > 7 && itens.every(i => i.length < 17), col = duas ? 2 : 1, porCol = Math.ceil(itens.length / col), cw = (PW - 2 * M) / col, lh = Math.min(118, (PH - 230 - y) / porCol);
-  itens.forEach((it, i) => { const cx = M + Math.floor(i / porCol) * cw, cy = y + (i % porCol) * lh;
-    c.fillStyle = K.ac; c.beginPath(); c.arc(cx + 22, cy + lh / 2 - 8, 20, 0, 7); c.fill(); T(c, "✓", cx + 22, cy + lh / 2 + 1, 24, MARCA.corpo, K.dk ? COR.tinta : (tema === "amarelo" ? COR.am : "#fff"), "center", 800);
-    const fs = Math.min(42, lh * .42); c.font = `700 ${fs}px ${MARCA.corpo}`; let t = it; while (c.measureText(t).width > cw - 80 && t.length > 4) t = t.slice(0, -2); if (t !== it) t = t.trim() + "…";
-    T(c, t, cx + 60, cy + lh / 2 + fs * .32 - 8, fs, MARCA.corpo, K.tx, "left", 700); });
+  let y = titulo(c, E.listaTit + (cont ? " (cont.)" : ""), M, 200, PW - 2 * M, 104, 60, K.tx, 2) + 50;
+  const ink = K.dk ? "#fff" : COR.tinta, placa = K.dk ? "rgba(255,255,255,.1)" : "#fff";
+  if (E.tier) { const lh = Math.min(140, (PH - 230 - y) / itens.length);
+    itens.forEach((it, i) => { const p = it.split(" · "), dir = p.slice(1).join(" · "), cy = y + i * lh; c.fillStyle = placa; rr(c, M, cy, PW - 2 * M, lh - 16, 24); c.fill();
+      const fs = caber(c, p[0], PW - 2 * M - 360, Math.min(40, lh * .34), MARCA.corpo, 700, 22); T(c, p[0], M + 30, cy + (lh - 16) / 2 + fs * .35, fs, MARCA.corpo, ink, "left", 700);
+      const fs2 = Math.min(62, lh * .5); c.font = `400 ${fs2}px ${MARCA.titulo}`; T(c, dir, PW - M - 30, cy + (lh - 16) / 2 + fs2 * .36, caber(c, dir, 280, fs2, MARCA.titulo, 400, 28), MARCA.titulo, K.ac, "right"); });
+  } else { const col = itens.length > 5 ? 2 : 1, rows = Math.ceil(itens.length / col), gap = 18, cw = (PW - 2 * M - gap * (col - 1)) / col, lh = Math.min(150, (PH - 230 - y - gap * (rows - 1)) / rows);
+    itens.forEach((it, i) => { const cx = M + (i % col) * (cw + gap), cy = y + Math.floor(i / col) * (lh + gap); c.fillStyle = placa; rr(c, cx, cy, cw, lh, 22); c.fill();
+      if (!K.dk) { c.strokeStyle = "rgba(15,42,71,.08)"; c.lineWidth = 2; rr(c, cx, cy, cw, lh, 22); c.stroke(); }
+      let fs = Math.min(44, lh * .36); c.font = `800 ${fs}px ${MARCA.corpo}`; let L = estQuebrar(c, it, cw - 40); while ((L.length > 2 || L.some(l => c.measureText(l).width > cw - 40)) && fs > 20) { fs -= 2; c.font = `800 ${fs}px ${MARCA.corpo}`; L = estQuebrar(c, it, cw - 40); }
+      L = L.slice(0, 2); const ty = cy + lh / 2 - (L.length - 1) * fs * .55 + fs * .35; L.forEach((l, j) => T(c, l, cx + cw / 2, ty + j * fs * 1.1, fs, MARCA.corpo, ink, "center", 800)); }); }
   rodapeP(c, PW, PH, K.dk, "Salva pra lembrar na hora de comprar"); }; }
 function telaMiTexto(tit, linhas, pos, n, tema, numerado) { return c => { const K = TEMA[tema]; K.bg(c, PW, PH); marca(c, PW, K.dk, `${pos}/${n}`);
-  let y = titulo(c, tit, M, 220, PW - 2 * M, 104, 60, K.tx, 2) + 60;
-  linhas.forEach((l, i) => { const ny = y; if (numerado) T(c, String(i + 1).padStart(2, "0"), M, ny + 56, 70, MARCA.titulo, K.ac); else { c.fillStyle = K.ac; c.fillRect(M, ny + 6, 10, 56); }
-    y = paragrafo(c, l, M + (numerado ? 110 : 40), ny + 44, PW - 2 * M - (numerado ? 110 : 40), 40, MARCA.corpo, K.tx, 600, 1.3, 3) + 40; });
+  let y = titulo(c, tit, M, 240, PW - 2 * M, 110, 60, K.tx, 2) + 70;
+  linhas.forEach((l, i) => { const ny = y; if (numerado) T(c, String(i + 1).padStart(2, "0"), M, ny + 60, 76, MARCA.titulo, K.ac); else { c.fillStyle = K.ac; c.fillRect(M, ny + 4, 10, 60); }
+    y = paragrafo(c, l, M + (numerado ? 120 : 40), ny + 48, PW - 2 * M - (numerado ? 120 : 40), 44, MARCA.corpo, K.tx, 700, 1.28, 3) + 56; });
   rodapeP(c, PW, PH, K.dk, "Salva e manda pra quem junta pontos"); }; }
 function postsMilhaNossos(x) {
-  const E = ntEd(x), temas = ["creme", "escuro"], telas = [telaMiCapa(x, E, PW, PH)], partes = [];
-  { const np = Math.ceil(E.lista.length / 10), tam = Math.ceil(E.lista.length / Math.max(1, np)); for (let i = 0; i < E.lista.length; i += tam) partes.push(E.lista.slice(i, i + tam)); }
-  const n = 1 + partes.length + (E.passos.length ? 1 : 0) + (E.avisos.length ? 1 : 0) + 1; let pos = 2, k = 0;
-  partes.forEach((pt, j) => telas.push(telaMiLista(E, pt, pos++, n, temas[k++ % 2], j > 0)));
-  if (E.passos.length) telas.push(telaMiTexto("Como aproveitar", E.passos, pos++, n, temas[k++ % 2], true));
-  if (E.avisos.length) telas.push(telaMiTexto("Fique de olho", E.avisos, pos++, n, temas[k++ % 2], false));
-  telas.push(c => capaTema(c, "amarelo", "Promoção boa some rápido", "A gente avisa as melhores de milhas", "Segue o @partiu.085 e ativa o sininho 🔔", "", "Siga @partiu.085 · ative o sininho 🔔"));
-  const vd = validadeNoticia(x), prazoTxt = E.prazo ? `⏰ ${E.prazo}${vd.explicita ? ` (até ${vd.ate.slice(8, 10)}/${vd.ate.slice(5, 7)})` : ""}\n\n` : "";
-  const leg = `💳 ${E.sub.toUpperCase()}: ${E.titulo.toUpperCase()}\n\n${prazoTxt}${E.lista.length ? `📍 ${E.listaTit}:\n${E.lista.map(i => "▪️ " + i).join("\n")}\n\n` : ""}${E.passos.length ? `✅ Como aproveitar:\n${E.passos.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n` : ""}${E.avisos.length ? `⚠️ Fique de olho:\n${E.avisos.map(a => "• " + a).join("\n")}\n\n` : ""}Confira as regras completas no site ou app do programa antes de comprar.\n\n🔔 Segue o @partiu.085 pra não perder a próxima.\n\n${HASH}`;
-  const id = "nt-" + (x.link || x.titulo).replace(/\W+/g, "").slice(-28), sto = telaMiCapa(x, E, SW, SH);
-  return [{ id, valido: vd.ate, grupo: "feed", tipo: "Notícia · milhas", rot: "Notícia", titulo: `💳 ${E.sub}: ${curto(E.titulo, 50)}`, porque: "Post nosso, feito com os fatos da promoção (parceiros, regras, prazo). Dá pra ajustar tudo no quadro ✏️ Ajustar.", fmt: `Carrossel · ${telas.length} telas`, telas, legenda: leg, noticia: true },
-    { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Capa em formato story.", fmt: "Story 9:16", stories: true, telas: [sto], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
+  const E = ntEd(x), telas = [telaMiCapa(x, E, PW, PH)], partes = [];
+  { const max = E.tier ? 7 : 12, np = Math.ceil(E.lista.length / max), tam = Math.ceil(E.lista.length / Math.max(1, np)); for (let i = 0; i < E.lista.length; i += tam) partes.push(E.lista.slice(i, i + tam)); }
+  const temGancho = !!E.gancho.trim(), n = 1 + (temGancho ? 1 : 0) + partes.length + (E.passos.length ? 1 : 0) + (E.avisos.length ? 1 : 0) + 1; let pos = 2, k = 0; const tm = ["creme", "escuro"];
+  if (temGancho) telas.push(telaMiGancho(E, pos++, n));
+  partes.forEach((pt, j) => telas.push(telaMiLista(E, pt, pos++, n, tm[k++ % 2], j > 0)));
+  if (E.passos.length) telas.push(telaMiTexto("Como aproveitar", E.passos, pos++, n, tm[k++ % 2], true));
+  if (E.avisos.length) telas.push(telaMiTexto("Fique de olho", E.avisos, pos++, n, tm[k++ % 2], false));
+  telas.push(c => capaTema(c, "amarelo", "Não guarda só pra você", "Marca quem precisa ver isso 👇", "Promoção boa some rápido. Segue o @partiu.085 e ativa o sininho que a gente avisa.", "", "Siga @partiu.085 · ative o sininho 🔔"));
+  const vd = validadeNoticia(x), g = E.gancho.split("\n");
+  const leg = `🔥 ${E.titulo.toUpperCase()}${E.prazo ? ` (${E.prazo.toLowerCase()})` : ""}\n\n${temGancho ? `💡 Na prática: ${g[0]} ${g[1] || ""}\n\n` : ""}${E.lista.length ? `📍 ${E.listaTit}:\n${E.lista.map(i => "▪️ " + i).join("\n")}\n\n` : ""}${E.passos.length ? `✅ Como aproveitar:\n${E.passos.map((p, i) => `${i + 1}. ${p}`).join("\n")}\n\n` : ""}${E.avisos.length ? `⚠️ ${E.avisos.join(" ")}\n\n` : ""}Confira as regras no site ou app do programa antes.\n\n👇 Marca aquele amigo que junta pontos e não pode perder essa.\n\n${HASH}`;
+  const id = "nt-" + (x.link || x.titulo).replace(/\W+/g, "").slice(-28);
+  return [{ id, valido: vd.ate, grupo: "feed", tipo: "Notícia · milhas", rot: "Notícia", titulo: `💳 ${curto(E.titulo, 56)}`, porque: "Post nosso, montado com os fatos da promoção. Dá pra mudar título, lista e passos no quadro ✏️ Ajustar o post.", fmt: `Carrossel · ${telas.length} telas`, telas, legenda: leg, noticia: true },
+    { id: id + "-st", grupo: "stories", tipo: "Notícia", titulo: "Notícia · story", porque: "Capa em formato story.", fmt: "Story 9:16", stories: true, telas: [telaMiCapa(x, E, SW, SH)], legenda: `Adesivo de LINK: ${linkGrupo()}` }];
 }
 function ntEdHTML(x) { if (!x || !ntTemDet(x)) return ""; const E = ntEd(x), ta = (k, v, r) => `<textarea data-nted="${k}" rows="${r}">${esc(v)}</textarea>`;
-  return `<details class="card pa-nt" open><summary><b>✏️ Ajustar o post</b> <small class="sub">o robô tirou os fatos da notícia; confira e mude o que quiser</small></summary>
+  return `<details class="card pa-nt" open><summary><b>✏️ Ajustar o post</b> <small class="sub">o robô montou com os fatos da notícia; confira e mude o que quiser</small></summary>
     <div class="form pa-nt-f" style="margin-top:12px">
-      <div class="field"><label>Programa / loja (topo da capa)</label><input data-nted="sub" value="${esc(E.sub)}"></div>
+      <div class="field"><label>Chamada (etiqueta amarela)</label><input data-nted="kick" value="${esc(E.kick)}"></div>
       <div class="field"><label>Prazo</label><input data-nted="prazo" value="${esc(E.prazo)}" placeholder="Só hoje · Até 12/10"></div>
       <div class="field" style="grid-column:1/-1"><label>Título da capa</label><input data-nted="titulo" value="${esc(E.titulo)}"></div>
+      <div class="field" style="grid-column:1/-1"><label>Na prática (3 linhas: número, resultado, frase). Vazio = sem essa tela</label>${ta("gancho", E.gancho, 3)}</div>
       <div class="field"><label>Título da lista</label><input data-nted="listaTit" value="${esc(E.listaTit)}"></div>
-      <div class="field" style="grid-column:1/-1"><label>Lista (1 por linha: parceiro, loja, destino…)</label>${ta("lista", E.lista.join("\n"), 6)}</div>
-      <div class="field" style="grid-column:1/-1"><label>Como aproveitar (1 passo por linha)</label>${ta("passos", E.passos.join("\n"), 4)}</div>
-      <div class="field" style="grid-column:1/-1"><label>Fique de olho (1 por linha, pode deixar vazio)</label>${ta("avisos", E.avisos.join("\n"), 3)}</div>
+      <div class="field" style="grid-column:1/-1"><label>Lista (1 por linha). Faixas: "Cliente Azul · 40%"</label>${ta("lista", E.lista.join("\n"), 6)}</div>
+      <div class="field" style="grid-column:1/-1"><label>Como aproveitar (1 passo por linha)</label>${ta("passos", E.passos.join("\n"), 3)}</div>
+      <div class="field" style="grid-column:1/-1"><label>Fique de olho (pode deixar vazio)</label>${ta("avisos", E.avisos.join("\n"), 2)}</div>
       <div class="field"><button class="bt pri" data-act="ntedok">Atualizar arte</button></div></div></details>`; }
 document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.nted; if (!k) return; const x = (PA.noticias || [])[PA.ntSel]; if (!x) return;
   PA.ntEd = PA.ntEd || {}; const ch = ntChave(x), o = PA.ntEd[ch] = PA.ntEd[ch] || {}; const v = e.target.value;

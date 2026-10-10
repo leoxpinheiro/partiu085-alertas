@@ -41,10 +41,10 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
    "estufado" como numa bola: o meio cresce na largura E na altura, as linhas de cima curvam pra cima e as de baixo pra baixo.
    A borda da lente fica longe do texto e é contínua, então não aparece emenda. */
 function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
-  const k = Math.max(0, Math.min(100, forca || 0)) / 100 * .5, S = 3, ls = c.letterSpacing || "0px";
+  const k = Math.max(0, Math.min(100, forca || 0)) / 100 * .42, S = 3, ls = c.letterSpacing || "0px";
   c.save(); c.font = fonte; if ("letterSpacing" in c) c.letterSpacing = ls;
   const maxW = Math.max(1, ...linhas.map(l => c.measureText(l).width)), n = linhas.length;
-  const Rx = Math.min(W / 2 - 4, maxW / 2 * 1.12 + fs * .45), Ry = Math.min(H / 2 - 4, n * lh / 2 * 1.3 + fs * .7);
+  const Rx = Math.min(W / 2 - 4, maxW / 2 * 1.06 + fs * .3), Ry = Math.min(H / 2 - 4, (n * lh / 2 + fs * .3) * (1 + k * 1.6) + fs * .4);
   const w = Math.ceil(2 * Rx), h = Math.ceil(2 * Ry);
   const src = document.createElement("canvas"); src.width = w * S; src.height = h * S; const g = src.getContext("2d");
   g.scale(S, S); g.font = fonte; if ("letterSpacing" in g) g.letterSpacing = ls; g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = cor;
@@ -59,8 +59,9 @@ function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) 
     const sub = [[.25, .25], [.75, .25], [.25, .75], [.75, .75]];
     for (let py = 0; py < h; py++) for (let px = 0; px < w; px++) {
       let a = 0;
-      for (const [ox, oy] of sub) { const u = (px + ox - Rx) / Rx, v = (py + oy - Ry) / Ry, r2 = u * u + v * v;
-        const f = r2 < 1 ? 1 - k * (1 - r2) * (1 - r2) : 1; a += amostra((u * f * Rx + Rx) * S, (v * f * Ry + Ry) * S); }
+      for (const [ox, oy] of sub) { const u = (px + ox - Rx) / Rx, v = (py + oy - Ry) / Ry, q = Math.max(0, 1 - u * u);
+        // cada coluna estica na altura conforme a distância do meio: o centro sobe e desce, as pontas ficam baixinhas
+        const fy = 1 - k * q, fx = 1 - k * .3 * q; a += amostra((u * fx * Rx + Rx) * S, (v * fy * Ry + Ry) * S); }
       if (a > 0) { const o = (py * w + px) * 4; D[o + 3] = a / 4; } }
     // cor sólida + alfa calculado
     const rgb = (() => { const t = document.createElement("canvas").getContext("2d"); t.fillStyle = cor; t.fillRect(0, 0, 1, 1); return t.getImageData(0, 0, 1, 1).data; })();

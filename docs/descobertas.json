@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-10T02:45+00:00",
+ "atualizado": "2026-10-10T03:52+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -8,7 +8,6 @@
   "CWB",
   "FLN",
   "LIS",
-  "MAD",
   "POA",
   "REC",
   "RIO",
@@ -202,6 +201,19 @@
    "pista": false
   },
   {
+   "iata": "IGU",
+   "rt": {
+    "preco": 1498,
+    "ida": "2026-11-19",
+    "volta": "2026-11-23",
+    "paradas": 2,
+    "visto": "2026-10-10T02:54:42Z"
+   },
+   "rastreada": true,
+   "nome": "Foz do Iguaçu",
+   "pista": false
+  },
+  {
    "iata": "POA",
    "rt": {
     "preco": 1637,
@@ -219,19 +231,6 @@
    },
    "rastreada": true,
    "nome": "Porto Alegre",
-   "pista": true
-  },
-  {
-   "iata": "MAD",
-   "ow": {
-    "preco": 1773,
-    "ida": "2026-11-18",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-06T03:03:58Z"
-   },
-   "rastreada": true,
-   "nome": "Madri",
    "pista": true
   },
   {
@@ -379,13 +378,6 @@
     "volta": "2026-11-19",
     "paradas": 4,
     "visto": "2026-10-10T02:18:29Z"
-   },
-   "ow": {
-    "preco": 3052,
-    "ida": "2026-12-09",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-10-06T03:37:03Z"
    },
    "rastreada": false,
    "nome": "MOW",

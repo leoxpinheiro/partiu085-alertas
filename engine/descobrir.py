@@ -154,7 +154,7 @@ def fotos_noticias(itens: list) -> None:
                 continue
         if ant.get("resumo") and not it.get("resumo"):
             it["resumo"] = ant["resumo"]
-        if not it.get("det") and (ant.get("det") or {}).get("v") == 2:
+        if not it.get("det") and (ant.get("det") or {}).get("v") == 3:
             it["det"] = ant["det"]
         if not it.get("det") and it.get("cat") == "milhas" and baixados + decod < 40:
             try:
@@ -254,7 +254,7 @@ def detalhes_materia(h: str, titulo: str = "") -> dict:
     m = re.search(r"(somente|so|apenas) (hoje|neste \w+|nesta \w+)|valid[ao]s? ate (?:o dia )?(\d{1,2}/\d{1,2}(?:/\d{2,4})?|\d{1,2} de \w+)|ate (?:as \d{1,2}h\d* )?(?:do dia |de )?(\d{1,2}/\d{1,2})", txt)
     if m:
         det["prazo"] = m.group(0)
-    det["v"] = 2
+    det["v"] = 3
     return det
 
 

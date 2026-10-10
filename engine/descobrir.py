@@ -302,6 +302,9 @@ def noticias() -> None:
                 resumo = ""
             m = re.search(r'<media:(?:content|thumbnail)[^>]+url="([^"]+)"', item) or re.search(r'<enclosure[^>]+url="([^"]+\.(?:jpe?g|png|webp)[^"]*)"', item) or re.search(r'<img[^>]+src="([^"]+)"', html.unescape(bruto))
             det = detalhes_materia(bruto, tit) if len(bruto) > 1500 else {}
+            if "10x1" in tit.lower().replace("×", "x"):  # DEBUG temporário
+                i0 = bruto.lower().find("parceiro")
+                det["dbg"] = f"len={len(bruto)} " + bruto[max(0, i0 - 300):i0 + 1500]
             itens.append({"det": det, "cat": "milhas" if milha else "voos", "titulo": tit, "link": link, "fonte": fonte, "data": dt.isoformat(), "resumo": resumo[:400], "img_url": m.group(1) if m else ""})
     itens.sort(key=lambda i: i["data"], reverse=True)
     itens = [i for i in itens if i["cat"] == "milhas"][:45] + [i for i in itens if i["cat"] != "milhas"][:30]  # milhas não espreme as de voos

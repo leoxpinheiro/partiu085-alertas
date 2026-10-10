@@ -39,23 +39,27 @@ async function crCarregar() {
   if (!CRS.fundos) { if (typeof estCarregar === "function") await estCarregar();
     const m = await getJSON("midia.json", { fotos: {} }), fm = typeof ghJSON === "function" ? await ghJSON("docs/fotos_meus.json", []) : [];
     CRS.fotosMeus = fm || [];
-    const vids = (EST.lista || []).map(v => ({ src: v.poster, cat: v.cat, meu: v.meu })).filter(v => v.src);
+    const vids = (EST.todos || EST.lista || []).map(v => ({ src: v.poster, video: v.src, cat: v.cat, meu: v.meu })).filter(v => v.src);
     const fotos = Object.entries(m.fotos || {}).flatMap(([k, L]) => (L || []).map(x => ({ src: x.arq, cat: "Fotos" })));
     CRS.fundos = [...CRS.fotosMeus.map(f => ({ src: f.src, cat: f.cat || "Minhas fotos", meu: true })).reverse(), ...vids, ...fotos]; }
   if (!CRS.atual) { try { CRS.atual = JSON.parse(localStorage.getItem("p085_cr_atual") || "null"); } catch (e) { } CRS.atual = CRS.atual || crNovo(3); }
 }
+const crOcultos = () => (typeof VB !== "undefined" && VB.cfg && VB.cfg.ocultos) || [];
+const crOculto = f => crOcultos().includes(f.src) || (f.video && crOcultos().includes(f.video));
 function crGuardarLocal() { try { localStorage.setItem("p085_cr_atual", JSON.stringify(CRS.atual)); localStorage.setItem("p085_carrosseis", JSON.stringify(CRS.lista || [])); } catch (e) { } }
 async function crSalvarLista(msg) { crGuardarLocal(); if (!token()) { toast("Salvo só neste aparelho (conecte em Ajustes pra salvar no painel)."); return; } try { await salvarArquivo("docs/carrosseis.json", CRS.lista, msg); } catch (e) { toast("Não salvou no painel: " + e.message); } }
 
 /* ---------- página ---------- */
 function pCarrossel() {
-  if (!CRS.lista || !CRS.fundos || !CRS.atual) { crCarregar().then(() => { if (/#carrossel/.test(location.hash)) render(); }); return head("🖼️ Carrosséis", "Carregando…") + `<div class="card vazio">Carregando…</div>`; }
+  if (!CRS.lista || !CRS.fundos || !CRS.atual) { crCarregar().then(() => { if (/#carrossel/.test(location.hash)) render(); }); return head("Estúdio", "Carregando…") + estAbas("carrossel") + `<div class="card vazio">Carregando…</div>`; }
   const car = CRS.atual, t = car.telas[CRS.tela] || car.telas[0], fontes = typeof estFontes === "function" ? estFontes() : [["Plus Jakarta Sans", "Moderna"]];
-  const cats = ["Todas", ...new Set(CRS.fundos.map(f => f.cat))], fvis = CRS.catF === "Todas" ? CRS.fundos : CRS.fundos.filter(f => f.cat === CRS.catF);
+  const vivos = CRS.fundos.filter(f => !crOculto(f)), apag = CRS.fundos.filter(crOculto);
+  const cats = ["Todas", ...new Set(vivos.map(f => f.cat))], fvis = CRS.catF === "🗑️ Apagados" ? apag : CRS.catF === "Todas" ? vivos : vivos.filter(f => f.cat === CRS.catF);
+  const fSel = CRS.fundos.find(f => f.src === t.fundo);
   const rng = (k, l, min, max, v) => `<label class="est-r"><span>${l}</span><input type="range" min="${min}" max="${max}" value="${v}" data-cr="${k}"></label>`;
   const amanha = isoLocal(new Date(Date.now() + 864e5)).slice(0, 10) + "T12:00";
   setTimeout(crPintar, 0);
-  return head("🖼️ Carrosséis", "Monte do seu jeito: quantas telas quiser, sua frase, fundo do seu banco, sua fonte. Salve, aprove e mande pra agenda.") + `
+  return head("Estúdio", "Crie Reels e carrosséis, aprove e vá postando.") + estAbas("carrossel") + `
   <div class="est cr">
     <div class="est-prev"><div class="cr-tela"><canvas id="cr-cv" width="${PW}" height="${PH}"></canvas></div>
       <div class="cr-tiras" id="cr-tiras">${car.telas.map((_, i) => `<button class="cr-mini ${i === CRS.tela ? "on" : ""}" data-act="crtela" data-i="${i}"><canvas width="108" height="135" id="cr-m-${i}"></canvas><small>${i + 1}</small></button>`).join("")}</div>
@@ -67,7 +71,8 @@ function pCarrossel() {
         ${rng("ttam", "Tamanho só desta tela", 50, 170, t.tam || car.tam)}</div>
       <div class="card"><div class="vb-top"><b>Fundo da tela ${CRS.tela + 1}</b><span><button class="bt sm ghost" data-act="crfundotodas">Usar em todas</button>
         <label class="bt sm pri vb-subir">＋ Subir foto<input type="file" accept="image/*" id="cr-foto" multiple hidden></label></span></div>
-        <div class="vb-cats">${cats.map(c => `<button class="vb-cat ${CRS.catF === c ? "on" : ""}" data-act="crcat" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+        <div class="vb-cats">${cats.map(c => `<button class="vb-cat ${CRS.catF === c ? "on" : ""}" data-act="crcat" data-c="${esc(c)}">${esc(c)}</button>`).join("")}${apag.length ? `<button class="vb-cat ${CRS.catF === "🗑️ Apagados" ? "on" : ""}" data-act="crcat" data-c="🗑️ Apagados">🗑️ Apagados <small>${apag.length}</small></button>` : ""}</div>
+        ${fSel ? `<div class="vb-sel"><small>Fundo selecionado:</small>${crOculto(fSel) ? `<button class="bt sm" data-act="crvoltafundo">↩ Recuperar</button>` : `<button class="bt sm ghost" data-act="crapagafundo">🗑️ Apagar do banco</button>`}<small class="sub">${fSel.video ? "apaga também o vídeo no Reels" : ""}</small></div>` : ""}
         <div class="cr-fundos">${fvis.map(f => `<button class="cr-f ${f.src === t.fundo ? "on" : ""}" data-act="crfundo" data-src="${esc(f.src)}" style="background-image:url(${esc(f.prev || f.src)})">${f.meu ? `<span class="vb-meu">seu</span>` : ""}</button>`).join("")}</div></div>
       <div class="card"><b>Estilo (vale pro carrossel todo)</b>
         <div class="est-fontes">${fontes.map(([f, d]) => `<button class="est-f ${f === car.fonte ? "on" : ""}" data-act="crfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}</div>
@@ -127,6 +132,11 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
   else if (a === "crmover") { sync(); const d = +b.dataset.d, j = CRS.tela + d; if (j < 0 || j >= car.telas.length) return; [car.telas[CRS.tela], car.telas[j]] = [car.telas[j], car.telas[CRS.tela]]; CRS.tela = j; crGuardarLocal(); render(); }
   else if (a === "crcat") { sync(); CRS.catF = b.dataset.c; render(); }
   else if (a === "crfundo") { car.telas[CRS.tela].fundo = b.dataset.src; document.querySelectorAll(".cr-f").forEach(x => x.classList.toggle("on", x === b)); crMudou(); }
+  else if (a === "crapagafundo" || a === "crvoltafundo") { const f = CRS.fundos.find(x => x.src === car.telas[CRS.tela].fundo); if (!f || typeof VB === "undefined") return; const ks = [f.src, f.video].filter(Boolean);
+    VB.cfg.ocultos = a === "crapagafundo" ? [...new Set([...VB.cfg.ocultos, ...ks])] : VB.cfg.ocultos.filter(x => !ks.includes(x));
+    if (EST.todos) EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src));
+    if (a === "crapagafundo") { const prox = CRS.fundos.find(x => !crOculto(x) && (CRS.catF === "Todas" || x.cat === CRS.catF)) || CRS.fundos.find(x => !crOculto(x)); if (prox) car.telas[CRS.tela].fundo = prox.src; toast("Apagado do banco. Se mudar de ideia, está em 🗑️ Apagados."); }
+    crGuardarLocal(); render(); vbSalvarCfg(a === "crapagafundo" ? "Banco: apaga fundo" : "Banco: recupera fundo"); }
   else if (a === "crfundotodas") { car.telas.forEach(x => x.fundo = car.telas[CRS.tela].fundo); crMudou("todas"); toast("Fundo aplicado em todas as telas."); }
   else if (a === "crfonte") { car.fonte = b.dataset.f; document.querySelectorAll('[data-act="crfonte"]').forEach(x => x.classList.toggle("on", x === b)); crMudou("todas"); }
   else if (a === "crcor") { car.cor = b.dataset.c; document.querySelectorAll('[data-act="crcor"]').forEach(x => x.classList.toggle("on", x === b)); crMudou("todas"); }

@@ -211,10 +211,11 @@ const MENU = [
   ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
-  ["Divulgação", [["pauta", "star", "Pauta do Instagram"], ["estudio", "play", "🎬 Reels"], ["carrossel", "image", "🖼️ Carrosséis"], ["instagram", "calendar", "Instagram: agenda"], ["respostas", "send", "Respostas prontas"], ["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#A78BFA"],
-  ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8"],
+  ["Instagram", [["pauta", "star", "Pauta e calendário"], ["instagram", "calendar", "Agenda e números"], ["estudio", "play", "Estúdio: Reels e carrossel"], ["respostas", "send", "Respostas prontas"]], "#A78BFA"],
+  ["Ferramentas", [["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#64748B", true],
+  ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8", true],
 ];
-const PAGS = MENU.flatMap(g => g[1]);
+const PAGS = MENU.flatMap(g => g[1]).concat([["carrossel", "image", "Carrosséis"]]);
 function contadorMenu(k) {
   const h = hojeISO();
   if (k === "enviar") return typeof filaModoEnvio === "function" ? filaModoEnvio().length : 0;
@@ -227,8 +228,9 @@ function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard";
   $("#rail").innerHTML = `<div class="side-top"><a class="side-brand" href="#dashboard"><img class="mark-img" src="marca/icone.png" alt=""><span><b>Partiu 085</b><small>Radar de passagens</small></span></a>
       <button class="side-tema" data-act="tema" title="Tema claro/escuro" aria-label="Tema claro/escuro">${ic("moon")}</button></div>` +
-    MENU.map(([t, itens, cor]) => `<div class="side-g ${t ? "box" : ""}" style="--c:${cor || "transparent"}">${t ? `<div class="side-t">${t}</div>` : ""}${itens.map(([k, i, n]) => { const c = contadorMenu(k);
-      return `<a href="#${k}" class="${pag === k ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`).join("");
+    MENU.map(([t, itens, cor, fechadoPadrao]) => { const ativo = itens.some(([k]) => k === pag || (k === "estudio" && pag === "carrossel")), est = load("p085_side_" + t), fechado = t && !ativo && (est === null || est === undefined || est === "" ? !!fechadoPadrao : est === "f");
+      return `<div class="side-g ${t ? "box" : ""} ${fechado ? "fechado" : ""}" style="--c:${cor || "transparent"}">${t ? `<button class="side-t" data-act="sidegrp" data-g="${t}">${t}<span class="side-chev">${fechado ? "▸" : "▾"}</span></button>` : ""}${fechado ? "" : itens.map(([k, i, n]) => { const c = contadorMenu(k);
+      return `<a href="#${k}" class="${pag === k || (k === "estudio" && pag === "carrossel") ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`; }).join("");
   const cAl = contadorMenu("alertas"), cMi = contadorMenu("milhas");
   $("#bottom").innerHTML = `<a href="#dashboard" class="${pag === "dashboard" ? "on" : ""}" aria-label="Início">${ic("grid")}<small>Início</small></a>
     <a href="#alertas" class="${pag === "alertas" ? "on" : ""}" aria-label="Alertas">${ic("bell")}<small>Dinheiro</small>${cAl ? `<b class="cnt">${cAl}</b>` : ""}</a>
@@ -1025,6 +1027,7 @@ document.addEventListener("click", async e => {
       if (r.permissions && r.permissions.push) { toast("✓ Token funcionando — você já pode salvar e rodar o radar."); render(); }
       else toast("O token não tem permissão de escrita neste repositório.", 5000);
     }
+    else if (act === "sidegrp") { const g = b.dataset.g, aberto = !b.closest(".side-g").classList.contains("fechado"); store("p085_side_" + g, aberto ? "f" : "a"); navs(); return; }
     else if (act === "tokcopiar") { await copiar(token()); toast("Código copiado. Abra o app pelo ícone e cole no aviso do topo. Não mande esse código pra ninguém.", 6000); }
     else if (act === "tokcolar") { let v = ($("#tok-rapido") || {}).value || ""; if (!v) { try { v = await navigator.clipboard.readText(); } catch (x) { } }
       v = (v || "").trim(); if (!/^(github_pat_|ghp_)\w+/.test(v)) { toast("Cole o código de conexão (começa com github_pat_). Pegue em Ajustes, no aparelho que já está conectado.", 6000); return; }

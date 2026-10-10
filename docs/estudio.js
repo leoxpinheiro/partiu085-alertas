@@ -139,7 +139,7 @@ function pEstudio() {
   setTimeout(() => { estPrevia(); desenharMinis(); }, 0);
   const rng = (k, l, min, max, step = 1) => `<label class="est-r"><span>${l}</span><input type="range" min="${min}" max="${max}" step="${step}" value="${EST[k]}" data-est="${k}"></label>`;
   const amanha = isoLocal(new Date(Date.now() + 864e5)).slice(0, 10) + "T19:00";
-  return head("🎬 Reels", "Crie no editor, aprove os prontos e vá postando. Tudo de Reels fica aqui.") +
+  return head("Estúdio", "Crie Reels e carrosséis, aprove e vá postando.") + estAbas("estudio") +
     `<div class="est">
       <div class="est-prev"><div class="est-tela"><video id="est-v" src="${esc(EST.video)}" poster="${esc(EST.poster)}" autoplay muted loop playsinline></video><canvas id="est-cv" width="540" height="960"></canvas></div>
         <small class="sub">${EST.arquivo ? "Seu vídeo" : esc(EST.nome)} · a prévia roda em loop, sem som</small></div>
@@ -332,3 +332,5 @@ async function vbGravar(v, ini, dur, prog) {
   v.pause(); rec.stop(); await new Promise(r => rec.onstop = r);
   const blob = new Blob(partes, { type: mime.split(";")[0] }); return blob.size > 50e3 ? blob : null;
 }
+
+function estAbas(cur) { return `<div class="est-abas">${[["estudio", "🎬 Reels"], ["carrossel", "🖼️ Carrosséis"]].map(([k, n]) => `<a href="#${k}" class="pill ${cur === k ? "on" : ""}">${n}</a>`).join("")}</div>`; }

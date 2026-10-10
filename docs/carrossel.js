@@ -67,7 +67,7 @@ function pCarrossel() {
         <button class="bt sm ghost" data-act="crmover" data-d="-1" ${CRS.tela === 0 ? "disabled" : ""}>◀ mover</button><button class="bt sm ghost" data-act="crmover" data-d="1" ${CRS.tela >= car.telas.length - 1 ? "disabled" : ""}>mover ▶</button>
         <button class="bt sm ghost" data-act="crdel" ${car.telas.length <= 1 ? "disabled" : ""}>🗑️ apagar tela</button></div></div>
     <div class="est-ctl">
-      <div class="card"><b>Tela ${CRS.tela + 1}: frase</b><textarea id="cr-txt" rows="3" placeholder="Escreva a frase…">${esc(t.texto)}</textarea>
+      <div class="card"><b>Tela ${CRS.tela + 1}: frase</b><textarea id="cr-txt" rows="3" style="width:100%;border:0;border-radius:12px;padding:12px;background:var(--tile);color:inherit;font:inherit;font-size:15px;box-sizing:border-box" placeholder="Escreva a frase…">${esc(t.texto)}</textarea>
         ${rng("ttam", "Tamanho só desta tela", 50, 170, t.tam || car.tam)}</div>
       <div class="card"><div class="vb-top"><b>Fundo da tela ${CRS.tela + 1}</b><span><button class="bt sm ghost" data-act="crfundotodas">Usar em todas</button>
         <label class="bt sm pri vb-subir">＋ Subir foto<input type="file" accept="image/*" id="cr-foto" multiple hidden></label></span></div>
@@ -81,8 +81,8 @@ function pCarrossel() {
           ${[["left", "⬅"], ["center", "☰"], ["right", "➡"]].map(([a, l]) => `<button class="vb-cat ${car.alinh === a ? "on" : ""}" data-act="cralinh" data-a="${a}" title="alinhar">${l}</button>`).join("")}
           <label class="chk"><input type="checkbox" data-cr="cabec" ${car.cabec ? "checked" : ""}> PARTIU 085 // VIAJAR</label><label class="chk"><input type="checkbox" data-cr="caixa" ${car.caixa ? "checked" : ""}> CAIXA ALTA</label></div></div>
       <div class="card"><b>Pronto</b>
-        <div class="field"><label>Nome (só pra você achar depois)</label><input id="cr-tit" value="${esc(car.titulo)}" placeholder="Ex.: Frases de viagem 1"></div>
-        <div class="field"><label>Legenda</label><textarea id="cr-leg" rows="4" placeholder="Legenda do post…">${esc(car.legenda)}</textarea></div>
+        <div class="field"><label>Nome (só pra você achar depois)</label><input id="cr-tit" style="width:100%;border:0;border-radius:12px;padding:12px;background:var(--tile);color:inherit;font:inherit;font-size:15px;box-sizing:border-box" value="${esc(car.titulo)}" placeholder="Ex.: Frases de viagem 1"></div>
+        <div class="field"><label>Legenda</label><textarea id="cr-leg" rows="4" style="width:100%;border:0;border-radius:12px;padding:12px;background:var(--tile);color:inherit;font:inherit;font-size:15px;box-sizing:border-box" placeholder="Legenda do post…">${esc(car.legenda)}</textarea></div>
         <div class="est-fim"><button class="bt pri" data-act="crsalvar">💾 Salvar</button><button class="bt" data-act="craprovar">✓ Aprovar</button><button class="bt" data-act="crbaixar">${ic("down")}Baixar ${car.telas.length > 1 ? car.telas.length + " telas" : "imagem"}</button><button class="bt ghost" data-act="crnovo">+ Novo</button></div>
         <div class="est-fim" style="margin-top:10px"><input type="datetime-local" id="cr-q" value="${amanha}"><button class="bt pri" data-act="cragendar">${ic("calendar")}Mandar pra agenda</button></div></div>
     </div></div>${crBibHTML()}`;

@@ -1,0 +1,29 @@
+name: Vídeos enviados (Reels)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: midia-up
+  cancel-in-progress: false
+
+jobs:
+  converter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: ffmpeg
+        run: which ffmpeg || (sudo apt-get update -q && sudo apt-get install -y -q ffmpeg)
+      - run: python engine/midia_up.py
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add -A brutos docs/midia docs/videos_meus.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Reels: vídeos enviados convertidos"
+          for i in 1 2 3 4; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 6; done

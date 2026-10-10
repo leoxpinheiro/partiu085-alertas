@@ -12,7 +12,7 @@ try { Object.assign(EST, JSON.parse(localStorage.getItem("p085_est") || "{}"), {
 function estGuardar() { try { const { arquivo, gravando, lista, fontesExtra, ap, ...r } = EST; localStorage.setItem("p085_est", JSON.stringify(r)); } catch (e) { } }
 
 async function estCarregar() {
-  if (!EST.lista) { const m = await getJSON("midia.json", { videos: {} }); EST.lista = Object.entries(m.videos || {}).flatMap(([k, L]) => L.filter(v => /clip-/.test(v.arq)).map(v => ({ src: v.arq, poster: v.quadro || "", nome: k.replace("v-", "") })));
+  if (!EST.lista) { await vbCarregar();
     if (!EST.video && EST.lista.length) { EST.video = EST.lista[0].src; EST.poster = EST.lista[0].poster; EST.nome = EST.lista[0].nome; } }
   if (!EST.fontesExtra) { const f = await getJSON("fontes/fontes.json", []); EST.fontesExtra = f;
     for (const x of f) { try { const ff = new FontFace(x.nome, `url(fontes/${x.arq})`); await ff.load(); document.fonts.add(ff); } catch (e) { } } }
@@ -144,8 +144,7 @@ function pEstudio() {
       <div class="est-prev"><div class="est-tela"><video id="est-v" src="${esc(EST.video)}" poster="${esc(EST.poster)}" autoplay muted loop playsinline></video><canvas id="est-cv" width="540" height="960"></canvas></div>
         <small class="sub">${EST.arquivo ? "Seu vídeo" : esc(EST.nome)} · a prévia roda em loop, sem som</small></div>
       <div class="est-ctl">
-        <div class="card"><b>1. Vídeo</b><div class="est-vids">${(EST.lista || []).map(v => `<button class="est-vid ${v.src === EST.video ? "on" : ""}" data-act="estvid" data-src="${esc(v.src)}" data-poster="${esc(v.poster)}" data-nome="${esc(v.nome)}" style="background-image:url(${esc(v.poster)})"></button>`).join("")}
-          <label class="est-vid est-up">＋<small>seu vídeo</small><input type="file" accept="video/*" id="est-file" hidden></label></div></div>
+        <div class="card">${vbHTML()}</div>
         <div class="card"><b>2. Texto</b><textarea id="est-txt" rows="3">${esc(EST.texto)}</textarea>
           <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label></div></div>
         <div class="card"><b>3. Fonte</b><div class="est-fontes">${estFontes().map(([f, d]) => `<button class="est-f ${f === EST.fonte ? "on" : ""}" data-act="estfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}
@@ -164,7 +163,7 @@ document.addEventListener("input", e => { const t = e.target;
   if (t.id === "est-txt") { EST.texto = t.value; estGuardar(); estPrevia(); }
   else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); estPrevia(); } });
 document.addEventListener("change", e => { const t = e.target;
-  if (t.id === "est-file" && t.files[0]) { EST.arquivo = t.files[0]; EST.video = URL.createObjectURL(t.files[0]); EST.poster = ""; render(); }
+  if (t.id === "est-file" && t.files.length) { vbAbrirEnvio([...t.files]); t.value = ""; }
   else if (t.id === "est-font" && t.files[0]) estSubirFonte(t.files[0]); });
 document.addEventListener("click", e => { const b = e.target.closest('[data-act^="est"]'); if (!b) return; const a = b.dataset.act;
   if (a === "estvid") { EST.video = b.dataset.src; EST.poster = b.dataset.poster; EST.nome = b.dataset.nome; EST.arquivo = null; render(); }
@@ -211,3 +210,125 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
 
 /* abrir o estúdio já com um vídeo e uma frase (dos Reels prontos da Pauta) */
 function abrirEstudio(video, texto) { EST.video = video; EST.poster = video.replace(".mp4", ".jpg"); EST.nome = ""; EST.arquivo = null; if (texto) EST.texto = texto; estGuardar(); location.hash = "#estudio"; }
+
+
+/* ================= 📁 meus vídeos: banco organizado por categoria, envio que fica salvo ================= */
+const VB_CATS = ["Fortaleza", "Aeroporto", "Voo", "Praia", "Destinos", "Viagem"];
+const VB_PADRAO = { aeroporto: "Aeroporto", janela: "Voo", asa: "Voo", nuvens: "Voo", decolagem: "Voo", pouso: "Voo", praia: "Praia", mala: "Viagem" };
+const VB = { cat: "Todas", cfg: { ocultos: [], cats: {} }, pend: [], meus: [] };
+try { VB.cat = localStorage.getItem("p085_vb_cat") || "Todas"; VB.pend = JSON.parse(localStorage.getItem("p085_vb_pend") || "[]"); } catch (e) { }
+async function ghJSON(path, padrao) { // lê direto do GitHub (sem esperar o site atualizar)
+  if (!token()) return getJSON(path.replace(/^docs\//, ""), padrao);
+  try { const r = await gh(`/contents/${path}?ref=main&t=${Date.now()}`); return JSON.parse(decodeURIComponent(escape(atob(r.content.replace(/\n/g, ""))))); } catch (e) { return getJSON(path.replace(/^docs\//, ""), padrao); } }
+async function vbCarregar() {
+  const [m, meus, cfg] = await Promise.all([getJSON("midia.json", { videos: {} }), ghJSON("docs/videos_meus.json", []), ghJSON("docs/videos_cfg.json", { ocultos: [], cats: {} })]);
+  VB.cfg = { ocultos: cfg.ocultos || [], cats: cfg.cats || {} }; VB.meus = meus || [];
+  const banco = Object.entries(m.videos || {}).flatMap(([k, L]) => L.filter(v => /clip-/.test(v.arq)).map(v => ({ src: v.arq, poster: v.quadro || "", nome: k.replace("v-", ""), cat: VB_PADRAO[k.replace("v-", "")] || "Viagem", meu: false })));
+  const env = VB.meus.filter(v => v.arq).map(v => ({ src: v.arq, poster: v.quadro, nome: v.nome || v.cat, cat: v.cat || "Outros", meu: true, quando: v.enviado || "" })).reverse();
+  EST.todos = [...env, ...banco].map(v => ({ ...v, cat: VB.cfg.cats[v.src] || v.cat }));
+  EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src));
+  const prontos = new Set(VB.meus.map(v => v.arq).concat(VB.meus.filter(v => v.erro).map(v => "erro:" + v.id)));
+  VB.erros = VB.meus.filter(v => v.erro && VB.pend.some(p => p.id === v.id));
+  VB.pend = VB.pend.filter(p => !prontos.has(`midia/clip-u-${p.id}.mp4`) && !prontos.has("erro:" + p.id) && Date.now() - p.t < 3 * 36e5); vbGuardarPend();
+}
+function vbGuardarPend() { try { localStorage.setItem("p085_vb_pend", JSON.stringify(VB.pend)); } catch (e) { } }
+function vbCats() { const c = new Set(VB_CATS); (EST.todos || []).forEach(v => c.add(v.cat)); return [...c]; }
+function vbHTML() {
+  const L = EST.lista || [], cats = vbCats(), apagados = (EST.todos || []).filter(v => VB.cfg.ocultos.includes(v.src));
+  const n = c => L.filter(v => v.cat === c).length;
+  const vis = VB.cat === "Apagados" ? apagados : VB.cat === "Todas" ? L : L.filter(v => v.cat === VB.cat);
+  const sel = (EST.todos || []).find(v => v.src === EST.video);
+  return `<div class="vb-top"><b>1. Vídeo</b><label class="bt sm pri vb-subir">＋ Subir vídeos<input type="file" accept="video/*,.mov,.mp4,.m4v,.avi,.mkv,.webm" id="est-file" multiple hidden></label></div>
+    <div class="vb-cats">${["Todas", ...cats].map(c => `<button class="vb-cat ${VB.cat === c ? "on" : ""}" data-act="vbcat" data-c="${esc(c)}">${esc(c)} <small>${c === "Todas" ? L.length : n(c)}</small></button>`).join("")}${apagados.length ? `<button class="vb-cat ${VB.cat === "Apagados" ? "on" : ""}" data-act="vbcat" data-c="Apagados">🗑️ Apagados <small>${apagados.length}</small></button>` : ""}</div>
+    ${VB.pend.length ? `<div class="vb-pend">⏳ Preparando ${VB.pend.length} vídeo${VB.pend.length > 1 ? "s" : ""} pro formato Reels (${VB.pend.map(p => esc(p.cat)).join(", ")}). Leva de 1 a 3 minutos e aparece aqui sozinho.</div>` : ""}
+    ${(VB.erros || []).length ? `<div class="vb-pend erro">⚠️ Não consegui converter: ${VB.erros.map(e => esc(e.nome || e.id)).join(", ")}. Tente outro arquivo ou um trecho menor.</div>` : ""}
+    <div class="est-vids">${vis.map(v => `<button class="est-vid ${v.src === EST.video ? "on" : ""}" data-act="estvid" data-src="${esc(v.src)}" data-poster="${esc(v.poster)}" data-nome="${esc(v.nome)}" style="background-image:url(${esc(v.poster)})">${v.meu ? `<span class="vb-meu">seu</span>` : ""}</button>`).join("") || `<div class="vazio" style="grid-column:1/-1">Nenhum vídeo em ${esc(VB.cat)} ainda. Toque em ＋ Subir vídeos.</div>`}</div>
+    ${sel ? `<div class="vb-sel"><small>Selecionado:</small><select data-act="vbmover">${cats.map(c => `<option ${c === sel.cat ? "selected" : ""}>${esc(c)}</option>`).join("")}<option value="__nova">+ Nova categoria…</option></select>
+      ${VB.cfg.ocultos.includes(sel.src) ? `<button class="bt sm" data-act="vbvolta">↩ Recuperar</button>` : `<button class="bt sm ghost" data-act="vbapaga">🗑️ Apagar</button>`}</div>` : ""}`;
+}
+async function vbSalvarCfg(msg) { if (!token()) { toast("Conecte o token do GitHub em Ajustes pra salvar."); return; } try { await salvarArquivo("docs/videos_cfg.json", VB.cfg, msg); } catch (e) { toast("Não salvou: " + e.message); } }
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="vb"]'); if (!b) return; const a = b.dataset.act;
+  if (a === "vbcat") { VB.cat = b.dataset.c; try { localStorage.setItem("p085_vb_cat", VB.cat); } catch (x) { } render(); }
+  else if (a === "vbapaga") { VB.cfg.ocultos = [...new Set([...VB.cfg.ocultos, EST.video])]; EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); const p = EST.lista[0]; if (p) { EST.video = p.src; EST.poster = p.poster; EST.nome = p.nome; } estGuardar(); render(); toast("Apagado. Se mudar de ideia, está em 🗑️ Apagados."); vbSalvarCfg("Reels: apaga vídeo"); }
+  else if (a === "vbvolta") { VB.cfg.ocultos = VB.cfg.ocultos.filter(x => x !== EST.video); EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); render(); vbSalvarCfg("Reels: recupera vídeo"); }
+  else if (a === "vbenviar") vbEnviar(b);
+  else if (a === "vbfechar") { const d = document.getElementById("vbm"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
+  else if (a === "vbmodo") { document.querySelectorAll('[data-act="vbmodo"]').forEach(x => x.classList.toggle("on", x === b)); VB.modo = b.dataset.m; document.getElementById("vb-foco").hidden = VB.modo !== "cortar"; vbPrevias(); }
+  else if (a === "vbfoco") { document.querySelectorAll('[data-act="vbfoco"]').forEach(x => x.classList.toggle("on", x === b)); VB.foco = +b.dataset.f; vbPrevias(); }
+  else if (a === "vbcatenv") { document.querySelectorAll('[data-act="vbcatenv"]').forEach(x => x.classList.toggle("on", x === b)); VB.catEnv = b.dataset.c; const i = document.getElementById("vb-nova"); if (i) i.value = ""; }
+});
+document.addEventListener("change", async e => { const t = e.target; if (t.dataset.act !== "vbmover") return; let c = t.value;
+  if (c === "__nova") { c = (prompt("Nome da nova categoria (ex.: Jericoacoara, Lisboa, Pôr do sol):") || "").trim(); if (!c) { render(); return; } }
+  VB.cfg.cats[EST.video] = c; EST.todos.forEach(v => { if (v.src === EST.video) v.cat = c; }); EST.lista.forEach(v => { if (v.src === EST.video) v.cat = c; }); render(); toast(`Movido pra ${c}.`); vbSalvarCfg("Reels: categoria do vídeo"); });
+
+/* janela de envio: escolhe a categoria e como adaptar pro Reels (vertical 9:16) */
+function vbAbrirEnvio(files) {
+  if (!token()) { toast("Conecte o token do GitHub em Ajustes pra salvar seus vídeos."); return; }
+  VB.files = files; VB.modo = VB.modo || "cortar"; VB.foco = VB.foco ?? .5; VB.catEnv = VB.cat !== "Todas" && VB.cat !== "Apagados" ? VB.cat : "";
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "vbm";
+  d.innerHTML = `<div class="ej vb-ej" role="dialog"><div class="ej-h"><div><b>Subir ${files.length} vídeo${files.length > 1 ? "s" : ""}</b><small>Eu adapto pro formato do Reels (vertical) e deixo salvo no seu banco.</small></div><button class="bt sm ghost" data-act="vbfechar">✕</button></div>
+    <div class="field"><label>Pra qual categoria?</label><div class="vb-cats">${vbCats().map(c => `<button class="vb-cat ${VB.catEnv === c ? "on" : ""}" data-act="vbcatenv" data-c="${esc(c)}">${esc(c)}</button>`).join("")}</div>
+      <input id="vb-nova" placeholder="ou crie uma nova: Jericoacoara, Lisboa, Pôr do sol…" style="margin-top:8px"></div>
+    <div class="field"><label>Vídeo deitado (horizontal): como fica no Reels?</label><div class="vb-cats">
+      <button class="vb-cat ${VB.modo === "cortar" ? "on" : ""}" data-act="vbmodo" data-m="cortar">✂️ Preencher a tela (corta as laterais)</button>
+      <button class="vb-cat ${VB.modo === "fundo" ? "on" : ""}" data-act="vbmodo" data-m="fundo">🖼️ Vídeo inteiro com fundo desfocado</button></div>
+      <div class="vb-cats" id="vb-foco" ${VB.modo !== "cortar" ? "hidden" : ""} style="margin-top:6px"><small style="align-self:center;opacity:.7">Manter qual parte?</small>${[[0, "⬅ Esquerda"], [.5, "Meio"], [1, "Direita ➡"]].map(([f, l]) => `<button class="vb-cat ${VB.foco === f ? "on" : ""}" data-act="vbfoco" data-f="${f}">${l}</button>`).join("")}</div>
+      <small class="sub">Vídeo que já é em pé fica igual nos dois modos.</small></div>
+    <div class="vb-lista">${files.map((f, i) => `<div class="vb-item" id="vb-i-${i}"><div class="vb-prev"><video muted playsinline preload="metadata" id="vb-v-${i}"></video><canvas width="108" height="192" id="vb-c-${i}"></canvas></div>
+      <div class="vb-inf"><b>${esc(f.name)}</b><small>${(f.size / 1e6).toFixed(1)} MB</small>
+        <div class="vb-tr"><label>Começa em <input type="number" min="0" step="1" value="0" id="vb-ini-${i}">s</label><label>Duração <input type="number" min="3" max="30" step="1" value="15" id="vb-dur-${i}">s</label></div>
+        <small class="vb-st" id="vb-st-${i}"></small></div></div>`).join("")}</div>
+    <div class="ej-acts"><button class="bt pri lg" data-act="vbenviar">Enviar e salvar</button><button class="bt ghost" data-act="vbfechar">Cancelar</button></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+  files.forEach((f, i) => { const v = document.getElementById("vb-v-" + i); v.src = URL.createObjectURL(f); v.onloadeddata = () => { try { v.currentTime = Math.min(1, (v.duration || 2) / 2); } catch (x) { } }; v.onseeked = () => vbPrevia(i);
+    v.onloadedmetadata = () => { const st = document.getElementById("vb-st-" + i); if (st) st.textContent = v.videoWidth ? `${v.videoWidth}×${v.videoHeight}${v.videoWidth > v.videoHeight ? " · deitado" : " · em pé"} · ${Math.round(v.duration || 0)}s` : "formato que o navegador não mostra, mas eu converto mesmo assim"; }; });
+}
+function vbPrevia(i) { const v = document.getElementById("vb-v-" + i), cv = document.getElementById("vb-c-" + i); if (!v || !cv || !v.videoWidth) return; const c = cv.getContext("2d"), W = cv.width, H = cv.height, vw = v.videoWidth, vh = v.videoHeight;
+  c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
+  if (VB.modo === "fundo") { const s = Math.max(W / vw, H / vh); c.filter = "blur(6px) brightness(.85)"; c.drawImage(v, (W - vw * s) / 2, (H - vh * s) / 2, vw * s, vh * s); c.filter = "none"; const s2 = Math.min(W / vw, H / vh); c.drawImage(v, (W - vw * s2) / 2, (H - vh * s2) / 2, vw * s2, vh * s2); }
+  else { const s = Math.max(W / vw, H / vh); c.drawImage(v, (W - vw * s) * VB.foco, (H - vh * s) / 2, vw * s, vh * s); } }
+function vbPrevias() { (VB.files || []).forEach((f, i) => vbPrevia(i)); }
+async function vbEnviar(b) {
+  const nova = (document.getElementById("vb-nova") || {}).value.trim(), cat = nova || VB.catEnv;
+  if (!cat) { toast("Escolha a categoria (ou digite uma nova)."); return; }
+  b.disabled = true; let ok = 0;
+  for (const [i, f] of VB.files.entries()) { const st = document.getElementById("vb-st-" + i);
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 5); let ext = ((f.name.match(/\.(\w{2,4})$/) || [])[1] || "mp4").toLowerCase();
+    const ini = +document.getElementById("vb-ini-" + i).value || 0, dur = Math.min(30, Math.max(3, +document.getElementById("vb-dur-" + i).value || 15));
+    try { b.textContent = `Preparando ${i + 1}/${VB.files.length}…`;
+      // 1º tenta adaptar aqui mesmo (corta/encaixa no 9:16 e já sai leve). Se o navegador não ler o formato, manda o original.
+      let blob = null, modo = VB.modo; const v = document.getElementById("vb-v-" + i);
+      if (v && v.videoWidth && window.MediaRecorder) { try { blob = await vbGravar(v, ini, dur, t => { st.textContent = `Adaptando pro Reels… ${t}/${Math.round(dur)}s (deixe esta aba aberta)`; }); if (blob) { ext = blob.type.includes("mp4") ? "mp4" : "webm"; modo = "pronto"; } } catch (x) { blob = null; } }
+      if (!blob) { if (f.size > 45e6) { st.innerHTML = `<span class="neg">esse formato eu só consigo mandar inteiro, e ele passa de 45 MB. Corte um trecho no celular e tente de novo.</span>`; continue; } blob = f; }
+      st.textContent = `Enviando ${(blob.size / 1e6).toFixed(1)} MB… (não feche a página)`;
+      const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(",")[1]); r.onerror = rej; r.readAsDataURL(blob); });
+      await gh(`/contents/brutos/${id}.${ext}`, { method: "PUT", body: JSON.stringify({ message: "Reels: vídeo enviado", content: b64, branch: "main" }) });
+      const job = { id, cat, nome: f.name.replace(/\.\w+$/, ""), modo, foco: VB.foco, inicio: modo === "pronto" ? 0 : ini, dur };
+      await gh(`/contents/brutos/${id}.json`, { method: "PUT", body: JSON.stringify({ message: "Reels: vídeo enviado", content: btoa(unescape(encodeURIComponent(JSON.stringify(job)))), branch: "main" }) });
+      VB.pend.push({ id, cat, t: Date.now() }); vbGuardarPend(); ok++; st.innerHTML = `<span class="pos">✓ enviado</span>`;
+    } catch (e) { st.innerHTML = `<span class="neg">falhou: ${esc(e.message)}</span>`; } }
+  if (ok) { try { await gh("/actions/workflows/midia-up.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) }); } catch (e) { toast("Enviado, mas não consegui iniciar a conversão: " + e.message, 7000); } }
+  b.disabled = false; b.textContent = "Enviar e salvar";
+  if (ok) { VB.cat = cat; try { localStorage.setItem("p085_vb_cat", cat); } catch (x) { } setTimeout(() => { const d = document.getElementById("vbm"); if (d) d.remove(); document.body.classList.remove("ej-on"); render(); }, 900);
+    toast(`${ok} vídeo${ok > 1 ? "s" : ""} enviado${ok > 1 ? "s" : ""}! Em 1 a 3 minutos aparece${ok > 1 ? "m" : ""} em ${cat}, já no formato Reels.`, 7000); vbVigiar(); }
+}
+/* fica de olho até os vídeos convertidos aparecerem */
+let vbTimer = null;
+function vbVigiar() { clearTimeout(vbTimer); if (!VB.pend.length) return;
+  vbTimer = setTimeout(async () => { const antes = VB.pend.length; await vbCarregar(); if (VB.pend.length < antes && /#estudio/.test(location.hash) && !document.getElementById("vbm")) { render(); toast("Vídeo novo pronto no seu banco! 🎬"); } vbVigiar(); }, 25000); }
+if (VB.pend.length) setTimeout(vbVigiar, 3000);
+
+/* grava o trecho escolhido já no formato Reels (1080x1920), direto no navegador */
+async function vbGravar(v, ini, dur, prog) {
+  const mime = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"].find(m => MediaRecorder.isTypeSupported(m)); if (!mime) return null;
+  const W = 1080, H = 1920, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const c = cv.getContext("2d"), vw = v.videoWidth, vh = v.videoHeight;
+  const quadro = () => { c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
+    if (VB.modo === "fundo" && vw > vh * .7) { const s = Math.max(W / vw, H / vh); c.filter = "blur(40px) brightness(.8)"; c.drawImage(v, (W - vw * s) / 2, (H - vh * s) / 2, vw * s, vh * s); c.filter = "none"; const s2 = Math.min(W / vw, H / vh); c.drawImage(v, (W - vw * s2) / 2, (H - vh * s2) / 2, vw * s2, vh * s2); }
+    else { const s = Math.max(W / vw, H / vh); c.drawImage(v, (W - vw * s) * VB.foco, (H - vh * s) / 2, vw * s, vh * s); } };
+  v.muted = true; v.loop = false; v.currentTime = Math.min(ini, Math.max(0, (v.duration || ini + 1) - 1)); await new Promise(r => { v.onseeked = r; setTimeout(r, 1500); });
+  const fim = Math.min(v.duration || ini + dur, ini + dur), rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 7e6 }), partes = [];
+  rec.ondataavailable = e => e.data.size && partes.push(e.data); quadro(); rec.start(250); await v.play();
+  await new Promise(ok => { const passo = () => { quadro(); prog(Math.round(v.currentTime - ini)); if (v.currentTime >= fim || v.ended) return ok(); requestAnimationFrame(passo); }; passo(); });
+  v.pause(); rec.stop(); await new Promise(r => rec.onstop = r);
+  const blob = new Blob(partes, { type: mime.split(";")[0] }); return blob.size > 50e3 ? blob : null;
+}

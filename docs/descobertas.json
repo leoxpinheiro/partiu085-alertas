@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-10T18:57+00:00",
+ "atualizado": "2026-10-10T20:38+00:00",
  "pistas": [
   "BUE",
   "CGB",
@@ -8,7 +8,8 @@
   "POA",
   "REC",
   "RIO",
-  "SAO"
+  "SAO",
+  "SLZ"
  ],
  "blogs": [
   {
@@ -139,9 +140,16 @@
     "paradas": 1,
     "visto": "2026-10-06T22:43:18Z"
    },
+   "ow": {
+    "preco": 579,
+    "ida": "2026-10-20",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-10T20:16:25Z"
+   },
    "rastreada": true,
    "nome": "São Luís",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "STM",
@@ -311,19 +319,6 @@
    },
    "rastreada": false,
    "nome": "LED",
-   "pista": false
-  },
-  {
-   "iata": "ATL",
-   "rt": {
-    "preco": 5858,
-    "ida": "2026-11-02",
-    "volta": "2026-11-05",
-    "paradas": 3,
-    "visto": "2026-10-06T20:07:28Z"
-   },
-   "rastreada": false,
-   "nome": "ATL",
    "pista": false
   },
   {

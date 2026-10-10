@@ -37,26 +37,24 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
   }
   c.putImageData(dst, x0, y0); return cv;
 }
-/* olho de peixe "vetorial": cada letra é desenhada nítida, maior no centro e menor nas bordas (lente suave), sem distorcer pixels */
+/* olho de peixe leve e redondo: lente suave sobre letras nítidas. Cada letra fica em pé (sem entortar),
+   o meio cresce um pouco e as letras se afastam do centro em círculo, como numa bolha. */
 function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
-  const a = Math.max(0, Math.min(100, forca || 0)) / 100, ls = parseFloat(c.letterSpacing) || 0;
+  const a = Math.max(0, Math.min(100, forca || 0)) / 100 * .36, ls = parseFloat(c.letterSpacing) || 0;
   const fam = fonte.replace(/^.*?\d+(\.\d+)?px\s*/, ""), peso = (fonte.match(/^(\d{3}|bold|normal)/) || ["400"])[0];
   const F = sz => `${peso} ${sz}px ${fam}`;
   c.save(); c.font = F(fs); if ("letterSpacing" in c) c.letterSpacing = "0px";
   const L = linhas.map(l => { const ch = Array.from(l); return { ch, w: ch.map(x => c.measureText(x).width + ls) }; });
-  const maxW = Math.max(1, ...L.map(l => l.w.reduce((p, q) => p + q, 0))), n = L.length, meiaA = n * lh / 2 + fs * .25;
-  const esc = (nx, ny) => (1 - a * .38) + a * 1.05 * Math.exp(-(nx * nx * 1.5 + ny * ny * 1.9)); // centro até ~1.7x, bordas ~0.6x
-  L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), yc = yCentro - n * lh / 2 + lh * (j + .5); let x = W / 2 - tot / 2;
-    l.s = l.w.map(w => { const cx = x + w / 2; x += w; return esc((cx - W / 2) / (maxW / 2), (yc - yCentro) / meiaA); });
-    l.h = lh * l.s.reduce((p, q) => p + q, 0) / Math.max(1, l.s.length); });
-  const larga = Math.max(...L.map(l => l.w.reduce((p, w, k) => p + w * l.s[k], 0))), kf = Math.min(1, W * .92 / larga); // nunca sai da tela
-  if (kf < 1) L.forEach(l => { l.s = l.s.map(v => v * kf); l.h *= kf; });
-  const altura = L.reduce((p, l) => p + l.h, 0); let y = yCentro - altura / 2;
+  const maxW = Math.max(1, ...L.map(l => l.w.reduce((p, q) => p + q, 0))), n = L.length;
+  const R = Math.max(maxW / 2 * 1.3, n * lh / 2 * 1.25 + fs * .4); // raio único = lente redonda
+  const kf = Math.min(1, W * .92 / (maxW * (1 + a))); // nunca sai da tela
   if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; }
-  c.fillStyle = cor; c.textAlign = "left"; c.textBaseline = "alphabetic";
-  L.forEach(l => { const tot = l.w.reduce((p, w, k) => p + w * l.s[k], 0); let x = W / 2 - tot / 2; const meio = y + l.h / 2;
-    l.ch.forEach((ch, k) => { const s = l.s[k], sz = fs * s; c.font = F(sz); c.fillText(ch, x + ls * s / 2, meio + sz * .3); x += l.w[k] * s; });
-    y += l.h; });
+  c.fillStyle = cor; c.textAlign = "center"; c.textBaseline = "alphabetic";
+  L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), by = (lh * (j + .5) - n * lh / 2) * kf; let x = -tot / 2;
+    l.ch.forEach((ch, k) => { const bx = (x + l.w[k] / 2) * kf; x += l.w[k];
+      const r2 = Math.min(1, (bx * bx + by * by) / (R * R * kf * kf)), g = 1 + a * (1 - r2); // g: quanto cresce/afasta naquele ponto
+      const sz = fs * kf * Math.max(.7, 1 + a * (1 - r2) - 2 * a * bx * bx / (R * R * kf * kf)); // tamanho = quanto a lente estica ali (sem letra encavalar)
+      c.font = F(sz); c.fillText(ch, W / 2 + bx * g, yCentro + by * g + sz * .32); }); });
   c.restore();
 }
 /* desenha o texto (mesma função na prévia e no vídeo final) */

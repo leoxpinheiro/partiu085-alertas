@@ -1,11 +1,12 @@
 {
- "atualizado": "2026-10-11T15:37+00:00",
+ "atualizado": "2026-10-11T17:17+00:00",
  "pistas": [
   "BEL",
   "BUE",
   "CGB",
   "CWB",
   "FLN",
+  "IGU",
   "LIS",
   "POA",
   "REC",
@@ -87,6 +88,19 @@
    "pista": true
   },
   {
+   "iata": "IGU",
+   "rt": {
+    "preco": 1020,
+    "ida": "2027-04-10",
+    "volta": "2027-04-22",
+    "paradas": 1,
+    "visto": "2026-10-11T17:01:04Z"
+   },
+   "rastreada": true,
+   "nome": "Foz do Iguaçu",
+   "pista": true
+  },
+  {
    "iata": "SAO",
    "rt": {
     "preco": 1205,
@@ -129,11 +143,11 @@
     "visto": "2026-10-09T21:59:05Z"
    },
    "ow": {
-    "preco": 316,
-    "ida": "2026-12-28",
+    "preco": 337,
+    "ida": "2026-10-30",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-10-10T20:59:09Z"
+    "visto": "2026-10-09T23:13:01Z"
    },
    "rastreada": true,
    "nome": "Recife",
@@ -153,16 +167,16 @@
    "pista": false
   },
   {
-   "iata": "IGU",
+   "iata": "BHZ",
    "rt": {
-    "preco": 1498,
-    "ida": "2026-11-19",
-    "volta": "2026-11-23",
+    "preco": 1508,
+    "ida": "2026-10-22",
+    "volta": "2026-10-25",
     "paradas": 2,
-    "visto": "2026-10-10T02:54:42Z"
+    "visto": "2026-10-11T16:37:15Z"
    },
    "rastreada": true,
-   "nome": "Foz do Iguaçu",
+   "nome": "Belo Horizonte",
    "pista": false
   },
   {
@@ -271,13 +285,26 @@
    "pista": true
   },
   {
+   "iata": "LIM",
+   "rt": {
+    "preco": 3643,
+    "ida": "2027-04-15",
+    "volta": "2027-04-29",
+    "paradas": 3,
+    "visto": "2026-10-11T16:45:44Z"
+   },
+   "rastreada": true,
+   "nome": "Lima",
+   "pista": false
+  },
+  {
    "iata": "PNZ",
    "rt": {
-    "preco": 2360,
+    "preco": 4089,
     "ida": "2026-10-15",
     "volta": "2026-10-17",
-    "paradas": 2,
-    "visto": "2026-10-08T02:16:28Z"
+    "paradas": 1,
+    "visto": "2026-10-11T16:31:35Z"
    },
    "rastreada": false,
    "nome": "PNZ",

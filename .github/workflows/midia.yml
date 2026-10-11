@@ -14,12 +14,13 @@ permissions:
 jobs:
   midia:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - run: pip install requests
       - env:
           PIXABAY_KEY: ${{ secrets.PIXABAY_KEY }}
+          PEXELS_KEY: ${{ secrets.PEXELS_KEY }}
         run: python engine/midia.py ${{ github.event.inputs.so }}
       - name: Salvar
         run: |

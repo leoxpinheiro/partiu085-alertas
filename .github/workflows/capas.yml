@@ -27,11 +27,11 @@ jobs:
           ESCOLHA: ${{ github.event.inputs.dados }}
         run: python engine/capas.py ${{ github.event.inputs.modo }}
       - if: github.event.inputs.modo == 'buscar'
-        uses: actions/upload-artifact@v4
-        with:
-          name: capas
-          path: out/
-          retention-days: 3
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git checkout -q --orphan capas-tmp
+          git rm -rq --cached . && git add out && git commit -qm "capas candidatas" && git push -fq origin capas-tmp
       - if: github.event.inputs.modo == 'baixar'
         run: |
           git config user.name "partiu085-bot"

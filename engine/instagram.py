@@ -196,11 +196,20 @@ def reels_video(p: dict) -> str:
     if not shutil.which("ffmpeg"):
         subprocess.run("sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg", shell=True, check=False)
     d = Path(tempfile.mkdtemp())
-    (d / "o.png").write_bytes(requests.get(url_img(p["overlay"]), timeout=30).content)
     src = DOCS / p["video_fundo"]
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-stream_loop", "-1", "-i", str(src), "-i", str(d / "o.png"), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
-                    "-filter_complex", "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[v];[v][1:v]overlay=0:0,format=yuv420p",
-                    "-t", str(p.get("dur") or 9), "-c:v", "libx264", "-preset", "veryfast", "-crf", "23", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+    camadas = p.get("overlays") or [{"png": p["overlay"], "de": 0, "ate": 999}]  # texto em partes: cada camada aparece no seu tempo
+    entradas = []
+    for k, cam in enumerate(camadas):
+        (d / f"o{k}.png").write_bytes(requests.get(url_img(cam["png"]), timeout=30).content)
+        entradas += ["-i", str(d / f"o{k}.png")]
+    filtro, ant = "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[v0]", "v0"
+    for k, cam in enumerate(camadas):
+        filtro += f";[{ant}][{k + 1}:v]overlay=0:0:enable='between(t,{cam.get('de', 0)},{cam.get('ate', 999)})'[v{k + 1}]"
+        ant = f"v{k + 1}"
+    filtro += f";[{ant}]format=yuv420p[vf]"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-stream_loop", "-1", "-i", str(src), *entradas, "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+                    "-filter_complex", filtro, "-map", "[vf]", "-map", f"{len(camadas) + 1}:a",
+                    "-t", str(p.get("dur") or 9), "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
     caminho = f"ig/{p['id']}.mp4"
     subir_github(caminho, (d / "r.mp4").read_bytes())
     return caminho

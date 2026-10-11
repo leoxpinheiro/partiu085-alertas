@@ -509,7 +509,14 @@ function noticiaHTML() {
   const lmi = vivas.filter(ehMi).slice(0, 20), lvo = vivas.filter(o => !ehMi(o)).slice(0, 14), lista = [...lmi, ...lvo], velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
   const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : ntCategoria(x) === "SALA VIP" ? "🛋️" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
       <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
-  return `<div class="card pa-nt"><h3>📰 Notícias pra postar</h3>
+  const nAuto = +(load("p085_nt_auto_n") || 2), hsAuto = load("p085_nt_auto_hs") || "16:30, 21:00";
+  return `<div class="card pa-nt nt-auto"><h3>⚡ Notícias de hoje no automático</h3>
+    <div class="desc">Eu escolho as melhores notícias quentes (milhas com lista de parceiros primeiro), monto os posts do nosso jeito e coloco na agenda. Junto com os posts fixos e a oferta do dia das 19h, o perfil fica com 4 ou 5 posts por dia.</div>
+    <div class="mc-rap" style="margin-top:8px"><small class="sub">Quantas:</small>${[1, 2, 3].map(n => `<button class="pill ${n === nAuto ? "on" : ""}" data-act="ntauton" data-n="${n}">${n}</button>`).join("")}
+      <small class="sub" style="margin-left:10px">Horários:</small><input id="nt-auto-hs" value="${esc(hsAuto)}" style="width:150px;padding:6px 10px;border-radius:10px;border:0;background:var(--tile);color:inherit">
+      <label class="chk"><input type="checkbox" id="nt-auto-st" ${load("p085_igm_st") === "1" ? "checked" : ""}> + story avisando</label>
+      <button class="bt pri" data-act="ntauto">⚡ Agendar as melhores de hoje</button></div><small class="sub" id="nt-auto-prog"></small></div>
+  <div class="card pa-nt"><h3>📰 Notícias pra postar</h3>
     <div class="desc">O robô atualiza a lista várias vezes por dia. Aqui só aparece o que ainda está quente: <b>notícia vale no dia e no dia seguinte</b>, e promoção com data (ex.: "até 12/10") some sozinha depois do último dia. Já postou ou não quer? Toque no ✕.</div>
     ${PA.noticias == null ? `<div class="vazio">Carregando…</div>` : lista.length ? `${lmi.length ? `<h4 style="margin:14px 0 6px">💳 Milhas, pontos e sala VIP <small style="opacity:.6">(vale pro Brasil todo)</small></h4><div class="pa-nl">${lmi.map(o => linha(o, true)).join("")}</div>` : ""}${lvo.length ? `<h4 style="margin:14px 0 6px">✈️ Voos e aeroporto</h4><div class="pa-nl">${lvo.map(o => linha(o, true)).join("")}</div>` : ""}` : `<div class="vazio">Nenhuma notícia quente agora. O robô procura de novo na próxima rodada.</div>`}
     ${velhas.length ? `<details class="pa-velhas"><summary>Antigas e removidas (${velhas.length})</summary><div class="pa-nl">${velhas.slice(0, 20).map(o => linha(o, false)).join("")}</div></details>` : ""}
@@ -1291,3 +1298,27 @@ document.addEventListener("click", async e => {
 document.addEventListener("click", e => { const b = e.target.closest('[data-act="pill"][data-g^="pa"]'); if (!b) return;
   if (b.dataset.g === "paaba") PA.aba = b.dataset.v; else if (b.dataset.g === "patipo") { PA.tipo = b.dataset.v; try { localStorage.setItem("p085_pa_tipo", PA.tipo); } catch (x) { } } }, true);
 document.addEventListener("click", e => { const b = e.target.closest('[data-act="rvplay"]'); if (!b) return; const v = b.querySelector("video"); if (v.paused) { v.play(); b.classList.add("tocando"); } else { v.pause(); b.classList.remove("tocando"); } });
+
+/* ===== notícias no automático: escolhe as melhores do dia e agenda ===== */
+function ntNota(x) { const d = x.det || {}, h = (Date.now() - new Date(x.data).getTime()) / 36e5; let n = 0;
+  if (x.cat === "milhas") n += 2; if (d.lista && d.lista.length >= 3) n += 3; if (d.destaque) n += 2; if (d.prazo && /hoje/i.test(d.prazo)) n += 2;
+  if (/fortaleza|cear[aá]|pinto martins/i.test(x.titulo)) n += 3; if (/curso|ebook|aprenda|conhe[cç]a o|como emitir/i.test(x.titulo)) n -= 4; return n - h / 12; }
+document.addEventListener("click", async e => {
+  const bn = e.target.closest('[data-act="ntauton"]'); if (bn) { store("p085_nt_auto_n", bn.dataset.n); document.querySelectorAll('[data-act="ntauton"]').forEach(x => x.classList.toggle("on", x === bn)); return; }
+  const b = e.target.closest('[data-act="ntauto"]'); if (!b) return;
+  if (!token()) { toast("Conecte em Ajustes pra agendar."); return; }
+  const n = +(load("p085_nt_auto_n") || 2), hsTxt = ($("#nt-auto-hs") || {}).value || "16:30, 21:00", st = ($("#nt-auto-st") || {}).checked; store("p085_nt_auto_hs", hsTxt); store("p085_igm_st", st ? "1" : "0");
+  const prog = $("#nt-auto-prog"), hs = lerHorarios(hsTxt); if (!hs.length) { toast("Confira os horários (ex.: 16:30, 21:00)."); return; }
+  b.disabled = true; prog.textContent = "Escolhendo as melhores…";
+  try { for (let i = 0; i < 50 && IGF.carregando; i++) await new Promise(r => setTimeout(r, 100)); IGF.fila = null; await carregarIG(true);
+    const usados = new Set((IGF.fila || []).map(x => x.origem)), vistos = new Set(), cand = [];
+    for (const x of noticiasValidas().sort((a, c) => ntNota(c) - ntNota(a))) { const ch = sem(x.titulo).replace(/[^a-z0-9]/g, "").slice(0, 40); if (vistos.has(ch)) continue; vistos.add(ch);
+      const p = (await postsDaNoticia(x))[0]; if (!p || usados.has(p.id)) continue; cand.push(p); if (cand.length >= n) break; }
+    if (!cand.length) { prog.textContent = ""; toast("Não achei notícia nova boa agora (as melhores já estão na agenda)."); b.disabled = false; return; }
+    const slots = gerarSlots(hojeISO(), hs, cand.length), itens = [];
+    for (const [k, p] of cand.entries()) { prog.textContent = `Montando ${k + 1}/${cand.length}: ${p.titulo}`; const cvs = [];
+      for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+      itens.push({ titulo: p.titulo, cvs, legenda: p.legenda, origem: p.id, valido: p.valido || "", story_junto: st }); }
+    await agendarItens(itens, slots, true, t => { prog.textContent = t; });
+    prog.textContent = ""; toast(`${itens.length} notícia${itens.length > 1 ? "s" : ""} na agenda: ${slots.map(q => q.slice(11, 16)).join(" e ")}${slots[0].slice(0, 10) !== hojeISO() ? " (amanhã)" : ""}.`, 7000); render();
+  } catch (x) { toast("Parou: " + x.message, 7000); prog.textContent = ""; } b.disabled = false; });

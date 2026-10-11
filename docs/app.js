@@ -1108,3 +1108,9 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
   if (token()) fetch(API, { headers: { Authorization: "Bearer " + token() } }).then(r => { const h = r.headers.get("github-authentication-token-expiration"); if (h) { S.tokenVence = Math.floor((new Date(h.replace(" UTC", "Z").replace(" ", "T")) - Date.now()) / 864e5); if (S.tokenVence <= 10) render(); } }).catch(() => { });
   setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas|pauta|respostas|estudio/.test(location.hash)) render(); } }, 120000);
 })();
+
+/* celular: esconde a barra de baixo enquanto digita (no iPhone ela "subia" pro meio da tela) */
+(() => { const kb = on => document.body.classList.toggle("kb", on), campo = el => el && el.matches && el.matches('textarea,select,[contenteditable],input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=button])');
+  document.addEventListener("focusin", e => { if (campo(e.target)) kb(true); });
+  document.addEventListener("focusout", () => setTimeout(() => { if (!campo(document.activeElement)) { kb(false); window.scrollTo(window.scrollX, window.scrollY); } }, 200));
+  if (window.visualViewport) visualViewport.addEventListener("resize", () => { if (visualViewport.height < window.innerHeight * .75) kb(true); else if (!campo(document.activeElement)) kb(false); }); })();

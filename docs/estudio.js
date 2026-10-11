@@ -241,7 +241,15 @@ async function vbCarregar() {
   const prontos = new Set(VB.meus.map(v => v.arq).concat(VB.meus.filter(v => v.erro).map(v => "erro:" + v.id)));
   VB.erros = VB.meus.filter(v => v.erro && VB.pend.some(p => p.id === v.id));
   VB.pend = VB.pend.filter(p => !prontos.has(`midia/clip-u-${p.id}.mp4`) && !prontos.has("erro:" + p.id) && Date.now() - p.t < 3 * 36e5); vbGuardarPend();
+  VB.run = null; if (VB.pend.length && token()) { try { VB.run = ((await gh("/actions/workflows/midia-up.yml/runs?per_page=1")).workflow_runs || [])[0] || null; } catch (e) { } }
 }
+function vbPendHTML() { if (!VB.pend.length) return "";
+  const r = VB.run, rodando = r && r.status !== "completed", falhou = r && r.status === "completed" && r.conclusion !== "success" && new Date(r.created_at).getTime() > Math.min(...VB.pend.map(p => p.t)) - 6e4, velho = Date.now() - Math.max(...VB.pend.map(p => p.t)) > 6 * 6e4;
+  const txt = `${VB.pend.length} vídeo${VB.pend.length > 1 ? "s" : ""} (${[...new Set(VB.pend.map(p => p.cat))].map(esc).join(", ")})`;
+  if (falhou) return `<div class="vb-pend erro">⚠️ A conversão de ${txt} deu erro. <button class="bt sm" data-act="vbreconv">Tentar de novo</button> <button class="bt sm ghost" data-act="vbdesiste">Esquecer</button></div>`;
+  if (rodando) return `<div class="vb-pend">⏳ Convertendo ${txt} agora… aparece aqui sozinho em 1 a 3 minutos.</div>`;
+  if (velho) return `<div class="vb-pend">⏳ ${txt} ainda na fila. <button class="bt sm" data-act="vbreconv">Converter agora</button> <button class="bt sm ghost" data-act="vbdesiste">Esquecer</button></div>`;
+  return `<div class="vb-pend">⏳ Preparando ${txt} pro formato Reels. Leva de 1 a 3 minutos e aparece aqui sozinho.</div>`; }
 function vbGuardarPend() { try { localStorage.setItem("p085_vb_pend", JSON.stringify(VB.pend)); } catch (e) { } }
 function vbCats() { const c = new Set(VB_CATS); (EST.todos || []).forEach(v => c.add(v.cat)); return [...c]; }
 function vbHTML() {
@@ -251,7 +259,7 @@ function vbHTML() {
   const sel = (EST.todos || []).find(v => v.src === EST.video);
   return `<div class="vb-top"><b>1. Vídeo</b><span style="display:flex;gap:6px"><button class="bt sm ghost" data-act="vbrecarregar" title="buscar vídeos novos">↻</button><label class="bt sm pri vb-subir">＋ Subir vídeos<input type="file" accept="video/*,.mov,.mp4,.m4v,.avi,.mkv,.webm" id="est-file" multiple hidden></label></span></div>
     <div class="vb-cats">${["Todas", ...cats].map(c => `<button class="vb-cat ${VB.cat === c ? "on" : ""}" data-act="vbcat" data-c="${esc(c)}">${esc(c)} <small>${c === "Todas" ? L.length : n(c)}</small></button>`).join("")}${apagados.length ? `<button class="vb-cat ${VB.cat === "Apagados" ? "on" : ""}" data-act="vbcat" data-c="Apagados">🗑️ Apagados <small>${apagados.length}</small></button>` : ""}</div>
-    ${VB.pend.length ? `<div class="vb-pend">⏳ Preparando ${VB.pend.length} vídeo${VB.pend.length > 1 ? "s" : ""} pro formato Reels (${VB.pend.map(p => esc(p.cat)).join(", ")}). Leva de 1 a 3 minutos e aparece aqui sozinho.</div>` : ""}
+    ${vbPendHTML()}
     ${(VB.erros || []).length ? `<div class="vb-pend erro">⚠️ Não consegui converter: ${VB.erros.map(e => esc(e.nome || e.id)).join(", ")}. Tente outro arquivo ou um trecho menor.</div>` : ""}
     <div class="est-vids">${vis.map(v => `<button class="est-vid ${v.src === EST.video ? "on" : ""}" data-act="estvid" data-src="${esc(v.src)}" data-poster="${esc(v.poster)}" data-nome="${esc(v.nome)}" style="background-image:url(${esc(v.poster)})">${v.meu ? `<span class="vb-meu">seu</span>` : ""}</button>`).join("") || `<div class="vazio" style="grid-column:1/-1">Nenhum vídeo em ${esc(VB.cat)} ainda. Toque em ＋ Subir vídeos.</div>`}</div>
     ${sel ? `<div class="vb-sel"><small>Selecionado:</small><select data-act="vbmover">${cats.map(c => `<option ${c === sel.cat ? "selected" : ""}>${esc(c)}</option>`).join("")}<option value="__nova">+ Nova categoria…</option></select>
@@ -264,6 +272,8 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
   else if (a === "vbapaga") { VB.cfg.ocultos = [...new Set([...VB.cfg.ocultos, EST.video])]; EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); const p = EST.lista[0]; if (p) { EST.video = p.src; EST.poster = p.poster; EST.nome = p.nome; } estGuardar(); render(); toast("Apagado. Se mudar de ideia, está em 🗑️ Apagados."); vbSalvarCfg("Reels: apaga vídeo"); }
   else if (a === "vbvolta") { VB.cfg.ocultos = VB.cfg.ocultos.filter(x => x !== EST.video); EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src)); render(); vbSalvarCfg("Reels: recupera vídeo"); }
   else if (a === "vbenviar") vbEnviar(b);
+  else if (a === "vbreconv") { b.disabled = true; try { await gh("/actions/workflows/midia-up.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) }); VB.pend.forEach(p => p.t = Date.now()); vbGuardarPend(); toast("Conversão iniciada. Em 1 a 3 minutos aparece aqui.", 6000); setTimeout(async () => { await vbCarregar(); render(); vbVigiar(); }, 4000); } catch (e) { toast("Não consegui iniciar: " + e.message, 6000); b.disabled = false; } }
+  else if (a === "vbdesiste") { VB.pend = []; vbGuardarPend(); render(); }
   else if (a === "vbfechar") { const d = document.getElementById("vbm"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
   else if (a === "vbmodo") { document.querySelectorAll('[data-act="vbmodo"]').forEach(x => x.classList.toggle("on", x === b)); VB.modo = b.dataset.m; document.getElementById("vb-foco").hidden = VB.modo !== "cortar"; vbPrevias(); }
   else if (a === "vbfoco") { document.querySelectorAll('[data-act="vbfoco"]').forEach(x => x.classList.toggle("on", x === b)); VB.foco = +b.dataset.f; vbPrevias(); }
@@ -316,8 +326,10 @@ async function vbEnviar(b) {
     try { b.textContent = `Preparando ${i + 1}/${VB.files.length}…`;
       // 1º tenta adaptar aqui mesmo (corta/encaixa no 9:16 e já sai leve). Se o navegador não ler o formato, manda o original.
       let blob = null, modo = VB.modo; const v = document.getElementById("vb-v-" + i);
-      if (v && v.videoWidth && window.MediaRecorder) { try { blob = await vbGravar(v, ini, dur, t => { st.textContent = `Adaptando pro Reels… ${t}/${Math.round(dur)}s (deixe esta aba aberta)`; }); if (blob) { ext = blob.type.includes("mp4") ? "mp4" : "webm"; modo = "pronto"; } } catch (x) { blob = null; } }
-      if (!blob) { if (f.size > 45e6) { st.innerHTML = `<span class="neg">esse formato eu só consigo mandar inteiro, e ele passa de 45 MB. Corte um trecho no celular e tente de novo.</span>`; continue; } blob = f; }
+      // até 45 MB: manda o original (mais rápido e com a qualidade toda; o robô corta e encaixa). Maior que isso: adapta aqui antes.
+      if (f.size <= 45e6) blob = f;
+      else if (v && v.videoWidth && window.MediaRecorder) { try { blob = await vbGravar(v, ini, dur, t => { st.textContent = `Vídeo grande: adaptando aqui… ${t}/${Math.round(dur)}s (deixe esta tela aberta)`; }); if (blob) { ext = blob.type.includes("mp4") ? "mp4" : "webm"; modo = "pronto"; } } catch (x) { blob = null; } }
+      if (!blob) { st.innerHTML = `<span class="neg">vídeo passa de 45 MB e o navegador não conseguiu cortar. Use a pasta videos-novos no Mac.</span>`; continue; }
       st.textContent = `Enviando ${(blob.size / 1e6).toFixed(1)} MB… (não feche a página)`;
       const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result.split(",")[1]); r.onerror = rej; r.readAsDataURL(blob); });
       await gh(`/contents/brutos/${id}.${ext}`, { method: "PUT", body: JSON.stringify({ message: "Reels: vídeo enviado", content: b64, branch: "main" }) });

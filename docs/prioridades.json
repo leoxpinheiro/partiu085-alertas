@@ -78,7 +78,7 @@
   "CWB": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "motivo": "3 alertas em 30 dias"
   },
   "FLN": {
    "prioridade": "alta",
@@ -93,7 +93,7 @@
   "GYN": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "motivo": "3 alertas em 30 dias"
   },
   "IGU": {
    "prioridade": "normal",
@@ -108,7 +108,7 @@
   "JDO": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "motivo": "3 alertas em 30 dias"
   },
   "LIS": {
    "prioridade": "alta",
@@ -246,9 +246,9 @@
    "motivo": "poucos voos (30 de ~90 dias)"
   },
   "MIL": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "FRA": {
    "prioridade": "baixa",
@@ -271,20 +271,20 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-10T19:58-03:00",
+ "quando": "2026-10-10T21:38-03:00",
  "ultimo_lote": [
-  "CWB",
-  "SLZ",
-  "MAO",
-  "FLN",
-  "LIS",
-  "BUE",
-  "MCZ",
-  "AJU",
-  "GYN",
-  "MIL",
-  "JDO",
-  "PMW",
-  "VIX"
+  "MIA",
+  "PAR",
+  "BHZ",
+  "SSA",
+  "JPA",
+  "REC",
+  "SAO",
+  "RIO",
+  "UDI",
+  "SDQ",
+  "MVD",
+  "NYC",
+  "LON"
  ]
 }

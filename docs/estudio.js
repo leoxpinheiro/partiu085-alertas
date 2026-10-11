@@ -116,7 +116,7 @@ function estCapas() { const n = estNPartes(); return Array.from({ length: n }, (
 /* gravar o vídeo final no navegador (1080x1920), com o som do teclado quando tiver digitação */
 async function estGravar(dur, prog) {
   const v = document.getElementById("est-v"); if (!v) throw new Error("sem vídeo");
-  const som = EST.digitar && (window.AudioContext || window.webkitAudioContext);
+  const som = estComSom() && (window.AudioContext || window.webkitAudioContext);
   const mimes = som ? ["video/mp4;codecs=avc1,mp4a.40.2", "video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/webm;codecs=vp9,opus", "video/webm", "video/mp4"] : ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"];
   const mime = mimes.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)); if (!mime) throw new Error("esse navegador não grava vídeo. Use o Safari ou o Chrome atualizados.");
   const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; const c = cv.getContext("2d");
@@ -136,12 +136,13 @@ async function estGravar(dur, prog) {
   rec.stop(); await new Promise(r => rec.onstop = r); v.loop = true; v.play();
   return { blob: new Blob(pedacos, { type: mime.split(";")[0] }), ext: mime.includes("mp4") ? "mp4" : "webm" };
 }
+const estComSom = () => EST.digitar && EST.somTecla !== false;
 function estDurPadrao() { const T = estTempo(); return EST.partes || EST.digitar ? Math.min(30, Math.ceil(T.n * T.seg + 2)) : 9; }
 async function estExportar(b) {
   const dur = Math.min(30, +document.getElementById("est-dur").value || 9); b.disabled = true; const t0 = b.innerHTML;
   try { const { blob, ext } = await estGravar(dur, t => { b.textContent = `Gravando… ${t.toFixed(0)}/${dur}s`; });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `partiu085-reels-${Date.now().toString(36)}.${ext}`; a.click();
-    toast(ext === "mp4" ? `Vídeo baixado${EST.digitar ? " com o som do teclado" : ""}! É só postar pelo celular${EST.digitar ? " (se colocar música, deixe o som original baixinho junto)" : " com uma música em alta"}.` : "Vídeo baixado em .webm (o Chrome grava assim). Pra .mp4 direto, use o Safari.", 8000);
+    toast(ext === "mp4" ? `Vídeo baixado${estComSom() ? " com o som do teclado" : ""}! É só postar pelo celular${estComSom() ? " (se colocar música, deixe o som original baixinho junto)" : " com uma música em alta"}.` : "Vídeo baixado em .webm (o Chrome grava assim). Pra .mp4 direto, use o Safari.", 8000);
   } catch (e) { toast("Não gravou: " + e.message, 7000); }
   b.disabled = false; b.innerHTML = t0;
 }
@@ -164,7 +165,7 @@ async function estAgendar(b) {
       try { const s = Math.max(1080 / v0.videoWidth, 1920 / v0.videoHeight); q.getContext("2d").drawImage(v0, (1080 - v0.videoWidth * s) / 2, (1920 - v0.videoHeight * s) / 2, v0.videoWidth * s, v0.videoHeight * s); } catch (e) { }
       q.getContext("2d").drawImage(capa, 0, 0); await put(`ig/${id}-1.jpg`, q.toDataURL("image/jpeg", .85).split(",")[1], "Instagram: capa do estúdio");
       IGF.fila.push({ id, titulo: "🎬 " + (EST.texto || "Reels").slice(0, 60), tipo: "reels", imagens: [`ig/${id}-1.jpg`], video_pronto: pronto, dur, legenda: document.getElementById("est-leg").value, quando: quando + "-03:00", aprovado: true, tentativa: 0, criado: isoLocal(new Date()), origem: "estudio" });
-      await salvarFila("Instagram: Reels do estúdio"); toast("Reels agendado, com o som do teclado! Veja em Instagram: agenda.", 6000); b.disabled = false; b.textContent = "Agendar no Instagram"; return; }
+      await salvarFila("Instagram: Reels do estúdio"); toast(`Reels agendado${estComSom() ? ", com o som do teclado" : ""}! Veja em Instagram: agenda.`, 6000); b.disabled = false; b.textContent = "Agendar no Instagram"; return; }
     let fundo = EST.video;
     if (EST.arquivo) { if (EST.arquivo.size > 40e6) throw new Error("vídeo grande demais (máx. 40 MB)"); b.textContent = "Subindo seu vídeo…";
       const b64 = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result.split(",")[1]); r.readAsDataURL(EST.arquivo); });
@@ -208,8 +209,8 @@ function pEstudio() {
           <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label><label class="chk"><input type="checkbox" data-est="partes" ${EST.partes ? "checked" : ""}> ✨ Texto em partes</label>
             ${EST.partes ? `<div class="est-pt"><button class="pill ${EST.modoP !== "um" ? "on" : ""}" data-act="estmodop" data-v="soma">Vai somando</button><button class="pill ${EST.modoP === "um" ? "on" : ""}" data-act="estmodop" data-v="um">Uma de cada vez</button>
               <small class="sub">Separe as partes com uma linha em branco (Enter duas vezes). Dentro da parte, Enter quebra a linha.</small></div>` : ""}
-            <label class="chk"><input type="checkbox" data-est="digitar" ${EST.digitar ? "checked" : ""}> ⌨️ Efeito digitando, com som de teclado</label>
-            ${EST.digitar ? `<button class="bt sm ghost" data-act="estsom" style="justify-self:start">🔊 Ouvir na prévia</button>` : ""}</div></div>
+            <label class="chk"><input type="checkbox" data-est="digitar" ${EST.digitar ? "checked" : ""}> ⌨️ Efeito digitando</label>
+            ${EST.digitar ? `<div class="est-pt"><label class="chk"><input type="checkbox" data-est="somTecla" ${EST.somTecla !== false ? "checked" : ""}> 🔊 Com som de teclado</label>${EST.somTecla !== false ? `<button class="bt sm ghost" data-act="estsom">Ouvir na prévia</button>` : `<small class="sub">Vídeo sem som: as letras aparecem, sem barulho.</small>`}</div>` : ""}</div></div>
         <div class="card"><b>3. Fonte</b><div class="est-fontes">${estFontes().map(([f, d]) => `<button class="est-f ${f === EST.fonte ? "on" : ""}" data-act="estfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}
           <label class="est-f est-up">＋ Enviar fonte<small>.ttf ou .otf</small><input type="file" accept=".ttf,.otf,.woff,.woff2" id="est-font" hidden></label></div>
           <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}${EST.partes || EST.digitar ? rng("seg", "Segundos por parte", 1, 5, .5) : ""}</div>
@@ -224,7 +225,7 @@ function pEstudio() {
 }
 document.addEventListener("input", e => { const t = e.target;
   if (t.id === "est-txt") { EST.texto = t.value; estGuardar(); estPrevia(); }
-  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes" || k === "digitar") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
+  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes" || k === "digitar" || k === "somTecla") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
 document.addEventListener("change", e => { const t = e.target;
   if (t.id === "est-file" && t.files.length) { vbAbrirEnvio([...t.files]); t.value = ""; }
   else if (t.id === "est-font" && t.files[0]) estSubirFonte(t.files[0]); });
@@ -238,7 +239,7 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (a === "estagendar") estAgendar(b); });
 
 /* ---------- biblioteca: Reels prontos (pra aprovar), aprovados e postados ---------- */
-const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg", "modoP", "digitar"];
+const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg", "modoP", "digitar", "somTecla"];
 EST.ap = null;
 function cfgAtual() { const o = {}; CFG_K.forEach(k => o[k] = EST[k]); return o; }
 function comCfg(cfg, fn) { const b = cfgAtual(); Object.assign(EST, cfg); try { return fn(); } finally { Object.assign(EST, b); } }

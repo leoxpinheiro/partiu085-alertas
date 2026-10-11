@@ -31,9 +31,9 @@
    "motivo": "3 alertas em 30 dias"
   },
   "NAT": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (17 de ~90 dias)"
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "voo todo dia, preço muda muito"
   },
   "JPA": {
    "prioridade": "alta",
@@ -123,7 +123,7 @@
   "MAD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (1 de ~90 dias)"
+   "motivo": "poucos voos (20 de ~90 dias)"
   },
   "PAR": {
    "prioridade": "alta",
@@ -271,20 +271,20 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-11T04:54-03:00",
+ "quando": "2026-10-11T06:34-03:00",
  "ultimo_lote": [
-  "SLZ",
-  "FLN",
-  "NAT",
-  "UDI",
-  "NYC",
-  "LON",
-  "LIS",
-  "ORL",
-  "MAD",
-  "BUE",
-  "MCZ",
-  "AJU",
-  "GYN"
+  "JDO",
+  "VIX",
+  "MIA",
+  "PAR",
+  "BHZ",
+  "JPA",
+  "REC",
+  "SAO",
+  "CGB",
+  "BPS",
+  "RIO",
+  "CUN",
+  "LIM"
  ]
 }

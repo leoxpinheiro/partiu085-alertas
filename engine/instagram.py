@@ -217,6 +217,27 @@ def reels_video(p: dict) -> str:
     return caminho
 
 
+def reels_pronto(p: dict) -> str:
+    """Reels gravado no Estúdio (com som de teclado): só padroniza pro Instagram (H.264 + AAC, 30fps) e sobe."""
+    import shutil
+    import subprocess
+    import tempfile
+    if not shutil.which("ffmpeg"):
+        subprocess.run("sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg", shell=True, check=False)
+    d = Path(tempfile.mkdtemp())
+    src = DOCS / p["video_pronto"]
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+                    "-filter_complex", "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p[v];[0:a][1:a]amix=inputs=2:duration=first[a]",
+                    "-map", "[v]", "-map", "[a]", "-t", str(p.get("dur") or 30), "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(d / "r.mp4")], check=False)
+    if not (d / "r.mp4").exists() or (d / "r.mp4").stat().st_size < 1000:  # vídeo sem faixa de áudio: põe silêncio
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(src), "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-map", "0:v", "-map", "1:a",
+                        "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,format=yuv420p", "-t", str(p.get("dur") or 30),
+                        "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-c:a", "aac", "-shortest", "-movflags", "+faststart", str(d / "r.mp4")], check=True)
+    caminho = f"ig/{p['id']}.mp4"
+    subir_github(caminho, (d / "r.mp4").read_bytes())
+    return caminho
+
+
 def url_site(caminho: str) -> str:
     dono, nome = REPO.split("/")
     return f"https://{dono}.github.io/{nome}/{caminho}"
@@ -589,7 +610,9 @@ def main():
                 extra = montar_oferta(p, st)
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
             if p.get("tipo") == "reels" and not extra:
-                if p.get("video_fundo") and p.get("overlay"):
+                if p.get("video_pronto"):
+                    extra = {"video": reels_pronto(p), "imagens": p["imagens"], "titulo": p.get("titulo")}
+                elif p.get("video_fundo") and p.get("overlay"):
                     extra = {"video": reels_video(p), "imagens": p["imagens"], "titulo": p.get("titulo")}
                 else:
                     quadro = requests.get(url_img(p["imagens"][0]), timeout=30).content

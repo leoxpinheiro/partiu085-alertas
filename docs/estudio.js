@@ -39,7 +39,8 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
 }
 /* olho de peixe leve e redondo: lente suave sobre letras nítidas. Cada letra fica em pé (sem entortar),
    o meio cresce um pouco e as letras se afastam do centro em círculo, como numa bolha. */
-function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) {
+function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca, vis) {
+  let resta = vis == null ? Infinity : vis;
   const a = Math.max(0, Math.min(100, forca || 0)) / 100 * .36, ls = parseFloat(c.letterSpacing) || 0;
   const fam = fonte.replace(/^.*?\d+(\.\d+)?px\s*/, ""), peso = (fonte.match(/^(\d{3}|bold|normal)/) || ["400"])[0];
   const F = sz => `${peso} ${sz}px ${fam}`;
@@ -51,7 +52,7 @@ function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) 
   if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; }
   c.fillStyle = cor; c.textAlign = "center"; c.textBaseline = "alphabetic";
   L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), by = (lh * (j + .5) - n * lh / 2) * kf; let x = -tot / 2;
-    l.ch.forEach((ch, k) => { const bx = (x + l.w[k] / 2) * kf; x += l.w[k];
+    l.ch.forEach((ch, k) => { const bx = (x + l.w[k] / 2) * kf; x += l.w[k]; if (resta-- <= 0) return;
       const r2 = Math.min(1, (bx * bx + by * by) / (R * R * kf * kf)), g = 1 + a * (1 - r2); // g: quanto cresce/afasta naquele ponto
       const sz = fs * kf * Math.max(.7, 1 + a * (1 - r2) - 2 * a * bx * bx / (R * R * kf * kf)); // tamanho = quanto a lente estica ali (sem letra encavalar)
       c.font = F(sz); c.fillText(ch, W / 2 + bx * g, yCentro + by * g + sz * .32); }); });
@@ -59,51 +60,90 @@ function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca) 
 }
 /* desenha o texto (mesma função na prévia e no vídeo final) */
 function estQuebrar(c, t, w) { const out = []; t.split("\n").forEach(par => { let l = ""; par.split(/\s+/).forEach(p => { const tt = l ? l + " " + p : p; if (c.measureText(tt).width > w && l) { out.push(l); l = p; } else l = tt; }); out.push(l); }); return out; }
-/* "texto em partes": cada linha aparece de cada vez (vai somando), estilo dos Reels virais */
-function estPartes() { let t = (EST.texto || "").trim(); let L = t.split("\n").map(x => x.trim()).filter(Boolean); if (L.length < 2) L = t.split(/(?<=[.!?…])\s+/).filter(Boolean); return L; }
+/* "texto em partes": blocos separados por linha em branco (ou por linha / frase). Modo "soma" (vai somando, com espaço entre as partes) ou "um" (uma de cada vez) */
+function estPartes() { const t = (EST.texto || "").trim(); if (!t) return [];
+  let L = t.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
+  if (L.length < 2) L = t.split("\n").map(x => x.trim()).filter(Boolean);
+  if (L.length < 2) L = t.split(/(?<=[.!?…])\s+/).filter(Boolean); return L; }
 function estNPartes() { return EST.partes ? Math.max(1, estPartes().length) : 1; }
-function estDesenhar(c, W, H, parte) {
+const estCaso = (t, i) => { if (EST.minusc && i === 0 && t) t = t.charAt(0).toLowerCase() + t.slice(1); return EST.maiusc ? t.toUpperCase() : t; };
+const estLen = L => L.reduce((p, l) => p + Array.from(l).length, 0);
+/* tempo de cada parte e velocidade da digitação */
+function estTempo() { const P = estPartes(), seg = EST.seg || 2.5, n = EST.partes ? Math.max(1, P.length) : 1;
+  const lens = EST.partes ? P.map(p => Array.from(p.replace(/\s+/g, " ")).length) : [Array.from((EST.texto || "").replace(/\s+/g, " ")).length];
+  return { n, seg, lens, dt: lens.map(l => Math.min(.075, seg * .7 / Math.max(1, l))) }; }
+function estEstado(t) { const T = estTempo(); if (!EST.partes && !EST.digitar) return { parte: null, chars: null };
+  const parte = EST.partes ? Math.min(T.n - 1, Math.floor(t / T.seg)) : null, ini = (parte || 0) * T.seg;
+  const chars = EST.digitar ? Math.min(T.lens[parte || 0], Math.floor((t - ini) / T.dt[parte || 0]) + 1) : null; return { parte, chars }; }
+function estDesenhar(c, W, H, parte, chars) {
   if (EST.escuro) { c.fillStyle = `rgba(0,0,0,${EST.escuro / 100})`; c.fillRect(0, 0, W, H); }
-  const k = W / 1080, fs = EST.tam * k, peso = FONTE_PESO[EST.fonte] || 400;
+  const k = W / 1080, fs = EST.tam * k, peso = FONTE_PESO[EST.fonte] || 400, w = W * EST.larg / 100;
   c.font = `${peso} ${fs}px "${EST.fonte}", serif`; c.textAlign = "center"; c.textBaseline = "alphabetic";
   if ("letterSpacing" in c) c.letterSpacing = (/Serif|Gloock|Playfair/.test(EST.fonte) ? -fs * .02 : 0) + "px";
-  let t = EST.partes && parte != null ? estPartes().slice(0, parte + 1).join("\n") : (EST.texto || ""); if (EST.minusc && t) t = t.charAt(0).toLowerCase() + t.slice(1); if (EST.maiusc) t = t.toUpperCase();
-  const L = estQuebrar(c, t, W * EST.larg / 100), lh = fs * (EST.maiusc ? .95 : 1.02);
-  textoOlho(c, W, H, L, c.font, fs, lh, H * EST.y / 100, EST.cor, EST.brilho, EST.olho);
+  let L, vis = null;
+  if (EST.partes && parte != null) { const P = estPartes().map((p, i) => estQuebrar(c, estCaso(p, i), w));
+    if (EST.modoP === "um") { L = P[parte] || []; vis = chars; }
+    else { L = []; let antes = 0; P.forEach((ls, i) => { if (i) L.push(""); if (i < parte) antes += estLen(ls); L.push(...ls); }); vis = antes + (chars == null ? estLen(P[parte] || []) : chars); } }
+  else { L = estQuebrar(c, estCaso(EST.texto || "", 0), w); vis = chars; }
+  const lh = fs * (EST.maiusc ? .95 : 1.02);
+  textoOlho(c, W, H, L, c.font, fs, lh, H * EST.y / 100, EST.cor, EST.brilho, EST.olho, vis);
   if ("letterSpacing" in c) c.letterSpacing = "0px";
   if (EST.arroba) { c.save(); c.globalAlpha = .85; c.font = `600 ${30 * k}px "Plus Jakarta Sans", sans-serif`; c.fillStyle = EST.cor; c.fillText("@partiu.085", W / 2, H - 340 * k); c.restore(); }
 }
-let estPI = null;
+/* som de teclado: gerado aqui mesmo (sem arquivo de áudio de ninguém) */
+let estAC = null, estRuido = null;
+function estAudio() { if (!estAC) { estAC = new (window.AudioContext || window.webkitAudioContext)(); const n = Math.floor(estAC.sampleRate * .05); estRuido = estAC.createBuffer(1, n, estAC.sampleRate); const d = estRuido.getChannelData(0); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 6); } if (estAC.state === "suspended") estAC.resume(); return estAC; }
+function estClique(ac, quando, destino, espaco) { const s = ac.createBufferSource(); s.buffer = estRuido; s.playbackRate.value = espaco ? .55 : .85 + Math.random() * .4;
+  const f = ac.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = espaco ? 900 : 1700 + Math.random() * 1600; f.Q.value = .9;
+  const g = ac.createGain(); g.gain.value = (espaco ? .5 : .32 + Math.random() * .22); s.connect(f); f.connect(g); g.connect(destino); s.start(quando); }
+/* agenda todos os cliques do vídeo a partir de "t0" (segundos do AudioContext) */
+function estCliques(ac, t0, destino, ate) { const T = estTempo(), P = EST.partes ? estPartes() : [EST.texto || ""];
+  P.forEach((p, i) => { const ch = Array.from(p.replace(/\s+/g, " ")); ch.forEach((x, k) => { const t = i * T.seg + k * T.dt[i]; if (t < ate) estClique(ac, t0 + t, destino, x === " "); }); }); }
+let estPI = null, estSomPrev = false;
 function estPrevia() {
   const cv = document.getElementById("est-cv"); if (!cv) return;
-  const c = cv.getContext("2d"); c.clearRect(0, 0, cv.width, cv.height); clearInterval(estPI);
+  const c = cv.getContext("2d"); c.clearRect(0, 0, cv.width, cv.height); cancelAnimationFrame(estPI);
   document.fonts.load(`${FONTE_PESO[EST.fonte] || 400} 60px "${EST.fonte}"`).then(() => { c.clearRect(0, 0, cv.width, cv.height);
-    if (!EST.partes) { estDesenhar(c, cv.width, cv.height); return; }
-    let i = 0; const n = estNPartes(), passo = () => { if (!document.getElementById("est-cv")) { clearInterval(estPI); return; } c.clearRect(0, 0, cv.width, cv.height); estDesenhar(c, cv.width, cv.height, i % (n + 1) === n ? n - 1 : i % (n + 1)); i++; };
-    passo(); estPI = setInterval(passo, (EST.seg || 2.5) * 1000); });
+    if (!EST.partes && !EST.digitar) { estDesenhar(c, cv.width, cv.height); return; }
+    const T = estTempo(), ciclo = T.n * T.seg + 1.5, t0 = performance.now(); let ult = "";
+    if (estSomPrev) { const ac = estAudio(); estCliques(ac, ac.currentTime + .05, ac.destination, ciclo); estSomPrev = false; }
+    const passo = () => { if (!document.getElementById("est-cv")) return; const t = ((performance.now() - t0) / 1000) % ciclo, e = estEstado(Math.min(t, T.n * T.seg - .01)), ch = e.parte + "|" + e.chars;
+      if (ch !== ult) { ult = ch; c.clearRect(0, 0, cv.width, cv.height); estDesenhar(c, cv.width, cv.height, e.parte, e.chars); } estPI = requestAnimationFrame(passo); };
+    passo(); });
 }
 function estCapas() { const n = estNPartes(); return Array.from({ length: n }, (_, k) => { const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; estDesenhar(cv.getContext("2d"), 1080, 1920, EST.partes ? k : null); return cv; }); }
 
-/* gravar o vídeo final no navegador (1080x1920) */
-async function estExportar(b) {
-  const v = document.getElementById("est-v"); if (!v) return;
-  const mime = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"].find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m));
-  if (!mime) { toast("Esse navegador não grava vídeo. Use o Safari ou o Chrome atualizados."); return; }
-  const dur = Math.min(+document.getElementById("est-dur").value || 9, isFinite(v.duration) ? v.duration : 9);
+/* gravar o vídeo final no navegador (1080x1920), com o som do teclado quando tiver digitação */
+async function estGravar(dur, prog) {
+  const v = document.getElementById("est-v"); if (!v) throw new Error("sem vídeo");
+  const som = EST.digitar && (window.AudioContext || window.webkitAudioContext);
+  const mimes = som ? ["video/mp4;codecs=avc1,mp4a.40.2", "video/mp4;codecs=avc1.42E01E,mp4a.40.2", "video/webm;codecs=vp9,opus", "video/webm", "video/mp4"] : ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"];
+  const mime = mimes.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)); if (!mime) throw new Error("esse navegador não grava vídeo. Use o Safari ou o Chrome atualizados.");
   const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; const c = cv.getContext("2d");
-  const capas = estCapas(), seg = EST.seg || 2.5;
-  const rec = new MediaRecorder(cv.captureStream(30), { mimeType: mime, videoBitsPerSecond: 12e6 }), partes = [];
-  rec.ondataavailable = e => e.data.size && partes.push(e.data);
-  EST.gravando = true; b.disabled = true; const t0 = b.innerHTML;
+  const ov = document.createElement("canvas"); ov.width = 1080; ov.height = 1920; const oc = ov.getContext("2d");
+  const stream = cv.captureStream(30); let ac = null, dest = null;
+  if (som) { ac = estAudio(); dest = ac.createMediaStreamDestination(); dest.stream.getAudioTracks().forEach(tr => stream.addTrack(tr)); }
+  const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 12e6 }), pedacos = [];
+  rec.ondataavailable = e => e.data.size && pedacos.push(e.data);
   v.pause(); v.currentTime = 0; v.loop = false; await new Promise(r => { v.onseeked = r; setTimeout(r, 400); });
-  const desenha = () => { const s = Math.max(1080 / v.videoWidth, 1920 / v.videoHeight); c.drawImage(v, (1080 - v.videoWidth * s) / 2, (1920 - v.videoHeight * s) / 2, v.videoWidth * s, v.videoHeight * s); c.drawImage(capas[Math.min(capas.length - 1, Math.floor((performance.now() - ini) / 1000 / seg))] || capas[0], 0, 0); };
-  let ini = performance.now(); rec.start(200); v.play(); ini = performance.now();
-  await new Promise(fim => { const passo = () => { desenha(); const t = (performance.now() - ini) / 1000; b.textContent = `Gravando… ${Math.min(dur, t).toFixed(0)}/${dur.toFixed(0)}s`; if (t >= dur || v.ended) return fim(); requestAnimationFrame(passo); }; passo(); });
+  await document.fonts.load(`${FONTE_PESO[EST.fonte] || 400} 60px "${EST.fonte}"`);
+  let ult = null; const fixo = !EST.partes && !EST.digitar; if (fixo) estDesenhar(oc, 1080, 1920);
+  rec.start(200); v.play(); const ini = performance.now(); if (som) estCliques(ac, ac.currentTime + .02, dest, dur);
+  await new Promise(fim => { const passo = () => { const t = (performance.now() - ini) / 1000;
+    if (!fixo) { const e = estEstado(t), ch = e.parte + "|" + e.chars; if (ch !== ult) { ult = ch; oc.clearRect(0, 0, 1080, 1920); estDesenhar(oc, 1080, 1920, e.parte, e.chars); } }
+    const s = Math.max(1080 / v.videoWidth, 1920 / v.videoHeight); c.drawImage(v, (1080 - v.videoWidth * s) / 2, (1920 - v.videoHeight * s) / 2, v.videoWidth * s, v.videoHeight * s); c.drawImage(ov, 0, 0);
+    if (prog) prog(Math.min(dur, t)); if (t >= dur) return fim(); if (v.ended) { v.currentTime = 0; v.play(); } requestAnimationFrame(passo); }; passo(); });
   rec.stop(); await new Promise(r => rec.onstop = r); v.loop = true; v.play();
-  const blob = new Blob(partes, { type: mime.split(";")[0] }), ext = mime.includes("mp4") ? "mp4" : "webm";
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `partiu085-reels-${Date.now().toString(36)}.${ext}`; a.click();
-  EST.gravando = false; b.disabled = false; b.innerHTML = t0;
-  toast(ext === "mp4" ? "Vídeo baixado! É só postar pelo celular com uma música em alta." : "Vídeo baixado em .webm (o Chrome grava assim). Pra .mp4 direto, use o Safari.", 7000);
+  return { blob: new Blob(pedacos, { type: mime.split(";")[0] }), ext: mime.includes("mp4") ? "mp4" : "webm" };
+}
+function estDurPadrao() { const T = estTempo(); return EST.partes || EST.digitar ? Math.min(30, Math.ceil(T.n * T.seg + 2)) : 9; }
+async function estExportar(b) {
+  const dur = Math.min(30, +document.getElementById("est-dur").value || 9); b.disabled = true; const t0 = b.innerHTML;
+  try { const { blob, ext } = await estGravar(dur, t => { b.textContent = `Gravando… ${t.toFixed(0)}/${dur}s`; });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `partiu085-reels-${Date.now().toString(36)}.${ext}`; a.click();
+    toast(ext === "mp4" ? `Vídeo baixado${EST.digitar ? " com o som do teclado" : ""}! É só postar pelo celular${EST.digitar ? " (se colocar música, deixe o som original baixinho junto)" : " com uma música em alta"}.` : "Vídeo baixado em .webm (o Chrome grava assim). Pra .mp4 direto, use o Safari.", 8000);
+  } catch (e) { toast("Não gravou: " + e.message, 7000); }
+  b.disabled = false; b.innerHTML = t0;
 }
 
 /* mandar pro robô publicar (vídeo do banco ou o seu) */
@@ -116,6 +156,15 @@ async function estAgendar(b) {
     const id = `ig-${Date.now().toString(36)}`;
     await document.fonts.load(`400 60px "${EST.fonte}"`); const capas = estCapas(), capa = capas[capas.length - 1], seg = EST.seg || 2.5;
     const put = (path, b64, msg) => gh(`/contents/docs/${path}`, { method: "PUT", body: JSON.stringify({ message: msg, content: b64, branch: "main" }) });
+    if (EST.digitar) { const dur = Math.min(30, +document.getElementById("est-dur").value || 9);
+      const { blob, ext } = await estGravar(dur, t => { b.textContent = `Gravando… ${t.toFixed(0)}/${dur}s`; }); if (blob.size > 40e6) throw new Error("vídeo ficou grande demais (máx. 40 MB): diminua a duração");
+      b.textContent = "Enviando o vídeo…"; const b64 = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result.split(",")[1]); r.readAsDataURL(blob); });
+      const pronto = `ig/${id}-pronto.${ext}`; await put(pronto, b64, "Instagram: Reels do estúdio (digitando)");
+      const q = document.createElement("canvas"); q.width = 1080; q.height = 1920; const v0 = document.getElementById("est-v");
+      try { const s = Math.max(1080 / v0.videoWidth, 1920 / v0.videoHeight); q.getContext("2d").drawImage(v0, (1080 - v0.videoWidth * s) / 2, (1920 - v0.videoHeight * s) / 2, v0.videoWidth * s, v0.videoHeight * s); } catch (e) { }
+      q.getContext("2d").drawImage(capa, 0, 0); await put(`ig/${id}-1.jpg`, q.toDataURL("image/jpeg", .85).split(",")[1], "Instagram: capa do estúdio");
+      IGF.fila.push({ id, titulo: "🎬 " + (EST.texto || "Reels").slice(0, 60), tipo: "reels", imagens: [`ig/${id}-1.jpg`], video_pronto: pronto, dur, legenda: document.getElementById("est-leg").value, quando: quando + "-03:00", aprovado: true, tentativa: 0, criado: isoLocal(new Date()), origem: "estudio" });
+      await salvarFila("Instagram: Reels do estúdio"); toast("Reels agendado, com o som do teclado! Veja em Instagram: agenda.", 6000); b.disabled = false; b.textContent = "Agendar no Instagram"; return; }
     let fundo = EST.video;
     if (EST.arquivo) { if (EST.arquivo.size > 40e6) throw new Error("vídeo grande demais (máx. 40 MB)"); b.textContent = "Subindo seu vídeo…";
       const b64 = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result.split(",")[1]); r.readAsDataURL(EST.arquivo); });
@@ -156,13 +205,17 @@ function pEstudio() {
       <div class="est-ctl">
         <div class="card">${vbHTML()}</div>
         <div class="card"><b>2. Texto</b><textarea id="est-txt" rows="3">${esc(EST.texto)}</textarea>
-          <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label><label class="chk"><input type="checkbox" data-est="partes" ${EST.partes ? "checked" : ""}> ✨ Texto em partes (cada linha aparece de cada vez)</label></div></div>
+          <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label><label class="chk"><input type="checkbox" data-est="partes" ${EST.partes ? "checked" : ""}> ✨ Texto em partes</label>
+            ${EST.partes ? `<div class="est-pt"><button class="pill ${EST.modoP !== "um" ? "on" : ""}" data-act="estmodop" data-v="soma">Vai somando</button><button class="pill ${EST.modoP === "um" ? "on" : ""}" data-act="estmodop" data-v="um">Uma de cada vez</button>
+              <small class="sub">Separe as partes com uma linha em branco (Enter duas vezes). Dentro da parte, Enter quebra a linha.</small></div>` : ""}
+            <label class="chk"><input type="checkbox" data-est="digitar" ${EST.digitar ? "checked" : ""}> ⌨️ Efeito digitando, com som de teclado</label>
+            ${EST.digitar ? `<button class="bt sm ghost" data-act="estsom" style="justify-self:start">🔊 Ouvir na prévia</button>` : ""}</div></div>
         <div class="card"><b>3. Fonte</b><div class="est-fontes">${estFontes().map(([f, d]) => `<button class="est-f ${f === EST.fonte ? "on" : ""}" data-act="estfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}
           <label class="est-f est-up">＋ Enviar fonte<small>.ttf ou .otf</small><input type="file" accept=".ttf,.otf,.woff,.woff2" id="est-font" hidden></label></div>
-          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}${EST.partes ? rng("seg", "Segundos por parte", 1, 5, .5) : ""}</div>
+          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}${EST.partes || EST.digitar ? rng("seg", "Segundos por parte", 1, 5, .5) : ""}</div>
           <div class="est-cores">${["#FFFDF8", "#F6EBD0", "#F5C531", "#FFFFFF", "#111111"].map(c => `<button class="est-cor ${c === EST.cor ? "on" : ""}" data-act="estcor" data-c="${c}" style="background:${c}"></button>`).join("")}
             <label class="chk"><input type="checkbox" data-est="brilho" ${EST.brilho ? "checked" : ""}> sombra</label><label class="chk"><input type="checkbox" data-est="arroba" ${EST.arroba ? "checked" : ""}> @partiu.085</label></div></div>
-        <div class="card"><b>4. Pronto</b><div class="est-fim"><label class="est-r"><span>Duração (s)</span><input type="number" id="est-dur" min="3" max="30" value="9"></label>
+        <div class="card"><b>4. Pronto</b><div class="est-fim"><label class="est-r"><span>Duração (s)</span><input type="number" id="est-dur" min="3" max="30" value="${estDurPadrao()}"></label>
           <button class="bt pri lg" data-act="estbaixar">${ic("down")}Baixar vídeo</button><button class="bt lg" data-act="estaprovaratual">✓ Aprovar pra postar depois</button></div>
           <details><summary>Ou agendar pro robô postar</summary><div class="field"><label>Legenda</label><textarea id="est-leg" rows="4">Quem se identifica? 😂✈️\n\nPassagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}</textarea></div>
             <div class="est-fim"><input type="datetime-local" id="est-q" value="${amanha}"><button class="bt" data-act="estagendar">Agendar no Instagram</button></div>
@@ -171,7 +224,7 @@ function pEstudio() {
 }
 document.addEventListener("input", e => { const t = e.target;
   if (t.id === "est-txt") { EST.texto = t.value; estGuardar(); estPrevia(); }
-  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
+  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes" || k === "digitar") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
 document.addEventListener("change", e => { const t = e.target;
   if (t.id === "est-file" && t.files.length) { vbAbrirEnvio([...t.files]); t.value = ""; }
   else if (t.id === "est-font" && t.files[0]) estSubirFonte(t.files[0]); });
@@ -180,10 +233,12 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (a === "estfonte") { EST.fonte = b.dataset.f; estGuardar(); document.querySelectorAll(".est-f").forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
   else if (a === "estcor") { EST.cor = b.dataset.c; estGuardar(); document.querySelectorAll(".est-cor").forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
   else if (a === "estbaixar") estExportar(b);
+  else if (a === "estmodop") { EST.modoP = b.dataset.v; estGuardar(); document.querySelectorAll('[data-act="estmodop"]').forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
+  else if (a === "estsom") { estAudio(); estSomPrev = true; estPrevia(); }
   else if (a === "estagendar") estAgendar(b); });
 
 /* ---------- biblioteca: Reels prontos (pra aprovar), aprovados e postados ---------- */
-const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg"];
+const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg", "modoP", "digitar"];
 EST.ap = null;
 function cfgAtual() { const o = {}; CFG_K.forEach(k => o[k] = EST[k]); return o; }
 function comCfg(cfg, fn) { const b = cfgAtual(); Object.assign(EST, cfg); try { return fn(); } finally { Object.assign(EST, b); } }

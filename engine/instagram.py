@@ -26,6 +26,8 @@ APENAS = os.environ.get("IG_POST", "").strip()   # publicar já um post específ
 
 def avisar_admin(msg: str) -> None:
     tok, chat = os.environ.get("TELEGRAM_BOT_TOKEN", ""), os.environ.get("TELEGRAM_ADMIN_ID", "")
+    if not chat and (RAIZ_ADMIN := Path(__file__).resolve().parent / ".telegram_admin").exists():
+        chat = RAIZ_ADMIN.read_text().strip()
     if tok and chat:
         try:
             requests.post(f"https://api.telegram.org/bot{tok}/sendMessage", data={"chat_id": chat, "text": msg}, timeout=20)

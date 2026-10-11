@@ -623,7 +623,7 @@ function ntEd(x) { const d = x.det || {}, e = (PA.ntEd || {})[ntChave(x)] || {},
   return { ...A, kick: e.kick ?? A.kick, titulo: e.titulo ?? A.tit, prazo: e.prazo ?? A.prazo, gancho: e.gancho ?? (A.gancho ? A.gancho.join("\n") : ""),
     listaTit: e.listaTit ?? (ehTier ? "Quanto você ganha" : A.tipo === "porreal" ? "Onde pontuar" : (d.lista_tit && d.lista_tit.length < 40 ? d.lista_tit : "Onde vale")),
     lista: e.lista ?? curta.slice(0, 16), tier: (e.lista ? e.lista.filter(i => /·/.test(i) && /\d/.test(i)).length >= 2 : ehTier), passos: e.passos ?? passos, avisos: e.avisos ?? ((d.avisos || []).filter(a => a.length < 120).slice(0, 2)) }; }
-const MI_FOTOS = { porreal: ["compras-1", "compras-2", "compras-3", "trabalho-1"], bonus: ["cartao-1", "cartao-2", "celular-viagem-1"], compra: ["cartao-1", "celular-viagem-1"], passagem: ["janela-1", "ferias-1", "ferias-3"], desconto_voo: ["janela-2", "ferias-2", "ferias-4"], geral: ["celular-viagem-1", "ferias-1"] };
+const MI_FOTOS = { porreal: ["compras-1", "compras-2", "compras-3", "trabalho-1"], bonus: ["cartao-1", "cartao-2", "celular-viagem-1"], compra: ["cartao-1", "celular-viagem-1"], passagem: ["janela-1", "ferias-1", "ferias-3"], desconto_voo: ["janela-4", "janela-3", "ferias-4"], geral: ["celular-viagem-1", "ferias-1"] };
 function miFoto(x, E) { const h = [...(x.link || x.titulo)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 9973, 7); if (h % 2) return null; // de vez em quando (metade dos posts)
   const L = MI_FOTOS[E.tipo] || MI_FOTOS.geral; return L[h % L.length]; }
 function telaMiCapa(x, E, W, H) { return async c => {

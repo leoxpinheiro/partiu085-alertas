@@ -187,7 +187,7 @@ const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "
 EST.ap = null;
 function cfgAtual() { const o = {}; CFG_K.forEach(k => o[k] = EST[k]); return o; }
 function comCfg(cfg, fn) { const b = cfgAtual(); Object.assign(EST, cfg); try { return fn(); } finally { Object.assign(EST, b); } }
-function prontos() { return (typeof REELS !== "undefined" ? REELS : []).map(x => ({ id: "pr-" + x.id, video: `midia/clip-v-${x.clip}.mp4`, poster: `midia/clip-v-${x.clip}.jpg`,
+function prontos() { const oc = (typeof VB !== "undefined" && VB.cfg && VB.cfg.ocultos) || []; return (typeof REELS !== "undefined" ? REELS : []).filter(x => !oc.includes("pr-" + x.id)).map(x => ({ id: "pr-" + x.id, video: `midia/clip-v-${x.clip}.mp4`, poster: `midia/clip-v-${x.clip}.jpg`,
   texto: x.t.split("\n").map(l => l.charAt(0).toLowerCase() + l.slice(1)).join(" ").replace(/\. /g, ", ").replace(/\.$/, ""), legenda: x.leg,
   fonte: "Instrument Serif", tam: 92, cor: "#FFFDF8", y: 50, larg: 82, brilho: 1, escuro: 25, arroba: true, minusc: false, maiusc: false, olho: 55 })); }
 async function carregarAp() { if (EST.ap) return; let L = []; try { L = JSON.parse(localStorage.getItem("p085_reels_ap") || "[]"); } catch (e) { }
@@ -203,7 +203,7 @@ function bibliotecaHTML() {
   return `<div class="card est-bib"><div class="est-tit"><b>✅ Aprovados pra postar (${pend.length})</b><small class="sub">Abra, baixe e poste pelo celular com música. Depois marque "Postei".</small></div>
       ${pend.length ? `<div class="est-grade">${pend.map(x => card(x, `<button class="bt sm pri" data-act="estabrir" data-id="${x.id}">Abrir e baixar</button><button class="bt sm" data-act="estpostei" data-id="${x.id}">✓ Postei</button><button class="bt sm ghost" data-act="esttira" data-id="${x.id}">✕</button>`)).join("")}</div>` : `<div class="vazio">Nada aprovado ainda. Aprove os prontos abaixo ou crie um no editor e toque em "Aprovar".</div>`}</div>
     <div class="card est-bib"><div class="est-tit"><b>🎬 Reels prontos pra aprovar (${pr.length})</b><small class="sub">Toque ▶ pra ver rodando. Gostou? Aprovar. Quer mudar? Editar.</small></div>
-      ${pr.length ? `<div class="est-grade">${pr.map(x => card(x, `<button class="bt sm pri" data-act="estaprovar" data-id="${x.id}">✓ Aprovar</button><button class="bt sm" data-act="esteditar" data-id="${x.id}">Editar</button>`)).join("")}</div>` : `<div class="vazio">Todos os prontos já foram aprovados. Me pede mais frases que eu crio.</div>`}</div>
+      ${pr.length ? `<div class="est-grade">${pr.map(x => card(x, `<button class="bt sm pri" data-act="estaprovar" data-id="${x.id}">✓ Aprovar</button><button class="bt sm" data-act="esteditar" data-id="${x.id}">Editar</button><button class="bt sm ghost" data-act="esttirapronto" data-id="${x.id}" title="não gostei, tirar da lista">✕</button>`)).join("")}</div>` : `<div class="vazio">Todos os prontos já foram aprovados. Me pede mais frases que eu crio.</div>`}</div>
     ${post.length ? `<details class="card est-bib"><summary><b>Já postados (${post.length})</b></summary><div class="est-grade">${post.map(x => card(x, `<span class="sub">postado ${x.postado.slice(8, 10)}/${x.postado.slice(5, 7)}</span><button class="bt sm ghost" data-act="estdesposta" data-id="${x.id}">desfazer</button>`)).join("")}</div></details>` : ""}`;
 }
 document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="est"]'); if (!b || !EST.ap) return; const a = b.dataset.act, id = b.dataset.id;
@@ -213,6 +213,7 @@ document.addEventListener("click", async e => { const b = e.target.closest('[dat
   else if (a === "estabrir" && ap) { Object.assign(EST, ap, { arquivo: null }); estGuardar(); render(); scrollTo({ top: 0, behavior: "smooth" }); toast("Carregado no editor. Toque em Baixar vídeo."); }
   else if (a === "estpostei" && ap) { ap.postado = isoLocal(new Date()); await salvarAp("Reels: postado"); render(); }
   else if (a === "estdesposta" && ap) { delete ap.postado; await salvarAp("Reels: desfaz postado"); render(); }
+  else if (a === "esttirapronto") { VB.cfg.ocultos = [...new Set([...(VB.cfg.ocultos || []), id])]; render(); toast("Tirado da lista."); vbSalvarCfg("Reels: tira pronto"); }
   else if (a === "esttira" && ap) { EST.ap = EST.ap.filter(x => x !== ap); await salvarAp("Reels: remove"); render(); }
   else if (a === "estaprovaratual") { if (EST.arquivo) { toast("Vídeo seu: baixe direto (ele não fica salvo no banco)."); return; }
     EST.ap.unshift({ ...cfgAtual(), id: "ap-" + Date.now().toString(36), origem: EST.origemEd || "editor", aprovado: hojeISO(), legenda: "" }); await salvarAp("Reels: aprova do editor"); toast("Aprovado!"); render(); }
@@ -224,7 +225,7 @@ function abrirEstudio(video, texto) { EST.video = video; EST.poster = video.repl
 
 /* ================= 📁 meus vídeos: banco organizado por categoria, envio que fica salvo ================= */
 const VB_CATS = ["Fortaleza", "Aeroporto", "Voo", "Praia", "Destinos", "Viagem"];
-const VB_PADRAO = { aeroporto: "Aeroporto", janela: "Voo", asa: "Voo", nuvens: "Voo", decolagem: "Voo", pouso: "Voo", praia: "Praia", mala: "Viagem" };
+const VB_PADRAO = { fortaleza: "Fortaleza", paisagem: "Destinos", aeroporto: "Aeroporto", janela: "Voo", asa: "Voo", nuvens: "Voo", decolagem: "Voo", pouso: "Voo", praia: "Praia", mala: "Viagem" };
 const VB = { cat: "Todas", cfg: { ocultos: [], cats: {} }, pend: [], meus: [] };
 try { VB.cat = localStorage.getItem("p085_vb_cat") || "Todas"; VB.pend = JSON.parse(localStorage.getItem("p085_vb_pend") || "[]"); } catch (e) { }
 async function ghJSON(path, padrao) { // lê direto do GitHub (sem esperar o site atualizar)
@@ -233,7 +234,7 @@ async function ghJSON(path, padrao) { // lê direto do GitHub (sem esperar o sit
 async function vbCarregar() {
   const [m, meus, cfg] = await Promise.all([getJSON("midia.json", { videos: {} }), ghJSON("docs/videos_meus.json", []), ghJSON("docs/videos_cfg.json", { ocultos: [], cats: {} })]);
   VB.cfg = { ocultos: cfg.ocultos || [], cats: cfg.cats || {} }; VB.meus = meus || [];
-  const banco = Object.entries(m.videos || {}).flatMap(([k, L]) => L.filter(v => /clip-/.test(v.arq)).map(v => ({ src: v.arq, poster: v.quadro || "", nome: k.replace("v-", ""), cat: VB_PADRAO[k.replace("v-", "")] || "Viagem", meu: false })));
+  const banco = Object.entries(m.videos || {}).flatMap(([k, L]) => L.filter(v => /clip-/.test(v.arq)).map(v => ({ src: v.arq, poster: v.quadro || "", nome: k.replace("v-", ""), cat: v.cat || VB_PADRAO[k.replace("v-", "")] || "Viagem", meu: false, hq: !!v.hq })));
   const env = VB.meus.filter(v => v.arq).map(v => ({ src: v.arq, poster: v.quadro, nome: v.nome || v.cat, cat: v.cat || "Outros", meu: true, quando: v.enviado || "" })).reverse();
   EST.todos = [...env, ...banco].map(v => ({ ...v, cat: VB.cfg.cats[v.src] || v.cat }));
   EST.lista = EST.todos.filter(v => !VB.cfg.ocultos.includes(v.src));

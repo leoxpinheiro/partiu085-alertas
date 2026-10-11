@@ -1,0 +1,42 @@
+name: Capas (Pixabay)
+
+on:
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: "buscar ou baixar"
+        required: true
+        default: "buscar"
+      dados:
+        description: "JSON: buscar = {id: [buscas]} · baixar = {id: url}"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  capas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - env:
+          PIXABAY_KEY: ${{ secrets.PIXABAY_KEY }}
+          CAPAS: ${{ github.event.inputs.dados }}
+          ESCOLHA: ${{ github.event.inputs.dados }}
+        run: python engine/capas.py ${{ github.event.inputs.modo }}
+      - if: github.event.inputs.modo == 'buscar'
+        uses: actions/upload-artifact@v4
+        with:
+          name: capas
+          path: out/
+          retention-days: 3
+      - if: github.event.inputs.modo == 'baixar'
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/midia
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Mídia: capas escolhidas"
+          for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done

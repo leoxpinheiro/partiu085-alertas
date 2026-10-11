@@ -1,18 +1,16 @@
-Lote: LIS(a), BUE(a), MCZ(a), AJU(a), GYN(a), JDO(a), VIX(a), MIA(a), PAR(a), BHZ(a), VCP(n), JPA(a), AMS(n)
-Lote: LIS, BUE, MCZ, AJU, GYN, JDO, VIX, MIA, PAR, BHZ, VCP, JPA, AMS
+Lote: LIS(a), BUE(a), MCZ(a), AJU(a), GYN(a), JDO(a), VIX(a), MIA(a), PAR(a), BHZ(a), JPA(a), REC(a), SAO(a)
+Lote: LIS, BUE, MCZ, AJU, GYN, JDO, VIX, MIA, PAR, BHZ, JPA, REC, SAO
 FOR-LIS: 91+91 dias · menor ida R$ 1.716 · média R$ 2.923 · 41%
-  ! Google FOR-BUE 2026-10-22: IndexError: list index out of range
   ! Google FOR-BUE 2026-11-08: IndexError: list index out of range
-  ! Google FOR-BUE 2026-11-14: IndexError: list index out of range
-  ! Google FOR-BUE 2026-11-15: IndexError: list index out of range
+  ! Google FOR-BUE 2026-11-25: IndexError: list index out of range
   ! Google FOR-BUE 2027-01-03: IndexError: list index out of range
-  ! Google BUE-FOR 2026-11-13: IndexError: list index out of range
   ! Google BUE-FOR 2026-11-25: IndexError: list index out of range
   ! Google BUE-FOR 2026-12-26: IndexError: list index out of range
   ! Google BUE-FOR 2027-01-02: IndexError: list index out of range
   ! Google BUE-FOR 2027-01-09: IndexError: list index out of range
-FOR-BUE: 86+86 dias · menor ida R$ 1.272 · média R$ 1.322 · 4%
-FOR-MCZ: 90+90 dias · menor ida R$ 681 · média R$ 1.342 · 49%
+FOR-BUE: 88+87 dias · menor ida R$ 1.272 · média R$ 1.322 · 4%
+  ! Google FOR-MCZ 2026-11-13: FlightsNotFound: no flights found; received error
+FOR-MCZ: 89+90 dias · menor ida R$ 650 · média R$ 1.342 · 52%
   ida e volta R$ 1.381 acima do teto da região (R$ 1.100) — sem alerta
   ! Google FOR-AJU 2026-11-23: IndexError: list index out of range
   ! Google AJU-FOR 2026-10-25: IndexError: list index out of range
@@ -31,20 +29,32 @@ FOR-MCZ: 90+90 dias · menor ida R$ 681 · média R$ 1.342 · 49%
   ! Google AJU-FOR 2026-12-27: IndexError: list index out of range
   ! Google AJU-FOR 2027-01-03: IndexError: list index out of range
   ! Google AJU-FOR 2027-01-10: IndexError: list index out of range
-FOR-AJU: 85+65 dias · menor ida R$ 1.038 · média R$ 1.439 · 28%
+FOR-AJU: 84+65 dias · menor ida R$ 1.038 · média R$ 1.439 · 28%
   ida e volta R$ 1.856 acima do teto da região (R$ 1.100) — sem alerta
-  ! Google FOR-GYN 2026-11-23: IndexError: list index out of range
-FOR-GYN: 90+91 dias · menor ida R$ 594 · média R$ 948 · 37%
-  ! Google JDO-FOR 2026-12-05: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-12-06: FlightsNotFound: no flights found; received error
-FOR-JDO: 45+66 dias · menor ida R$ 296 · média R$ 2.031 · 85%
-FOR-VIX: 91+91 dias · menor ida R$ 569 · média R$ 818 · 30%
-  ! Google FOR-MIA 2026-10-22: IndexError: list index out of range
+FOR-GYN: 91+91 dias · menor ida R$ 594 · média R$ 948 · 37%
+FOR-JDO: 44+69 dias · menor ida R$ 296 · média R$ 2.031 · 85%
+  ! Google VIX-FOR 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-11-15: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-11-23: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-12-03: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-12-16: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-12-21: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-12-23: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2026-12-30: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2027-01-04: FlightsNotFound: no flights found; received error
+  ! Google VIX-FOR 2027-01-08: FlightsNotFound: no flights found; received error
+FOR-VIX: 91+79 dias · menor ida R$ 569 · média R$ 818 · 30%
+  ! Google FOR-MIA 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-MIA 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-MIA 2026-12-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-MIA 2026-12-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-MIA 2026-12-18: FlightsNotFound: no flights found; received error
   ! Google FOR-MIA 2027-01-01: IndexError: list index out of range
-FOR-MIA: 89+91 dias · menor ida R$ 2.354 · média R$ 2.883 · 18%
+FOR-MIA: 85+91 dias · menor ida R$ 2.359 · média R$ 2.883 · 18%
   ! Google FOR-PAR 2026-10-19: IndexError: list index out of range
   ! Google FOR-PAR 2026-10-31: IndexError: list index out of range
-  ! Google FOR-PAR 2026-11-03: IndexError: list index out of range
   ! Google FOR-PAR 2026-11-06: IndexError: list index out of range
   ! Google FOR-PAR 2026-11-07: IndexError: list index out of range
   ! Google FOR-PAR 2026-11-13: IndexError: list index out of range
@@ -54,40 +64,24 @@ FOR-MIA: 89+91 dias · menor ida R$ 2.354 · média R$ 2.883 · 18%
   ! Google FOR-PAR 2026-12-16: IndexError: list index out of range
   ! Google FOR-PAR 2027-01-04: IndexError: list index out of range
   ! Google FOR-PAR 2027-01-07: IndexError: list index out of range
-FOR-PAR: 79+91 dias · menor ida R$ 1.950 · média R$ 3.278 · 41%
-  ida e volta R$ 5.404 acima do teto da região (R$ 4.500) — sem alerta
+FOR-PAR: 80+91 dias · menor ida R$ 1.678 · média R$ 3.225 · 48%
+  ida e volta R$ 5.132 acima do teto da região (R$ 4.500) — sem alerta
   ! Google FOR-BHZ 2026-10-17: IndexError: list index out of range
 FOR-BHZ: 90+91 dias · menor ida R$ 771 · média R$ 879 · 12%
-FOR-VCP: 91+91 dias · menor ida R$ 547 · média R$ 1.355 · 60%
-FOR-JPA: 83+73 dias · menor ida R$ 860 · média R$ 1.215 · 29%
-  ida e volta R$ 1.714 acima do teto da região (R$ 1.100) — sem alerta
-  ! Google FOR-AMS 2026-10-31: IndexError: list index out of range
-  ! Google FOR-AMS 2026-11-14: IndexError: list index out of range
-  ! Google FOR-AMS 2026-12-19: IndexError: list index out of range
-  ! Google FOR-AMS 2026-12-28: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-02: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-04: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-07: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-14: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-03: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-11: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-24: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-28: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-17: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-24: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-26: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-31: IndexError: list index out of range
-FOR-AMS: 83+83 dias · menor ida R$ 1.997 · média R$ 3.873 · 48%
-  ida e volta R$ 5.339 acima do teto da região (R$ 4.500) — sem alerta
+FOR-JPA: 83+74 dias · menor ida R$ 860 · média R$ 1.215 · 29%
+  ida e volta R$ 1.859 acima do teto da região (R$ 1.100) — sem alerta
+FOR-REC: 89+91 dias · menor ida R$ 442 · média R$ 1.126 · 61%
+FOR-SAO: 91+91 dias · menor ida R$ 478 · média R$ 813 · 41%
+  ✓ FOR-SAO R$ 478/trecho (-41%) 4 idas · 5 voltas
   conferido BSB 2026-11-13: R$ 714 (valendo)
-  conferido IGU 2026-11-07: R$ 916 (subiu)
-  conferido POA 2026-11-07: R$ 1.091 (subiu)
+  conferido IGU 2026-11-07: R$ 755 (subiu)
+  conferido JDO 2026-12-12: R$ 296 (valendo)
+  conferido CWB 2026-11-10: R$ 405 (valendo)
+  conferido GYN 2026-11-11: R$ 594 (valendo)
+  conferido POA 2026-11-07: R$ 1.193 (subiu)
   conferido FLN 2026-12-08: R$ 434 (valendo)
   conferido RIO 2026-12-12: R$ 510 (valendo)
   conferido BEL 2026-11-13: R$ 641 (subiu)
   conferido VIX 2026-11-07: R$ 605 (valendo)
-  conferido LIS 2026-11-06: R$ 2.135 (subiu)
-  conferido FLN 2026-12-08: R$ 434 (valendo)
-  conferido CGB 2026-12-03: R$ 507 (valendo)
 
-Rodada: 13 rotas · 0 candidatos · 0 alertas · 2558s
+Rodada: 13 rotas · 1 candidatos · 1 alertas · 2520s

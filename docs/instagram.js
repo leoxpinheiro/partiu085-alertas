@@ -171,6 +171,36 @@ function postsPorDia(dias) { return dias.map(d => { const its = [...(IGF.fila ||
   of.forEach(h => { const t = new Date(`${d}T${h}-03:00`).getTime(); if (!its.some(x => Math.abs(new Date(x.quando).getTime() - t) < 3600e3)) n++; }); return n; }); }
 const AO_VIVO = /^(f-destsem|f-op|f-quanto|aq-quanto|aq-feriadao|aq-teaser3|camp-op|camp-quanto)/;
 const aoVivo = p => !!(p && (p.aoVivo || AO_VIVO.test(p.id || p.origem || "")));
+/* 🔁 trocar um post da agenda: janela com sugestões prontas pra tocar e trocar */
+const IGT_HS = "09:30, 13:00, 16:30, 21:00";
+async function abrirTroca(p) {
+  const passou = p.quando.slice(0, 16) < isoLocal(new Date()).slice(0, 16);
+  const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "igt";
+  d.innerHTML = `<div class="ej igt"><div class="ej-h"><div><b>🔁 Trocar o post de ${dataHora(p.quando)}</b><small>"${esc(p.titulo)}" sai da agenda e o horário não fica vazio.</small></div><button class="bt sm ghost" data-act="igtrocarfechar">✕</button></div>
+    ${passou ? `<div class="aviso warn" style="display:block;margin-bottom:10px">Esse horário já passou: o substituto vai pro próximo horário livre.</div>` : ""}
+    <div class="igt-ops"><button class="igt-op" data-act="igtrocaroferta" data-id="${p.id}"><span>💲</span><div><b>Oferta do dia</b><small>o robô escolhe a melhor promoção fresca na hora</small></div></button>
+      <button class="igt-op" data-act="igtrocarpauta" data-id="${p.id}"><span>📋</span><div><b>Ver todos na Pauta</b><small>abre a Pauta e você toca no + do post</small></div></button></div>
+    <div class="igt-t">Ou toque numa sugestão:</div><div class="igt-g" id="igt-g"><div class="sub">Carregando sugestões…</div></div>
+    <div class="igt-pe"><small class="sub" id="igt-prog"></small><button class="bt pri" id="igt-ok" data-act="igtrocaok" disabled>Escolha um post</button></div></div>`;
+  document.body.appendChild(d); document.body.classList.add("ej-on");
+  if (typeof mcTodos !== "function") { $("#igt-g").innerHTML = `<div class="sub">Abra a Pauta pra escolher.</div>`; return; }
+  try { if (!PA.lista || !PA.lista.length) PA.lista = await mcTodos();
+    const usados = new Set((IGF.fila || []).map(x => x.origem)), dia = p.quando.slice(0, 10);
+    const ord = { conteudo: 0, humor: 1, noticias: 2, dia: 3, guias: 4 }, L = PA.lista.filter(x => !usados.has(x.id) && !x.semana && x.telas && x.telas.length && !(x.valido && x.valido < dia) && !(typeof aoVivo === "function" && aoVivo(x) && dia !== hojeISO()))
+      .sort((a, c) => (ord[mcGrupo(a)] ?? 5) - (ord[mcGrupo(c)] ?? 5)).slice(0, 12);
+    const g = $("#igt-g"); if (!g) return; if (!L.length) { g.innerHTML = `<div class="sub">Sem sugestão nova agora: use a oferta do dia ou a Pauta.</div>`; return; }
+    IGF.trocaCand = L; IGF.trocaP = p;
+    g.innerHTML = L.map((x, i) => `<button class="igt-c" data-act="igtrocasel" data-i="${i}"><canvas id="igt-cv-${i}" width="${PW}" height="${x.reels ? SH : PH}"></canvas><small>${esc(x.rot || x.tipo || "")}${x.telas.length > 1 ? ` · ${x.telas.length} telas` : ""}</small><b>${esc(x.titulo.replace(/^\d+\.\s*/, ""))}</b></button>`).join("");
+    for (const [i, x] of L.entries()) { const cv = document.getElementById("igt-cv-" + i); if (!cv) return; try { await x.telas[0](cv.getContext("2d")); } catch (e) { } }
+  } catch (e) { const g = $("#igt-g"); if (g) g.innerHTML = `<div class="sub">Não carregou as sugestões: ${esc(e.message)}</div>`; } }
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act="igtrocasel"],[data-act="igtrocaok"]'); if (!b) return;
+  if (b.dataset.act === "igtrocasel") { document.querySelectorAll(".igt-c").forEach(x => x.classList.toggle("on", x === b)); IGF.trocaSel = IGF.trocaCand[+b.dataset.i];
+    const ok = $("#igt-ok"); ok.disabled = false; ok.textContent = "Trocar por este"; return; }
+  const p = IGF.trocaP, x = IGF.trocaSel; if (!p || !x) return; b.disabled = true; const prog = $("#igt-prog");
+  try { let q = p.quando; if (q.slice(0, 16) < isoLocal(new Date()).slice(0, 16)) { IGF.fila = IGF.fila.filter(y => y.id !== p.id); q = gerarSlots(hojeISO(), lerHorarios(IGT_HS), 1)[0]; }
+    await trocarPor({ id: p.id, quando: q, titulo: p.titulo }, x, t => { if (prog) prog.textContent = t; });
+    const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on"); render();
+  } catch (err) { toast("Não trocou: " + err.message, 6000); b.disabled = false; } });
 function lerHorarios(t) { return String(t || "").split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0")); }
 /* agenda vários posts de uma vez: itens = [{ titulo, cvs, legenda, origem }] */
 async function agendarItens(itens, slots, ok, prog) {
@@ -407,13 +437,10 @@ document.addEventListener("click", async e => {
     else if (act === "igdesaprovar") { p.aprovado = false; await salvarFila(`Instagram: pausa "${p.titulo}"`); toast("Pausado."); }
     else if (act === "igtentar") { p.tentativa = (p.tentativa || 0) + 1; p.aprovado = true; await salvarFila(`Instagram: tenta de novo "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Tentando de novo em 1 a 2 minutos."); }
     else if (act === "igagora") { p.aprovado = true; p.quando = isoLocal(new Date()); p.tentativa = (p.tentativa || 0) + ((IGF.st[p.id] || {}).status === "erro" ? 1 : 0); await salvarFila(`Instagram: publicar agora "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Enviado pro robô: publica em 1 a 2 minutos."); }
-    else if (act === "igtrocar") { b.disabled = false; const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "igt";
-      d.innerHTML = `<div class="ej" style="max-width:560px"><div class="ej-h"><div><b>Trocar o post de ${dataHora(p.quando)}</b><small>"${esc(p.titulo)}" sai da agenda e o horário não fica vazio.</small></div><button class="bt sm ghost" data-act="igtrocarfechar">✕</button></div>
-        <div style="display:grid;gap:10px"><button class="bt lg pri" data-act="igtrocaroferta" data-id="${p.id}">💲 Trocar pela oferta do dia<small style="display:block;font-weight:500;opacity:.8">o robô escolhe a melhor promoção fresca na hora</small></button>
-        <button class="bt lg" data-act="igtrocarpauta" data-id="${p.id}">📋 Escolher outro post da Pauta<small style="display:block;font-weight:500;opacity:.8">você toca no + de qualquer post e ele entra nesse horário</small></button></div></div>`;
-      document.body.appendChild(d); document.body.classList.add("ej-on"); return; }
+    else if (act === "igtrocar") { b.disabled = false; abrirTroca(p); return; }
     else if (act === "igtrocaroferta") { Object.assign(p, { titulo: "💲 Oferta do dia (no lugar de um post)", tipo: "oferta_dia", imagens: [], legenda: "", aprovado: true, origem: "vaga", tentativa: 0 }); delete p.overlay; delete p.overlays; delete p.video_fundo; delete p.story_junto;
-      await salvarFila("Instagram: troca por oferta do dia"); const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on"); toast(`Trocado: às ${p.quando.slice(11, 16)} sai a oferta do dia.`); }
+      if (p.quando.slice(0, 16) < isoLocal(new Date()).slice(0, 16)) { const nv = gerarSlots(hojeISO(), lerHorarios(IGT_HS), 1)[0]; if (nv) p.quando = nv; }
+      await salvarFila("Instagram: troca por oferta do dia"); const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on"); toast(`Trocado: ${dataHora(p.quando)} sai a oferta do dia.`); }
     else if (act === "igtrocarpauta") { const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on");
       window.TROCA = { id: p.id, quando: p.quando, titulo: p.titulo }; if (typeof PA !== "undefined") PA.aba = "montar"; location.hash = "#pauta"; toast("Toque no + do post que vai entrar no lugar.", 5000); return; }
     else if (act === "igremover") { if (!confirm(`Remover "${p.titulo}" da agenda?`)) { b.disabled = false; return; } IGF.fila = IGF.fila.filter(x => x !== p); await salvarFila(`Instagram: remove "${p.titulo}"`); toast("Removido."); }
@@ -421,3 +448,4 @@ document.addEventListener("click", async e => {
     render();
   } catch (err) { toast("Erro: " + err.message, 6000); b.disabled = false; }
 });
+document.addEventListener("click", e => { if (e.target.id === "igt") { e.target.remove(); document.body.classList.remove("ej-on"); } });

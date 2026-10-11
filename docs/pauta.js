@@ -881,6 +881,12 @@ async function mcVer(id) {
     box.innerHTML = `<div class="rv-prev"><video src="${p.video}" autoplay muted loop playsinline></video><img src="${o.toDataURL("image/png")}" alt=""></div>`; return; }
   for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; box.appendChild(cv); try { await fn(cv.getContext("2d")); } catch (e) { console.error(e); } }
 }
+/* coloca o post p no horário de T0 e tira o antigo da agenda */
+async function trocarPor(T0, p, prog) { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+  await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels, video: p.video || "", overlay: p.overlay ? (() => { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d")); return o; })() : null }], [T0.quando], true, prog);
+  IGF.fila = IGF.fila.filter(x => x.id !== T0.id); await salvarFila(`Instagram: troca "${T0.titulo}"`);
+  CAL.feitos[p.id] = T0.quando.slice(0, 10); mcGravar("p085_mc_feitos", CAL.feitos);
+  toast(`Trocado! ${dataHora(T0.quando)} sai "${p.titulo.replace(/^\d+\.\s*/, "")}".`, 6000); }
 function mcFecharVer() { const d = document.getElementById("mcv"); if (d) d.remove(); document.body.classList.remove("ej-on"); }
 function mcSituacao(p) { const F = (IGF.fila || []).filter(x => x.origem === p.id); if (!F.length) return null;
   const pub = F.find(x => ((IGF.st || {})[x.id] || {}).status === "publicado"); if (pub) return { tipo: "postado", quando: (IGF.st[pub.id].publicado_em || pub.quando) };
@@ -942,9 +948,7 @@ document.addEventListener("click", async e => {
   if (a === "mctrocacancela") { window.TROCA = null; render(); return; }
   if (a === "mcadd" && window.TROCA) { const T0 = window.TROCA, p = (PA.lista || []).find(x => x.id === b.dataset.id); if (!p) return;
     if (!confirm(`Colocar "${p.titulo.replace(/^\d+\.\s*/, "")}" às ${dataHora(T0.quando)} no lugar de "${T0.titulo}"?`)) return;
-    b.disabled = true; try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
-      await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels, video: p.video || "", overlay: p.overlay ? (() => { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d")); return o; })() : null }], [T0.quando], true, t => toast(t, 1500));
-      IGF.fila = IGF.fila.filter(x => x.id !== T0.id); await salvarFila(`Instagram: troca "${T0.titulo}"`); window.TROCA = null; toast(`Trocado! Às ${T0.quando.slice(11, 16)} sai "${p.titulo.replace(/^\d+\.\s*/, "")}".`, 6000); location.hash = "#instagram"; }
+    b.disabled = true; try { await trocarPor(T0, p, t => toast(t, 1500)); window.TROCA = null; location.hash = "#instagram"; }
     catch (x) { toast("Não trocou: " + x.message, 7000); b.disabled = false; } return; }
   if (a === "mcadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); }
   else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);

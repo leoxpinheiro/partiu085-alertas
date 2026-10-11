@@ -174,3 +174,67 @@ function fConteudo(x) {
     fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
 }
 function postsConteudo() { const h = hojeISO(); return CONTEUDO.filter(x => !x.valido || x.valido >= h).map(fConteudo); }
+
+/* ===================== 📍 DESTINO DA SEMANA (premium) — feito com os dados do nosso radar ===================== */
+const DIRETOS = { NAT: "≈ 1h", REC: "≈ 1h10", JPA: "≈ 1h05", SSA: "≈ 1h50", SLZ: "≈ 1h20", THE: "≈ 1h", BEL: "≈ 2h", MAO: "≈ 3h20", BSB: "≈ 2h40", SAO: "≈ 3h30", VCP: "≈ 3h30",
+  RIO: "≈ 3h20", BHZ: "≈ 3h", JDO: "≈ 1h", GYN: "≈ 2h50", LIS: "≈ 7h10", PAR: "≈ 8h55", MAD: "≈ 8h30", BUE: "≈ 5h40", MVD: "≈ 5h40", ORL: "≈ 7h", MIA: "≈ 6h30" };
+const DEST_EXTRA = {
+  LIS: "Porta de entrada da Europa pra quem sai de Fortaleza: voo direto e idioma sem barreira.", PAR: "Voo direto da Air France: Fortaleza → Paris sem escala.", MAD: "Voo direto da Iberia, ótimo pra começar um mochilão pela Espanha.",
+  BUE: "Câmbio a favor, carne, vinho e show de tango.", MVD: "Tranquila, charmosa e perto de Punta del Este.", ORL: "Parques, compras e voo direto saindo de Fortaleza.", MIA: "Praia, compras e conexão pra todo o Caribe.",
+  SSA: "Pelourinho, praia e o melhor acarajé.", REC: "Porto de Galinhas e Carneiros a menos de 2h de carro.", NAT: "Dunas de Genipabu e praia de Pipa, pertinho.", RIO: "Cristo, Pão de Açúcar e praia na cidade.", SAO: "Gastronomia, shows e as melhores conexões do país.",
+  FLN: "Mais de 40 praias numa ilha só.", POA: "Porta de entrada da Serra Gaúcha.", CWB: "Parques, frio e a Serra do Mar de trem.", SCL: "Neve na cordilheira e vinícolas do lado.", ROM: "História em cada esquina, com conexão saindo de Fortaleza.",
+  MAO: "Encontro das águas e a floresta Amazônica.", BSB: "Arquitetura de Niemeyer e céu enorme.", BHZ: "Comida mineira, Inhotim e Ouro Preto perto.", SLZ: "Lençóis Maranhenses logo ali.", IGU: "As Cataratas, uma das maravilhas do mundo." };
+async function fDestinoPremium(k) {
+  const R = (S.status && S.status.rotas) || {}, r = R[k]; if (!r || !r.menor) return null;
+  await carregarCal(k); const cal = S.cal[k];
+  const nome = r.nome || (S.rotas.find(x => x.iata === k) || {}).nome || k, im = await fotoPronta(k), hoje = dataCurta(hojeISO()).toLowerCase();
+  const pm = {}; ((cal && cal.ida) || []).forEach(d => { const m = d.dia.slice(0, 7); pm[m] = Math.min(d.preco, pm[m] || 1e9); });
+  const ms = Object.entries(pm).sort().slice(0, 6), mn = ms.length ? Math.min(...ms.map(m => m[1])) : 0, mx = ms.length ? Math.max(...ms.map(m => m[1])) : 0;
+  const datas = ((cal && cal.ida) || []).slice().sort((a, b) => a.preco - b.preco).slice(0, 5).sort((a, b) => a.dia.localeCompare(b.dia));
+  const melhorM = r.melhor_mes ? MESES_LONGO[+r.melhor_mes.slice(5, 7) - 1] : ms.length ? MESES_LONGO[+ms.find(m => m[1] === mn)[0].slice(5, 7) - 1] : "";
+  const econ = r.mediana && r.menor < r.mediana ? Math.round((1 - r.menor / r.mediana) * 100) : 0, dir = DIRETOS[k], extra = DEST_EXTRA[k] || "";
+  const telas = [];
+  telas.push(c => { c.fillStyle = COR.navy; c.fillRect(0, 0, PW, PH); if (im) cobrir(c, im, 0, 0, PW, PH);
+    let g = c.createLinearGradient(0, 0, 0, 320); g.addColorStop(0, "rgba(8,22,40,.65)"); g.addColorStop(1, "rgba(8,22,40,0)"); c.fillStyle = g; c.fillRect(0, 0, PW, 320);
+    g = c.createLinearGradient(0, PH * .38, 0, PH); g.addColorStop(0, "rgba(11,36,64,0)"); g.addColorStop(.55, "rgba(11,36,64,.9)"); g.addColorStop(1, COR.navy); c.fillStyle = g; c.fillRect(0, 0, PW, PH);
+    marca(c, PW, true, "DESTINO DA SEMANA");
+    let y = PH - 560; kicker(c, "Saindo de Fortaleza", M, y, COR.am);
+    y = titulo(c, nome, M, y + 30, PW - 2 * M, 190, 100, "#fff", 2) + 30;
+    const t = `A PARTIR DE ${brl(r.menor)} (IDA)`; c.font = `400 54px ${MARCA.titulo}`; const w = c.measureText(t).width + 60; c.fillStyle = COR.am; rr(c, M, y, w, 84, 42); c.fill(); T(c, t, M + 30, y + 62, 54, MARCA.titulo, COR.tinta, "left", 400, 1);
+    T(c, dir ? `✈️ Voo direto ${dir}` : "✈️ Com conexão", M, y + 150, 34, MARCA.corpo, "#fff", "left", 800);
+    T(c, "ARRASTA ➜", PW - M, PH - 80, 26, MARCA.corpo, COR.am, "right", 800, 3); });
+  telas.push(c => { bgCreme(c, PW, PH); marca(c, PW, false, "RAIO-X");
+    titulo(c, `${nome} em números`, M, 200, PW - 2 * M, 104, 64, COR.tinta, 2);
+    const tiles = [["Menor preço (ida)", brl(r.menor)], ["Volta a partir de", r.menor_volta ? brl(r.menor_volta) : "—"], ["Melhor mês", melhorM || "—"], [dir ? "Voo direto" : "Voo", dir || "Com conexão"], econ ? ["Abaixo do normal", `−${econ}%`] : null, r.cia ? ["Mais barata agora", r.cia] : null].filter(Boolean).slice(0, 6);
+    const cw = (PW - 2 * M - 24) / 2, ch = 230; tiles.forEach(([l, v], i) => { const x = M + (i % 2) * (cw + 24), yy = 420 + Math.floor(i / 2) * (ch + 24);
+      c.fillStyle = "#fff"; rr(c, x, yy, cw, ch, 28); c.fill(); T(c, l.toUpperCase(), x + 30, yy + 60, 24, MARCA.corpo, "rgba(15,42,71,.6)", "left", 800, 2);
+      T(c, v, x + 30, yy + 160, caber(c, v, cw - 60, 76, MARCA.titulo, 400, 36), MARCA.titulo, i === 0 ? "#C9971C" : COR.tinta); });
+    T(c, `Dados do radar Partiu 085 · ${hoje}`, M, PH - 170, 22, MARCA.corpo, "rgba(15,42,71,.55)", "left", 600); rodapeP(c, PW, PH, false, "Salva pra planejar"); });
+  if (ms.length >= 3) telas.push(c => { bgNavy(c, PW, PH); marca(c, PW, true, "MÊS A MÊS"); kicker(c, "Menor preço de ida por mês", M, 300, COR.am);
+    titulo(c, "Quando é mais barato ir", M, 330, PW - 2 * M, 100, 64, "#fff", 2); let y = 560;
+    ms.forEach(([m, p]) => { const best = p === mn, w = 140 + (p / mx) * (PW - 2 * M - 200 - 380);
+      T(c, MESES[+m.slice(5, 7) - 1].toUpperCase(), M, y + 50, 40, MARCA.titulo, best ? COR.am : "#fff");
+      c.fillStyle = best ? COR.am : "rgba(255,255,255,.16)"; rr(c, M + 200, y + 12, w, 52, 26); c.fill();
+      T(c, brl(p), M + 200 + w + 20, y + 52, 40, MARCA.titulo, best ? COR.am : "#fff"); y += 92; });
+    rodapeP(c, PW, PH, true, "Preços mudam a toda hora"); });
+  if (datas.length >= 3) telas.push(c => { TEMA.amarelo.bg(c, PW, PH); marca(c, PW, false, "DATAS"); kicker(c, "As mais baratas agora", M, 300, COR.tinta);
+    titulo(c, "Se for, vá nessas datas", M, 330, PW - 2 * M, 100, 64, COR.tinta, 2); let y = 560;
+    datas.forEach((d, i) => { c.fillStyle = "rgba(255,255,255,.55)"; rr(c, M, y, PW - 2 * M, 100, 24); c.fill();
+      T(c, `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`, M + 30, y + 66, 52, MARCA.titulo, COR.tinta);
+      T(c, ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"][new Date(d.dia + "T12:00:00Z").getUTCDay()], M + 230, y + 62, 32, MARCA.corpo, "rgba(15,42,71,.7)", "left", 700);
+      T(c, brl(d.preco), PW - M - 30, y + 66, 52, MARCA.titulo, COR.tinta, "right"); y += 118; });
+    rodapeP(c, PW, PH, false, "Só ida · preço do dia"); });
+  if (extra) telas.push(c => capaTema(c, "escuro", "Por que ir", extra, `Melhor época pelo radar: ${melhorM || "fique de olho no grupo"}.`, "DICA", "Salva e manda pra quem vai com você"));
+  telas.push(c => capaTema(c, "amarelo", "Quer ir pra " + nome + "?", "Comenta EU QUERO que eu te mando os alertas", "Todo dia tem passagem barata saindo de Fortaleza. Marca quem vai com você 👇", "", "Siga @partiu.085 · ative o sininho 🔔"));
+  return { id: "f-destpremium-" + k + "-" + hojeISO(), grupo: "feed", tipo: "Destino da semana", rot: "📍 Destino", titulo: `📍 Destino: ${nome}`, valido: diaMenos(hojeISO(), -2),
+    porque: "Carrossel premium com dados do nosso radar (preço, melhor mês, datas). Conteúdo que só a gente tem: muito salvo e compartilhado.", fmt: `Carrossel · ${telas.length} telas`, telas,
+    legenda: `📍 DESTINO DA SEMANA: ${nome.toUpperCase()}, SAINDO DE FORTALEZA\n\n💰 Ida a partir de ${brl(r.menor)}${r.menor_volta ? ` · volta a partir de ${brl(r.menor_volta)}` : ""}\n✈️ ${dir ? `Voo direto, ${dir}` : "Com conexão"}\n📅 Melhor mês: ${melhorM || "—"}${econ ? `\n📉 ${econ}% abaixo do preço normal da rota` : ""}${extra ? `\n\n${extra}` : ""}\n\n${datas.length ? `🗓️ Datas mais baratas agora: ${datas.map(d => `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`).join(", ")}\n\n` : ""}⚠️ Preços de ${hoje}, mudam a qualquer momento.\n💬 Comenta EU QUERO que eu te mando os alertas de ${nome} no direct!\n👇 Marca quem vai com você.\n\n${HASH}` };
+}
+async function postsConteudoTudo() {
+  const R = (S.status && S.status.rotas) || {}, ks = Object.keys(R).filter(k => R[k].menor && (R[k].ofertas || 0) >= 10);
+  PA.destOpcoes = ks.sort((a, b) => (R[a].nome || a).localeCompare(R[b].nome || b));
+  if (!PA.dest || !R[PA.dest]) { const sem = Math.floor(nDia() / 7), pref = DESTINOS_PAUTA.filter(k => ks.includes(k)); PA.dest = pref.length ? pref[sem % pref.length] : ks[0]; }
+  const d = PA.dest ? await fDestinoPremium(PA.dest) : null;
+  return [d, ...postsConteudo()].filter(Boolean);
+}
+document.addEventListener("change", e => { if (e.target.id !== "pa-dest") return; PA.dest = e.target.value; render(); });

@@ -965,7 +965,8 @@ document.addEventListener("drop", e => { const sel = e.target.closest && e.targe
 
 
 /* ================= destino da semana (carrossel com dados do radar) ================= */
-async function fDestinoSemana() {
+async function fDestinoSemana() { const R = (S.status && S.status.rotas) || {}, ks = DESTINOS_PAUTA.filter(k => R[k] && R[k].menor); if (!ks.length) return null; return fDestinoPremium(ks[Math.floor(nDia() / 7) % ks.length]); }
+async function fDestinoSemanaAntigo() {
   const R = S.status.rotas || {}, ks = DESTINOS_PAUTA.filter(k => R[k]); if (!ks.length) return null;
   const sem = Math.floor(nDia() / 7), k = ks[sem % ks.length];
   await carregarCal(k); const cal = S.cal[k]; if (!cal || !cal.ida || cal.ida.length < 5) return null;
@@ -1155,6 +1156,35 @@ const REELS = [
   { id: "r-milha", clip: "pouso-2", t: "Tem gente que junta pra trocar de carro.\nEu junto milha.", leg: "Prioridades 😌✈️ Você é de qual time?" },
   { id: "r-segunda", clip: "janela-1", t: "Trabalhe duro.\nNão pelo celular do ano.\nPor segundas-feiras com vista assim.", leg: "Essa é a meta ✈️☁️" },
   { id: "r-conexao", clip: "janela-3", t: "Voo direto: R$ 1.900.\nCom 2 conexões: R$ 640.\nEu: perfeito.", leg: "Quem encara a conexão pra economizar? 🙋‍♂️" },
+  { id: "r-for-praia", clip: "praia-1", t: "Morar em Fortaleza e ainda querer ir pra praia dos outros.", leg: "Fortaleza é linda, mas o mundo também é 😂✈️ Pra onde você iria agora?" },
+  { id: "r-calor", clip: "nuvens-1", t: "Saindo de Fortaleza: 32 graus.\nChegando no destino: 8 graus.\nEu de bermuda.", leg: "Todo cearense já passou por isso 😂 Marca quem!" },
+  { id: "r-ferias", clip: "janela-2", t: "Faltam 47 dias pras férias.\nMas quem tá contando?", leg: "Eu tô 👀 Comenta quantos dias faltam pras suas!" },
+  { id: "r-alerta", clip: "asa-2", t: "O alerta de passagem barata tocando às 2h da manhã.\nEu: acordadíssimo.", leg: "Quem nunca? 😂 No nosso grupo o aviso chega na hora." },
+  { id: "r-print", clip: "janela-1", t: "Eu mandando print da passagem barata no grupo da família.\nNinguém responde.", leg: "Mas na hora de pedir lembrancinha todo mundo aparece 😂" },
+  { id: "r-roteiro", clip: "decolagem-1", t: "Roteiro de 15 páginas.\nOrçamento: R$ 0.", leg: "Mas a vontade tá aí 😌✈️ Comenta seu destino dos sonhos!" },
+  { id: "r-amigo", clip: "aeroporto-1", t: "Combinou a viagem com os amigos.\nSó você comprou a passagem.", leg: "Marca aquele amigo que sempre desiste 😂👇" },
+  { id: "r-mala10", clip: "mala-1", t: "Mala de mão: 10 kg.\nMinha mala de mão: 10 kg de lembrancinha.", leg: "Cearense não volta de mão vazia 😂" },
+  { id: "r-cafe", clip: "aeroporto-2", t: "Café no aeroporto: R$ 19.\nEu: faz parte da experiência.", leg: "A viagem começa no café caro ☕✈️" },
+  { id: "r-janela2", clip: "janela-3", t: "Pagar mais caro pra sentar na janela?\nPago. É a melhor tela do mundo.", leg: "Janela ou corredor? Comenta 👇" },
+  { id: "r-pouso", clip: "pouso-1", t: "Aquele momento em que o avião pousa\ne a viagem fica de verdade.", leg: "Qual foi o último lugar que você pousou? ✈️" },
+  { id: "r-volta", clip: "pouso-2", t: "Voltar pra Fortaleza depois da viagem\ne já procurar a próxima passagem.", leg: "Quem nunca? 😂 A gente avisa quando ficar barato." },
+  { id: "r-sabado", clip: "nuvens-2", t: "Sábado ideal:\nolhar passagem que eu não vou comprar.", leg: "Mas um dia eu compro 😌 Marca quem faz isso também." },
+  { id: "r-pix", clip: "asa-1", t: "Eu: preciso economizar.\nTambém eu: vendo passagem pra Lisboa às 23h.", leg: "O coração quer o que quer 🇵🇹✈️" },
+  { id: "r-milhas2", clip: "nuvens-3", t: "Ninguém:\nEu explicando milha pros meus pais no almoço de domingo.", leg: "Junta milha que a viagem sai quase de graça 😉" },
+  { id: "r-preco", clip: "decolagem-2", t: "Ver a passagem barata de manhã.\nVoltar à tarde e ela ter dobrado.", leg: "Por isso o alerta chega na hora 🔔" },
+  { id: "r-ilha", clip: "praia-1", t: "Eu preciso de férias.\nNão de um feriado.\nDe férias.", leg: "Quem concorda comenta FÉRIAS 😂" },
+  { id: "r-check", clip: "aeroporto-3", t: "Chegar 3 horas antes do voo\npra ficar 2h50 andando no aeroporto.", leg: "Cearense precavido é assim 😂" },
+  { id: "r-foto", clip: "janela-2", t: "Foto da asa do avião:\nobrigatória.", leg: "Todo mundo tem essa foto no rolo 😂✈️" },
+  { id: "r-quer", clip: "decolagem-3", t: "Não é sobre ter dinheiro pra viajar.\nÉ sobre saber a hora certa de comprar.", leg: "E a hora certa a gente avisa no grupo 🔔" },
+  { id: "r-nordeste", clip: "nuvens-1", t: "Saindo de Fortaleza, em 1 hora você tá em Natal.\nEm 7, em Lisboa.", leg: "O mundo tá mais perto do que parece ✈️" },
+  { id: "r-mae", clip: "mala-2", t: "Mãe: leva casaco.\nEu: tá calor, mãe.\nO destino: 5 graus.", leg: "Mãe sempre tem razão 😂 Marca a sua!" },
+  { id: "r-sonho", clip: "janela-1", t: "Um dia eu ainda conheço o mundo.\nComeçando pela passagem que tá barata hoje.", leg: "Bora? ✈️ Comenta pra onde você vai primeiro." },
+  { id: "r-chefe", clip: "aeroporto-1", t: "Meu chefe: você tá muito feliz hoje.\nEu: achei passagem barata.", leg: "Melhor notícia da semana 😂✈️" },
+  { id: "r-vista", clip: "nuvens-3", t: "Se a vista lá de cima não te emociona,\nvocê não tá prestando atenção.", leg: "Marca alguém pra ver essa vista com você ☁️" },
+  { id: "r-grupo", clip: "decolagem-1", t: "Entrar no grupo de passagem barata\npra ver promoção e não comprar nenhuma.", leg: "Calma, um dia a certa aparece 😂🔔" },
+  { id: "r-aniver", clip: "pouso-3", t: "Presente de aniversário ideal:\numa passagem.", leg: "Alguém conta isso pra minha família 😂" },
+  { id: "r-leve", clip: "mala-3", t: "Fazer a mala:\n10% roupa, 90% \"e se precisar?\".", leg: "Marca quem leva a casa inteira 😂" },
+  { id: "r-hoje", clip: "janela-3", t: "E se a viagem que você tanto quer\nestiver mais barata hoje?", leg: "A gente olha os preços o dia todo saindo de Fortaleza. Segue e ativa o sininho 🔔" },
 ];
 const FONTE_REELS = '"Instrument Serif", "Playfair Display", Georgia, serif';
 function textoReels(c, t) {
@@ -1236,14 +1266,14 @@ async function montarPauta() {
   for (let i = 0; i < 50 && S.mi && S.mi.carregando; i++) await new Promise(r => setTimeout(r, 100));
   try { await Promise.all([`400 80px ${MARCA.titulo}`, `800 30px ${MARCA.corpo}`, `600 30px ${MARCA.corpo}`, `700 30px ${MARCA.corpo}`].map(x => document.fonts.load(x))); } catch (e) { }
   if (PA.aba === "montar") return montarBoard(g);
-  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await postsHumor() : PA.aba === "conteudo" ? postsConteudo() : EDU.map(x => fGuia(x));
+  const L = PA.aba === "hoje" ? (await ideiasHoje()).filter(p => p.grupo === PA.tipo) : PA.aba === "campanha" ? await campanha() : PA.aba === "noticia" ? await postNoticia() : PA.aba === "prova" ? await postProva() : PA.aba === "humor" ? await postsHumor() : PA.aba === "conteudo" ? await postsConteudoTudo() : EDU.map(x => fGuia(x));
   PA.lista = L;
   if (!document.getElementById("pa-grade")) return;
   const sec = (tit, sub, arr) => arr.length ? `<div class="pa-sec"><h3>${tit}</h3><span class="sub">${sub}</span></div><div class="pa-grade">${arr.map(p => cardPauta(p, L.indexOf(p))).join("")}</div>` : "";
   g.innerHTML = !L.length ? (PA.aba === "noticia" || PA.aba === "prova") ? "" : `<div class="card vazio">Sem dados suficientes agora. Volta depois da próxima rodada.</div>`
     : PA.aba === "hoje" ? (PA.tipo === "stories" ? sec("Stories de hoje", "o que é do dia: some em 24h, como o preço", L) : sec("Feed", "escolha 1 por dia: oportunidade rara, guia, dados ou resumo da semana", L))
     : PA.aba === "campanha" ? sec("Semana 1 · Aquecimento", "posts leves + 3 teasers do sistema. Ainda não fala do grupo: pede pra comentar EU QUERO e ativar o sininho", L.filter(p => p.semana === 1)) + sec("Semana 2 · Abre o grupo", "1 post por dia, na ordem. Aqui sim: link na bio e direct pra quem comentar", L.filter(p => p.semana === 2))
-    : `${PA.aba === "humor" ? `<div class="card pa-dica">✏️ Quer mudar frase, fundo ou fonte? Toque em <b>Editar</b> num carrossel de frases, ou <a href="#carrossel"><b>crie o seu do zero em 🖼️ Carrosséis</b></a> (1 a 10 telas).</div>` : ""}<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
+    : `${PA.aba === "conteudo" && PA.destOpcoes ? `<div class="card pa-dica"><b>📍 Destino da semana:</b> <select id="pa-dest" style="margin-left:8px;padding:6px 10px;border-radius:10px;background:var(--tile);color:inherit;border:0">${PA.destOpcoes.map(k => `<option value="${k}" ${k === PA.dest ? "selected" : ""}>${esc((S.status.rotas[k] || {}).nome || k)}</option>`).join("")}</select> <small class="sub">troque o destino e o carrossel se refaz com os preços de hoje</small></div>` : ""}${PA.aba === "humor" ? `<div class="card pa-dica">✏️ Quer mudar frase, fundo ou fonte? Toque em <b>Editar</b> num carrossel de frases, ou <a href="#carrossel"><b>crie o seu do zero em 🖼️ Carrosséis</b></a> (1 a 10 telas).</div>` : ""}<div class="pa-grade">${L.map(cardPauta).join("")}</div>`;
   L.forEach((p, i) => { const box = document.getElementById("pa-t-" + i); if (!box) return; box.innerHTML = "";
     if (p.video) { box.innerHTML = `<div class="rv-prev rv-play" data-act="rvplay"><video src="${p.video}" poster="${p.video.replace(".mp4", ".jpg")}" muted loop playsinline preload="none"></video><canvas width="540" height="960"></canvas><span class="rv-btn">▶</span></div>`;
       const o = box.querySelector("canvas"), oc = o.getContext("2d"); oc.scale(.5, .5); p.overlay(oc); return; }

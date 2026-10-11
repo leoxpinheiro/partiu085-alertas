@@ -210,7 +210,7 @@ function fConteudo(x) {
     telas.push(tp === "pn" ? ctTelaPN(t, d, i + 2, n) : tp === "ls" ? ctTelaLista(t, d, i + 2, n) : ctTelaTxt(t, d, i + 2, n)); });
   telas.push(c => capaTema(c, "escuro", "Partiu 085", x.fim[0], x.fim[1], "", "Siga @partiu.085 · ative o sininho 🔔"));
   return { id: "ct-" + x.id, grupo: "feed", tipo: "Conteúdo", rot: "Conteúdo", titulo: x.capa, valido: x.valido, data: x.data,
-    porque: x.data ? `Post de data: o ideal é sair no dia ${x.data.slice(8, 10)}/${x.data.slice(5, 7)}.` : x.valido ? "Notícia pesquisada: vale até a data marcada." : "Conteúdo pesquisado, com fonte. Carrossel que ensina é o que mais é salvo e compartilhado.",
+    porque: (typeof FOTOS_APROV !== "undefined" && !FOTOS_APROV[x.foto] ? "⚠️ CAPA SEM FOTO APROVADA: troque antes de postar. " : "") + (x.data ? `Post de data: o ideal é sair no dia ${x.data.slice(8, 10)}/${x.data.slice(5, 7)}.` : x.valido ? "Notícia pesquisada: vale até a data marcada." : "Conteúdo pesquisado, com fonte. Carrossel que ensina é o que mais é salvo e compartilhado."),
     fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
 }
 function postsConteudo() { const h = hojeISO(); return CONTEUDO.filter(x => !x.valido || x.valido >= h).map(fConteudo); }

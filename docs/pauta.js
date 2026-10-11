@@ -42,7 +42,7 @@ const EDU = [
     ["O que é", "Geralmente é a tarifa mais em conta e não inclui bagagem despachada. Cada companhia tem suas regras."],
     ["Faça a conta", "Se for despachar mala, some o valor da bagagem e compare com a tarifa seguinte."],
     ["Nos nossos alertas", "Mostramos a tarifa mais barata encontrada. Confira o que ela inclui na hora de comprar."]] },
-  { id: "conexao", cat: "VIAGEM", capa: "Conexão: o que ninguém te conta", sub: "Pra não perder o segundo voo.", slides: [
+  { id: "conexao", foto: "capa-hu-painel", cat: "VIAGEM", capa: "Conexão: o que ninguém te conta", sub: "Pra não perder o segundo voo.", slides: [
     ["Mesma reserva", "Com os dois voos na mesma reserva, a companhia é responsável se o primeiro atrasar."],
     ["Bilhetes separados", "Comprando separado, o risco é seu. Deixe bastante tempo entre um voo e outro."],
     ["Bagagem", "Na mesma reserva, a mala costuma ir direto ao destino final. Confirme no balcão do check-in."]] },
@@ -1077,17 +1077,17 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act=
 
 /* ================= 😂 humor (gera compartilhamento e conexão) ================= */
 const HUMOR = [
-  { id: "h-economizar", f: "LIS", e: "escuro", t: "Eu: esse mês eu vou economizar.\nA promoção pra Lisboa às 3h da manhã:", d: ["Lisboa"], leg: "Quem nunca? 😅 Marca aquele amigo que 'tá economizando' 👇" },
-  { id: "h-pensar", f: "RIO", e: "bolha", t: "A promoção: dura 2 horas.\nEu: pensando por 3 dias.", d: [], leg: "E depois reclama que só tem preço caro 😂 Por isso a gente avisa na hora!" },
-  { id: "h-cardio", f: "SAO", e: "escuro", t: "Meu único cardio é correr no aeroporto pra não perder a conexão.", d: ["correr no aeroporto"], leg: "Quem nunca saiu correndo no corredor do aeroporto? 🏃‍♂️✈️" },
-  { id: "h-milha", f: "MIA", e: "bolha", t: "Tem gente que junta dinheiro pra trocar de carro.\nEu junto milha.", d: [], leg: "Prioridades 😌✈️ Comenta aqui se você também é desse time!" },
-  { id: "h-14vezes", f: "BUE", e: "escuro", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", d: ["14 vezes por dia"], leg: "Admite que você também faz isso 😂👇" },
-  { id: "h-mala", f: "PAR", e: "bolha", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", d: [], leg: "Clássico 😂 Marca quem é assim!" },
-  { id: "h-ferias", f: "CUN", e: "escuro", t: "Quando você acha passagem barata e lembra que não tem férias 🥲", d: ["não tem férias"], leg: "A dor mais real que existe 🥲 Mas salva o post pra quando tiver!" },
-  { id: "h-bora", f: "NAT", e: "bolha", t: "Grupo de amigos: \"bora viajar!\"\nA passagem: R$ 400.\nO grupo: visualizou.", d: [], leg: "Marca o grupo que só fala e nunca vai 😂👇" },
-  { id: "h-janela", f: "SSA", e: "escuro", t: "Não é sobre o destino.\nÉ sobre brigar pela janelinha.", d: ["janelinha"], leg: "Janela ou corredor? Comenta aqui 👇" },
-  { id: "h-pix", f: "ROM", e: "bolha", t: "Meu saldo: R$ 12,40.\nEu abrindo o site da companhia aérea \"só pra olhar\":", d: [], leg: "Só pra olhar, juro 😅" },
-  { id: "h-fortaleza", f: "FEN", e: "escuro", t: "Morar em Fortaleza e ainda assim sonhar com praia nas férias.", d: ["sonhar com praia"], leg: "Cearense não cansa de mar, né? 🌊 Qual praia você quer conhecer?" },
+  { id: "h-economizar", foto: "capa-hu-celular", f: "LIS", e: "escuro", t: "Eu: esse mês eu vou economizar.\nA promoção pra Lisboa às 3h da manhã:", d: ["Lisboa"], leg: "Quem nunca? 😅 Marca aquele amigo que 'tá economizando' 👇" },
+  { id: "h-pensar", foto: "capa-hu-mapa", f: "RIO", e: "bolha", t: "A promoção: dura 2 horas.\nEu: pensando por 3 dias.", d: [], leg: "E depois reclama que só tem preço caro 😂 Por isso a gente avisa na hora!" },
+  { id: "h-cardio", foto: "capa-for-numeros", f: "SAO", e: "escuro", t: "Meu único cardio é correr no aeroporto pra não perder a conexão.", d: ["correr no aeroporto"], leg: "Quem nunca saiu correndo no corredor do aeroporto? 🏃‍♂️✈️" },
+  { id: "h-milha", foto: "clip-v-asa-2", f: "MIA", e: "bolha", t: "Tem gente que junta dinheiro pra trocar de carro.\nEu junto milha.", d: [], leg: "Prioridades 😌✈️ Comenta aqui se você também é desse time!" },
+  { id: "h-14vezes", foto: "capa-hu-painel", f: "BUE", e: "escuro", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", d: ["14 vezes por dia"], leg: "Admite que você também faz isso 😂👇" },
+  { id: "h-mala", foto: "capa-hu-mala", f: "PAR", e: "bolha", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", d: [], leg: "Clássico 😂 Marca quem é assim!" },
+  { id: "h-ferias", foto: "clip-v-fortaleza-2", f: "CUN", e: "escuro", t: "Quando você acha passagem barata e lembra que não tem férias 🥲", d: ["não tem férias"], leg: "A dor mais real que existe 🥲 Mas salva o post pra quando tiver!" },
+  { id: "h-bora", foto: "capa-hu-celular", f: "NAT", e: "bolha", t: "Grupo de amigos: \"bora viajar!\"\nA passagem: R$ 400.\nO grupo: visualizou.", d: [], leg: "Marca o grupo que só fala e nunca vai 😂👇" },
+  { id: "h-janela", foto: "clip-v-asa-1", f: "SSA", e: "escuro", t: "Não é sobre o destino.\nÉ sobre brigar pela janelinha.", d: ["janelinha"], leg: "Janela ou corredor? Comenta aqui 👇" },
+  { id: "h-pix", foto: "capa-hu-cartao", f: "ROM", e: "bolha", t: "Meu saldo: R$ 12,40.\nEu abrindo o site da companhia aérea \"só pra olhar\":", d: [], leg: "Só pra olhar, juro 😅" },
+  { id: "h-fortaleza", foto: "clip-v-fortaleza-3", f: "FEN", e: "escuro", t: "Morar em Fortaleza e ainda assim sonhar com praia nas férias.", d: ["sonhar com praia"], leg: "Cearense não cansa de mar, né? 🌊 Qual praia você quer conhecer?" },
   { id: "h-conexao", f: "LIM", e: "bolha", t: "Voo direto: R$ 1.900.\nCom 2 conexões e 14 horas: R$ 640.\nEu: perfeito.", d: [], leg: "Quem aí encara a conexão pra economizar? 🙋‍♂️" },
 ];
 function textoHumor(c, x, W, H) {
@@ -1106,46 +1106,46 @@ function textoHumor(c, x, W, H) {
 }
 
 /* 😂 banco novo de humor (fotos verticais em alta: quadros dos nossos vídeos HQ) */
-const HU_FOTOS = ["clip-v-janela-1", "clip-v-janela-2", "clip-v-janela-3", "clip-v-aeroporto-1", "clip-v-aeroporto-2", "clip-v-aeroporto-3", "clip-v-asa-1", "clip-v-asa-2", "clip-v-asa-3", "clip-v-nuvens-1", "clip-v-nuvens-2", "clip-v-nuvens-3",
-  "clip-v-decolagem-1", "clip-v-decolagem-2", "clip-v-decolagem-3", "clip-v-pouso-1", "clip-v-pouso-2", "clip-v-pouso-3", "clip-v-mala-1", "clip-v-mala-2", "clip-v-mala-3", "clip-v-praia-1", "clip-v-praia-2", "clip-v-praia-3",
-  "clip-v-fortaleza-1", "clip-v-fortaleza-2", "clip-v-fortaleza-3", "clip-v-paisagem-1", "clip-v-paisagem-2", "clip-v-paisagem-3"];
+/* só fotos aprovadas (docs/fotos_catalogo.json): conferidas uma a uma, combinam com o tema */
+const FOTOS_APROV = {"clip-v-aeroporto-2": "pista avião viagem", "clip-v-aeroporto-3": "aeroporto avião embarque", "clip-v-mala-2": "aeroporto avião chuva atraso", "clip-v-asa-1": "janela asa vista mar", "clip-v-asa-2": "avião voo nuvens milha", "clip-v-asa-3": "asa janela pôr do sol viagem", "clip-v-janela-1": "asa voo pôr do sol", "clip-v-janela-2": "vista nuvens altura", "clip-v-janela-3": "nuvens céu", "clip-v-nuvens-1": "manhã céu nuvens madrugada", "clip-v-decolagem-1": "decolagem pouso avião", "clip-v-decolagem-2": "decolagem avião", "clip-v-pouso-1": "pouso vista aérea", "clip-v-pouso-3": "avião céu voo", "clip-v-fortaleza-1": "praia mar litoral", "clip-v-fortaleza-2": "praia mar litoral", "clip-v-fortaleza-3": "praia mar litoral", "clip-v-praia-1": "mar barco", "clip-v-praia-3": "paisagem mar", "clip-v-paisagem-1": "paisagem natureza", "clip-v-paisagem-2": "europa destino lago", "clip-v-paisagem-3": "paisagem montanha frio", "capa-pode-nao-pode": "mala bagagem raio-x pode levar", "capa-pinto-martins": "história aviação antiga", "capa-for-numeros": "aeroporto terminal saguão", "capa-salas-vip-for": "sala vip espera aeroporto", "capa-novidades-out26": "fortaleza cidade", "capa-europa-rapido": "lisboa portugal europa", "capa-curiosidades-aviao": "cabine poltrona corredor", "capa-voo-direto": "janela voo direto", "capa-dia-aviador": "piloto cockpit aviação", "capa-milhas-parceiras": "companhias aviões aeroporto", "capa-limite-cpf": "família aeroporto despedida", "capa-hu-celular": "celular promoção site app", "capa-hu-comida": "comida lanche bordo", "capa-hu-cabine": "cabine voo longo dormir", "capa-hu-espera": "espera atraso wifi", "capa-hu-passaporte": "passaporte viagem contagem", "capa-hu-esteira": "esteira mala bagagem", "capa-hu-mae": "mãe família", "capa-hu-cartao": "cartão fatura dinheiro saldo", "capa-hu-painel": "painel voos destinos conexão preço", "capa-hu-torre": "aeroporto torre", "capa-hu-neve": "frio neve inverno", "capa-hu-frio": "frio casaco inverno", "capa-hu-hotel": "hotel cama", "capa-hu-hotel2": "hotel europa", "capa-hu-mala": "mala arrumar bagagem", "capa-hu-mala2": "mala mochila viagem", "capa-hu-mapa": "planejar roteiro pensar", "capa-hu-mapa2": "roteiro planejar", "trabalho-2": "trabalho chefe cansaço", "power-bank-3": "carregador bateria power bank", "celular-viagem-1": "celular app pontos", "calendario-2": "calendário data prazo vencer"};
+const HU_FOTOS = Object.keys(FOTOS_APROV);
 const HUMOR2 = [
-  { id: "n-3horas", foto: "clip-v-aeroporto-1", e: "bolha", t: "Eu no aeroporto: chego 3 horas antes.\nEu no trabalho: chego 3 minutos depois.", leg: "Prioridades, né? 😅 Marca quem é assim 👇" },
-  { id: "n-casacos", foto: "clip-v-nuvens-2", e: "escuro", t: "Cearense viajando pro frio:\nleva 4 casacos e passa frio nos 4.", d: ["passa frio nos 4"], leg: "Nosso corpo só conhece 30 graus 🥶😂 Quem já passou por isso?" },
+  { id: "n-3horas", foto: "capa-for-numeros", e: "bolha", t: "Eu no aeroporto: chego 3 horas antes.\nEu no trabalho: chego 3 minutos depois.", leg: "Prioridades, né? 😅 Marca quem é assim 👇" },
+  { id: "n-casacos", foto: "capa-hu-neve", e: "escuro", t: "Cearense viajando pro frio:\nleva 4 casacos e passa frio nos 4.", d: ["passa frio nos 4"], leg: "Nosso corpo só conhece 30 graus 🥶😂 Quem já passou por isso?" },
   { id: "n-turbulencia", foto: "clip-v-asa-2", e: "bolha", t: "Turbulência de 2 segundos.\nEu: revendo todas as decisões da minha vida.", leg: "Quem aí reza baixinho na turbulência? 🙏😂" },
-  { id: "n-mala-volta", foto: "clip-v-mala-2", e: "bolha", t: "A mala na ida: fechou fácil.\nA mala na volta: precisei sentar em cima.", leg: "O que acontece com a mala na viagem é um mistério 🧳😂" },
-  { id: "n-yes", foto: "clip-v-janela-2", e: "escuro", t: "Eu fingindo que entendi o que o comissário falou em inglês:\n\"yes, yes\"", d: ["\"yes, yes\""], leg: "Sorri e acena 😂 Quem nunca?" },
-  { id: "n-contagem", foto: "clip-v-decolagem-1", e: "escuro", t: "Passagem comprada.\nAgora é só esperar 8 meses olhando a contagem regressiva.", d: ["8 meses"], leg: "A espera mais longa do mundo ⏳ Quantos dias faltam pra sua viagem?" },
+  { id: "n-mala-volta", foto: "capa-hu-mala", e: "bolha", t: "A mala na ida: fechou fácil.\nA mala na volta: precisei sentar em cima.", leg: "O que acontece com a mala na viagem é um mistério 🧳😂" },
+  { id: "n-yes", foto: "capa-hu-cabine", e: "escuro", t: "Eu fingindo que entendi o que o comissário falou em inglês:\n\"yes, yes\"", d: ["\"yes, yes\""], leg: "Sorri e acena 😂 Quem nunca?" },
+  { id: "n-contagem", foto: "capa-hu-passaporte", e: "escuro", t: "Passagem comprada.\nAgora é só esperar 8 meses olhando a contagem regressiva.", d: ["8 meses"], leg: "A espera mais longa do mundo ⏳ Quantos dias faltam pra sua viagem?" },
   { id: "n-beiramar", foto: "clip-v-fortaleza-1", e: "bolha", t: "Meu sonho: conhecer o mundo.\nMeu orçamento: Beira-Mar e olhe lá.", leg: "Por enquanto, né? A gente te ajuda a sair daí ✈️😂" },
-  { id: "n-porta", foto: "clip-v-pouso-1", e: "escuro", t: "O avião pousa e o povo já levanta pra pegar a mala com a porta ainda fechada.", d: ["porta ainda fechada"], leg: "Pra que essa pressa, minha gente? 😂 Você é do time que levanta ou que espera?" },
-  { id: "n-igual-fortaleza", foto: "clip-v-praia-2", e: "escuro", t: "Cearense em qualquer praia do mundo:\n\"é bonita, mas não é igual às daqui não\".", d: ["não é igual às daqui"], leg: "Bairrismo saudável 😌🌊 Concorda?" },
-  { id: "n-mochila", foto: "clip-v-mala-1", e: "bolha", t: "Eu: dessa vez só vou levar uma mochila.\nTambém eu: 3 tênis, 7 looks e um \"vai que precisa\".", leg: "O \"vai que precisa\" ocupa metade da mala 😂 Marca quem faz isso!" },
-  { id: "n-checkin", foto: "clip-v-janela-3", e: "escuro", t: "Check-in online abriu.\nEu, 0,3 segundos depois: escolhendo a janela.", d: ["0,3 segundos"], leg: "Janelinha é sagrada 🪟✈️ Janela ou corredor?" },
-  { id: "n-raiox", foto: "clip-v-aeroporto-2", e: "escuro", t: "Fila do raio-x: tira o cinto, tira o notebook, tira o casaco, tira a paciência.", d: ["tira a paciência"], leg: "E ainda apita 😩 Qual a pior parte do aeroporto pra você?" },
-  { id: "n-carrinho", foto: "clip-v-asa-1", e: "bolha", t: "Comida de avião: ninguém gosta.\nTodo mundo: espiando o carrinho chegar.", leg: "Admite que você também fica de olho 👀😂" },
-  { id: "n-mae", foto: "clip-v-decolagem-2", e: "escuro", t: "Mãe quando eu digo que vou viajar:\n\"leva casaco, leva comida, me avisa quando chegar\".", d: ["me avisa quando chegar"], leg: "Toda mãe é igual 🥹 Marca a sua!" },
+  { id: "n-porta", foto: "capa-curiosidades-aviao", e: "escuro", t: "O avião pousa e o povo já levanta pra pegar a mala com a porta ainda fechada.", d: ["porta ainda fechada"], leg: "Pra que essa pressa, minha gente? 😂 Você é do time que levanta ou que espera?" },
+  { id: "n-igual-fortaleza", foto: "clip-v-fortaleza-2", e: "escuro", t: "Cearense em qualquer praia do mundo:\n\"é bonita, mas não é igual às daqui não\".", d: ["não é igual às daqui"], leg: "Bairrismo saudável 😌🌊 Concorda?" },
+  { id: "n-mochila", foto: "capa-hu-mala2", e: "bolha", t: "Eu: dessa vez só vou levar uma mochila.\nTambém eu: 3 tênis, 7 looks e um \"vai que precisa\".", leg: "O \"vai que precisa\" ocupa metade da mala 😂 Marca quem faz isso!" },
+  { id: "n-checkin", foto: "capa-hu-celular", e: "escuro", t: "Check-in online abriu.\nEu, 0,3 segundos depois: escolhendo a janela.", d: ["0,3 segundos"], leg: "Janelinha é sagrada 🪟✈️ Janela ou corredor?" },
+  { id: "n-raiox", foto: "capa-pode-nao-pode", e: "escuro", t: "Fila do raio-x: tira o cinto, tira o notebook, tira o casaco, tira a paciência.", d: ["tira a paciência"], leg: "E ainda apita 😩 Qual a pior parte do aeroporto pra você?" },
+  { id: "n-carrinho", foto: "capa-hu-comida", e: "bolha", t: "Comida de avião: ninguém gosta.\nTodo mundo: espiando o carrinho chegar.", leg: "Admite que você também fica de olho 👀😂" },
+  { id: "n-mae", foto: "capa-hu-mae", e: "escuro", t: "Mãe quando eu digo que vou viajar:\n\"leva casaco, leva comida, me avisa quando chegar\".", d: ["me avisa quando chegar"], leg: "Toda mãe é igual 🥹 Marca a sua!" },
   { id: "n-6h", foto: "clip-v-nuvens-1", e: "bolha", t: "Voo às 6h da manhã.\nEu às 3h: acordado de ansiedade.", leg: "Quem consegue dormir na véspera de viagem? 🙋‍♂️" },
-  { id: "n-wifi", foto: "clip-v-aeroporto-3", e: "escuro", t: "O wi-fi do aeroporto:\nconectado, sem internet.", d: ["sem internet"], leg: "Clássico 😂 Por isso: print de tudo antes de sair de casa!" },
-  { id: "n-visita", foto: "clip-v-paisagem-1", e: "bolha", t: "Amigo que mora fora: \"vem me visitar!\"\nEu, 2 segundos depois: pesquisando passagem.", leg: "Convite feito é convite aceito ✈️ Marca esse amigo!" },
-  { id: "n-corredor", foto: "clip-v-janela-1", e: "escuro", t: "Eu no corredor sendo acordado 4 vezes pelo passageiro da janela.", d: ["4 vezes"], leg: "Por isso a briga pela janela 😂 Você é janela ou corredor?" },
-  { id: "n-preco-sobe", foto: "clip-v-decolagem-3", e: "bolha", t: "Passagem pra Lisboa ontem: R$ 2.900.\nNo dia que eu decidi comprar: R$ 4.700.", leg: "Por isso a gente avisa NA HORA 🔔 Ativa o sininho!" },
-  { id: "n-2h", foto: "clip-v-nuvens-3", e: "escuro", t: "Quem disse que dinheiro não traz felicidade nunca achou promoção de passagem às 2h da manhã.", d: ["promoção de passagem"], leg: "Felicidade tem nome 😍✈️ Quem aí caça promoção de madrugada?" },
-  { id: "n-gramado", foto: "clip-v-paisagem-2", e: "bolha", t: "Saindo de Fortaleza: 32°C.\nChegando no Sul: 6°C.\nMeu corpo: o que foi que eu te fiz?", leg: "Choque térmico nível cearense 🥶 Já passou por isso?" },
-  { id: "n-alto-falante", foto: "clip-v-aeroporto-1", e: "escuro", t: "Tem dois tipos de pessoa no aeroporto:\nas que chegam 3h antes\ne as que correm ouvindo o nome no alto-falante.", d: ["ouvindo o nome"], leg: "Qual dos dois é você? 😂👇" },
-  { id: "n-bebe", foto: "clip-v-janela-2", e: "bolha", t: "Eu: vou dormir o voo inteiro.\nO bebê da fileira de trás: não vai não.", leg: "Fone de ouvido é item obrigatório 🎧😂" },
-  { id: "n-roteiro", foto: "clip-v-paisagem-3", e: "bolha", t: "Plano das férias: descansar.\nO roteiro que eu montei: 14 lugares em 5 dias.", leg: "Volta mais cansado do que foi 😂 Quem é assim?" },
-  { id: "n-atraso", foto: "clip-v-aeroporto-3", e: "escuro", t: "\"Senhores passageiros, o voo vai atrasar 20 minutos.\"\nOs 20 minutos: 2 horas.", d: ["2 horas"], leg: "Paciência de aeroporto é outro nível 😮‍💨" },
+  { id: "n-wifi", foto: "capa-hu-espera", e: "escuro", t: "O wi-fi do aeroporto:\nconectado, sem internet.", d: ["sem internet"], leg: "Clássico 😂 Por isso: print de tudo antes de sair de casa!" },
+  { id: "n-visita", foto: "capa-europa-rapido", e: "bolha", t: "Amigo que mora fora: \"vem me visitar!\"\nEu, 2 segundos depois: pesquisando passagem.", leg: "Convite feito é convite aceito ✈️ Marca esse amigo!" },
+  { id: "n-corredor", foto: "capa-hu-cabine", e: "escuro", t: "Eu no corredor sendo acordado 4 vezes pelo passageiro da janela.", d: ["4 vezes"], leg: "Por isso a briga pela janela 😂 Você é janela ou corredor?" },
+  { id: "n-preco-sobe", foto: "capa-hu-painel", e: "bolha", t: "Passagem pra Lisboa ontem: R$ 2.900.\nNo dia que eu decidi comprar: R$ 4.700.", leg: "Por isso a gente avisa NA HORA 🔔 Ativa o sininho!" },
+  { id: "n-2h", foto: "capa-hu-celular", e: "escuro", t: "Quem disse que dinheiro não traz felicidade nunca achou promoção de passagem às 2h da manhã.", d: ["promoção de passagem"], leg: "Felicidade tem nome 😍✈️ Quem aí caça promoção de madrugada?" },
+  { id: "n-gramado", foto: "capa-hu-frio", e: "bolha", t: "Saindo de Fortaleza: 32°C.\nChegando no Sul: 6°C.\nMeu corpo: o que foi que eu te fiz?", leg: "Choque térmico nível cearense 🥶 Já passou por isso?" },
+  { id: "n-alto-falante", foto: "capa-for-numeros", e: "escuro", t: "Tem dois tipos de pessoa no aeroporto:\nas que chegam 3h antes\ne as que correm ouvindo o nome no alto-falante.", d: ["ouvindo o nome"], leg: "Qual dos dois é você? 😂👇" },
+  { id: "n-bebe", foto: "capa-curiosidades-aviao", e: "bolha", t: "Eu: vou dormir o voo inteiro.\nO bebê da fileira de trás: não vai não.", leg: "Fone de ouvido é item obrigatório 🎧😂" },
+  { id: "n-roteiro", foto: "capa-hu-mapa2", e: "bolha", t: "Plano das férias: descansar.\nO roteiro que eu montei: 14 lugares em 5 dias.", leg: "Volta mais cansado do que foi 😂 Quem é assim?" },
+  { id: "n-atraso", foto: "capa-hu-espera", e: "escuro", t: "\"Senhores passageiros, o voo vai atrasar 20 minutos.\"\nOs 20 minutos: 2 horas.", d: ["2 horas"], leg: "Paciência de aeroporto é outro nível 😮‍💨" },
   { id: "n-2019", foto: "clip-v-asa-3", e: "escuro", t: "Eu juntando milhas desde 2019 pra uma viagem que ainda não sei pra onde é.", d: ["desde 2019"], leg: "Um dia elas viram passagem 😂 Pra onde você iria com as suas milhas?" },
-  { id: "n-hotel", foto: "clip-v-praia-1", e: "bolha", t: "Chegando no hotel:\n1º: testar o chuveiro.\n2º: ver se a cama é melhor que a minha.", leg: "Ritual sagrado 😂 Qual é o seu primeiro passo no hotel?" },
-  { id: "n-paodequeijo", foto: "clip-v-aeroporto-2", e: "bolha", t: "Uber até o aeroporto: R$ 38.\nPão de queijo no aeroporto: R$ 39.", leg: "Lanche de casa salva a viagem 😂🧀" },
-  { id: "n-fatura", foto: "clip-v-pouso-2", e: "escuro", t: "Viajar é bom.\nVoltar e ver a fatura do cartão já não é tanto.", d: ["fatura do cartão"], leg: "Por isso: passagem na promoção, sempre 😅 Segue pra não pagar caro!" },
-  { id: "n-balanca", foto: "clip-v-mala-3", e: "escuro", t: "Eu pesando a mala no banheiro:\nsobe com a mala, desce sem a mala, faz a conta.", d: ["faz a conta"], leg: "Engenharia de viajante 😂 Quem faz assim?" },
-  { id: "n-esteira", foto: "clip-v-pouso-3", e: "bolha", t: "A esteira começa a rodar.\nTodas as malas saem.\nA minha: a última.", leg: "Sempre a última 😩 Ou a sua sai primeiro?" },
-  { id: "n-agua-fria", foto: "clip-v-praia-3", e: "escuro", t: "Fortalezense entrando no mar de outro estado:\n\"eita, água fria\".", d: ["\"eita, água fria\""], leg: "Mal acostumados com o nosso mar quentinho 🌊😂" },
+  { id: "n-hotel", foto: "capa-hu-hotel", e: "bolha", t: "Chegando no hotel:\n1º: testar o chuveiro.\n2º: ver se a cama é melhor que a minha.", leg: "Ritual sagrado 😂 Qual é o seu primeiro passo no hotel?" },
+  { id: "n-paodequeijo", foto: "capa-salas-vip-for", e: "bolha", t: "Uber até o aeroporto: R$ 38.\nPão de queijo no aeroporto: R$ 39.", leg: "Lanche de casa salva a viagem 😂🧀" },
+  { id: "n-fatura", foto: "capa-hu-cartao", e: "escuro", t: "Viajar é bom.\nVoltar e ver a fatura do cartão já não é tanto.", d: ["fatura do cartão"], leg: "Por isso: passagem na promoção, sempre 😅 Segue pra não pagar caro!" },
+  { id: "n-balanca", foto: "capa-hu-mala", e: "escuro", t: "Eu pesando a mala no banheiro:\nsobe com a mala, desce sem a mala, faz a conta.", d: ["faz a conta"], leg: "Engenharia de viajante 😂 Quem faz assim?" },
+  { id: "n-esteira", foto: "capa-hu-esteira", e: "bolha", t: "A esteira começa a rodar.\nTodas as malas saem.\nA minha: a última.", leg: "Sempre a última 😩 Ou a sua sai primeiro?" },
+  { id: "n-agua-fria", foto: "clip-v-praia-1", e: "escuro", t: "Fortalezense entrando no mar de outro estado:\n\"eita, água fria\".", d: ["\"eita, água fria\""], leg: "Mal acostumados com o nosso mar quentinho 🌊😂" },
   { id: "n-4h40", foto: "clip-v-decolagem-1", e: "bolha", t: "A passagem: baratíssima.\nO horário: 4h40 com 2 conexões.\nEu: é essa mesmo.", leg: "Promoção boa a gente não questiona 😂✈️" },
-  { id: "n-gerente", foto: "clip-v-fortaleza-2", e: "escuro", t: "Eu explicando pro chefe por que preciso de férias justo na semana da promoção.", d: ["justo na semana da promoção"], leg: "Manda esse post pro seu chefe 😂👇" },
-  { id: "n-9horas", foto: "clip-v-nuvens-2", e: "escuro", t: "Nada mais sincero que a cara de quem dormiu sentado num voo de 9 horas.", d: ["9 horas"], leg: "Sem filtro 😴✈️ Qual foi o seu voo mais longo?" },
-  { id: "n-despedida", foto: "clip-v-fortaleza-3", e: "escuro", t: "Família cearense no aeroporto:\n6 pessoas pra se despedir de 1 que vai passar 3 dias fora.", d: ["3 dias fora"], leg: "Família que se ama vai junto até o portão 🥹😂 Marca a sua!" }];
+  { id: "n-gerente", foto: "trabalho-2", e: "escuro", t: "Eu explicando pro chefe por que preciso de férias justo na semana da promoção.", d: ["justo na semana da promoção"], leg: "Manda esse post pro seu chefe 😂👇" },
+  { id: "n-9horas", foto: "capa-hu-cabine", e: "escuro", t: "Nada mais sincero que a cara de quem dormiu sentado num voo de 9 horas.", d: ["9 horas"], leg: "Sem filtro 😴✈️ Qual foi o seu voo mais longo?" },
+  { id: "n-despedida", foto: "capa-limite-cpf", e: "escuro", t: "Família cearense no aeroporto:\n6 pessoas pra se despedir de 1 que vai passar 3 dias fora.", d: ["3 dias fora"], leg: "Família que se ama vai junto até o portão 🥹😂 Marca a sua!" }];
 /* config do humor (esconder, trocar foto) e ideias novas criadas pelo Claude */
 const HU = { cfg: null, extra: [] };
 async function huCarregar() { if (HU.cfg) return; const ler = typeof ghJSON === "function" ? ghJSON : (p, d) => getJSON(p.replace(/^docs\//, ""), d);
@@ -1153,7 +1153,9 @@ async function huCarregar() { if (HU.cfg) return; const ler = typeof ghJSON === 
   HU.cfg = { ocultos: cfg.ocultos || [], fotos: cfg.fotos || {} }; HU.extra = (ex || []).filter(x => x && x.id && x.t); }
 async function huSalvar(msg) { if (!token()) { toast("Conecte em Ajustes pra salvar."); return false; } try { await salvarArquivo("docs/humor_cfg.json", HU.cfg, msg); return true; } catch (e) { toast("Não salvou: " + e.message); return false; } }
 const huHash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
-function huFoto(x) { const id = "hu-" + x.id; return (HU.cfg && HU.cfg.fotos[id]) || x.foto || HU_FOTOS[huHash(x.id) % HU_FOTOS.length]; }
+function fotoPorTema(txt) { const t = sem(txt || "").toLowerCase(); let melhor = "clip-v-asa-2", pts = 0;
+  for (const [k, temas] of Object.entries(FOTOS_APROV)) { const n = temas.split(" ").filter(w => w.length > 3 && t.includes(sem(w))).length; if (n > pts) { pts = n; melhor = k; } } return melhor; }
+function huFoto(x) { const id = "hu-" + x.id, esc = HU.cfg && HU.cfg.fotos[id]; return (esc && FOTOS_APROV[esc] ? esc : null) || (x.foto && FOTOS_APROV[x.foto] ? x.foto : fotoPorTema(x.t + " " + (x.leg || ""))); }
 function huPool() { const oc = new Set((HU.cfg || {}).ocultos || []); return [...HU.extra.slice().reverse(), ...HUMOR2, ...HUMOR].filter(x => !oc.has("hu-" + x.id)); }
 const HU_POR = 10;
 function huPagina() { const P = huPool(); let ini = +(load("p085_hu_ini") || 0); if (ini >= P.length) ini = 0; return { P, ini, L: P.slice(ini, ini + HU_POR) }; }
@@ -1234,8 +1236,8 @@ const REELS = [
   { id: "r-janelinha", clip: "janela-2", t: "Não é sobre o destino.\nÉ sobre a janelinha.", leg: "Janela ou corredor? Comenta aqui 👇" },
   { id: "r-rico", clip: "asa-2", t: "A gente não é rico.\nMas acha passagem barata saindo de Fortaleza.", leg: "Quem se identifica? 😂✈️ O radar avisa quando aparece." },
   { id: "r-14", clip: "asa-1", t: "Eu não sou viciado em viajar.\nEu só olho passagem 14 vezes por dia.", leg: "Admite que você também faz isso 😂👇" },
-  { id: "r-mala", clip: "aeroporto-2", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", leg: "Clássico 😂 Marca quem é assim!" },
-  { id: "r-milha", clip: "pouso-2", t: "Tem gente que junta pra trocar de carro.\nEu junto milha.", leg: "Prioridades 😌✈️ Você é de qual time?" },
+  { id: "r-mala", clip: "aeroporto-3", t: "Planejo a viagem 3 meses antes.\nArrumo a mala 3 horas antes.", leg: "Clássico 😂 Marca quem é assim!" },
+  { id: "r-milha", clip: "asa-2", t: "Tem gente que junta pra trocar de carro.\nEu junto milha.", leg: "Prioridades 😌✈️ Você é de qual time?" },
   { id: "r-segunda", clip: "janela-1", t: "Trabalhe duro.\nNão pelo celular do ano.\nPor segundas-feiras com vista assim.", leg: "Essa é a meta ✈️☁️" },
   { id: "r-conexao", clip: "janela-3", t: "Voo direto: R$ 1.900.\nCom 2 conexões: R$ 640.\nEu: perfeito.", leg: "Quem encara a conexão pra economizar? 🙋‍♂️" },
   { id: "r-for-praia", clip: "praia-1", t: "Morar em Fortaleza e ainda querer ir pra praia dos outros.", leg: "Fortaleza é linda, mas o mundo também é 😂✈️ Pra onde você iria agora?" },
@@ -1244,28 +1246,28 @@ const REELS = [
   { id: "r-alerta", clip: "asa-2", t: "O alerta de passagem barata tocando às 2h da manhã.\nEu: acordadíssimo.", leg: "Quem nunca? 😂 No nosso grupo o aviso chega na hora." },
   { id: "r-print", clip: "janela-1", t: "Eu mandando print da passagem barata no grupo da família.\nNinguém responde.", leg: "Mas na hora de pedir lembrancinha todo mundo aparece 😂" },
   { id: "r-roteiro", clip: "decolagem-1", t: "Roteiro de 15 páginas.\nOrçamento: R$ 0.", leg: "Mas a vontade tá aí 😌✈️ Comenta seu destino dos sonhos!" },
-  { id: "r-amigo", clip: "aeroporto-1", t: "Combinou a viagem com os amigos.\nSó você comprou a passagem.", leg: "Marca aquele amigo que sempre desiste 😂👇" },
-  { id: "r-mala10", clip: "mala-1", t: "Mala de mão: 10 kg.\nMinha mala de mão: 10 kg de lembrancinha.", leg: "Cearense não volta de mão vazia 😂" },
-  { id: "r-cafe", clip: "aeroporto-2", t: "Café no aeroporto: R$ 19.\nEu: faz parte da experiência.", leg: "A viagem começa no café caro ☕✈️" },
+  { id: "r-amigo", clip: "aeroporto-3", t: "Combinou a viagem com os amigos.\nSó você comprou a passagem.", leg: "Marca aquele amigo que sempre desiste 😂👇" },
+  { id: "r-mala10", clip: "aeroporto-3", t: "Mala de mão: 10 kg.\nMinha mala de mão: 10 kg de lembrancinha.", leg: "Cearense não volta de mão vazia 😂" },
+  { id: "r-cafe", clip: "mala-2", t: "Café no aeroporto: R$ 19.\nEu: faz parte da experiência.", leg: "A viagem começa no café caro ☕✈️" },
   { id: "r-janela2", clip: "janela-3", t: "Pagar mais caro pra sentar na janela?\nPago. É a melhor tela do mundo.", leg: "Janela ou corredor? Comenta 👇" },
   { id: "r-pouso", clip: "pouso-1", t: "Aquele momento em que o avião pousa\ne a viagem fica de verdade.", leg: "Qual foi o último lugar que você pousou? ✈️" },
-  { id: "r-volta", clip: "pouso-2", t: "Voltar pra Fortaleza depois da viagem\ne já procurar a próxima passagem.", leg: "Quem nunca? 😂 A gente avisa quando ficar barato." },
-  { id: "r-sabado", clip: "nuvens-2", t: "Sábado ideal:\nolhar passagem que eu não vou comprar.", leg: "Mas um dia eu compro 😌 Marca quem faz isso também." },
+  { id: "r-volta", clip: "pouso-3", t: "Voltar pra Fortaleza depois da viagem\ne já procurar a próxima passagem.", leg: "Quem nunca? 😂 A gente avisa quando ficar barato." },
+  { id: "r-sabado", clip: "nuvens-1", t: "Sábado ideal:\nolhar passagem que eu não vou comprar.", leg: "Mas um dia eu compro 😌 Marca quem faz isso também." },
   { id: "r-pix", clip: "asa-1", t: "Eu: preciso economizar.\nTambém eu: vendo passagem pra Lisboa às 23h.", leg: "O coração quer o que quer 🇵🇹✈️" },
-  { id: "r-milhas2", clip: "nuvens-3", t: "Ninguém:\nEu explicando milha pros meus pais no almoço de domingo.", leg: "Junta milha que a viagem sai quase de graça 😉" },
+  { id: "r-milhas2", clip: "janela-2", t: "Ninguém:\nEu explicando milha pros meus pais no almoço de domingo.", leg: "Junta milha que a viagem sai quase de graça 😉" },
   { id: "r-preco", clip: "decolagem-2", t: "Ver a passagem barata de manhã.\nVoltar à tarde e ela ter dobrado.", leg: "Por isso o alerta chega na hora 🔔" },
   { id: "r-ilha", clip: "praia-1", t: "Eu preciso de férias.\nNão de um feriado.\nDe férias.", leg: "Quem concorda comenta FÉRIAS 😂" },
   { id: "r-check", clip: "aeroporto-3", t: "Chegar 3 horas antes do voo\npra ficar 2h50 andando no aeroporto.", leg: "Cearense precavido é assim 😂" },
   { id: "r-foto", clip: "janela-2", t: "Foto da asa do avião:\nobrigatória.", leg: "Todo mundo tem essa foto no rolo 😂✈️" },
-  { id: "r-quer", clip: "decolagem-3", t: "Não é sobre ter dinheiro pra viajar.\nÉ sobre saber a hora certa de comprar.", leg: "E a hora certa a gente avisa no grupo 🔔" },
+  { id: "r-quer", clip: "decolagem-2", t: "Não é sobre ter dinheiro pra viajar.\nÉ sobre saber a hora certa de comprar.", leg: "E a hora certa a gente avisa no grupo 🔔" },
   { id: "r-nordeste", clip: "nuvens-1", t: "Saindo de Fortaleza, em 1 hora você tá em Natal.\nEm 7, em Lisboa.", leg: "O mundo tá mais perto do que parece ✈️" },
   { id: "r-mae", clip: "mala-2", t: "Mãe: leva casaco.\nEu: tá calor, mãe.\nO destino: 5 graus.", leg: "Mãe sempre tem razão 😂 Marca a sua!" },
   { id: "r-sonho", clip: "janela-1", t: "Um dia eu ainda conheço o mundo.\nComeçando pela passagem que tá barata hoje.", leg: "Bora? ✈️ Comenta pra onde você vai primeiro." },
-  { id: "r-chefe", clip: "aeroporto-1", t: "Meu chefe: você tá muito feliz hoje.\nEu: achei passagem barata.", leg: "Melhor notícia da semana 😂✈️" },
-  { id: "r-vista", clip: "nuvens-3", t: "Se a vista lá de cima não te emociona,\nvocê não tá prestando atenção.", leg: "Marca alguém pra ver essa vista com você ☁️" },
+  { id: "r-chefe", clip: "decolagem-1", t: "Meu chefe: você tá muito feliz hoje.\nEu: achei passagem barata.", leg: "Melhor notícia da semana 😂✈️" },
+  { id: "r-vista", clip: "janela-2", t: "Se a vista lá de cima não te emociona,\nvocê não tá prestando atenção.", leg: "Marca alguém pra ver essa vista com você ☁️" },
   { id: "r-grupo", clip: "decolagem-1", t: "Entrar no grupo de passagem barata\npra ver promoção e não comprar nenhuma.", leg: "Calma, um dia a certa aparece 😂🔔" },
   { id: "r-aniver", clip: "pouso-3", t: "Presente de aniversário ideal:\numa passagem.", leg: "Alguém conta isso pra minha família 😂" },
-  { id: "r-leve", clip: "mala-3", t: "Fazer a mala:\n10% roupa, 90% \"e se precisar?\".", leg: "Marca quem leva a casa inteira 😂" },
+  { id: "r-leve", clip: "mala-2", t: "Fazer a mala:\n10% roupa, 90% \"e se precisar?\".", leg: "Marca quem leva a casa inteira 😂" },
   { id: "r-hoje", clip: "janela-3", t: "E se a viagem que você tanto quer\nestiver mais barata hoje?", leg: "A gente olha os preços o dia todo saindo de Fortaleza. Segue e ativa o sininho 🔔" },
 ];
 const FONTE_REELS = '"Instrument Serif", "Playfair Display", Georgia, serif';
@@ -1290,9 +1292,9 @@ async function fReels(x) {
 
 /* 🖤 carrossel de frases (estilo editorial escuro, sobre fotos reais de dentro do avião) */
 const FRASES_C = [
-  { id: "frases-viajar", capa: "Motivos pra viajar mais", telas: [["janela-1", "Só se vive uma vez."], ["asa-2", "Dinheiro a gente recupera, tempo não."], ["nuvens-3", "É investimento em memória."], ["janela-3", "O mundo é grande demais pra ficar parado."], ["asa-1", "A melhor vista vem depois da subida."]],
+  { id: "frases-viajar", capa: "Motivos pra viajar mais", telas: [["janela-1", "Só se vive uma vez."], ["asa-2", "Dinheiro a gente recupera, tempo não."], ["nuvens-1", "É investimento em memória."], ["janela-3", "O mundo é grande demais pra ficar parado."], ["asa-1", "A melhor vista vem depois da subida."]],
     fim: "Salva e manda pra quem precisa ler isso.", leg: "✈️ MOTIVOS PRA VIAJAR MAIS\n\nSó se vive uma vez. Dinheiro a gente recupera, tempo não. Viajar é investimento em memória.\n\n📌 Salva e manda pra quem precisa ler isso hoje." },
-  { id: "frases-fortaleza", capa: "Pra quem sai de Fortaleza", telas: [["asa-2", "Fortaleza é linda. Mas o mundo também é."], ["janela-2", "Janela do avião: a melhor tela do mundo."], ["pouso-2", "Toda volta pra casa começa com uma ida."], ["janela-1", "Passagem barata é só o começo da história."]],
+  { id: "frases-fortaleza", capa: "Pra quem sai de Fortaleza", telas: [["asa-2", "Fortaleza é linda. Mas o mundo também é."], ["janela-2", "Janela do avião: a melhor tela do mundo."], ["decolagem-2", "Toda volta pra casa começa com uma ida."], ["janela-1", "Passagem barata é só o começo da história."]],
     fim: "Pra onde você vai em 2027?", leg: "🌎 PRA QUEM SAI DE FORTALEZA\n\nFortaleza é linda. Mas o mundo também é. Toda volta pra casa começa com uma ida.\n\n💬 Pra onde você vai em 2027? Comenta aqui!" },
 ];
 function telaFrase(fundo, frase, pos, n) { return async c => {

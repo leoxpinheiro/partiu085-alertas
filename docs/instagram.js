@@ -157,10 +157,18 @@ function abrirLote(sem) {
     <div class="ej-acts"><button class="bt pri lg" data-act="iglsalvar" data-s="${sem}">${ic("calendar")}Agendar ${L.length} posts</button><span class="sub" id="igl-prog"></span></div></div>`;
   document.body.appendChild(d); document.body.classList.add("ej-on");
 }
-function gerarSlots(ini, hs, n) { /* horários em sequência a partir do dia escolhido, pulando os que já passaram */
+/* horário já ocupado: tem post (não story) a menos de 45 min, ou é horário da 💲 oferta do dia do robô */
+function slotOcupado(q, extra) { const t = new Date(q).getTime(), hm = q.slice(11, 16);
+  if (IGF.auto && IGF.auto.auto_oferta && !IGF.auto.pausado && (IGF.auto.horarios_oferta || []).some(h => Math.abs((+h.slice(0, 2) * 60 + +h.slice(3)) - (+hm.slice(0, 2) * 60 + +hm.slice(3))) < 45)) return true;
+  return [...(IGF.fila || []), ...(IGF.autoFila || []), ...(extra || []).map(x => ({ quando: x }))].some(x => x.quando && x.tipo !== "story" && ((IGF.st || {})[x.id] || {}).status !== "expirado" && Math.abs(new Date(x.quando).getTime() - t) < 45 * 6e4); }
+function gerarSlots(ini, hs, n) { /* horários em sequência a partir do dia escolhido, pulando os que já passaram e os que já têm post */
   const out = [], lim = isoLocal(new Date(Date.now() + 10 * 6e4)).slice(0, 16);
-  for (let d = 0; out.length < n && d < 400; d++) { const dia = diaMenos(ini, -d); for (const h of hs) { const q = `${dia}T${h}`; if (q <= lim) continue; out.push(q + "-03:00"); if (out.length >= n) break; } }
+  for (let d = 0; out.length < n && d < 400; d++) { const dia = diaMenos(ini, -d); for (const h of hs) { const q = `${dia}T${h}`; if (q <= lim || slotOcupado(q + "-03:00", out)) continue; out.push(q + "-03:00"); if (out.length >= n) break; } }
   return out; }
+/* quantos posts de feed cada dia já tem (contando a oferta do dia do robô) */
+function postsPorDia(dias) { return dias.map(d => { const its = [...(IGF.fila || []), ...(IGF.autoFila || [])].filter(x => x.tipo !== "story" && (x.quando || "").slice(0, 10) === d && ((IGF.st || {})[x.id] || {}).status !== "expirado");
+  let n = its.length; const of = IGF.auto && IGF.auto.auto_oferta && !IGF.auto.pausado ? (IGF.auto.horarios_oferta || []) : [];
+  of.forEach(h => { const t = new Date(`${d}T${h}-03:00`).getTime(); if (!its.some(x => Math.abs(new Date(x.quando).getTime() - t) < 3600e3)) n++; }); return n; }); }
 const AO_VIVO = /^(f-destsem|f-op|f-quanto|aq-quanto|aq-feriadao|aq-teaser3|camp-op|camp-quanto)/;
 const aoVivo = p => !!(p && (p.aoVivo || AO_VIVO.test(p.id || p.origem || "")));
 function lerHorarios(t) { return String(t || "").split(",").map(x => x.trim()).filter(x => /^\d{1,2}:\d{2}$/.test(x)).map(x => x.padStart(5, "0")); }

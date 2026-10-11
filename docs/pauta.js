@@ -509,9 +509,9 @@ function noticiaHTML() {
   const lmi = vivas.filter(ehMi).slice(0, 20), lvo = vivas.filter(o => !ehMi(o)).slice(0, 14), lista = [...lmi, ...lvo], velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
   const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : ntCategoria(x) === "SALA VIP" ? "🛋️" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
       <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
-  const nAuto = +(load("p085_nt_auto_n") || 2), hsAuto = load("p085_nt_auto_hs") || "16:30, 21:00";
+  const nAuto = +(load("p085_nt_auto_n") || 1), hsAuto = load("p085_nt_auto_hs2") || "16:30, 21:00";
   return `<div class="card pa-nt nt-auto"><h3>⚡ Notícias de hoje no automático</h3>
-    <div class="desc">Eu escolho as melhores notícias quentes (milhas com lista de parceiros primeiro), monto os posts do nosso jeito e coloco na agenda. Junto com os posts fixos e a oferta do dia das 19h, o perfil fica com 4 ou 5 posts por dia.</div>
+    <div class="desc">Eu escolho as melhores notícias quentes (milhas com lista de parceiros primeiro), monto os posts do nosso jeito e coloco na agenda. Vai pro primeiro horário livre (se 16:30 já tiver post, vai pras 21h). Use quando sair notícia quente: vira um post extra no dia.</div>
     <div class="mc-rap" style="margin-top:8px"><small class="sub">Quantas:</small>${[1, 2, 3].map(n => `<button class="pill ${n === nAuto ? "on" : ""}" data-act="ntauton" data-n="${n}">${n}</button>`).join("")}
       <small class="sub" style="margin-left:10px">Horários:</small><input id="nt-auto-hs" value="${esc(hsAuto)}" style="width:150px;padding:6px 10px;border-radius:10px;border:0;background:var(--tile);color:inherit">
       <label class="chk"><input type="checkbox" id="nt-auto-st" ${load("p085_igm_st") === "1" ? "checked" : ""}> + story avisando</label>
@@ -782,7 +782,7 @@ const CAL = { f: "todos", thumbs: {}, legs: {}, aberto: "" };
 const mcLer = (k, p) => { try { return JSON.parse(localStorage.getItem(k)) || p; } catch (e) { return p; } };
 const mcGravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } };
 CAL.sel = mcLer("p085_mc_sel", []); CAL.feitos = mcLer("p085_mc_feitos", {});
-CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs", "12:00, 19:00"); CAL.ok = true;
+CAL.reels = mcLer("p085_mc_reels", false); CAL.arr = 0; CAL.ini = ""; CAL.hs = mcLer("p085_mc_hs2", "09:30, 13:00, 16:30"); CAL.ok = true;
 const CAL_F = [["todos", "Tudo"], ["dia", "💲 Do dia"], ["noticias", "📰 Notícias"], ["conteudo", "📚 Conteúdo"], ["humor", "😂 Humor"], ["guias", "📘 Guias"], ["s2", "🚀 Semana 2"], ["s1", "🚀 Semana 1"]];
 function mcGrupo(p) { return p.semana === 1 ? "s1" : p.semana === 2 ? "s2" : p.noticia ? "noticias" : p.id.startsWith("ct-") ? "conteudo" : /^(hu|hr|rv|ch|fr|cr)-/.test(p.id) ? "humor" : p.id.startsWith("f-guia") ? "guias" : "dia"; }
 async function mcTodos() {
@@ -832,7 +832,8 @@ function mcCfgHTML() {
   return `<div class="mc-h"><b>Minha programação</b><small id="mc-resumo"></small></div>
     <div class="mc-cfg"><label>Começa<input type="date" data-mc="ini" value="${CAL.ini}"></label><label>Horários<input data-mc="hs" value="${esc(CAL.hs)}" placeholder="12:00, 19:00"></label></div>
     <div class="mc-rap"><button class="pill ${CAL.ini === h ? "on" : ""}" data-act="mcdia" data-v="${h}">Hoje</button><button class="pill ${CAL.ini === am ? "on" : ""}" data-act="mcdia" data-v="${am}">Amanhã</button><small class="sub">horário que já passou é pulado</small></div>
-    <div class="mc-rap"><small class="sub">Por dia:</small>${[["12:00, 19:00", "2"], ["09:00, 13:00, 19:00", "3"], ["09:00, 12:00, 15:00, 19:00", "4"]].map(([v, n]) => `<button class="pill ${CAL.hs.replace(/\s/g, "") === v.replace(/\s/g, "") ? "on" : ""}" data-act="mchs" data-v="${v}">${n} posts</button>`).join("")}</div>
+    <div class="mc-rap"><small class="sub">Por dia:</small>${[["09:30, 13:00", "3"], ["09:30, 13:00, 16:30", "4"], ["09:30, 12:30, 16:30, 21:00", "5"]].map(([v, n]) => `<button class="pill ${CAL.hs.replace(/\s/g, "") === v.replace(/\s/g, "") ? "on" : ""}" data-act="mchs" data-v="${v}">${n} por dia</button>`).join("")}<small class="sub">já contando a 💲 oferta das 19h do robô</small></div>
+    <div class="mc-dias" id="mc-dias"></div>
     <label class="mc-arr2"><span>🚀 Arrancada: no 1º dia, postar</span><input type="number" min="0" max="9" data-mc="arr" value="${CAL.arr}"><span>de uma vez (1 a cada 20 min)</span></label>
     <div id="mc-lista"></div>`;
 }
@@ -853,7 +854,12 @@ function mcListaHTML() {
       ${L.some((p, k) => ehVaga(p.id) || vira(p, slots[k])) ? `<label class="chk"><input type="checkbox" data-mc="reels" ${CAL.reels ? "checked" : ""}> 🎬 Ofertas do dia saem como Reels (vídeo de 7s) + story</label>` : ""}
       <div class="al-acts"><button class="bt pri lg" data-act="mcagendar" ${errado.length ? "disabled" : ""}>${ic("calendar")}Agendar ${L.length} post${L.length > 1 ? "s" : ""}</button><button class="bt ghost" data-act="mclimpar">Limpar</button></div><small class="sub" id="mc-prog"></small>` : "");
 }
+function mcDiasHTML() { const meta = lerHorarios(CAL.hs).length + (IGF.auto && IGF.auto.auto_oferta && !IGF.auto.pausado ? (IGF.auto.horarios_oferta || []).length : 0), h = hojeISO();
+  const dias = Array.from({ length: 7 }, (_, i) => diaMenos(h, -i)), ns = postsPorDia(dias), novos = slotsCal(mcSelecionados().length);
+  return `<small class="sub">Próximos dias (meta: ${meta} por dia${novos.length ? ", com os que você escolheu" : ""}):</small>` + dias.map((d, i) => { const n = ns[i] + novos.filter(q => q.slice(0, 10) === d).length;
+    return `<span class="mc-dia ${n >= meta ? "ok" : n ? "meio" : "zero"}"><b>${i === 0 ? "Hoje" : DSEM[new Date(d + "T12:00:00Z").getUTCDay()] + " " + d.slice(8, 10)}</b>${n}/${meta}</span>`; }).join(""); }
 function mcAtualizar() { CAL.sel = CAL.sel.filter(id => ehVaga(id) || (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
+  const md = document.getElementById("mc-dias"); if (md) md.innerHTML = mcDiasHTML();
   const a = document.getElementById("mc-lista"); if (a) a.innerHTML = mcListaHTML();
   document.querySelectorAll('[data-act="mcdia"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.ini));
   (PA.lista || []).forEach(p => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
@@ -949,7 +955,7 @@ document.addEventListener("click", async e => {
   else if (a === "mcagora") { mcPostarAgora(b.dataset.id, b); return; }
   else if (a === "mcvadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); mcFecharVer(); }
   else if (a === "mcvbaixar") { [...document.querySelectorAll("#mcv-t canvas")].forEach((cv, j) => setTimeout(() => { const l = document.createElement("a"); l.download = `partiu085-${j + 1}.png`; l.href = cv.toDataURL("image/png"); l.click(); }, j * 350)); return; }
-  else if (a === "mchs") { CAL.hs = b.dataset.v; mcGravar("p085_mc_hs", CAL.hs); const i = document.querySelector('[data-mc="hs"]'); if (i) i.value = CAL.hs; document.querySelectorAll('[data-act="mchs"]').forEach(x => x.classList.toggle("on", x === b)); }
+  else if (a === "mchs") { CAL.hs = b.dataset.v; mcGravar("p085_mc_hs2", CAL.hs); const i = document.querySelector('[data-mc="hs"]'); if (i) i.value = CAL.hs; document.querySelectorAll('[data-act="mchs"]').forEach(x => x.classList.toggle("on", x === b)); }
   else if (a === "mcvaga") { CAL.sel.push("vaga-" + Date.now().toString(36)); }
   else if (a === "mcdia") { CAL.ini = b.dataset.v; const i = document.querySelector('[data-mc="ini"]'); if (i) i.value = CAL.ini; }
   else if (a === "mclimpar") { if (!confirm("Tirar todos da lista?")) return; CAL.sel = []; }
@@ -959,7 +965,7 @@ document.addEventListener("click", async e => {
 }, true);
 document.addEventListener("input", e => { const t = e.target;
   if (t.dataset && t.dataset.mcleg) CAL.legs[t.dataset.mcleg] = t.value;
-  else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); }
+  else if (t.dataset && t.dataset.mc === "hs") { CAL.hs = t.value; mcGravar("p085_mc_hs2", CAL.hs); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); }
   else if (t.dataset && t.dataset.mc === "arr") { CAL.arr = Math.max(0, Math.min(9, +t.value || 0)); clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 300); }
   else if (t.dataset && t.dataset.mc === "ini" && t.value) { CAL.ini = t.value; clearTimeout(CAL.t); CAL.t = setTimeout(mcAtualizar, 400); } });
 document.addEventListener("change", e => { const t = e.target; if (!t.dataset) return;
@@ -1315,7 +1321,7 @@ document.addEventListener("click", async e => {
   const bn = e.target.closest('[data-act="ntauton"]'); if (bn) { store("p085_nt_auto_n", bn.dataset.n); document.querySelectorAll('[data-act="ntauton"]').forEach(x => x.classList.toggle("on", x === bn)); return; }
   const b = e.target.closest('[data-act="ntauto"]'); if (!b) return;
   if (!token()) { toast("Conecte em Ajustes pra agendar."); return; }
-  const n = +(load("p085_nt_auto_n") || 2), hsTxt = ($("#nt-auto-hs") || {}).value || "16:30, 21:00", st = ($("#nt-auto-st") || {}).checked; store("p085_nt_auto_hs", hsTxt); store("p085_igm_st", st ? "1" : "0");
+  const n = +(load("p085_nt_auto_n") || 1), hsTxt = ($("#nt-auto-hs") || {}).value || "16:30, 21:00", st = ($("#nt-auto-st") || {}).checked; store("p085_nt_auto_hs2", hsTxt); store("p085_igm_st", st ? "1" : "0");
   const prog = $("#nt-auto-prog"), hs = lerHorarios(hsTxt); if (!hs.length) { toast("Confira os horários (ex.: 16:30, 21:00)."); return; }
   b.disabled = true; prog.textContent = "Escolhendo as melhores…";
   try { for (let i = 0; i < 50 && IGF.carregando; i++) await new Promise(r => setTimeout(r, 100)); IGF.fila = null; await carregarIG(true);

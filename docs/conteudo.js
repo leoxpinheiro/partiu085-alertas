@@ -62,7 +62,7 @@ function ctTelaLista(t, [h, linhas, nota], pos, n) { return c => {
 }; }
 
 const CONTEUDO = [
-  { id: "pode-nao-pode", tema: "escuro", foto: "clip-v-mala-1", kick: "Bagagem de mão", capa: "Pode ou não pode levar no avião?", sub: "8 itens que geram dúvida (e confusão) no raio-x.", dir: "GUIA",
+  { id: "pode-nao-pode", tema: "escuro", foto: "capa-pode-nao-pode", kick: "Bagagem de mão", capa: "Pode ou não pode levar no avião?", sub: "8 itens que geram dúvida (e confusão) no raio-x.", dir: "GUIA",
     pn: [
       ["Carregador portátil", "pode", "Só na bagagem de mão, no máximo 2 por pessoa e de até 100 Wh. E atenção: é proibido recarregar ele durante o voo (regra nova da ANAC, 2026).", "power-bank-3"],
       ["Perfume", "pode", "Em voo internacional, frasco de até 100 ml, junto com os outros líquidos num saquinho transparente de até 1 litro. Comprou no free shop? Vai na sacola lacrada com a nota.", "frascos-1"],
@@ -83,7 +83,7 @@ const CONTEUDO = [
       ["Proteja os contatos", "Leve na embalagem original ou com os contatos protegidos, pra evitar curto-circuito."]],
     fim: ["Manda pra quem vive com power bank na bolsa", "Regra publicada pela ANAC em abril de 2026. A companhia pode ser ainda mais rígida."],
     leg: "🔋 A REGRA DO POWER BANK MUDOU\n\n▪️ Só na bagagem de mão\n▪️ Máximo de 2 por pessoa\n▪️ Até 100 Wh: liberado · 100 a 160 Wh: com autorização da companhia · acima de 160 Wh: proibido\n▪️ Proibido recarregar ele durante o voo\n▪️ Contatos protegidos contra curto-circuito\n\nFonte: ANAC (abril de 2026). Confere também a regra da sua companhia.\n\n📤 Manda pra quem vive com power bank na bolsa." },
-  { id: "pinto-martins", tema: "creme", foto: "clip-v-aeroporto-1", kick: "Curiosidade", capa: "Quem foi Pinto Martins?", sub: "O cearense que dá nome ao nosso aeroporto tem uma história de filme.", dir: "HISTÓRIA",
+  { id: "pinto-martins", tema: "creme", foto: "capa-pinto-martins", kick: "Curiosidade", capa: "Quem foi Pinto Martins?", sub: "O cearense que dá nome ao nosso aeroporto tem uma história de filme.", dir: "HISTÓRIA",
     tx: [
       ["Cearense de Camocim", "Euclides Pinto Martins nasceu em Camocim, em 1892, e virou um dos pioneiros da aviação brasileira."],
       ["A ideia maluca", "Sair de Nova York e chegar ao Rio de Janeiro voando de hidroavião. Ele era o idealizador do projeto e foi copiloto ao lado do americano Walter Hinton.", "1922"],
@@ -92,7 +92,7 @@ const CONTEUDO = [
       ["E o aeroporto antes?", "Se chamava Aeroporto do Cocorote. Em 1952 ganhou o nome de Pinto Martins, que morreu em 1924, um ano depois do voo histórico.", "1952"]],
     fim: ["Você sabia dessa?", "Salva e manda pro amigo que diz que conhece tudo de Fortaleza."],
     leg: "✈️ QUEM FOI PINTO MARTINS?\n\nO nome do Aeroporto de Fortaleza homenageia Euclides Pinto Martins, cearense de Camocim e pioneiro da aviação.\n\n▪️ Em 1922 ele idealizou um voo de hidroavião de Nova York ao Rio de Janeiro\n▪️ A viagem durou 175 dias (16/08/1922 a 08/02/1923)\n▪️ O avião se chamava Sampaio Corrêa e inspirou o time de futebol de São Luís\n▪️ Antes, o aeroporto se chamava Cocorote. O nome mudou em 1952\n\n💬 Você sabia dessa?" },
-  { id: "for-numeros", tema: "escuro", foto: "clip-v-decolagem-1", kick: "Aeroporto de Fortaleza", capa: "O nosso aeroporto em números", sub: "Uns dados que pouca gente conhece.", dir: "DADOS",
+  { id: "for-numeros", tema: "escuro", foto: "capa-for-numeros", kick: "Aeroporto de Fortaleza", capa: "O nosso aeroporto em números", sub: "Uns dados que pouca gente conhece.", dir: "DADOS",
     tx: [
       ["Passageiros em 2025", "Foi o movimento do Pinto Martins no ano passado, 9% a mais que em 2024. A meta pra 2026 é passar de 6,5 milhões.", "6,1 MI"],
       ["O recorde é de 2019", "Foram mais de 7,2 milhões de passageiros naquele ano. Depois veio a pandemia e o movimento caiu pra 3,1 milhões em 2020.", "7,2 MI"],
@@ -101,20 +101,20 @@ const CONTEUDO = [
       ["Anos de concessão", "Desde 2018 quem administra é a alemã Fraport, a mesma do aeroporto de Frankfurt. O contrato é de 30 anos.", "30"]],
     fim: ["Você usa muito o Pinto Martins?", "Comenta pra onde foi seu último voo saindo daqui."],
     leg: "📊 O AEROPORTO DE FORTALEZA EM NÚMEROS\n\n▪️ 6,1 milhões de passageiros em 2025 (+9%)\n▪️ Recorde: 7,2 milhões em 2019\n▪️ 585 mil passageiros só em julho de 2026 (10º do país no mês)\n▪️ Pista de 2.755 metros\n▪️ Administrado pela Fraport desde 2018, numa concessão de 30 anos\n\nFontes: ANAC, Fraport e jornais O Povo e Diário do Nordeste.\n\n💬 Pra onde foi seu último voo saindo daqui?" },
-  { id: "voo-direto", tema: "amarelo", foto: "clip-v-asa-2", kick: "Saindo de Fortaleza", capa: "Pra onde dá pra ir sem escala", sub: "Os voos diretos internacionais saindo do Pinto Martins.", dir: "DESTINOS",
+  { id: "voo-direto", tema: "amarelo", foto: "capa-voo-direto", kick: "Saindo de Fortaleza", capa: "Pra onde dá pra ir sem escala", sub: "Os voos diretos internacionais saindo do Pinto Martins.", dir: "DESTINOS",
     ls: [
       ["Europa", [["Lisboa", "TAP e LATAM", "≈ 7h"], ["Paris", "Air France", "≈ 9h"], ["Madri", "Iberia", ""]], "Fortaleza → Lisboa está entre os voos mais rápidos do Brasil pra Europa."],
       ["Américas", [["Buenos Aires", "Gol", ""], ["Montevidéu", "Gol", ""], ["Orlando", "Gol", ""], ["Caiena · Guiana Francesa", "Air France", ""]], "Rotas e dias de operação mudam ao longo do ano: confirme no site da companhia."]],
     tx: [["E dentro do Brasil?", "Tem voo direto pra São Paulo, Rio, Brasília, BH, Recife, Salvador, Natal, Manaus, Belém, São Luís, Teresina, Juazeiro do Norte, Parnaíba e mais.", "BR"]],
     fim: ["Qual desses tá na sua lista?", "A gente avisa quando qualquer um deles ficar barato saindo de Fortaleza."],
     leg: "🌍 PRA ONDE DÁ PRA IR SEM ESCALA SAINDO DE FORTALEZA\n\n🇵🇹 Lisboa (TAP e LATAM) · ≈ 7h\n🇫🇷 Paris (Air France) · ≈ 9h\n🇪🇸 Madri (Iberia)\n🇦🇷 Buenos Aires (Gol)\n🇺🇾 Montevidéu (Gol)\n🇺🇸 Orlando (Gol)\n🇬🇫 Caiena, Guiana Francesa (Air France)\n\nRotas e frequências mudam durante o ano: confirme com a companhia.\n\n💬 Qual desses tá na sua lista?" },
-  { id: "europa-rapido", tema: "creme", foto: "clip-v-nuvens-1", kick: "Vantagem de quem é daqui", capa: "Fortaleza é porta de entrada pra Europa", sub: "Daqui sai um dos voos mais rápidos do Brasil pro outro lado do Atlântico.", dir: "CURIOSIDADE",
+  { id: "europa-rapido", tema: "creme", foto: "capa-europa-rapido", kick: "Vantagem de quem é daqui", capa: "Fortaleza é porta de entrada pra Europa", sub: "Daqui sai um dos voos mais rápidos do Brasil pro outro lado do Atlântico.", dir: "CURIOSIDADE",
     ls: [["Brasil → Lisboa", [["Fortaleza ✈", "", "7h10"], ["Recife", "", "7h40"], ["Salvador", "", "8h15"], ["Brasília", "", "9h05"], ["Rio de Janeiro", "", "9h45"]], "Tempos de voo aproximados. Variam com o avião e a época do ano."]],
     tx: [["E Paris?", "Fortaleza → Paris leva cerca de 8h55 pela Air France. Quem sai do Rio ou de São Paulo voa bem mais.", "8H55"],
       ["Os voos lotam", "No começo de 2026, os voos de Fortaleza pra Europa tiveram mais de 90% de ocupação. Por isso a promoção boa some rápido.", "90%"]],
     fim: ["Europa é mais perto do que parece", "Segue o @partiu.085 pra pegar a próxima promoção pra Lisboa, Paris e Madri."],
     leg: "🇪🇺 FORTALEZA É PORTA DE ENTRADA PRA EUROPA\n\nDaqui sai um dos voos mais rápidos do Brasil pra Lisboa: cerca de 7h10. Do Rio são 9h45.\n\n▪️ Fortaleza → Paris: cerca de 8h55\n▪️ Os voos de Fortaleza pra Europa passaram de 90% de ocupação no começo de 2026\n\n✈️ Segue o @partiu.085 pra pegar a próxima promoção." },
-  { id: "curiosidades-aviao", tema: "escuro", foto: "clip-v-janela-2", kick: "Curiosidades", capa: "Coisas do avião que ninguém te explica", sub: "A 5ª muda o jeito que você vê o lanche de bordo.", dir: "VOCÊ SABIA?",
+  { id: "curiosidades-aviao", tema: "escuro", foto: "capa-curiosidades-aviao", kick: "Curiosidades", capa: "Coisas do avião que ninguém te explica", sub: "A 5ª muda o jeito que você vê o lanche de bordo.", dir: "VOCÊ SABIA?",
     tx: [
       ["Por que apagam as luzes no pouso?", "Pros seus olhos já estarem acostumados com o escuro. Se precisar sair às pressas, você enxerga melhor."],
       ["Por que abrir a janela?", "Na decolagem e no pouso a tripulação precisa ver o que acontece lá fora, caso aconteça alguma emergência."],
@@ -124,7 +124,7 @@ const CONTEUDO = [
       ["Os pilotos comem igual?", "Normalmente comandante e copiloto comem refeições diferentes. Se uma estiver estragada, o outro segue bem."]],
     fim: ["Qual você não sabia?", "Manda pro amigo que tem medo de avião. Saber como funciona ajuda."],
     leg: "🛫 COISAS DO AVIÃO QUE NINGUÉM TE EXPLICA\n\n1. As luzes apagam no pouso pros olhos se acostumarem ao escuro\n2. A janela aberta é pra tripulação ver lá fora\n3. O furinho da janela equilibra a pressão\n4. O modo avião evita chiado no rádio dos pilotos\n5. A comida parece sem gosto porque lá em cima o paladar muda\n6. Os pilotos costumam comer refeições diferentes\n\n💬 Qual você não sabia?" },
-  { id: "novidades-out26", tema: "amarelo", foto: "clip-v-pouso-1", kick: "Notícia · outubro 2026", capa: "O que muda nos voos de Fortaleza", sub: "Mais voo pra Europa, rota saindo e a Fraport chegando em Jeri.", dir: "NOVIDADE", valido: "2026-11-15",
+  { id: "novidades-out26", tema: "amarelo", foto: "capa-novidades-out26", kick: "Notícia · outubro 2026", capa: "O que muda nos voos de Fortaleza", sub: "Mais voo pra Europa, rota saindo e a Fraport chegando em Jeri.", dir: "NOVIDADE", valido: "2026-11-15",
     tx: [
       ["Mais voos pra Lisboa", "A LATAM passa de 3 pra 4 voos por semana em outubro. De novembro a março, chega a 5: segunda, terça, quarta, quinta e sábado.", "5X"],
       ["Paris todo dia?", "A Air France voa 5 vezes por semana pra Paris e planeja chegar a voos diários até o fim de 2026.", "5X"],
@@ -133,7 +133,7 @@ const CONTEUDO = [
       ["A meta pra 2026", "A Fraport quer passar de 6,5 milhões de passageiros em Fortaleza em 2026. E fala em Itália, Argentina, Uruguai e Chile como próximos mercados.", "6,5 MI"]],
     fim: ["Qual rota você quer ver chegar?", "Comenta aqui. Itália? Argentina? A gente torce junto."],
     leg: "📰 O QUE MUDA NOS VOOS DE FORTALEZA\n\n▪️ LATAM: Lisboa vai pra 4 voos/semana em outubro e 5 de novembro a março\n▪️ Air France: 5 voos/semana pra Paris, com plano de voo diário até o fim do ano\n▪️ LATAM deixou de vender Fortaleza–Santiago e Fortaleza–Miami a partir de outubro\n▪️ A Fraport também vai administrar o aeroporto de Jericoacoara\n▪️ Meta: passar de 6,5 milhões de passageiros em 2026\n\nFontes: Passageiro de Primeira, Pontos pra Voar e Diário do Nordeste.\n\n💬 Qual rota você quer ver chegar em Fortaleza?" },
-  { id: "salas-vip-for", tema: "creme", foto: "clip-v-aeroporto-2", kick: "Aeroporto de Fortaleza", capa: "As salas VIP do nosso aeroporto", sub: "Fortaleza tem 6 espaços premium. E dá pra entrar sem pagar caro.", dir: "SALA VIP",
+  { id: "salas-vip-for", tema: "creme", foto: "capa-salas-vip-for", kick: "Aeroporto de Fortaleza", capa: "As salas VIP do nosso aeroporto", sub: "Fortaleza tem 6 espaços premium. E dá pra entrar sem pagar caro.", dir: "SALA VIP",
     tx: [
       ["Sala VIP do Inter", "Inaugurada em março de 2026, no embarque nacional, perto do portão 12. Funciona todo dia, das 6h às 22h, e cabe 60 pessoas.", "NOVA"],
       ["Quem entra de graça?", "Clientes Inter Prime e Inter Win entram sem pagar, quantas vezes quiserem. Os outros clientes do Inter podem usar 4.000 pontos Loop por acesso.", "GRÁTIS"],
@@ -163,7 +163,7 @@ const CONTEUDO = [
       ["Onde ela brilha", "Executiva Brasil → Europa na tabela: 201,6 mil milhas, com o mesmo preço em qualquer data que tiver lugar.", "VIP"]],
     fim: ["Você já conhecia a tabela fixa?", "Salva esse post e manda pra quem junta milhas."],
     leg: "📋 TABELA FIXA: O ATALHO QUE POUCA GENTE USA\n\nNa tabela fixa, a passagem custa um valor tabelado pela região de origem e destino, seja alta ou baixa temporada.\n\nLATAM Pass, saindo do Brasil (econômica, só ida, valores de ago/2026):\n🌎 América do Sul: 24 mil milhas\n🇺🇸 América do Norte: 57 mil\n🌍 África: 62 mil\n🇪🇺 Europa: 80,7 mil\n💺 Executiva pra Europa: 201,6 mil\n\n⚠️ O que você precisa saber:\n▪️ Só vale pra voo 100% operado por companhia parceira (voo da LATAM segue o preço dinâmico)\n▪️ Sai pela central ou pelo WhatsApp oficial: no site aparece mais caro\n▪️ Com conexão, soma cada trecho por região\n▪️ Assento limitado: tenha datas flexíveis\n▪️ Os valores mudam de tempos em tempos e não incluem as taxas\n\n💬 Você já conhecia? Salva e manda pra quem junta milhas." },
-  { id: "limite-cpf", tema: "amarelo", foto: "passageiros-2", kick: "Milhas · o que ninguém te conta", capa: "Suas milhas têm limite de pessoas", sub: "Dá pra emitir pra família toda? Depende do programa.", dir: "MILHAS",
+  { id: "limite-cpf", tema: "amarelo", foto: "capa-limite-cpf", kick: "Milhas · o que ninguém te conta", capa: "Suas milhas têm limite de pessoas", sub: "Dá pra emitir pra família toda? Depende do programa.", dir: "MILHAS",
     ls: [["Pra quantas pessoas dá pra emitir", [["Smiles", "pessoas por ano · zera em 1º de janeiro", "25"], ["LATAM Pass", "emissões pra outras pessoas em 12 meses", "24"], ["Azul Fidelidade", "beneficiários · até 8 nas categorias altas", "5"]], "Você, o titular, não entra na conta. Regras de 2026: confira o regulamento do programa."]],
     tx: [
       ["Smiles conta pessoas", "São 25 CPFs diferentes no ano. Pra essas mesmas pessoas, você emite quantas vezes quiser.", "25"],
@@ -183,7 +183,7 @@ const CONTEUDO = [
       ["Olhe o extrato hoje", "Cada lote de milhas tem a sua data. No app do programa, veja o extrato e o que vence nos próximos meses.", "EXTRATO"]],
     fim: ["Quantas milhas você já perdeu?", "Comenta aqui. E salva pra conferir o extrato."],
     leg: "⏳ SUA MILHA PODE VENCER ANTES DO QUE VOCÊ PENSA\n\nPrazos de cada programa (set/2026, categoria básica):\n🔴 LATAM Pass: 2 anos a partir do crédito\n🟠 Smiles, voando GOL: 6 anos\n🟠 Smiles, vindas do banco ou de parceiros: 3 anos\n🔵 Azul, clubes de 1 a 5 mil: 3 anos\n\n⚠️ O que pega muita gente:\n▪️ Na Smiles, o BÔNUS da transferência do banco dura cerca de 6 meses\n▪️ Milha comprada ou reativada na Smiles: 12 meses\n▪️ Milha transferida de outra conta: 6 meses\n▪️ Na LATAM, milha vencida há até 180 dias pode ser reativada pagando (+2 anos)\n▪️ Clubes grandes (Azul 10 e 20 mil, Smiles 7 mil pra cima) não expiram enquanto você cumpre as regras\n\n👉 Abre o extrato hoje e vê o que vence nos próximos meses.\n\n💬 Quantas milhas você já perdeu? Conta aqui." },
-  { id: "milhas-parceiras", tema: "escuro", foto: "clip-v-janela-3", kick: "Milhas · voando mais longe", capa: "Suas milhas voam em outras companhias", sub: "Dá pra ir de Emirates, TAP ou United com milha brasileira.", dir: "GUIA",
+  { id: "milhas-parceiras", tema: "escuro", foto: "capa-milhas-parceiras", kick: "Milhas · voando mais longe", capa: "Suas milhas voam em outras companhias", sub: "Dá pra ir de Emirates, TAP ou United com milha brasileira.", dir: "GUIA",
     ls: [["Algumas parceiras de cada programa", [["Azul Fidelidade", "TAP, United, Emirates, Turkish, Copa…", "7"], ["Smiles", "Air France, KLM, Emirates, Qatar, Iberia…", "+40"], ["LATAM Pass", "parceiras saem pela tabela fixa", "TABELA"]], "Listas de 2026. Ver a companhia na busca não quer dizer que ela aceita milhas: confira a lista oficial."]],
     tx: [
       ["As 7 da Azul", "Air Canada, Copa, Emirates, Etihad, TAP, Turkish e United. A emissão é pelo Azul Pelo Mundo, dentro da sua conta. Sem tabela fixa: o preço muda.", "7"],
@@ -193,7 +193,7 @@ const CONTEUDO = [
       ["Bilhetes separados, risco seu", "Juntou duas passagens diferentes? Se o primeiro voo atrasar, a segunda companhia não precisa te esperar. Deixe folga.", "!"]],
     fim: ["Qual companhia você quer voar com milhas?", "Comenta aqui que a gente faz um post sobre ela."],
     leg: "🌍 SUAS MILHAS VOAM EM OUTRAS COMPANHIAS\n\nMilha brasileira não serve só pra GOL, LATAM e Azul:\n\n🔵 Azul Fidelidade: 7 parceiras (Air Canada, Copa, Emirates, Etihad, TAP, Turkish e United), emitidas pelo Azul Pelo Mundo\n🟠 Smiles: mais de 40 parceiras, como Air France, KLM, Emirates, Qatar e Iberia\n🔴 LATAM Pass: parceiras saem pela tabela fixa, por região\n✈️ Iberia Plus (Avios): recebe pontos da Livelo (3,5 por 1 Avios) e da Esfera (2 por 1)\n\n⚠️ Antes de emitir:\n▪️ Veja quem opera cada trecho\n▪️ Compare as taxas em dinheiro, não só as milhas\n▪️ Bilhetes separados: deixe folga entre os voos\n\n💬 Qual companhia você quer voar com milhas? A gente faz um post sobre ela." },
-  { id: "dia-aviador", tema: "creme", foto: "clip-v-decolagem-2", kick: "23 de outubro", capa: "Hoje é Dia do Aviador", sub: "E tem tudo a ver com um brasileiro.", dir: "DATA", data: "2026-10-23",
+  { id: "dia-aviador", tema: "creme", foto: "capa-dia-aviador", kick: "23 de outubro", capa: "Hoje é Dia do Aviador", sub: "E tem tudo a ver com um brasileiro.", dir: "DATA", data: "2026-10-23",
     tx: [
       ["Por que 23 de outubro?", "Foi nesse dia, em 1906, que Santos Dumont voou com o 14-Bis em Paris, diante de uma multidão e de uma comissão oficial.", "1906"],
       ["Um brasileiro no ar", "Pra muita gente, foi o primeiro voo de um avião que decolou sozinho, por meios próprios, sem catapulta.", "14-BIS"],

@@ -862,6 +862,7 @@ function mcDiasHTML() { const meta = lerHorarios(CAL.hs).length + (IGF.auto && I
     return `<span class="mc-dia ${n >= meta ? "ok" : n ? "meio" : "zero"}"><b>${i === 0 ? "Hoje" : DSEM[new Date(d + "T12:00:00Z").getUTCDay()] + " " + d.slice(8, 10)}</b>${n}/${meta}</span>`; }).join(""); }
 function mcAtualizar() { CAL.sel = CAL.sel.filter(id => ehVaga(id) || (PA.lista || []).some(p => p.id === id)); mcGravar("p085_mc_sel", CAL.sel);
   const md = document.getElementById("mc-dias"); if (md) md.innerHTML = mcDiasHTML();
+  const fl = document.getElementById("mc-flut"); if (fl) { fl.hidden = !CAL.sel.length; fl.textContent = `✓ ${CAL.sel.length} escolhido${CAL.sel.length > 1 ? "s" : ""} · ver e agendar ↑`; }
   const a = document.getElementById("mc-lista"); if (a) a.innerHTML = mcListaHTML();
   document.querySelectorAll('[data-act="mcdia"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.ini));
   (PA.lista || []).forEach(p => { const el = document.querySelector(`.mc-card[data-id="${CSS.escape(p.id)}"]`); if (!el) return; const n = CAL.sel.indexOf(p.id);
@@ -909,7 +910,7 @@ async function montarBoard(g) {
   const trocaBanner = window.TROCA ? `<div class="aviso warn" style="display:block;margin-bottom:12px">🔁 <b>Escolhendo o substituto</b> pra ${dataHora(window.TROCA.quando)} (no lugar de "${esc(window.TROCA.titulo)}"). Toque no <b>+</b> do post que vai entrar. <button class="bt sm ghost" data-act="mctrocacancela">cancelar</button></div>` : "";
   g.innerHTML = `${trocaBanner}<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div>
       <small class="sub mc-dica">Toque no <b>+</b> pra escolher · toque na imagem pra ver · deslize pro lado em cada linha</small>${secs}</div>
-    <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
+    <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div><button class="mc-flut" id="mc-flut" data-act="mcflut" hidden></button>`;
   { const cv = document.getElementById("mc-cv-vaga"); if (cv) { desenhaVaga(cv.getContext("2d")); CAL.thumbs.vaga = cv.toDataURL("image/jpeg", .55); } }
   for (let i = 0; i < L.length; i++) { const cv = document.getElementById("mc-cv-" + i); if (!cv) continue; try { await L[i].telas[0](cv.getContext("2d")); } catch (e) { console.error(e); } CAL.thumbs[L[i].id] = cv.toDataURL("image/jpeg", .55); }
   mcAtualizar();
@@ -948,6 +949,7 @@ document.addEventListener("click", async e => {
   const ab = e.target.closest('[data-act="mcabre"]'); if (ab) { CAL.f = ab.dataset.g; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.f)); mcSecoes(); const sec = document.querySelector(".mc-lib"); if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   const b = e.target.closest('[data-act^="mc"]'); if (!b) return; const a = b.dataset.act, k = +b.dataset.k;
   if (a === "mctrocacancela") { window.TROCA = null; render(); return; }
+  if (a === "mcflut") { const el = document.getElementById("mc-sel"); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   if (a === "mcadd" && window.TROCA) { const T0 = window.TROCA, p = (PA.lista || []).find(x => x.id === b.dataset.id); if (!p) return;
     if (!confirm(`Colocar "${p.titulo.replace(/^\d+\.\s*/, "")}" às ${dataHora(T0.quando)} no lugar de "${T0.titulo}"?`)) return;
     b.disabled = true; try { await trocarPor(T0, p, t => toast(t, 1500)); window.TROCA = null; location.hash = "#instagram"; }

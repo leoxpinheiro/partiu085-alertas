@@ -1099,3 +1099,13 @@ body.kb .bottom{display:none!important}
 .est-op{display:grid;gap:6px;margin-top:12px}.est-op>small{font-size:12px;font-weight:600;opacity:.7}.est-pl{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.est-pl .pill{padding:6px 12px}
 .est-tela video.zoom{animation:estzoom var(--zd,9s) ease-in-out infinite alternate}@keyframes estzoom{from{transform:scale(1)}to{transform:scale(1.12)}}
 .hu-bar{display:grid;gap:8px}
+/* celular: calendário sem sobreposição e sem estourar a largura */
+@media (max-width:980px){
+  .mc{grid-template-columns:minmax(0,1fr)}.mc>*{min-width:0}
+  .mc-sel{position:static;max-height:none;overflow:visible}
+  .mc-cfg{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.mc-cfg input{width:100%;min-width:0;box-sizing:border-box}
+  .mc-sec,.mc-grade{min-width:0;max-width:100%}
+  .mc-flut{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom));z-index:25;border:0;border-radius:999px;padding:10px 18px;background:#22A06B;color:#fff;font:700 14px "Plus Jakarta Sans",sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);white-space:nowrap}
+}
+@media (min-width:981px){.mc-flut{display:none}}
+.mc-flut[hidden]{display:none}

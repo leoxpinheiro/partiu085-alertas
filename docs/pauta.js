@@ -59,6 +59,8 @@ const EDU = [
     ["Líquidos", "Em voo internacional, líquidos na mão vão em frascos pequenos, dentro de um saquinho transparente."],
     ["Item pessoal", "Além da mala de mão, normalmente dá pra levar uma bolsa ou mochila pequena embaixo do assento."]] },
 ];
+/* guias básicos demais: saem da Pauta (no lugar, os carrosséis de milhas avançados do Conteúdo) */
+const EDU_FRACO = new Set(["milhas-pontos", "bonificada", "emitir", "clube"]);
 const CAT_EDU = { MILHAS: "Milhas", VIAGEM: "Viagem", AEROPORTO: "Aeroporto" };
 const DESTINOS_PAUTA = ["SAO", "LIS", "RIO", "REC", "BUE", "SSA", "SCL", "BSB", "MIA", "POA", "ORL", "CWB", "MAD", "NAT", "PAR", "FLN"];
 
@@ -275,7 +277,7 @@ async function fQuanto() {
     legenda: legenda(`📅 QUANTO CUSTA VOAR DE FORTALEZA PRA ${nome.toUpperCase()}?\n\nO menor preço do trecho (só ida) que o radar achou pra cada mês:\n\n${ms.map(([m, p]) => `${p === mn ? "⭐" : "▫️"} ${MESES[+m.slice(5, 7) - 1]}: a partir de ${brl(p)}`).join("\n")}\n\nO mais barato agora é ${MESES[+melhor.slice(5, 7) - 1].toLowerCase()}.\n⚠️ Preços de ${dataCurta(hojeISO()).toLowerCase()}, mudam a qualquer momento.\n\n💬 Quer que a gente faça de outro destino? Comenta aqui!`) };
 }
 function fGuia(x) {
-  x = x || EDU[nDia() % EDU.length];
+  if (!x) { const E2 = EDU.filter(g => !EDU_FRACO.has(g.id)); x = E2[nDia() % E2.length]; }
   const n = x.slides.length + 2;
   const telas = [c => { bgNavy(c, PW, PH); marca(c, PW, true, `GUIA · ${x.cat}`);
     const y = titulo(c, x.capa, M, 380, PW - 2 * M, 130, 76, "#fff", 4);
@@ -794,7 +796,7 @@ async function mcTodos() {
   try { const cars = (await getJSON("carrosseis.json", [])).filter(x => x.estado === "aprovado" && x.telas && x.telas.length);
     add(cars.map(car => ({ id: car.id, grupo: "feed", tipo: "Meu carrossel", rot: "🖼️ Meu carrossel", titulo: "🖼️ " + (car.titulo || car.telas[0].texto || "Carrossel"), porque: "Carrossel que você montou e aprovou em 🖼️ Carrosséis.", fmt: `Carrossel · ${car.telas.length} telas`, telas: car.telas.map((_, i) => c => crDesenhar(c, car, i)), legenda: car.legenda || "" })), "Meu carrossel"); } catch (e) { }
   add(await postsHumor(), "Humor");
-  add(EDU.map(x => fGuia(x)), "Guia");
+  add(EDU.filter(x => !EDU_FRACO.has(x.id)).map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
   await carregarOcultas();
   for (const x of noticiasValidas().slice(0, 24)) add([(await postsDaNoticia(x))[0]], "Notícia");

@@ -8,7 +8,7 @@ const FONTES_EST = [
   ["Cormorant Garamond", "Serifada fina"], ["Patrick Hand", "Escrita à mão"], ["Caveat", "Caneta"], ["Montserrat", "Moderna (negrito)"],
   ["Plus Jakarta Sans", "Moderna (marca)"], ["Anton", "Cartaz"], ["Bebas Neue", "Cartaz fina"]];
 const FONTE_PESO = { "Montserrat": 800, "Plus Jakarta Sans": 800, "Cormorant Garamond": 600, "Caveat": 600 };
-try { Object.assign(EST, JSON.parse(localStorage.getItem("p085_est") || "{}"), { arquivo: null, gravando: false, lista: null, fontesExtra: null }); if (/^blob:/.test(EST.video)) EST.video = ""; } catch (e) { }
+try { Object.assign(EST, JSON.parse(localStorage.getItem("p085_est") || "{}"), { arquivo: null, gravando: false, lista: null, fontesExtra: null }); if (/^blob:/.test(EST.video)) EST.video = ""; if (EST.efeito == null) EST.efeito = EST.digitar ? "digitar" : ""; delete EST.digitar; } catch (e) { }
 function estGuardar() { try { const { arquivo, gravando, lista, fontesExtra, ap, ...r } = EST; localStorage.setItem("p085_est", JSON.stringify(r)); } catch (e) { } }
 
 async function estCarregar() {
@@ -39,8 +39,8 @@ function olhoDePeixe(cv, cx, cy, Rx, Ry, forca) {
 }
 /* olho de peixe leve e redondo: lente suave sobre letras nítidas. Cada letra fica em pé (sem entortar),
    o meio cresce um pouco e as letras se afastam do centro em círculo, como numa bolha. */
-function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca, vis) {
-  let resta = vis == null ? Infinity : vis;
+function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca, vis, fx) {
+  let resta = vis == null ? Infinity : vis, idx = 0;
   const a = Math.max(0, Math.min(100, forca || 0)) / 100 * .36, ls = parseFloat(c.letterSpacing) || 0;
   const fam = fonte.replace(/^.*?\d+(\.\d+)?px\s*/, ""), peso = (fonte.match(/^(\d{3}|bold|normal)/) || ["400"])[0];
   const F = sz => `${peso} ${sz}px ${fam}`;
@@ -52,10 +52,10 @@ function textoOlho(c, W, H, linhas, fonte, fs, lh, yCentro, cor, sombra, forca, 
   if (sombra) { c.shadowColor = "rgba(0,0,0,.5)"; c.shadowBlur = 22 * W / 1080; }
   c.fillStyle = cor; c.textAlign = "center"; c.textBaseline = "alphabetic";
   L.forEach((l, j) => { const tot = l.w.reduce((p, q) => p + q, 0), by = (lh * (j + .5) - n * lh / 2) * kf; let x = -tot / 2;
-    l.ch.forEach((ch, k) => { const bx = (x + l.w[k] / 2) * kf; x += l.w[k]; if (resta-- <= 0) return;
+    l.ch.forEach((ch, k) => { const bx = (x + l.w[k] / 2) * kf; x += l.w[k]; const ix = idx++; if (resta-- <= 0) return; const fa = fx && ix >= fx.de; c.globalAlpha = fa ? fx.a : 1; const dy = fa ? fx.dy : 0;
       const r2 = Math.min(1, (bx * bx + by * by) / (R * R * kf * kf)), g = 1 + a * (1 - r2); // g: quanto cresce/afasta naquele ponto
       const sz = fs * kf * Math.max(.7, 1 + a * (1 - r2) - 2 * a * bx * bx / (R * R * kf * kf)); // tamanho = quanto a lente estica ali (sem letra encavalar)
-      c.font = F(sz); c.fillText(ch, W / 2 + bx * g, yCentro + by * g + sz * .32); }); });
+      c.font = F(sz); c.fillText(ch, W / 2 + bx * g, yCentro + by * g + sz * .32 + dy); }); });
   c.restore();
 }
 /* desenha o texto (mesma função na prévia e no vídeo final) */
@@ -72,21 +72,30 @@ const estLen = L => L.reduce((p, l) => p + Array.from(l).length, 0);
 function estTempo() { const P = estPartes(), seg = EST.seg || 2.5, n = EST.partes ? Math.max(1, P.length) : 1;
   const lens = EST.partes ? P.map(p => Array.from(p.replace(/\s+/g, " ")).length) : [Array.from((EST.texto || "").replace(/\s+/g, " ")).length];
   return { n, seg, lens, dt: lens.map(l => Math.min(.075, seg * .7 / Math.max(1, l))) }; }
-function estEstado(t) { const T = estTempo(); if (!EST.partes && !EST.digitar) return { parte: null, chars: null };
+function estEstado(t) { const T = estTempo(), ef = EST.efeito || ""; if (!EST.partes && !ef) return { parte: null, chars: null };
   const parte = EST.partes ? Math.min(T.n - 1, Math.floor(t / T.seg)) : null, ini = (parte || 0) * T.seg;
-  const chars = EST.digitar ? Math.min(T.lens[parte || 0], Math.floor((t - ini) / T.dt[parte || 0]) + 1) : null; return { parte, chars }; }
-function estDesenhar(c, W, H, parte, chars) {
+  const chars = ef === "digitar" ? Math.min(T.lens[parte || 0], Math.floor((t - ini) / T.dt[parte || 0]) + 1) : null;
+  const P = EST.partes ? estPartes() : [EST.texto || ""], nw = (P[parte || 0] || "").split(/\s+/).filter(Boolean).length || 1;
+  const palavras = ef === "palavra" ? Math.min(nw, Math.floor((t - ini) / Math.min(.4, T.seg * .75 / nw)) + 1) : null;
+  const alfa = ef === "surgir" ? Math.min(1, Math.max(0, (t - ini) / .7)) : null; return { parte, chars, palavras, alfa }; }
+/* quantas letras (contando espaços, igual ao desenho) cabem nas primeiras "m" palavras das linhas */
+function estLetrasPalavras(ls, m) { let tot = 0; for (const l of ls) { const ws = l.split(" ").filter(Boolean); if (!ws.length) continue;
+  if (m >= ws.length) { tot += Array.from(l).length; m -= ws.length; continue; } if (m > 0) tot += ws.slice(0, m).reduce((p, w) => p + Array.from(w).length, 0) + (m - 1); return tot; } return tot; }
+function estDesenhar(c, W, H, parte, chars, ex) {
+  ex = ex || {};
   if (EST.escuro) { c.fillStyle = `rgba(0,0,0,${EST.escuro / 100})`; c.fillRect(0, 0, W, H); }
   const k = W / 1080, fs = EST.tam * k, peso = FONTE_PESO[EST.fonte] || 400, w = W * EST.larg / 100;
   c.font = `${peso} ${fs}px "${EST.fonte}", serif`; c.textAlign = "center"; c.textBaseline = "alphabetic";
   if ("letterSpacing" in c) c.letterSpacing = (/Serif|Gloock|Playfair/.test(EST.fonte) ? -fs * .02 : 0) + "px";
-  let L, vis = null;
+  let L, vis = null, fxDe = 0;
   if (EST.partes && parte != null) { const P = estPartes().map((p, i) => estQuebrar(c, estCaso(p, i), w));
-    if (EST.modoP === "um") { L = P[parte] || []; vis = chars; }
-    else { L = []; let antes = 0; P.forEach((ls, i) => { if (i) L.push(""); if (i < parte) antes += estLen(ls); L.push(...ls); }); vis = antes + (chars == null ? estLen(P[parte] || []) : chars); } }
-  else { L = estQuebrar(c, estCaso(EST.texto || "", 0), w); vis = chars; }
+    const atual = P[parte] || [], cur = ex.palavras != null ? estLetrasPalavras(atual, ex.palavras) : chars;
+    if (EST.modoP === "um") { L = atual; vis = cur; fxDe = 0; }
+    else { L = []; let antes = 0; P.forEach((ls, i) => { if (i) L.push(""); if (i < parte) antes += estLen(ls); L.push(...ls); }); vis = antes + (cur == null ? estLen(atual) : cur); fxDe = antes; } }
+  else { L = estQuebrar(c, estCaso(EST.texto || "", 0), w); vis = ex.palavras != null ? estLetrasPalavras(L, ex.palavras) : chars; fxDe = 0; }
+  const fx = ex.alfa != null && ex.alfa < 1 ? { de: fxDe, a: ex.alfa, dy: (1 - ex.alfa) * 46 * k } : null;
   const lh = fs * (EST.maiusc ? .95 : 1.02);
-  textoOlho(c, W, H, L, c.font, fs, lh, H * EST.y / 100, EST.cor, EST.brilho, EST.olho, vis);
+  textoOlho(c, W, H, L, c.font, fs, lh, H * EST.y / 100, EST.cor, EST.brilho, EST.olho, vis, fx);
   if ("letterSpacing" in c) c.letterSpacing = "0px";
   if (EST.arroba) { c.save(); c.globalAlpha = .85; c.font = `600 ${30 * k}px "Plus Jakarta Sans", sans-serif`; c.fillStyle = EST.cor; c.fillText("@partiu.085", W / 2, H - 340 * k); c.restore(); }
 }
@@ -104,11 +113,11 @@ function estPrevia() {
   const cv = document.getElementById("est-cv"); if (!cv) return;
   const c = cv.getContext("2d"); c.clearRect(0, 0, cv.width, cv.height); cancelAnimationFrame(estPI);
   document.fonts.load(`${FONTE_PESO[EST.fonte] || 400} 60px "${EST.fonte}"`).then(() => { c.clearRect(0, 0, cv.width, cv.height);
-    if (!EST.partes && !EST.digitar) { estDesenhar(c, cv.width, cv.height); return; }
+    if (!EST.partes && !EST.efeito) { estDesenhar(c, cv.width, cv.height); return; }
     const T = estTempo(), ciclo = T.n * T.seg + 1.5, t0 = performance.now(); let ult = "";
     if (estSomPrev) { const ac = estAudio(); estCliques(ac, ac.currentTime + .05, ac.destination, ciclo); estSomPrev = false; }
-    const passo = () => { if (!document.getElementById("est-cv")) return; const t = ((performance.now() - t0) / 1000) % ciclo, e = estEstado(Math.min(t, T.n * T.seg - .01)), ch = e.parte + "|" + e.chars;
-      if (ch !== ult) { ult = ch; c.clearRect(0, 0, cv.width, cv.height); estDesenhar(c, cv.width, cv.height, e.parte, e.chars); } estPI = requestAnimationFrame(passo); };
+    const passo = () => { if (!document.getElementById("est-cv")) return; const t = ((performance.now() - t0) / 1000) % ciclo, e = estEstado(Math.min(t, T.n * T.seg - .01)), ch = [e.parte, e.chars, e.palavras, e.alfa == null ? "" : e.alfa.toFixed(2)].join("|");
+      if (ch !== ult) { ult = ch; c.clearRect(0, 0, cv.width, cv.height); estDesenhar(c, cv.width, cv.height, e.parte, e.chars, e); } estPI = requestAnimationFrame(passo); };
     passo(); });
 }
 function estCapas() { const n = estNPartes(); return Array.from({ length: n }, (_, k) => { const cv = document.createElement("canvas"); cv.width = 1080; cv.height = 1920; estDesenhar(cv.getContext("2d"), 1080, 1920, EST.partes ? k : null); return cv; }); }
@@ -127,17 +136,18 @@ async function estGravar(dur, prog) {
   rec.ondataavailable = e => e.data.size && pedacos.push(e.data);
   v.pause(); v.currentTime = 0; v.loop = false; await new Promise(r => { v.onseeked = r; setTimeout(r, 400); });
   await document.fonts.load(`${FONTE_PESO[EST.fonte] || 400} 60px "${EST.fonte}"`);
-  let ult = null; const fixo = !EST.partes && !EST.digitar; if (fixo) estDesenhar(oc, 1080, 1920);
+  let ult = null; const fixo = !EST.partes && !EST.efeito; if (fixo) estDesenhar(oc, 1080, 1920);
   rec.start(200); v.play(); const ini = performance.now(); if (som) estCliques(ac, ac.currentTime + .02, dest, dur);
   await new Promise(fim => { const passo = () => { const t = (performance.now() - ini) / 1000;
-    if (!fixo) { const e = estEstado(t), ch = e.parte + "|" + e.chars; if (ch !== ult) { ult = ch; oc.clearRect(0, 0, 1080, 1920); estDesenhar(oc, 1080, 1920, e.parte, e.chars); } }
-    const s = Math.max(1080 / v.videoWidth, 1920 / v.videoHeight); c.drawImage(v, (1080 - v.videoWidth * s) / 2, (1920 - v.videoHeight * s) / 2, v.videoWidth * s, v.videoHeight * s); c.drawImage(ov, 0, 0);
+    if (!fixo) { const e = estEstado(t), ch = [e.parte, e.chars, e.palavras, e.alfa == null ? "" : e.alfa.toFixed(2)].join("|"); if (ch !== ult) { ult = ch; oc.clearRect(0, 0, 1080, 1920); estDesenhar(oc, 1080, 1920, e.parte, e.chars, e); } }
+    const s = Math.max(1080 / v.videoWidth, 1920 / v.videoHeight) * (EST.zoom ? 1 + .12 * Math.min(1, t / dur) : 1); c.drawImage(v, (1080 - v.videoWidth * s) / 2, (1920 - v.videoHeight * s) / 2, v.videoWidth * s, v.videoHeight * s); c.drawImage(ov, 0, 0);
     if (prog) prog(Math.min(dur, t)); if (t >= dur) return fim(); if (v.ended) { v.currentTime = 0; v.play(); } requestAnimationFrame(passo); }; passo(); });
   rec.stop(); await new Promise(r => rec.onstop = r); v.loop = true; v.play();
   return { blob: new Blob(pedacos, { type: mime.split(";")[0] }), ext: mime.includes("mp4") ? "mp4" : "webm" };
 }
-const estComSom = () => EST.digitar && EST.somTecla !== false;
-function estDurPadrao() { const T = estTempo(); return EST.partes || EST.digitar ? Math.min(30, Math.ceil(T.n * T.seg + 2)) : 9; }
+const estComSom = () => EST.efeito === "digitar" && EST.somTecla !== false;
+const estGravaAqui = () => !!(EST.efeito || EST.zoom);
+function estDurPadrao() { const T = estTempo(); return EST.partes || EST.efeito ? Math.min(30, Math.ceil(T.n * T.seg + 2)) : 9; }
 async function estExportar(b) {
   const dur = Math.min(30, +document.getElementById("est-dur").value || 9); b.disabled = true; const t0 = b.innerHTML;
   try { const { blob, ext } = await estGravar(dur, t => { b.textContent = `Gravando… ${t.toFixed(0)}/${dur}s`; });
@@ -157,10 +167,10 @@ async function estAgendar(b) {
     const id = `ig-${Date.now().toString(36)}`;
     await document.fonts.load(`400 60px "${EST.fonte}"`); const capas = estCapas(), capa = capas[capas.length - 1], seg = EST.seg || 2.5;
     const put = (path, b64, msg) => gh(`/contents/docs/${path}`, { method: "PUT", body: JSON.stringify({ message: msg, content: b64, branch: "main" }) });
-    if (EST.digitar) { const dur = Math.min(30, +document.getElementById("est-dur").value || 9);
+    if (estGravaAqui()) { const dur = Math.min(30, +document.getElementById("est-dur").value || 9);
       const { blob, ext } = await estGravar(dur, t => { b.textContent = `Gravando… ${t.toFixed(0)}/${dur}s`; }); if (blob.size > 40e6) throw new Error("vídeo ficou grande demais (máx. 40 MB): diminua a duração");
       b.textContent = "Enviando o vídeo…"; const b64 = await new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result.split(",")[1]); r.readAsDataURL(blob); });
-      const pronto = `ig/${id}-pronto.${ext}`; await put(pronto, b64, "Instagram: Reels do estúdio (digitando)");
+      const pronto = `ig/${id}-pronto.${ext}`; await put(pronto, b64, "Instagram: Reels do estúdio (com efeito)");
       const q = document.createElement("canvas"); q.width = 1080; q.height = 1920; const v0 = document.getElementById("est-v");
       try { const s = Math.max(1080 / v0.videoWidth, 1920 / v0.videoHeight); q.getContext("2d").drawImage(v0, (1080 - v0.videoWidth * s) / 2, (1920 - v0.videoHeight * s) / 2, v0.videoWidth * s, v0.videoHeight * s); } catch (e) { }
       q.getContext("2d").drawImage(capa, 0, 0); await put(`ig/${id}-1.jpg`, q.toDataURL("image/jpeg", .85).split(",")[1], "Instagram: capa do estúdio");
@@ -201,19 +211,20 @@ function pEstudio() {
   const amanha = isoLocal(new Date(Date.now() + 864e5)).slice(0, 10) + "T19:00";
   return head("Estúdio", "Crie Reels e carrosséis, aprove e vá postando.") + estAbas("estudio") +
     `<div class="est">
-      <div class="est-prev"><div class="est-tela"><video id="est-v" src="${esc(EST.video)}" poster="${esc(EST.poster)}" autoplay muted loop playsinline></video><canvas id="est-cv" width="540" height="960"></canvas></div>
+      <div class="est-prev"><div class="est-tela"><video id="est-v" class="${EST.zoom ? "zoom" : ""}" style="--zd:${estDurPadrao()}s" src="${esc(EST.video)}" poster="${esc(EST.poster)}" autoplay muted loop playsinline></video><canvas id="est-cv" width="540" height="960"></canvas></div>
         <small class="sub">${EST.arquivo ? "Seu vídeo" : esc(EST.nome)} · a prévia roda em loop, sem som</small></div>
       <div class="est-ctl">
         <div class="card">${vbHTML()}</div>
         <div class="card"><b>2. Texto</b><textarea id="est-txt" rows="3">${esc(EST.texto)}</textarea>
-          <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label><label class="chk"><input type="checkbox" data-est="partes" ${EST.partes ? "checked" : ""}> ✨ Texto em partes</label>
-            ${EST.partes ? `<div class="est-pt"><button class="pill ${EST.modoP !== "um" ? "on" : ""}" data-act="estmodop" data-v="soma">Vai somando</button><button class="pill ${EST.modoP === "um" ? "on" : ""}" data-act="estmodop" data-v="um">Uma de cada vez</button>
-              <small class="sub">Separe as partes com uma linha em branco (Enter duas vezes). Dentro da parte, Enter quebra a linha.</small></div>` : ""}
-            <label class="chk"><input type="checkbox" data-est="digitar" ${EST.digitar ? "checked" : ""}> ⌨️ Efeito digitando</label>
-            ${EST.digitar ? `<div class="est-pt"><label class="chk"><input type="checkbox" data-est="somTecla" ${EST.somTecla !== false ? "checked" : ""}> 🔊 Com som de teclado</label>${EST.somTecla !== false ? `<button class="bt sm ghost" data-act="estsom">Ouvir na prévia</button>` : `<small class="sub">Vídeo sem som: as letras aparecem, sem barulho.</small>`}</div>` : ""}</div></div>
+          <div class="est-cores"><label class="chk"><input type="checkbox" data-est="minusc" ${EST.minusc ? "checked" : ""}> começar em minúscula</label><label class="chk"><input type="checkbox" data-est="maiusc" ${EST.maiusc ? "checked" : ""}> TUDO EM CAIXA ALTA</label></div>
+          <div class="est-op"><small>Como aparece</small><div class="est-pl">${[["junto", "Tudo junto"], ["soma", "Vai somando"], ["um", "Uma de cada vez"]].map(([v, l]) => `<button class="pill ${(!EST.partes ? "junto" : EST.modoP === "um" ? "um" : "soma") === v ? "on" : ""}" data-act="estmodop" data-v="${v}">${l}</button>`).join("")}</div>
+            ${EST.partes ? `<small class="sub">Separe as partes com uma linha em branco (Enter duas vezes).</small>` : ""}</div>
+          <div class="est-op"><small>✨ Efeito</small><div class="est-pl">${[["", "Nenhum"], ["digitar", "⌨️ Digitando"], ["palavra", "💬 Palavra por palavra"], ["surgir", "🌫️ Surgindo"]].map(([v, l]) => `<button class="pill ${(EST.efeito || "") === v ? "on" : ""}" data-act="estefeito" data-v="${v}">${l}</button>`).join("")}</div>
+            ${EST.efeito === "digitar" ? `<div class="est-pl"><label class="chk"><input type="checkbox" data-est="somTecla" ${EST.somTecla !== false ? "checked" : ""}> 🔊 Som de teclado</label>${EST.somTecla !== false ? `<button class="bt sm ghost" data-act="estsom">Ouvir</button>` : ""}</div>` : ""}
+            <label class="chk"><input type="checkbox" data-est="zoom" ${EST.zoom ? "checked" : ""}> 🎥 Zoom lento no vídeo (aproxima devagar)</label></div></div>
         <div class="card"><b>3. Fonte</b><div class="est-fontes">${estFontes().map(([f, d]) => `<button class="est-f ${f === EST.fonte ? "on" : ""}" data-act="estfonte" data-f="${esc(f)}" style="font-family:'${esc(f)}';font-weight:${FONTE_PESO[f] || 400}">Aa viagem<small>${esc(d)}</small></button>`).join("")}
           <label class="est-f est-up">＋ Enviar fonte<small>.ttf ou .otf</small><input type="file" accept=".ttf,.otf,.woff,.woff2" id="est-font" hidden></label></div>
-          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}${EST.partes || EST.digitar ? rng("seg", "Segundos por parte", 1, 5, .5) : ""}</div>
+          <div class="est-rs">${rng("tam", "Tamanho", 50, 150)}${rng("y", "Altura", 15, 85)}${rng("larg", "Largura", 50, 95)}${rng("olho", "Efeito olho de peixe", 0, 100)}${rng("escuro", "Escurecer vídeo", 0, 60)}${EST.partes || EST.efeito ? rng("seg", "Segundos por parte", 1, 5, .5) : ""}</div>
           <div class="est-cores">${["#FFFDF8", "#F6EBD0", "#F5C531", "#FFFFFF", "#111111"].map(c => `<button class="est-cor ${c === EST.cor ? "on" : ""}" data-act="estcor" data-c="${c}" style="background:${c}"></button>`).join("")}
             <label class="chk"><input type="checkbox" data-est="brilho" ${EST.brilho ? "checked" : ""}> sombra</label><label class="chk"><input type="checkbox" data-est="arroba" ${EST.arroba ? "checked" : ""}> @partiu.085</label></div></div>
         <div class="card"><b>4. Pronto</b><div class="est-fim"><label class="est-r"><span>Duração (s)</span><input type="number" id="est-dur" min="3" max="30" value="${estDurPadrao()}"></label>
@@ -225,7 +236,7 @@ function pEstudio() {
 }
 document.addEventListener("input", e => { const t = e.target;
   if (t.id === "est-txt") { EST.texto = t.value; estGuardar(); estPrevia(); }
-  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes" || k === "digitar" || k === "somTecla") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
+  else if (t.dataset && t.dataset.est) { const k = t.dataset.est; EST[k] = t.type === "checkbox" ? t.checked : +t.value; estGuardar(); if (k === "partes" || k === "zoom" || k === "somTecla") { if (!EST.seg) EST.seg = 2.5; render(); } else estPrevia(); } });
 document.addEventListener("change", e => { const t = e.target;
   if (t.id === "est-file" && t.files.length) { vbAbrirEnvio([...t.files]); t.value = ""; }
   else if (t.id === "est-font" && t.files[0]) estSubirFonte(t.files[0]); });
@@ -234,12 +245,13 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act^
   else if (a === "estfonte") { EST.fonte = b.dataset.f; estGuardar(); document.querySelectorAll(".est-f").forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
   else if (a === "estcor") { EST.cor = b.dataset.c; estGuardar(); document.querySelectorAll(".est-cor").forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
   else if (a === "estbaixar") estExportar(b);
-  else if (a === "estmodop") { EST.modoP = b.dataset.v; estGuardar(); document.querySelectorAll('[data-act="estmodop"]').forEach(x => x.classList.toggle("on", x === b)); estPrevia(); }
+  else if (a === "estmodop") { const v = b.dataset.v; EST.partes = v !== "junto"; if (EST.partes) EST.modoP = v; if (!EST.seg) EST.seg = 2.5; estGuardar(); render(); }
+  else if (a === "estefeito") { EST.efeito = b.dataset.v; if (!EST.seg) EST.seg = 2.5; estGuardar(); render(); }
   else if (a === "estsom") { estAudio(); estSomPrev = true; estPrevia(); }
   else if (a === "estagendar") estAgendar(b); });
 
 /* ---------- biblioteca: Reels prontos (pra aprovar), aprovados e postados ---------- */
-const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg", "modoP", "digitar", "somTecla"];
+const CFG_K = ["video", "poster", "texto", "fonte", "tam", "cor", "y", "larg", "brilho", "escuro", "arroba", "minusc", "maiusc", "olho", "partes", "seg", "modoP", "efeito", "zoom", "somTecla"];
 EST.ap = null;
 function cfgAtual() { const o = {}; CFG_K.forEach(k => o[k] = EST[k]); return o; }
 function comCfg(cfg, fn) { const b = cfgAtual(); Object.assign(EST, cfg); try { return fn(); } finally { Object.assign(EST, b); } }

@@ -1089,7 +1089,7 @@ const HUMOR = [
   { id: "h-conexao", f: "LIM", e: "bolha", t: "Voo direto: R$ 1.900.\nCom 2 conexões e 14 horas: R$ 640.\nEu: perfeito.", d: [], leg: "Quem aí encara a conexão pra economizar? 🙋‍♂️" },
 ];
 function textoHumor(c, x, W, H) {
-  const im = FOTOS_P[x.f]; const L = x.t.split("\n");
+  const L = x.t.split("\n"); x.d = x.d || [];
   if (x.e === "bolha") {
     let fs = 70, linhas; do { linhas = L.flatMap(l => quebrar(c, l, W - 2 * M - 60, fs, MARCA.titulo)); fs -= 4; } while (linhas.length * fs * 1.12 > H * .5 && fs > 44); fs += 4;
     const lh = fs * 1.12, y0 = H * .14; c.textAlign = "center";
@@ -1102,8 +1102,61 @@ function textoHumor(c, x, W, H) {
       c.font = `700 ${fs}px ${MARCA.corpo}`; c.textAlign = "left"; parts.forEach(pt => { if (!pt) return; c.fillStyle = x.d.some(d => d.toLowerCase() === pt.toLowerCase()) ? COR.am : "#fff"; c.fillText(pt, xx, y); xx += c.measureText(pt).width; }); y += lh; });
   }
 }
+
+/* 😂 banco novo de humor (fotos verticais em alta: quadros dos nossos vídeos HQ) */
+const HU_FOTOS = ["clip-v-janela-1", "clip-v-janela-2", "clip-v-janela-3", "clip-v-aeroporto-1", "clip-v-aeroporto-2", "clip-v-aeroporto-3", "clip-v-asa-1", "clip-v-asa-2", "clip-v-asa-3", "clip-v-nuvens-1", "clip-v-nuvens-2", "clip-v-nuvens-3",
+  "clip-v-decolagem-1", "clip-v-decolagem-2", "clip-v-decolagem-3", "clip-v-pouso-1", "clip-v-pouso-2", "clip-v-pouso-3", "clip-v-mala-1", "clip-v-mala-2", "clip-v-mala-3", "clip-v-praia-1", "clip-v-praia-2", "clip-v-praia-3",
+  "clip-v-fortaleza-1", "clip-v-fortaleza-2", "clip-v-fortaleza-3", "clip-v-paisagem-1", "clip-v-paisagem-2", "clip-v-paisagem-3"];
+const HUMOR2 = [
+  { id: "n-3horas", foto: "clip-v-aeroporto-1", e: "bolha", t: "Eu no aeroporto: chego 3 horas antes.\nEu no trabalho: chego 3 minutos depois.", leg: "Prioridades, né? 😅 Marca quem é assim 👇" },
+  { id: "n-casacos", foto: "clip-v-nuvens-2", e: "escuro", t: "Cearense viajando pro frio:\nleva 4 casacos e passa frio nos 4.", d: ["passa frio nos 4"], leg: "Nosso corpo só conhece 30 graus 🥶😂 Quem já passou por isso?" },
+  { id: "n-turbulencia", foto: "clip-v-asa-2", e: "bolha", t: "Turbulência de 2 segundos.\nEu: revendo todas as decisões da minha vida.", leg: "Quem aí reza baixinho na turbulência? 🙏😂" },
+  { id: "n-mala-volta", foto: "clip-v-mala-2", e: "bolha", t: "A mala na ida: fechou fácil.\nA mala na volta: precisei sentar em cima.", leg: "O que acontece com a mala na viagem é um mistério 🧳😂" },
+  { id: "n-yes", foto: "clip-v-janela-2", e: "escuro", t: "Eu fingindo que entendi o que o comissário falou em inglês:\n\"yes, yes\"", d: ["\"yes, yes\""], leg: "Sorri e acena 😂 Quem nunca?" },
+  { id: "n-contagem", foto: "clip-v-decolagem-1", e: "escuro", t: "Passagem comprada.\nAgora é só esperar 8 meses olhando a contagem regressiva.", d: ["8 meses"], leg: "A espera mais longa do mundo ⏳ Quantos dias faltam pra sua viagem?" },
+  { id: "n-beiramar", foto: "clip-v-fortaleza-1", e: "bolha", t: "Meu sonho: conhecer o mundo.\nMeu orçamento: Beira-Mar e olhe lá.", leg: "Por enquanto, né? A gente te ajuda a sair daí ✈️😂" },
+  { id: "n-porta", foto: "clip-v-pouso-1", e: "escuro", t: "O avião pousa e o povo já levanta pra pegar a mala com a porta ainda fechada.", d: ["porta ainda fechada"], leg: "Pra que essa pressa, minha gente? 😂 Você é do time que levanta ou que espera?" },
+  { id: "n-igual-fortaleza", foto: "clip-v-praia-2", e: "escuro", t: "Cearense em qualquer praia do mundo:\n\"é bonita, mas não é igual às daqui não\".", d: ["não é igual às daqui"], leg: "Bairrismo saudável 😌🌊 Concorda?" },
+  { id: "n-mochila", foto: "clip-v-mala-1", e: "bolha", t: "Eu: dessa vez só vou levar uma mochila.\nTambém eu: 3 tênis, 7 looks e um \"vai que precisa\".", leg: "O \"vai que precisa\" ocupa metade da mala 😂 Marca quem faz isso!" },
+  { id: "n-checkin", foto: "clip-v-janela-3", e: "escuro", t: "Check-in online abriu.\nEu, 0,3 segundos depois: escolhendo a janela.", d: ["0,3 segundos"], leg: "Janelinha é sagrada 🪟✈️ Janela ou corredor?" },
+  { id: "n-raiox", foto: "clip-v-aeroporto-2", e: "escuro", t: "Fila do raio-x: tira o cinto, tira o notebook, tira o casaco, tira a paciência.", d: ["tira a paciência"], leg: "E ainda apita 😩 Qual a pior parte do aeroporto pra você?" },
+  { id: "n-carrinho", foto: "clip-v-asa-1", e: "bolha", t: "Comida de avião: ninguém gosta.\nTodo mundo: espiando o carrinho chegar.", leg: "Admite que você também fica de olho 👀😂" },
+  { id: "n-mae", foto: "clip-v-decolagem-2", e: "escuro", t: "Mãe quando eu digo que vou viajar:\n\"leva casaco, leva comida, me avisa quando chegar\".", d: ["me avisa quando chegar"], leg: "Toda mãe é igual 🥹 Marca a sua!" },
+  { id: "n-6h", foto: "clip-v-nuvens-1", e: "bolha", t: "Voo às 6h da manhã.\nEu às 3h: acordado de ansiedade.", leg: "Quem consegue dormir na véspera de viagem? 🙋‍♂️" },
+  { id: "n-wifi", foto: "clip-v-aeroporto-3", e: "escuro", t: "O wi-fi do aeroporto:\nconectado, sem internet.", d: ["sem internet"], leg: "Clássico 😂 Por isso: print de tudo antes de sair de casa!" },
+  { id: "n-visita", foto: "clip-v-paisagem-1", e: "bolha", t: "Amigo que mora fora: \"vem me visitar!\"\nEu, 2 segundos depois: pesquisando passagem.", leg: "Convite feito é convite aceito ✈️ Marca esse amigo!" },
+  { id: "n-corredor", foto: "clip-v-janela-1", e: "escuro", t: "Eu no corredor sendo acordado 4 vezes pelo passageiro da janela.", d: ["4 vezes"], leg: "Por isso a briga pela janela 😂 Você é janela ou corredor?" },
+  { id: "n-preco-sobe", foto: "clip-v-decolagem-3", e: "bolha", t: "Passagem pra Lisboa ontem: R$ 2.900.\nNo dia que eu decidi comprar: R$ 4.700.", leg: "Por isso a gente avisa NA HORA 🔔 Ativa o sininho!" },
+  { id: "n-2h", foto: "clip-v-nuvens-3", e: "escuro", t: "Quem disse que dinheiro não traz felicidade nunca achou promoção de passagem às 2h da manhã.", d: ["promoção de passagem"], leg: "Felicidade tem nome 😍✈️ Quem aí caça promoção de madrugada?" },
+  { id: "n-gramado", foto: "clip-v-paisagem-2", e: "bolha", t: "Saindo de Fortaleza: 32°C.\nChegando no Sul: 6°C.\nMeu corpo: o que foi que eu te fiz?", leg: "Choque térmico nível cearense 🥶 Já passou por isso?" },
+  { id: "n-alto-falante", foto: "clip-v-aeroporto-1", e: "escuro", t: "Tem dois tipos de pessoa no aeroporto:\nas que chegam 3h antes\ne as que correm ouvindo o nome no alto-falante.", d: ["ouvindo o nome"], leg: "Qual dos dois é você? 😂👇" },
+  { id: "n-bebe", foto: "clip-v-janela-2", e: "bolha", t: "Eu: vou dormir o voo inteiro.\nO bebê da fileira de trás: não vai não.", leg: "Fone de ouvido é item obrigatório 🎧😂" },
+  { id: "n-roteiro", foto: "clip-v-paisagem-3", e: "bolha", t: "Plano das férias: descansar.\nO roteiro que eu montei: 14 lugares em 5 dias.", leg: "Volta mais cansado do que foi 😂 Quem é assim?" },
+  { id: "n-atraso", foto: "clip-v-aeroporto-3", e: "escuro", t: "\"Senhores passageiros, o voo vai atrasar 20 minutos.\"\nOs 20 minutos: 2 horas.", d: ["2 horas"], leg: "Paciência de aeroporto é outro nível 😮‍💨" },
+  { id: "n-2019", foto: "clip-v-asa-3", e: "escuro", t: "Eu juntando milhas desde 2019 pra uma viagem que ainda não sei pra onde é.", d: ["desde 2019"], leg: "Um dia elas viram passagem 😂 Pra onde você iria com as suas milhas?" },
+  { id: "n-hotel", foto: "clip-v-praia-1", e: "bolha", t: "Chegando no hotel:\n1º: testar o chuveiro.\n2º: ver se a cama é melhor que a minha.", leg: "Ritual sagrado 😂 Qual é o seu primeiro passo no hotel?" },
+  { id: "n-paodequeijo", foto: "clip-v-aeroporto-2", e: "bolha", t: "Uber até o aeroporto: R$ 38.\nPão de queijo no aeroporto: R$ 39.", leg: "Lanche de casa salva a viagem 😂🧀" },
+  { id: "n-fatura", foto: "clip-v-pouso-2", e: "escuro", t: "Viajar é bom.\nVoltar e ver a fatura do cartão já não é tanto.", d: ["fatura do cartão"], leg: "Por isso: passagem na promoção, sempre 😅 Segue pra não pagar caro!" },
+  { id: "n-balanca", foto: "clip-v-mala-3", e: "escuro", t: "Eu pesando a mala no banheiro:\nsobe com a mala, desce sem a mala, faz a conta.", d: ["faz a conta"], leg: "Engenharia de viajante 😂 Quem faz assim?" },
+  { id: "n-esteira", foto: "clip-v-pouso-3", e: "bolha", t: "A esteira começa a rodar.\nTodas as malas saem.\nA minha: a última.", leg: "Sempre a última 😩 Ou a sua sai primeiro?" },
+  { id: "n-agua-fria", foto: "clip-v-praia-3", e: "escuro", t: "Fortalezense entrando no mar de outro estado:\n\"eita, água fria\".", d: ["\"eita, água fria\""], leg: "Mal acostumados com o nosso mar quentinho 🌊😂" },
+  { id: "n-4h40", foto: "clip-v-decolagem-1", e: "bolha", t: "A passagem: baratíssima.\nO horário: 4h40 com 2 conexões.\nEu: é essa mesmo.", leg: "Promoção boa a gente não questiona 😂✈️" },
+  { id: "n-gerente", foto: "clip-v-fortaleza-2", e: "escuro", t: "Eu explicando pro chefe por que preciso de férias justo na semana da promoção.", d: ["justo na semana da promoção"], leg: "Manda esse post pro seu chefe 😂👇" },
+  { id: "n-9horas", foto: "clip-v-nuvens-2", e: "escuro", t: "Nada mais sincero que a cara de quem dormiu sentado num voo de 9 horas.", d: ["9 horas"], leg: "Sem filtro 😴✈️ Qual foi o seu voo mais longo?" },
+  { id: "n-despedida", foto: "clip-v-fortaleza-3", e: "escuro", t: "Família cearense no aeroporto:\n6 pessoas pra se despedir de 1 que vai passar 3 dias fora.", d: ["3 dias fora"], leg: "Família que se ama vai junto até o portão 🥹😂 Marca a sua!" }];
+/* config do humor (esconder, trocar foto) e ideias novas criadas pelo Claude */
+const HU = { cfg: null, extra: [] };
+async function huCarregar() { if (HU.cfg) return; const ler = typeof ghJSON === "function" ? ghJSON : (p, d) => getJSON(p.replace(/^docs\//, ""), d);
+  const [cfg, ex] = await Promise.all([ler("docs/humor_cfg.json", { ocultos: [], fotos: {} }), ler("docs/humor_extra.json", [])]);
+  HU.cfg = { ocultos: cfg.ocultos || [], fotos: cfg.fotos || {} }; HU.extra = (ex || []).filter(x => x && x.id && x.t); }
+async function huSalvar(msg) { if (!token()) { toast("Conecte em Ajustes pra salvar."); return false; } try { await salvarArquivo("docs/humor_cfg.json", HU.cfg, msg); return true; } catch (e) { toast("Não salvou: " + e.message); return false; } }
+const huHash = s => { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+function huFoto(x) { const id = "hu-" + x.id; return (HU.cfg && HU.cfg.fotos[id]) || x.foto || HU_FOTOS[huHash(x.id) % HU_FOTOS.length]; }
+function huPool() { const oc = new Set((HU.cfg || {}).ocultos || []); return [...HU.extra.slice().reverse(), ...HUMOR2, ...HUMOR].filter(x => !oc.has("hu-" + x.id)); }
+const HU_POR = 10;
+function huPagina() { const P = huPool(); let ini = +(load("p085_hu_ini") || 0); if (ini >= P.length) ini = 0; return { P, ini, L: P.slice(ini, ini + HU_POR) }; }
 async function fHumor(x) {
-  const im = await fotoPronta(x.f);
+  const im = await fotoMidia(huFoto(x));
   return { id: "hu-" + x.id, grupo: "feed", tipo: "Humor", rot: "Humor", titulo: "😂 " + x.t.split("\n")[0].slice(0, 60), porque: "Humor gera compartilhamento e marcação: traz gente nova pro perfil.", fmt: "Feed 4:5",
     telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, PW, PH); if (im) { const sc = Math.max(PW / im.naturalWidth, PH / im.naturalHeight); c.drawImage(im, (PW - im.naturalWidth * sc) / 2, (PH - im.naturalHeight * sc) / 2, im.naturalWidth * sc, im.naturalHeight * sc); }
       if (x.e === "bolha") { const g = c.createLinearGradient(0, PH * .6, 0, PH); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.55)"); c.fillStyle = g; c.fillRect(0, 0, PW, PH); }
@@ -1116,7 +1169,7 @@ async function fHumor(x) {
 
 /* 🎬 Reels de humor: mesma frase em tela cheia 9:16; o robô transforma em vídeo de 8s (zoom lento) e publica como Reels */
 async function fHumorReels(x) {
-  const im = await fotoPronta(x.f);
+  const im = await fotoMidia(huFoto(x));
   return { id: "hr-" + x.id, reels: true, grupo: "feed", tipo: "Reels", rot: "Reels de humor", titulo: "🎬 " + x.t.split("\n")[0].slice(0, 60), porque: "Reels alcança quem ainda não te segue. Dica: se postar pelo celular, coloque uma música em alta.", fmt: "Reels 9:16 · vídeo 8s",
     telas: [c => { c.fillStyle = "#000"; c.fillRect(0, 0, SW, SH); if (im) { const sc = Math.max(SW / im.naturalWidth, SH / im.naturalHeight); c.drawImage(im, (SW - im.naturalWidth * sc) / 2, (SH - im.naturalHeight * sc) / 2, im.naturalWidth * sc, im.naturalHeight * sc); }
       if (x.e === "bolha") { c.save(); c.translate(0, SH * .1); textoHumor(c, x, SW, SH * .8); c.restore(); } else textoHumor(c, x, SW, SH);
@@ -1254,7 +1307,12 @@ function fFrases(x) {
   const n = x.telas.length + 2, telas = [telaFrase(x.telas[0][0], x.capa, 1, n), ...x.telas.map(([f, t], i) => telaFrase(f, t, i + 2, n)), telaFrase("asa-1", x.fim, n, n)];
   return { id: "fr-" + x.id, grupo: "feed", tipo: "Frases", rot: "Humor · frases", titulo: "🖤 " + x.capa, porque: "Carrossel de frases sobre foto real de avião: muito salvo e compartilhado.", fmt: `Carrossel · ${n} telas`, telas, legenda: `${x.leg}\n\n✈️ Passagem barata saindo de Fortaleza: segue o @partiu.085\n\n${HASH}` };
 }
-async function postsHumor() { return [...FRASES_C.map(fFrases), ...(await Promise.all(CARR_H.map(fCarrH))), ...(await Promise.all(HUMOR.map(fHumor)))]; }
+async function postsHumor() { await huCarregar(); const oc = new Set(HU.cfg.ocultos), { L } = huPagina();
+  return [...(await Promise.all(L.map(fHumor))), ...FRASES_C.map(fFrases), ...(await Promise.all(CARR_H.map(fCarrH)))].filter(p => !oc.has(p.id)); }
+function humorBarHTML() { const { P, ini } = HU.cfg ? huPagina() : { P: [], ini: 0 }, n = HU.cfg ? HU.cfg.ocultos.length : 0;
+  return `<div class="card pa-dica hu-bar"><div><b>😂 Humor</b> <small class="sub">${P.length ? `mostrando ${ini + 1}–${Math.min(P.length, ini + HU_POR)} de ${P.length} frases` : ""}${n ? ` · ${n} escondido${n > 1 ? "s" : ""} <button class="lnk" data-act="huvolta">mostrar de novo</button>` : ""}</small></div>
+    <div class="al-acts"><button class="bt pri" data-act="hunovos">✨ Mostrar outros</button><button class="bt" data-act="huclaude">🤖 Criar novos com o Claude</button></div>
+    <small class="sub">Não gostou de algum? Toque em ✕ Não quero. Foto ruim? 🖼️ Outra foto.</small></div>`; }
 
 /* ================= página ================= */
 async function ideiasHoje() {
@@ -1272,6 +1330,7 @@ function cardPauta(p, i) {
     <div class="al-acts"><button class="bt pri sm" data-act="pabaixar" data-i="${i}">${ic("down")}${p.video ? "Abrir no estúdio" : `Baixar${p.telas.length > 1 ? ` ${p.telas.length} telas` : ""}`}</button>
       <button class="bt sm" data-act="pacopiar" data-i="${i}">${ic("copy")}Copiar ${p.stories ? "link" : "legenda"}</button>
       ${/^fr-/.test(p.id) ? `<button class="bt sm pri" data-act="paeditar" data-i="${i}">✏️ Editar</button>` : ""}
+      ${/^hu-/.test(p.id) ? `<button class="bt sm" data-act="hufoto" data-id="${p.id}">🖼️ Outra foto</button>` : ""}${/^(hu|fr|ch)-/.test(p.id) ? `<button class="bt sm ghost" data-act="hutira" data-id="${p.id}">✕ Não quero</button>` : ""}
       <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}">${ic("calendar")}Agendar</button>
       <button class="bt sm" data-act="igagendar" data-src="pa" data-i="${i}" data-agora="1">⚡ Postar agora</button>
       <button class="bt sm ${feito(p.id) ? "ok" : "ghost"}" data-act="pafeito" data-i="${i}">${ic(feito(p.id) ? "check" : "circle")}${feito(p.id) ? "Postado" : "Postei"}</button></div>
@@ -1285,7 +1344,7 @@ function pPauta() {
       ${PA.aba === "hoje" ? pills("patipo", PA.tipo, [["feed", "▭ Feed"], ["stories", "▯ Stories"]]) : ""}</div>
     ${PA.aba === "noticia" ? noticiaHTML() : ""}${PA.aba === "prova" ? provaHTML() : ""}
     ${PA.aba === "campanha" ? `<div class="card pa-dica"><div class="al-acts" style="margin-bottom:10px"><button class="bt pri" data-act="iglote" data-s="1">${ic("calendar")}Agendar a semana 1 inteira (2 por dia)</button><button class="bt" data-act="iglote" data-s="2">${ic("calendar")}Agendar a semana 2</button></div><b>Plano:</b> semana 1 aquece o perfil (2 posts por dia, 12h e 19h, cores em rodízio 🟦⬜🟨 pra o grid ficar organizado) + stories. Semana 2 abre o grupo. Stories da semana 1:<ol>${STORIES_S1.map(s => `<li>${esc(s)}</li>`).join("")}</ol><b>No seu perfil pessoal, no dia que abrir o grupo:</b><ol>${STORIES_LEO.map(s => `<li>${esc(s)}</li>`).join("")}</ol></div>` : ""}
-    <div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
+    ${PA.aba === "humor" ? `<div id="hu-bar">${humorBarHTML()}</div>` : ""}<div id="pa-grade"><div class="card vazio">Montando as opções…</div></div>`;
 }
 async function montarPauta() {
   const g = document.getElementById("pa-grade"); if (!g) return;
@@ -1342,3 +1401,19 @@ document.addEventListener("click", async e => {
     await agendarItens(itens, slots, true, t => { prog.textContent = t; });
     prog.textContent = ""; toast(`${itens.length} notícia${itens.length > 1 ? "s" : ""} na agenda: ${slots.map(q => q.slice(11, 16)).join(" e ")}${slots[0].slice(0, 10) !== hojeISO() ? " (amanhã)" : ""}.`, 7000); render();
   } catch (x) { toast("Parou: " + x.message, 7000); prog.textContent = ""; } b.disabled = false; });
+
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="hu"]'); if (!b || !/^hu(novos|claude|foto|tira|volta)$/.test(b.dataset.act)) return; const a = b.dataset.act;
+  await huCarregar();
+  if (a === "hunovos") { const { P, ini } = huPagina(); store("p085_hu_ini", String(ini + HU_POR >= P.length ? 0 : ini + HU_POR)); render(); return; }
+  if (a === "hutira") { HU.cfg.ocultos.push(b.dataset.id); const card = b.closest(".pa-c"); if (card) card.remove(); await huSalvar("Humor: tira post"); const hb = document.getElementById("hu-bar"); if (hb) hb.innerHTML = humorBarHTML(); toast("Removido. Não aparece mais."); return; }
+  if (a === "huvolta") { HU.cfg.ocultos = []; await huSalvar("Humor: mostra de novo"); render(); return; }
+  if (a === "hufoto") { const id = b.dataset.id, x = huPool().find(h => "hu-" + h.id === id); if (!x) return; const atual = huFoto(x), k = HU_FOTOS.indexOf(atual);
+    HU.cfg.fotos[id] = HU_FOTOS[(k + 1 + (k < 0 ? huHash(id) : 0)) % HU_FOTOS.length]; b.disabled = true;
+    const i = PA.lista.findIndex(p => p.id === id); if (i >= 0) { PA.lista[i] = { ...(await fHumor(x)), rot: PA.lista[i].rot }; const box = document.getElementById("pa-t-" + i);
+      if (box) { box.innerHTML = ""; const cv = document.createElement("canvas"); cv.width = PW; cv.height = PH; box.appendChild(cv); await PA.lista[i].telas[0](cv.getContext("2d")); } }
+    b.disabled = false; await huSalvar("Humor: troca foto"); return; }
+  if (a === "huclaude") { if (typeof pdCarregar !== "function") { toast("Abra Pedidos ao Claude."); return; } b.disabled = true;
+    await pdCarregar(); PD.lista.push({ id: "pd-" + Date.now().toString(36), urgente: true, criado: isoLocal(new Date()), status: "novo",
+      texto: `Crie 12 posts de HUMOR novos pro @partiu.085 (viagem, aeroporto, avião, milhas, passagem, jeito cearense de Fortaleza). Pesquise o que está em alta em memes e humor de viagem no Brasil agora, mas escreva tudo original (nada copiado). Frases curtas, de 1 a 3 linhas, que dão vontade de marcar um amigo.\nSalve em docs/humor_extra.json (lista JSON; crie o arquivo se não existir; não apague os que já estão lá), cada item assim: {"id":"x-<palavra>-<data>","foto":"<uma de: ${HU_FOTOS.join(", ")}>","e":"escuro" ou "bolha","t":"texto com \\n entre as linhas","d":["trecho destacado em amarelo (só no estilo escuro)"],"leg":"legenda curta com pergunta ou chamada pra marcar"}.\nNão repita as frases que já existem em HUMOR e HUMOR2 (docs/pauta.js) nem em docs/humor_extra.json. Escolha a foto que combine com a frase.` });
+    if (await pdSalvar("Pedido: humor novo")) toast("Pedido enviado! O Claude cria 12 novos na próxima passada (8h46, 13h46 ou 19h46) e eles aparecem primeiro aqui.", 8000); b.disabled = false; return; }
+});

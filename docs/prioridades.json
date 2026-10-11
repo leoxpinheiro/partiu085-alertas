@@ -21,9 +21,9 @@
    "motivo": "2 alertas em 30 dias"
   },
   "SSA": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (25 de ~90 dias)"
   },
   "REC": {
    "prioridade": "alta",
@@ -136,9 +136,9 @@
    "motivo": "padrão"
   },
   "LON": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (24 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "AMS": {
    "prioridade": "normal",
@@ -198,7 +198,7 @@
   "MVD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (12 de ~90 dias)"
+   "motivo": "poucos voos (6 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -271,20 +271,20 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-10T21:38-03:00",
+ "quando": "2026-10-10T23:18-03:00",
  "ultimo_lote": [
-  "MIA",
-  "PAR",
-  "BHZ",
-  "SSA",
-  "JPA",
-  "REC",
-  "SAO",
-  "RIO",
-  "UDI",
-  "SDQ",
-  "MVD",
-  "NYC",
-  "LON"
+  "POA",
+  "OPO",
+  "BSB",
+  "THE",
+  "BEL",
+  "IGU",
+  "CGB",
+  "BPS",
+  "FEN",
+  "CWB",
+  "SLZ",
+  "MAO",
+  "FLN"
  ]
 }

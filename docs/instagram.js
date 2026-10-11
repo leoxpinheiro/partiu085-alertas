@@ -326,7 +326,7 @@ function pInstagram() {
       ${s === "erro" ? `<small class="neg">${esc(e.erro || "")}</small>` : ""}${s !== "publicado" && jaSaiu(p) ? `<small class="mc-vivo">⚠️ Esse post já saiu antes: nesse horário vai sair uma 💲 oferta do dia no lugar (não duplica).</small>` : ""}${e.trocado_de ? `<small class="sub">Saiu oferta do dia no lugar de "${esc(e.trocado_de)}", que já tinha sido postado.</small>` : ""}</div>
       <div class="ig-a">${p.auto ? `<span class="st">🤖 piloto automático</span>` : ""}${p.auto ? "" : s === "rascunho" ? `<button class="bt sm pri" data-act="igaprovar" data-id="${p.id}">${ic("check")}Aprovar</button>` : s === "agendado" ? `<button class="bt sm ghost" data-act="igdesaprovar" data-id="${p.id}">Pausar</button>` : ""}
         ${s === "erro" ? `<button class="bt sm pri" data-act="igtentar" data-id="${p.id}">${ic("refresh")}Tentar de novo</button>` : ""}
-        ${p.auto ? "" : `<button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button>`}</div></div>`; };
+        ${p.auto ? "" : `<button class="bt sm" data-act="igeditar" data-id="${p.id}">Editar</button><button class="bt sm" data-act="igagora" data-id="${p.id}">${ic("send")}Publicar agora</button><button class="bt sm" data-act="igtrocar" data-id="${p.id}">🔁 Trocar</button><button class="bt sm ghost danger" data-act="igremover" data-id="${p.id}">Remover</button>`}</div></div>`; };
   if (setup) return head("Instagram: agenda", "Crescimento do perfil, desempenho de cada post e agenda.") + `<div class="card ig-setup"><h3>${c && c.erro ? "A conexão com o Instagram deu erro" : "Instagram ainda não conectado"}</h3>${c && c.erro ? `<div class="aviso warn"><span>${esc(c.erro)}</span></div>` : `<p class="sub">Carregando…</p>`}</div>`;
 
   const per = IGF.per, T = igDias(c), L = T.slice(-per), ant = T.slice(-2 * per, -per);
@@ -380,7 +380,8 @@ document.addEventListener("click", e => { const b = e.target.closest('[data-act=
 document.addEventListener("click", async e => {
   const b = e.target.closest('[data-act^="ig"]'); if (!b) return;
   const act = b.dataset.act;
-  if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover)$/.test(act)) return;
+  if (!/^ig(magora|msalvar|mfechar|agendar|recarregar|aprovar|desaprovar|tentar|editar|agora|remover|trocar|trocaroferta|trocarpauta|trocarfechar)$/.test(act)) return;
+  if (act === "igtrocarfechar") { const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on"); return; }
   try {
     if (act === "igagendar") {
       if (b.dataset.src === "pa") { const p = PA.lista[+b.dataset.i]; if (token()) { try { for (let k = 0; k < 50 && IGF.carregando; k++) await new Promise(r => setTimeout(r, 100)); await carregarIG(true); } catch (x) { } } abrirAgendar({ id: p.id, agora: !!b.dataset.agora, valido: p.valido || "", cedo: /^nt-/.test(p.id), titulo: p.titulo, tipo: p.stories ? "story" : "feed", cvs: [...document.querySelectorAll(`#pa-t-${b.dataset.i} canvas`)], legenda: ($("#pa-l-" + b.dataset.i) || {}).value || p.legenda }); }
@@ -398,6 +399,15 @@ document.addEventListener("click", async e => {
     else if (act === "igdesaprovar") { p.aprovado = false; await salvarFila(`Instagram: pausa "${p.titulo}"`); toast("Pausado."); }
     else if (act === "igtentar") { p.tentativa = (p.tentativa || 0) + 1; p.aprovado = true; await salvarFila(`Instagram: tenta de novo "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Tentando de novo em 1 a 2 minutos."); }
     else if (act === "igagora") { p.aprovado = true; p.quando = isoLocal(new Date()); p.tentativa = (p.tentativa || 0) + ((IGF.st[p.id] || {}).status === "erro" ? 1 : 0); await salvarFila(`Instagram: publicar agora "${p.titulo}"`); await gh("/actions/workflows/instagram.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { post: p.id } }) }); toast("Enviado pro robô: publica em 1 a 2 minutos."); }
+    else if (act === "igtrocar") { b.disabled = false; const d = document.createElement("div"); d.className = "ej-fundo"; d.id = "igt";
+      d.innerHTML = `<div class="ej" style="max-width:560px"><div class="ej-h"><div><b>Trocar o post de ${dataHora(p.quando)}</b><small>"${esc(p.titulo)}" sai da agenda e o horário não fica vazio.</small></div><button class="bt sm ghost" data-act="igtrocarfechar">✕</button></div>
+        <div style="display:grid;gap:10px"><button class="bt lg pri" data-act="igtrocaroferta" data-id="${p.id}">💲 Trocar pela oferta do dia<small style="display:block;font-weight:500;opacity:.8">o robô escolhe a melhor promoção fresca na hora</small></button>
+        <button class="bt lg" data-act="igtrocarpauta" data-id="${p.id}">📋 Escolher outro post da Pauta<small style="display:block;font-weight:500;opacity:.8">você toca no + de qualquer post e ele entra nesse horário</small></button></div></div>`;
+      document.body.appendChild(d); document.body.classList.add("ej-on"); return; }
+    else if (act === "igtrocaroferta") { Object.assign(p, { titulo: "💲 Oferta do dia (no lugar de um post)", tipo: "oferta_dia", imagens: [], legenda: "", aprovado: true, origem: "vaga", tentativa: 0 }); delete p.overlay; delete p.overlays; delete p.video_fundo; delete p.story_junto;
+      await salvarFila("Instagram: troca por oferta do dia"); const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on"); toast(`Trocado: às ${p.quando.slice(11, 16)} sai a oferta do dia.`); }
+    else if (act === "igtrocarpauta") { const d = $("#igt"); if (d) d.remove(); document.body.classList.remove("ej-on");
+      window.TROCA = { id: p.id, quando: p.quando, titulo: p.titulo }; if (typeof PA !== "undefined") PA.aba = "montar"; location.hash = "#pauta"; toast("Toque no + do post que vai entrar no lugar.", 5000); return; }
     else if (act === "igremover") { if (!confirm(`Remover "${p.titulo}" da agenda?`)) { b.disabled = false; return; } IGF.fila = IGF.fila.filter(x => x !== p); await salvarFila(`Instagram: remove "${p.titulo}"`); toast("Removido."); }
     else if (act === "igeditar") { b.disabled = false; abrirEditar(p); return; }
     render();

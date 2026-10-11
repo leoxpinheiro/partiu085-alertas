@@ -205,7 +205,7 @@ async function fDestinoPremium(k) {
     T(c, "ARRASTA ➜", PW - M, PH - 80, 26, MARCA.corpo, COR.am, "right", 800, 3); });
   telas.push(c => { bgCreme(c, PW, PH); marca(c, PW, false, "RAIO-X");
     titulo(c, `${nome} em números`, M, 200, PW - 2 * M, 104, 64, COR.tinta, 2);
-    const tiles = [["Menor preço (ida)", brl(r.menor)], ["Volta a partir de", r.menor_volta ? brl(r.menor_volta) : "—"], ["Melhor mês", melhorM || "—"], [dir ? "Voo direto" : "Voo", dir || "Com conexão"], econ ? ["Abaixo do normal", `−${econ}%`] : null, r.cia ? ["Mais barata agora", r.cia] : null].filter(Boolean).slice(0, 6);
+    const tiles = [["Menor preço (ida)", brl(r.menor)], ["Volta a partir de", r.menor_volta ? brl(r.menor_volta) : "—"], ["Melhor mês", melhorM || "—"], [dir ? "Voo direto" : "Voo", dir || "Com conexão"], r.cia ? ["Mais barata agora", r.cia] : null, [r.tipo === "internacional" ? "Tipo" : "Tipo", r.tipo === "internacional" ? "Internacional" : "Nacional"]].filter(Boolean).slice(0, 6);
     const cw = (PW - 2 * M - 24) / 2, ch = 230; tiles.forEach(([l, v], i) => { const x = M + (i % 2) * (cw + 24), yy = 420 + Math.floor(i / 2) * (ch + 24);
       c.fillStyle = "#fff"; rr(c, x, yy, cw, ch, 28); c.fill(); T(c, l.toUpperCase(), x + 30, yy + 60, 24, MARCA.corpo, "rgba(15,42,71,.6)", "left", 800, 2);
       T(c, v, x + 30, yy + 160, caber(c, v, cw - 60, 76, MARCA.titulo, 400, 36), MARCA.titulo, i === 0 ? "#C9971C" : COR.tinta); });
@@ -228,7 +228,7 @@ async function fDestinoPremium(k) {
   telas.push(c => capaTema(c, "amarelo", "Quer ir pra " + nome + "?", "Comenta EU QUERO que eu te mando os alertas", "Todo dia tem passagem barata saindo de Fortaleza. Marca quem vai com você 👇", "", "Siga @partiu.085 · ative o sininho 🔔"));
   return { id: "f-destpremium-" + k + "-" + hojeISO(), grupo: "feed", tipo: "Destino da semana", rot: "📍 Destino", titulo: `📍 Destino: ${nome}`, valido: diaMenos(hojeISO(), -2),
     porque: "Carrossel premium com dados do nosso radar (preço, melhor mês, datas). Conteúdo que só a gente tem: muito salvo e compartilhado.", fmt: `Carrossel · ${telas.length} telas`, telas,
-    legenda: `📍 DESTINO DA SEMANA: ${nome.toUpperCase()}, SAINDO DE FORTALEZA\n\n💰 Ida a partir de ${brl(r.menor)}${r.menor_volta ? ` · volta a partir de ${brl(r.menor_volta)}` : ""}\n✈️ ${dir ? `Voo direto, ${dir}` : "Com conexão"}\n📅 Melhor mês: ${melhorM || "—"}${econ ? `\n📉 ${econ}% abaixo do preço normal da rota` : ""}${extra ? `\n\n${extra}` : ""}\n\n${datas.length ? `🗓️ Datas mais baratas agora: ${datas.map(d => `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`).join(", ")}\n\n` : ""}⚠️ Preços de ${hoje}, mudam a qualquer momento.\n💬 Comenta EU QUERO que eu te mando os alertas de ${nome} no direct!\n👇 Marca quem vai com você.\n\n${HASH}` };
+    legenda: `📍 DESTINO DA SEMANA: ${nome.toUpperCase()}, SAINDO DE FORTALEZA\n\n💰 Ida a partir de ${brl(r.menor)}${r.menor_volta ? ` · volta a partir de ${brl(r.menor_volta)}` : ""}\n✈️ ${dir ? `Voo direto, ${dir}` : "Com conexão"}\n📅 Melhor mês: ${melhorM || "—"}${extra ? `\n\n${extra}` : ""}\n\n${datas.length ? `🗓️ Datas mais baratas agora: ${datas.map(d => `${d.dia.slice(8, 10)}/${d.dia.slice(5, 7)}`).join(", ")}\n\n` : ""}⚠️ Preços de ${hoje}, mudam a qualquer momento.\n💬 Comenta EU QUERO que eu te mando os alertas de ${nome} no direct!\n👇 Marca quem vai com você.\n\n${HASH}` };
 }
 async function postsConteudoTudo() {
   const R = (S.status && S.status.rotas) || {}, ks = Object.keys(R).filter(k => R[k].menor && (R[k].ofertas || 0) >= 10);

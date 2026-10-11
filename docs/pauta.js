@@ -892,7 +892,8 @@ async function montarBoard(g) {
     return `<section class="mc-sec ${CAL.f === gk ? "aberta" : ""}" data-g="${gk}" ${(CAL.f !== "todos" && CAL.f !== gk) || (!novos && !CAL.verFeitos && gk !== "dia") ? "hidden" : ""}>
       <div class="mc-sh"><b>${nome}</b><small>${novos} novo${novos === 1 ? "" : "s"}</small><button class="lnk" data-act="mcabre" data-g="${CAL.f === gk ? "todos" : gk}">${CAL.f === gk ? "← todas as seções" : "ver todos ➜"}</button></div>
       <div class="mc-grade">${gk === "dia" ? vagaCard : ""}${its.map(([p, i]) => mcCard(p, i)).join("")}</div></section>`; }).join("");
-  g.innerHTML = `<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div>
+  const trocaBanner = window.TROCA ? `<div class="aviso warn" style="display:block;margin-bottom:12px">🔁 <b>Escolhendo o substituto</b> pra ${dataHora(window.TROCA.quando)} (no lugar de "${esc(window.TROCA.titulo)}"). Toque no <b>+</b> do post que vai entrar. <button class="bt sm ghost" data-act="mctrocacancela">cancelar</button></div>` : "";
+  g.innerHTML = `${trocaBanner}<div class="mc"><div class="mc-lib"><div class="mc-f">${pills("mcf", CAL.f, CAL_F)}<label class="chk"><input type="checkbox" data-mc="verfeitos" ${CAL.verFeitos ? "checked" : ""}> mostrar já postados</label></div>
       <small class="sub mc-dica">Toque no <b>+</b> pra escolher · toque na imagem pra ver · deslize pro lado em cada linha</small>${secs}</div>
     <aside class="card mc-sel" id="mc-sel">${mcCfgHTML()}</aside></div>`;
   { const cv = document.getElementById("mc-cv-vaga"); if (cv) { desenhaVaga(cv.getContext("2d")); CAL.thumbs.vaga = cv.toDataURL("image/jpeg", .55); } }
@@ -927,11 +928,18 @@ async function mcAgendar(bt) {
     CAL.sel = []; CAL.legs = {}; toast(`${n} posts agendados! Veja em Instagram: agenda.`, 6000); render();
   } catch (e) { toast("Parou no meio: " + e.message, 8000); bt.disabled = false; }
 }
-document.addEventListener("click", e => {
+document.addEventListener("click", async e => {
   const pf = e.target.closest('[data-act="pill"][data-g="mcf"]'); if (pf) { CAL.f = pf.dataset.v; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x === pf));
     mcSecoes(); e.stopImmediatePropagation(); return; }
   const ab = e.target.closest('[data-act="mcabre"]'); if (ab) { CAL.f = ab.dataset.g; document.querySelectorAll('[data-g="mcf"]').forEach(x => x.classList.toggle("on", x.dataset.v === CAL.f)); mcSecoes(); const sec = document.querySelector(".mc-lib"); if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
   const b = e.target.closest('[data-act^="mc"]'); if (!b) return; const a = b.dataset.act, k = +b.dataset.k;
+  if (a === "mctrocacancela") { window.TROCA = null; render(); return; }
+  if (a === "mcadd" && window.TROCA) { const T0 = window.TROCA, p = (PA.lista || []).find(x => x.id === b.dataset.id); if (!p) return;
+    if (!confirm(`Colocar "${p.titulo.replace(/^\d+\.\s*/, "")}" às ${dataHora(T0.quando)} no lugar de "${T0.titulo}"?`)) return;
+    b.disabled = true; try { const cvs = []; for (const fn of p.telas) { const cv = document.createElement("canvas"); cv.width = PW; cv.height = p.reels ? SH : PH; await fn(cv.getContext("2d")); cvs.push(cv); }
+      await agendarItens([{ titulo: p.titulo.replace(/^\d+\.\s*/, ""), cvs, legenda: CAL.legs[p.id] ?? p.legenda, origem: p.id, valido: p.valido || "", reels: !!p.reels, video: p.video || "", overlay: p.overlay ? (() => { const o = document.createElement("canvas"); o.width = SW; o.height = SH; p.overlay(o.getContext("2d")); return o; })() : null }], [T0.quando], true, t => toast(t, 1500));
+      IGF.fila = IGF.fila.filter(x => x.id !== T0.id); await salvarFila(`Instagram: troca "${T0.titulo}"`); window.TROCA = null; toast(`Trocado! Às ${T0.quando.slice(11, 16)} sai "${p.titulo.replace(/^\d+\.\s*/, "")}".`, 6000); location.hash = "#instagram"; }
+    catch (x) { toast("Não trocou: " + x.message, 7000); b.disabled = false; } return; }
   if (a === "mcadd") { const id = b.dataset.id, n = CAL.sel.indexOf(id); if (n >= 0) CAL.sel.splice(n, 1); else CAL.sel.push(id); }
   else if (a === "mcup" && k > 0) CAL.sel.splice(k - 1, 0, CAL.sel.splice(k, 1)[0]);
   else if (a === "mcdown" && k < CAL.sel.length - 1) CAL.sel.splice(k + 1, 0, CAL.sel.splice(k, 1)[0]);

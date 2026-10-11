@@ -1,277 +1,136 @@
-Lote: LIS(a), BUE(a), MCZ(a), AJU(a), GYN(a), CGB(n), MIL(b), BPS(n), JDO(a), SSA(b), VIX(a), SDQ(b), MVD(b)
-Lote: LIS, BUE, MCZ, AJU, GYN, CGB, MIL, BPS, JDO, SSA, VIX, SDQ, MVD
-  ! Google FOR-LIS 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-LIS 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2026-12-14: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2027-01-01: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2027-01-03: FlightsNotFound: no flights found; received error
-  ! Google LIS-FOR 2027-01-07: FlightsNotFound: no flights found; received error
-FOR-LIS: 89+85 dias · menor ida R$ 1.716 · média R$ 2.939 · 42%
-  ! Google FOR-BUE 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-22: IndexError: list index out of range
-  ! Google FOR-BUE 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-08: IndexError: list index out of range
-  ! Google FOR-BUE 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2027-01-03: IndexError: list index out of range
-  ! Google FOR-BUE 2027-01-04: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-10-16: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-21: IndexError: list index out of range
-  ! Google BUE-FOR 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-12-29: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2027-01-02: IndexError: list index out of range
-  ! Google BUE-FOR 2027-01-03: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2027-01-09: IndexError: list index out of range
-FOR-BUE: 81+81 dias · menor ida R$ 1.272 · média R$ 1.319 · 4%
-  ! Google FOR-MCZ 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2027-01-04: FlightsNotFound: no flights found; received error
-FOR-MCZ: 89+87 dias · menor ida R$ 681 · média R$ 1.342 · 49%
-  ida e volta R$ 1.512 acima do teto da região (R$ 1.100) — sem alerta
-  ! Google FOR-AJU 2026-11-23: IndexError: list index out of range
-  ! Google FOR-AJU 2026-11-26: IndexError: list index out of range
-  ! Google FOR-AJU 2026-12-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2026-12-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2026-12-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2026-12-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2027-01-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-AJU 2027-01-14: FlightsNotFound: no flights found; received error
-  ! Google AJU-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google AJU-FOR 2026-10-23: IndexError: list index out of range
-  ! Google AJU-FOR 2026-10-24: IndexError: list index out of range
-  ! Google AJU-FOR 2026-10-25: IndexError: list index out of range
-  ! AJU-FOR: muitos erros seguidos, parando
-FOR-AJU: 76+2 dias · menor ida R$ 1.038 · média R$ 1.439 · 28%
-  ! Google FOR-GYN 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-GYN 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-GYN 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-GYN 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-GYN 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-GYN 2026-11-23: FlightsNotFound: no flights found; received error
-FOR-GYN: 85+91 dias · menor ida R$ 572 · média R$ 948 · 40%
-  ! Google FOR-CGB 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-CGB 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-CGB 2026-11-30: IndexError: list index out of range
-  ! Google FOR-CGB 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-CGB 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-CGB 2026-12-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-CGB 2027-01-03: FlightsNotFound: no flights found; received error
-  ! Google CGB-FOR 2026-10-25: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-01: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-04: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google CGB-FOR 2026-11-11: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-13: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-14: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-15: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google CGB-FOR 2026-11-18: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-29: IndexError: list index out of range
-  ! Google CGB-FOR 2026-11-30: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google CGB-FOR 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google CGB-FOR 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google CGB-FOR 2026-12-29: FlightsNotFound: no flights found; received error
-FOR-CGB: 83+75 dias · menor ida R$ 526 · média R$ 996 · 47%
-  ! Google FOR-MIL 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-03: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-06: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-20: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-22: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-11: IndexError: list index out of range
-  ! Google FOR-MIL 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-28: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-01: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2027-01-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2027-01-06: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2027-01-08: IndexError: list index out of range
-  ! Google MIL-FOR 2026-11-02: IndexError: list index out of range
-  ! Google MIL-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-21: IndexError: list index out of range
-  ! Google MIL-FOR 2027-01-06: FlightsNotFound: no flights found; received error
-FOR-MIL: 66+82 dias · menor ida R$ 1.793 · média R$ 3.043 · 41%
-  ida e volta R$ 4.963 acima do teto da região (R$ 4.500) — sem alerta
-  ! Google FOR-BPS 2026-10-16: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-17: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-19: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-21: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-24: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-26: IndexError: list index out of range
-  ! Google FOR-BPS 2026-10-31: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-BPS 2026-11-07: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-09: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-12: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-13: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-14: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-16: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-20: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-21: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-23: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-26: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-28: IndexError: list index out of range
-  ! Google FOR-BPS 2026-11-30: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-05: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-12: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-24: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-26: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-27: IndexError: list index out of range
-  ! Google FOR-BPS 2026-12-28: IndexError: list index out of range
-  ! Google FOR-BPS 2027-01-06: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-10-17: IndexError: list index out of range
-  ! Google BPS-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-10-24: IndexError: list index out of range
-  ! Google BPS-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-10-31: IndexError: list index out of range
-  ! Google BPS-FOR 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google BPS-FOR 2026-11-07: IndexError: list index out of range
-  ! Google BPS-FOR 2026-11-08: IndexError: list index out of range
-  ! Google BPS-FOR 2026-11-09: IndexError: list index out of range
-  ! Google BPS-FOR 2026-11-10: IndexError: list index out of range
-  ! BPS-FOR: muitos erros seguidos, parando
-FOR-BPS: 61+14 dias · menor ida R$ 1.181 · média R$ 1.633 · 28%
-  ! Google FOR-JDO 2026-10-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-11-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2026-12-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-JDO 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-10-17: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google JDO-FOR 2026-11-14: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google JDO-FOR 2026-12-01: FlightsNotFound: no flights found; received error
-FOR-JDO: 30+66 dias · menor ida R$ 296 · média R$ 2.643 · 89%
-  ! Google FOR-SSA 2026-10-24: IndexError: list index out of range
-  ! Google FOR-SSA 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-04: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-05: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-07: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-12: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-14: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-19: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-26: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-28: IndexError: list index out of range
-  ! Google FOR-SSA 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-12-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-12-06: IndexError: list index out of range
-  ! Google FOR-SSA 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-SSA 2026-12-08: FlightsNotFound: no flights found; received error
-  ! FOR-SSA: muitos erros seguidos, parando
-  ! Google SSA-FOR 2026-10-16: FlightsNotFound: no flights found; received error
-  ! Google SSA-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google SSA-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google SSA-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google SSA-FOR 2026-12-30: IndexError: list index out of range
-  ! Google SSA-FOR 2027-01-01: IndexError: list index out of range
-  ! Google SSA-FOR 2027-01-02: IndexError: list index out of range
-FOR-SSA: 33+84 dias · menor ida R$ 897 · média R$ 1.384 · 35%
-  ida e volta R$ 1.477 acima do teto da região (R$ 1.100) — sem alerta
-  ! Google FOR-VIX 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-VIX 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-VIX 2027-01-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-VIX 2027-01-13: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-12-06: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google VIX-FOR 2026-12-14: IndexError: list index out of range
-  ! Google VIX-FOR 2026-12-15: IndexError: list index out of range
-  ! Google VIX-FOR 2026-12-16: IndexError: list index out of range
-  ! VIX-FOR: muitos erros seguidos, parando
-FOR-VIX: 87+40 dias · menor ida R$ 569 · média R$ 798 · 29%
-  ! Google FOR-SDQ 2026-10-16: IndexError: list index out of range
-  ! Google FOR-SDQ 2026-10-17: IndexError: list index out of range
-  ! Google FOR-SDQ 2026-10-18: IndexError: list index out of range
-  ! Google FOR-SDQ 2026-10-19: FlightsNotFound: no flights found; received error
-  ! FOR-SDQ: muitos erros seguidos, parando
-FOR-SDQ: sem dados suficientes (ida 0, volta 0)
-  ! Google FOR-MVD 2026-10-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-18: IndexError: list index out of range
-  ! Google FOR-MVD 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-21: IndexError: list index out of range
-  ! Google FOR-MVD 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-25: IndexError: list index out of range
-  ! Google FOR-MVD 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-MVD 2026-10-29: IndexError: list index out of range
-  ! Google FOR-MVD 2026-10-31: IndexError: list index out of range
-  ! Google FOR-MVD 2026-11-01: IndexError: list index out of range
-  ! Google FOR-MVD 2026-11-02: IndexError: list index out of range
-  ! Google FOR-MVD 2026-11-03: FlightsNotFound: no flights found; received error
-  ! FOR-MVD: muitos erros seguidos, parando
-  ! Google MVD-FOR 2026-10-16: IndexError: list index out of range
-  ! Google MVD-FOR 2026-10-17: FlightsNotFound: no flights found; received error
-  ! Google MVD-FOR 2026-10-18: IndexError: list index out of range
-  ! Google MVD-FOR 2026-10-19: IndexError: list index out of range
-  ! MVD-FOR: muitos erros seguidos, parando
-FOR-MVD: sem dados suficientes (ida 5, volta 0)
-  conferido BCN 2026-12-07: R$ 1.689 (valendo)
+Lote: MIA(a), PAR(a), BHZ(a), JPA(a), REC(a), SAO(a), RIO(a), VCP(n), AMS(n), POA(a), FEN(b), OPO(a), MAO(b)
+Lote: MIA, PAR, BHZ, JPA, REC, SAO, RIO, VCP, AMS, POA, FEN, OPO, MAO
+  ! Google FOR-MIA 2026-10-22: IndexError: list index out of range
+  ! Google FOR-MIA 2026-12-24: IndexError: list index out of range
+  ! Google FOR-MIA 2027-01-08: IndexError: list index out of range
+FOR-MIA: 88+91 dias · menor ida R$ 2.359 · média R$ 2.883 · 18%
+  ! Google FOR-PAR 2026-10-19: IndexError: list index out of range
+  ! Google FOR-PAR 2026-10-31: IndexError: list index out of range
+  ! Google FOR-PAR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-PAR 2026-11-06: IndexError: list index out of range
+  ! Google FOR-PAR 2026-11-07: IndexError: list index out of range
+  ! Google FOR-PAR 2026-11-13: IndexError: list index out of range
+  ! Google FOR-PAR 2026-11-14: FlightsNotFound: no flights found; received error
+  ! Google FOR-PAR 2026-11-16: IndexError: list index out of range
+  ! Google FOR-PAR 2026-11-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-PAR 2026-12-16: IndexError: list index out of range
+  ! Google FOR-PAR 2027-01-04: IndexError: list index out of range
+  ! Google FOR-PAR 2027-01-07: IndexError: list index out of range
+  ! Google PAR-FOR 2026-10-17: FlightsNotFound: no flights found; received error
+  ! Google PAR-FOR 2026-11-01: FlightsNotFound: no flights found; received error
+FOR-PAR: 79+89 dias · menor ida R$ 1.678 · média R$ 3.172 · 47%
+  ida e volta R$ 5.135 acima do teto da região (R$ 4.500) — sem alerta
+  ! Google FOR-BHZ 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2027-01-04: FlightsNotFound: no flights found; received error
+FOR-BHZ: 90+90 dias · menor ida R$ 721 · média R$ 873 · 17%
+  ! Google JPA-FOR 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google JPA-FOR 2026-11-15: FlightsNotFound: no flights found; received error
+  ! Google JPA-FOR 2026-11-18: FlightsNotFound: no flights found; received error
+  ! Google JPA-FOR 2026-11-26: FlightsNotFound: no flights found; received error
+  ! Google JPA-FOR 2026-12-11: FlightsNotFound: no flights found; received error
+FOR-JPA: 84+68 dias · menor ida R$ 860 · média R$ 1.214 · 29%
+  ida e volta R$ 1.714 acima do teto da região (R$ 1.100) — sem alerta
+  ! Google FOR-REC 2027-01-06: FlightsNotFound: no flights found; received error
+FOR-REC: 87+91 dias · menor ida R$ 379 · média R$ 1.068 · 65%
+  ! Google FOR-SAO 2026-10-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-SAO 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-SAO 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-SAO 2026-12-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-SAO 2026-12-26: FlightsNotFound: no flights found; received error
+  ! Google SAO-FOR 2026-10-16: FlightsNotFound: no flights found; received error
+  ! Google SAO-FOR 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google SAO-FOR 2026-11-18: FlightsNotFound: no flights found; received error
+FOR-SAO: 86+88 dias · menor ida R$ 491 · média R$ 813 · 40%
+  ! Google FOR-RIO 2026-12-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-RIO 2026-12-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-RIO 2026-12-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-RIO 2027-01-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-RIO 2027-01-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-RIO 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google RIO-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google RIO-FOR 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google RIO-FOR 2026-12-18: FlightsNotFound: no flights found; received error
+FOR-RIO: 85+88 dias · menor ida R$ 577 · média R$ 897 · 36%
+  ! Google FOR-VCP 2026-10-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-12-05: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-12-30: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2027-01-12: FlightsNotFound: no flights found; received error
+FOR-VCP: 89+86 dias · menor ida R$ 547 · média R$ 1.365 · 60%
+  ! Google FOR-AMS 2026-11-03: IndexError: list index out of range
+  ! Google FOR-AMS 2026-11-14: IndexError: list index out of range
+  ! Google FOR-AMS 2026-11-21: IndexError: list index out of range
+  ! Google FOR-AMS 2026-12-12: IndexError: list index out of range
+  ! Google FOR-AMS 2026-12-19: IndexError: list index out of range
+  ! Google FOR-AMS 2026-12-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-AMS 2026-12-28: IndexError: list index out of range
+  ! Google FOR-AMS 2027-01-04: IndexError: list index out of range
+  ! Google FOR-AMS 2027-01-07: IndexError: list index out of range
+  ! Google AMS-FOR 2026-11-03: IndexError: list index out of range
+  ! Google AMS-FOR 2026-11-11: IndexError: list index out of range
+  ! Google AMS-FOR 2026-11-13: FlightsNotFound: no flights found; received error
+  ! Google AMS-FOR 2026-11-28: IndexError: list index out of range
+  ! Google AMS-FOR 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google AMS-FOR 2026-12-24: IndexError: list index out of range
+  ! Google AMS-FOR 2026-12-26: IndexError: list index out of range
+  ! Google AMS-FOR 2026-12-31: IndexError: list index out of range
+FOR-AMS: 82+83 dias · menor ida R$ 1.997 · média R$ 3.826 · 48%
+  ida e volta R$ 5.335 acima do teto da região (R$ 4.500) — sem alerta
+  ! Google FOR-POA 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-POA 2026-10-29: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-05: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-12: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-15: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-17: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-19: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-22: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-23: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-24: IndexError: list index out of range
+  ! Google FOR-POA 2026-11-25: IndexError: list index out of range
+  ! FOR-POA: muitos erros seguidos, parando
+  ! Google POA-FOR 2026-12-22: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2027-01-09: IndexError: list index out of range
+  ! Google POA-FOR 2027-01-11: IndexError: list index out of range
+FOR-POA: 30+88 dias · menor ida R$ 822 · média R$ 1.243 · 34%
+  ida e volta R$ 1.543 acima do teto da região (R$ 1.490) — sem alerta
+  ! Google FOR-FEN 2026-10-16: IndexError: list index out of range
+  ! Google FOR-FEN 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FEN-FOR 2026-10-31: TypeError: 'NoneType' object is not subscriptable
+  ! Google FEN-FOR 2026-11-04: FlightsNotFound: no flights found; received error
+  ! Google FEN-FOR 2026-11-25: FlightsNotFound: no flights found; received error
+FOR-FEN: 18+37 dias · menor ida R$ 1.401 · média R$ 3.860 · 64%
+  ida e volta R$ 3.006 acima do teto da região (R$ 1.100) — sem alerta
+  ! Google FOR-OPO 2026-11-22: IndexError: list index out of range
+  ! Google FOR-OPO 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-12-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2027-01-04: IndexError: list index out of range
+  ! Google FOR-OPO 2027-01-06: IndexError: list index out of range
+  ! Google FOR-OPO 2027-01-07: IndexError: list index out of range
+  ! Google FOR-OPO 2027-01-08: IndexError: list index out of range
+  ! Google OPO-FOR 2026-11-21: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-12-11: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-12-27: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2027-01-14: FlightsNotFound: no flights found; received error
+FOR-OPO: 84+86 dias · menor ida R$ 1.706 · média R$ 3.662 · 53%
+  ! Google FOR-MAO 2026-10-19: IndexError: list index out of range
+  ! Google FOR-MAO 2026-10-21: IndexError: list index out of range
+  ! Google FOR-MAO 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-MAO 2026-11-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-MAO 2027-01-13: FlightsNotFound: no flights found; received error
+  ! Google MAO-FOR 2026-10-16: FlightsNotFound: no flights found; received error
+  ! Google MAO-FOR 2026-10-20: IndexError: list index out of range
+  ! Google MAO-FOR 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google MAO-FOR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google MAO-FOR 2026-12-27: FlightsNotFound: no flights found; received error
+FOR-MAO: 86+86 dias · menor ida R$ 946 · média R$ 1.341 · 29%
+  ida e volta R$ 1.888 acima do teto da região (R$ 1.500) — sem alerta
+  conferido JDO 2026-12-12: R$ 296 (valendo)
+  conferido GYN 2026-11-11: R$ 594 (valendo)
+  conferido FLN 2026-12-08: R$ 434 (valendo)
+  conferido VIX 2026-11-07: R$ 605 (valendo)
+  conferido FLN 2026-12-08: R$ 434 (valendo)
 
-Rodada: 13 rotas · 0 candidatos · 0 alertas · 2820s
+Rodada: 13 rotas · 0 candidatos · 0 alertas · 2887s

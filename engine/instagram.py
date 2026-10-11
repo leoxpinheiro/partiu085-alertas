@@ -367,6 +367,34 @@ def ts(d: datetime) -> int:
     return int(d.timestamp())
 
 
+def ler_audiencia(conta: dict) -> None:
+    """1x por dia: horários em que os seguidores estão online e de onde eles são (cidades)."""
+    aud = conta.get("audiencia") or {}
+    hoje = datetime.now(FUSO).date().isoformat()
+    if aud.get("dia") == hoje:
+        return
+    novo = {"dia": hoje}
+    try:
+        j = api("GET", f"{USER}/insights", metric="online_followers", period="lifetime")
+        vals = [v.get("value") or {} for v in (j.get("data") or [{}])[0].get("values", []) if v.get("value")]
+        if vals:
+            soma = {}
+            for v in vals:
+                for h, n in v.items():
+                    soma[int(h)] = soma.get(int(h), 0) + (n or 0)
+            novo["online_utc"] = {str(h): round(n / len(vals)) for h, n in sorted(soma.items())}
+    except Exception as e:  # noqa: BLE001
+        novo["erro_online"] = str(e)[:200]
+    for quebra in ("city", "age", "gender"):
+        try:
+            j = api("GET", f"{USER}/insights", metric="follower_demographics", period="lifetime", metric_type="total_value", breakdown=quebra)
+            res = (((j.get("data") or [{}])[0].get("total_value") or {}).get("breakdowns") or [{}])[0].get("results") or []
+            novo[quebra] = sorted([{"k": r["dimension_values"][0], "n": r["value"]} for r in res], key=lambda x: -x["n"])[:12]
+        except Exception as e:  # noqa: BLE001
+            novo["erro_" + quebra] = str(e)[:200]
+    conta["audiencia"] = novo
+
+
 def ler_dias(conta: dict) -> None:
     """Números da conta por dia (últimos 30): alcance, visualizações, interações, visitas ao perfil, quem seguiu e deixou de seguir."""
     dias = conta.get("dias", {})
@@ -604,7 +632,7 @@ def main():
         hist = [h for h in hist if h["dia"] != hoje] + [{"dia": hoje, "seguidores": u.get("followers_count")}]
         conta.update({"ok": True, "erro": "", "usuario": u.get("username"), "seguidores": u.get("followers_count"), "seguindo": u.get("follows_count"),
                       "posts": u.get("media_count"), "historico": hist[-400:], "quando": agora})
-        for etapa in (ler_midias, ler_stories, ler_dias):
+        for etapa in (ler_midias, ler_stories, ler_dias, ler_audiencia):
             try:
                 etapa(conta)
             except Exception as e:  # noqa: BLE001

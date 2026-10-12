@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-12T09:34-03:00",
+ "atualizado": "2026-10-12T12:15-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Max retries exceeded with url: /feed/ (Caused by ConnectTimeoutError(<"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -76,37 +76,37 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 13,
+   "itens": 11,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 21,
+   "itens": 22,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 9,
+   "itens": 10,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 57,
+   "itens": 56,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 15,
+   "itens": 14,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 23,
+   "itens": 22,
    "ok": true
   },
   {
@@ -123,6 +123,31 @@
   }
  ],
  "ofertas": [
+  {
+   "tipo": "bonus",
+   "titulo": "Último dia! Transfira pontos Nubank para a Livelo e ganhe 10% de bônus",
+   "resumo": "Hoje (12) é o último dia para transferir pontos do Nubank para a Livelo e ganhar 10% de bônus. A oferta é válida para clientes Ultravioleta que transferirem acima de 1.000 pontos, com limite de 50 mil pontos bônus por CPF. Não perca essa oportunidade! O post Último dia! Transfira",
+   "link": "https://passageirodeprimeira.com/ultimo-dia-transfira-pontos-nubank-para-a-livelo-e-ganhe-10-de-bonus/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-10-12T10:00-03:00",
+   "programas": [
+    "Nubank",
+    "Livelo"
+   ],
+   "de": "Nubank",
+   "para": null,
+   "pct": 10,
+   "milhas": null,
+   "validade": "2026-10-12",
+   "fortaleza": false,
+   "id": "mi-b608cda139",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-10-12T12:15-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Nubank\n🎁 Até *10% de bônus* na transferência\n⏰ Válido até 12/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "ativa": true
+  },
   {
    "tipo": "clube",
    "titulo": "Esfera oferece até 60.000 pontos bônus na assinatura do clube",

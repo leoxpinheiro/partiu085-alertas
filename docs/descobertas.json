@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-11T21:37+00:00",
+ "atualizado": "2026-10-11T23:17+00:00",
  "pistas": [
   "BEL",
   "BUE",
@@ -8,6 +8,7 @@
   "FLN",
   "IGU",
   "LIS",
+  "LON",
   "POA",
   "REC",
   "RIO",
@@ -59,6 +60,19 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
+   "pista": true
+  },
+  {
+   "iata": "POA",
+   "ow": {
+    "preco": 912,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-09T13:10:33Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
    "pista": true
   },
   {
@@ -200,26 +214,6 @@
    "pista": true
   },
   {
-   "iata": "POA",
-   "rt": {
-    "preco": 1637,
-    "ida": "2026-11-28",
-    "volta": "2026-11-30",
-    "paradas": 2,
-    "visto": "2026-10-07T22:49:08Z"
-   },
-   "ow": {
-    "preco": 613,
-    "ida": "2026-12-01",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-07T22:47:08Z"
-   },
-   "rastreada": true,
-   "nome": "Porto Alegre",
-   "pista": true
-  },
-  {
    "iata": "BVB",
    "rt": {
     "preco": 2155,
@@ -244,6 +238,19 @@
    "rastreada": true,
    "nome": "Manaus",
    "pista": false
+  },
+  {
+   "iata": "LON",
+   "ow": {
+    "preco": 2301,
+    "ida": "2026-11-29",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-11T21:54:58Z"
+   },
+   "rastreada": true,
+   "nome": "Londres",
+   "pista": true
   },
   {
    "iata": "EVN",
@@ -354,6 +361,19 @@
    },
    "rastreada": false,
    "nome": "LED",
+   "pista": false
+  },
+  {
+   "iata": "THE",
+   "rt": {
+    "preco": 5752,
+    "ida": "2026-10-13",
+    "volta": "2026-10-13",
+    "paradas": 1,
+    "visto": "2026-10-11T22:43:10Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
    "pista": false
   },
   {

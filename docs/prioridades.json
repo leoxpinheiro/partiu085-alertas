@@ -183,7 +183,7 @@
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (3 de ~90 dias)"
+   "motivo": "poucos voos (2 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -206,9 +206,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "VCP": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
   },
   "CGB": {
    "prioridade": "normal",
@@ -271,20 +271,25 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-11T23:37-03:00",
+ "quando": "2026-10-12T01:18-03:00",
  "ultimo_lote": [
-  "PMW",
-  "MIA",
-  "PAR",
-  "VCP",
-  "AMS",
-  "BHZ",
-  "JPA",
-  "REC",
-  "SAO",
-  "RIO",
-  "POA",
-  "OPO",
-  "CTG"
+  "MAO",
+  "BSB",
+  "ROM",
+  "CGR",
+  "NVT",
+  "BEL",
+  "PTY",
+  "IGU",
+  "BCN",
+  "CWB",
+  "SCL",
+  "BOG",
+  "SID",
+  "SLZ",
+  "NYC",
+  "FLN",
+  "LON",
+  "NAT"
  ]
 }

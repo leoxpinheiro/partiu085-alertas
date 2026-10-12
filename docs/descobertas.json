@@ -1,14 +1,15 @@
 {
- "atualizado": "2026-10-12T14:06+00:00",
+ "atualizado": "2026-10-12T17:41+00:00",
  "pistas": [
   "BUE",
   "CGB",
   "CWB",
   "IGU",
-  "LIS",
   "POA",
   "REC",
-  "SAO"
+  "RIO",
+  "SAO",
+  "SLZ"
  ],
  "blogs": [
   {
@@ -29,7 +30,7 @@
    },
    "rastreada": true,
    "nome": "São Luís",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "BEL",
@@ -145,8 +146,28 @@
     "paradas": 2,
     "visto": "2026-10-11T16:37:15Z"
    },
+   "ow": {
+    "preco": 774,
+    "ida": "2026-10-22",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-12T17:32:59Z"
+   },
    "rastreada": true,
    "nome": "Belo Horizonte",
+   "pista": false
+  },
+  {
+   "iata": "MAD",
+   "ow": {
+    "preco": 1571,
+    "ida": "2026-11-20",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-12T17:28:04Z"
+   },
+   "rastreada": true,
+   "nome": "Madri",
    "pista": false
   },
   {
@@ -167,6 +188,19 @@
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
+   "iata": "ROM",
+   "ow": {
+    "preco": 1830,
+    "ida": "2026-11-05",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-12T15:08:16Z"
+   },
+   "rastreada": true,
+   "nome": "Roma",
    "pista": false
   },
   {
@@ -219,6 +253,19 @@
    },
    "rastreada": false,
    "nome": "EVN",
+   "pista": false
+  },
+  {
+   "iata": "LIS",
+   "ow": {
+    "preco": 2304,
+    "ida": "2027-02-26",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-10T14:29:13Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
    "pista": false
   },
   {
@@ -276,7 +323,7 @@
   {
    "iata": "PAR",
    "rt": {
-    "preco": 4731,
+    "preco": 4727,
     "ida": "2027-03-22",
     "volta": "2027-04-03",
     "paradas": 1,
@@ -300,26 +347,6 @@
    "pista": false
   },
   {
-   "iata": "LIS",
-   "rt": {
-    "preco": 5626,
-    "ida": "2026-10-12",
-    "volta": "2026-10-26",
-    "paradas": 1,
-    "visto": "2026-10-11T02:28:00Z"
-   },
-   "ow": {
-    "preco": 1637,
-    "ida": "2026-11-20",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-08T18:29:02Z"
-   },
-   "rastreada": true,
-   "nome": "Lisboa",
-   "pista": true
-  },
-  {
    "iata": "LED",
    "ow": {
     "preco": 5707,
@@ -340,6 +367,13 @@
     "volta": "2026-10-13",
     "paradas": 1,
     "visto": "2026-10-11T22:43:10Z"
+   },
+   "ow": {
+    "preco": 1699,
+    "ida": "2026-10-12",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-10T15:25:46Z"
    },
    "rastreada": true,
    "nome": "Teresina",

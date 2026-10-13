@@ -19,6 +19,16 @@ def main():
     out = {"atualizado": conta.get("quando"), "como_ler": "nota = 3x compartilhamentos + 2x salvos + comentários. Repita o que está no topo, evite o que está no fim.",
            "melhores": rows[:10], "piores": [r for r in rows if r["alcance"] >= 50][-8:]}
     (DOCS / "ig_ranking.json").write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", "utf-8")
+    # o topo do ranking vira o 1º aprendizado da pauta (quem cria conteúdo lê docs/ideias_virais.json)
+    iv = DOCS / "ideias_virais.json"
+    try:
+        d = json.loads(iv.read_text("utf-8"))
+        top = "; ".join(f"\"{r['titulo']}\" ({r['tipo']}, {r['compart']} compart., {r['salvos']} salvos)" for r in rows[:3])
+        L = [a for a in d.get("aprendizados", []) if not a.startswith("📈 AUTOMÁTICO")]
+        d["aprendizados"] = [f"📈 AUTOMÁTICO ({(conta.get('quando') or '')[:10]}): nossos posts que mais compartilharam e salvaram: {top}. Faça mais disso."] + L
+        iv.write_text(json.dumps(d, ensure_ascii=False, indent=1), "utf-8")
+    except Exception as e:  # noqa: BLE001
+        print("ideias:", e)
     print("ranking", len(rows))
 
 

@@ -114,7 +114,7 @@ const DESENHA={
  versus(s,t,ui,uo,h){const A=s.a||{},B=s.b||{},fo=1-uo;
   fenda(s.titulo||'',540,380,caber(s.titulo||'',960,90),ui(t),uo,{cor:BR});
   [[A,0],[B,1]].forEach(([X,k])=>{const e=ev(t,s.t0+.25+k*.2,s.t0+.75+k*.2),x0=k?560:60,dx=(1-e)*(k?600:-600),win=s.ganhador===(k?'b':'a'),wv=ev(t,s.t0+2.2,s.t0+2.6,'back');
-   if(e<=0)return;c.save();c.globalAlpha=fo*(win||wv<=0?1:1-.45*cl(wv));c.translate(dx,0);c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=50;c.fillStyle=BR;rr(x0,540,460,960,44);c.fill();c.shadowBlur=0;
+   if(e<=0)return;c.save();c.globalAlpha=fo*(win||wv<=0||!s.ganhador?1:1-.45*cl(wv));c.translate(dx,0);c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=50;c.fillStyle=BR;rr(x0,540,460,960,44);c.fill();c.shadowBlur=0;
    if(win&&wv>0){c.strokeStyle=AM;c.lineWidth=10*cl(wv);rr(x0,540,460,960,44);c.stroke();}
    const cx=x0+230;quebra(X.tag||'',380,30,'Jakarta',800).forEach((l,i)=>T(l,cx,640+i*40,30,{font:'J',peso:800,esp:3,cor:'#6b7a8c'}));
    const sz=caber(X.valor||'',400,X.tam||130);T(X.valor||'',cx,860,sz,{cor:NV});
@@ -123,10 +123,10 @@ const DESENHA={
    if(win&&wv>0){c.save();c.globalAlpha=fo;c.translate(cx+dx,540);c.rotate(-.08);c.scale(wv,wv);c.fillStyle=AM;rr(-150,-40,300,80,40);c.fill();T(s.selo||'VALE MAIS',0,3,40,{cor:NV});c.restore();}});
   const vs=ev(t,s.t0+.5,s.t0+.9,'back');if(vs>0){c.save();c.globalAlpha=fo;c.translate(540,1020);c.scale(vs,vs);c.fillStyle=AM;c.beginPath();c.arc(0,0,62,0,7);c.fill();T('VS',0,4,52,{cor:NV});c.restore();}
   if(s.rodape)fenda(s.rodape,540,1600,34,ev(t,s.t0+2.6,s.t0+2.9),uo,{font:'J',peso:700,cor:'rgba(255,255,255,.85)'});},
- frase(s,t,ui,uo,h){const cor=s.cor==='azul'?BR:NV,L=s.linhas||[],sz=linhasGrandes(L,940,s.tam||140),lh=sz*1.1,y0=960-(L.length-1)*lh/2-(s.sub?50:0);let k=0;
+ frase(s,t,ui,uo,h){const cor=s.cor==='azul'?BR:NV,L=s.linhas||[],sz=linhasGrandes(L,940,s.tam||140),lh=sz*((s.destaque||[]).length?1.28:1.1),y0=960-(L.length-1)*lh/2-(s.sub?50:0);let k=0;
   L.forEach((l,i)=>{const ps=l.split(' '),ws=ps.map(p=>larg(p+' ',sz,'Anton')),tw=ws.reduce((a,b)=>a+b,0)-larg(' ',sz,'Anton');let x=540-tw/2;const y=y0+i*lh;
    ps.forEach((p,j)=>{const a=s.t0+.25+k*.11,u=ev(t,a,a+.4,'back'),d=(s.destaque||[]).some(z=>p.toUpperCase().includes(z.toUpperCase()));k++;
-    if(u>0&&uo<1){const w=larg(p,sz,'Anton');if(d){const hv=ev(t,a+.2,a+.45);c.save();c.globalAlpha=1-uo;c.fillStyle=s.cor==='azul'?AM:NV;rr(x-12,y-sz*.55,(w+24)*hv,sz*1.1,16);c.fill();c.restore();}
+    if(u>0&&uo<1){const w=larg(p,sz,'Anton');if(d){const hv=ev(t,a+.2,a+.45);c.save();c.globalAlpha=1-uo;c.fillStyle=s.cor==='azul'?AM:NV;c.font=F(sz);c.textBaseline='middle';const mt=c.measureText(p),as=mt.actualBoundingBoxAscent+12,ds=mt.actualBoundingBoxDescent+12;rr(x-12,y-as,(w+24)*hv,as+ds,14);c.fill();c.restore();}
      T(p,x+w/2,y+(1-cl(u))*60-uo*120,sz,{cor:d?(s.cor==='azul'?NV:AM):cor,sc:cl(u,0,1.2),a:1-uo});}x+=ws[j];});});
   if(s.sub)fenda(s.sub,540,y0+L.length*lh+30,40,ev(t,s.t0+.4+k*.11,s.t0+.75+k*.11),uo,{font:'J',peso:800,cor});},
  foto(s,t,ui,uo,h){const [x,y,w,hh,r]=h.f,im=IMG['f'+s.i];c.save();rr(x-w/2,y-hh/2,w,hh,r);c.clip();
@@ -142,7 +142,7 @@ const DESENHA={
   L.forEach((l,i)=>{const u=ev(t,a+.25+i*.2,a+.6+i*.2),ult=i===L.length-1,p=ult?1+.25*(1-ev(t,a+.25+i*.2,a+.75+i*.2,'out')):1,yy=740+i*lh;if(u<=0)return;
    c.save();c.beginPath();c.rect(0,yy-lh*.68,W,lh*1.3);c.clip();T(l,540,yy+(1-u)*lh,sz,{cor:NV,sc:p});c.restore();});
   const by=760+L.length*lh+110,b=ev(t,a+1.2,a+1.6,'back');if(b>0){const pu=t>a+1.8?1+.04*kk:1;c.save();c.translate(540,by);c.scale(b*pu,b*pu);c.fillStyle=NV;c.shadowColor='rgba(11,36,64,.4)';c.shadowBlur=40;rr(-420,-85,840,170,85);c.fill();c.shadowBlur=0;
-   T(s.botao||'ENTRA NO GRUPO GRÁTIS',0,-14,caber(s.botao||'ENTRA NO GRUPO GRÁTIS',740,52,'Jakarta',800),{font:'J',peso:800,cor:BR});T(s.botao_sub||'alertas de passagem no WhatsApp',0,38,30,{font:'J',peso:600,cor:AM});c.restore();}
+   T(s.botao||'ENTRA NO GRUPO GRÁTIS',0,-14,caber(s.botao||'ENTRA NO GRUPO GRÁTIS',740,52,'Jakarta',800),{font:'J',peso:800,cor:BR});T(s.botao_sub||'alertas de passagem no WhatsApp',0,38,caber(s.botao_sub||'alertas de passagem no WhatsApp',700,30,'Jakarta',600),{font:'J',peso:600,cor:AM});c.restore();}
   const tq=seg(t,a+1.9,a+2.6);if(tq>0&&tq<1){c.strokeStyle=`rgba(11,36,64,${1-tq})`;c.lineWidth=8;c.beginPath();c.arc(880,by+35,30+120*E.out(tq),0,7);c.stroke();}
   fenda(s.rodape||'link na bio · @partiu.085',540,by+170,42,ev(t,a+1.7,a+2.0),0,{font:'J',peso:800,cor:NV});},
 };

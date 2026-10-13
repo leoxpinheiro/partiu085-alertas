@@ -170,6 +170,7 @@ function montarTextoDinheiro(a) {
   if (a.vip) L.push("🎯 _Rota acompanhada a pedido dos assinantes VIP_");
   L.push("", "🗓️ *IDA*", ...a.ida_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
   if (a.volta_meses && a.volta_meses.length) L.push("", "🗓️ *VOLTA*", ...a.volta_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  if (a.milhas && a.milhas.length) L.push("", `💎 *Em milhas* (ida em ${a.ida.slice(8, 10)}/${a.ida.slice(5, 7)}):`, ...a.milhas.map(m => `▸ ${m.programa}: ${Number(m.milhas).toLocaleString("pt-BR")}${m.taxa ? ` + ${brl(m.taxa)} de taxas` : ""}`));
   const av = aj.aviso_preco ?? AVISO_PADRAO; if (av.trim()) L.push("", av.trim());
   if (aj.link_afiliado !== false && a.link_compra) L.push(`🛒 Ver e comprar: ${a.link_compra}`);
   else if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);

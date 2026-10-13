@@ -303,6 +303,26 @@ def mes_curto(g: dict) -> str:
     return f"{nome}/{ano[2:]}" if ano else nome
 
 
+def milhas_do_voo(dest: str, dia: str) -> list[dict]:
+    """Mesmo voo (dia da ida) em milhas, pela GeckoAPI (Smiles e Azul). Sem a chave GECKO_API_KEY, não faz nada."""
+    if not os.environ.get("GECKO_API_KEY") or OFFLINE:
+        return []
+    import milhas_busca as MB
+    out = []
+    for prog in MB.PROGRAMAS:
+        try:
+            voos = [v for v in MB.gecko(prog, C.ORIGEM, MB.AEROPORTO.get(dest, dest), dia) if v.get("milhas")]
+        except Exception as e:  # noqa: BLE001
+            log(f"  ! milhas {prog} {dest} {dia}: {e}")
+            continue
+        if voos:
+            b = min(voos, key=lambda v: v["milhas"])
+            out.append({"programa": prog, "milhas": int(b["milhas"]), "taxa": round(float(b.get("taxa") or 0)), "cia": b.get("cia") or ""})
+    if out:
+        log("  milhas: " + " · ".join(f"{m['programa']} {m['milhas']:,}".replace(",", ".") for m in out))
+    return out
+
+
 def montar_texto(a: dict, aj: dict) -> str:
     esc = a["escalas"]
     paradas = "voo direto" if esc == 0 else f"{esc} parada" + ("s" if esc and esc > 1 else "")
@@ -326,6 +346,8 @@ def montar_texto(a: dict, aj: dict) -> str:
         L.append("🎯 _Rota acompanhada a pedido dos assinantes VIP_")
     L += ["", "🗓️ *IDA*"] + [f"▸ {mes_curto(g)}: {', '.join(g['dias'])}" for g in a["ida_meses"]]
     L += ["", "🗓️ *VOLTA*"] + [f"▸ {mes_curto(g)}: {', '.join(g['dias'])}" for g in a["volta_meses"]]
+    if a.get("milhas"):
+        L += ["", f"💎 *Em milhas* (ida em {a['ida'][8:10]}/{a['ida'][5:7]}):"] + [f"▸ {m['programa']}: {m['milhas']:,}".replace(",", ".") + (f" + {brl(m['taxa'])} de taxas" if m.get("taxa") else "") for m in a["milhas"]]
     aviso = aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._")
     if aviso and aviso.strip():
         L += ["", aviso.strip()]
@@ -724,6 +746,10 @@ def rodada() -> None:
             menor_visto = min(h["minimo"] for h in passado)
             a["base"] = {"dias": len(passado), "menor_visto": round(menor_visto)}
             a["recorde"] = len(passado) >= 3 and a["preco"] <= menor_visto
+        try:
+            a["milhas"] = milhas_do_voo(r["iata"], mi["dia"])
+        except Exception as e:  # noqa: BLE001
+            log(f"  ! milhas {r['iata']}: {e}")
         a["texto"] = montar_texto(a, aj)
         a["telegram"] = postar_telegram(a["texto"], aj, foto=imagem_alerta(a))
         novos.append(a)

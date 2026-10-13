@@ -1,6 +1,130 @@
 {
- "atualizado": "2026-10-13T13:24-03:00",
+ "atualizado": "2026-10-13T14:21-03:00",
  "alertas": [
+  {
+   "id": "FOR-RIO-2026-11-11-1791912080",
+   "criado": "2026-10-13T14:21-03:00",
+   "rota": "FOR-RIO",
+   "destino": "RIO",
+   "destino_nome": "Rio de Janeiro",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 632,
+   "preco_volta": 635,
+   "preco_tipico": 902,
+   "desconto": 0.299,
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2026-11-11",
+   "volta": "2026-11-14",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-10",
+     "preco": 633
+    },
+    {
+     "dia": "2026-11-11",
+     "preco": 632
+    },
+    {
+     "dia": "2026-12-05",
+     "preco": 633
+    },
+    {
+     "dia": "2026-12-07",
+     "preco": 633
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-14",
+     "preco": 635
+    },
+    {
+     "dia": "2026-11-15",
+     "preco": 651
+    },
+    {
+     "dia": "2026-11-21",
+     "preco": 636
+    },
+    {
+     "dia": "2026-11-28",
+     "preco": 635
+    },
+    {
+     "dia": "2026-12-02",
+     "preco": 636
+    },
+    {
+     "dia": "2026-12-03",
+     "preco": 636
+    },
+    {
+     "dia": "2026-12-08",
+     "preco": 651
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 636
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "10",
+      "11"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "05",
+      "07"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "14",
+      "15",
+      "21",
+      "28"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "02",
+      "03",
+      "08",
+      "09"
+     ]
+    }
+   ],
+   "meses": [
+    "nov",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTFqBRIDRk9ScgUSA1JJT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1111RIO14111?marker=677880&currency=brl",
+   "base": {
+    "dias": 7,
+    "menor_visto": 496
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 632* o trecho\n🔁 Ida e volta a partir de *R$ 1.267*\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10, 11\n▸ Dezembro/26: 05, 07\n\n🗓️ *VOLTA*\n▸ Novembro/26: 14, 15, 21, 28\n▸ Dezembro/26: 02, 03, 08, 09\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1111RIO14111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-OPO-2026-10-20-1791908671",
    "criado": "2026-10-13T13:24-03:00",
@@ -82,7 +206,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.705* o trecho\n🔁 Ida e volta a partir de *R$ 4.401*\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 20, 22\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11, 25\n▸ Dezembro/26: 01\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2010OPO11111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-13T14:21-03:00",
+    "preco": 1705,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-BEL-2026-11-03-1791908672",
@@ -181,7 +310,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 600* o trecho\n🔁 Ida e volta a partir de *R$ 1.189*\n🔥 *IMPERDÍVEL*\n🛫 Azul · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 31\n▸ Novembro/26: 03, 06, 07, 10, 19\n\n🗓️ *VOLTA*\n▸ Novembro/26: 03, 29\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0311BEL03111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-13T14:21-03:00",
+    "preco": 600,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-VIX-2026-11-11-1791908674",
@@ -345,7 +479,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 623* o trecho\n🔁 Ida e volta a partir de *R$ 1.240*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 11, 12, 13, 14, 17, 25, 26\n▸ Dezembro/26: 02, 08, 09\n\n🗓️ *VOLTA*\n▸ Novembro/26: 13, 14, 16, 17, 21, 25, 28, 30\n▸ Dezembro/26: 02, 13\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1111VIX16111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-13T14:21-03:00",
+    "preco": 623,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-VIX-2026-11-10-1791883792",
@@ -414,8 +553,8 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 783* o trecho\n🔁 Ida e volta a partir de *R$ 1.432*\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10, 11\n\n🗓️ *VOLTA*\n▸ Novembro/26: 13\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-13T10:06-03:00",
-    "preco": 775,
+    "quando": "2026-10-13T14:21-03:00",
+    "preco": 624,
     "status": "valendo"
    }
   },

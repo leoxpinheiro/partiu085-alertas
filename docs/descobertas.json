@@ -1,11 +1,11 @@
 {
- "atualizado": "2026-10-13T15:48+00:00",
+ "atualizado": "2026-10-13T16:49+00:00",
  "pistas": [
+  "BEL",
   "BSB",
   "BUE",
   "CWB",
   "IGU",
-  "LIS",
   "MAD",
   "REC",
   "RIO",
@@ -46,7 +46,7 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SSA",
@@ -64,7 +64,7 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 838,
+    "preco": 836,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 1,
@@ -187,39 +187,6 @@
    "pista": true
   },
   {
-   "iata": "LIS",
-   "ow": {
-    "preco": 1794,
-    "ida": "2026-11-18",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-09T16:23:25Z"
-   },
-   "rastreada": true,
-   "nome": "Lisboa",
-   "pista": true
-  },
-  {
-   "iata": "BSB",
-   "rt": {
-    "preco": 1823,
-    "ida": "2026-12-19",
-    "volta": "2026-12-21",
-    "paradas": 2,
-    "visto": "2026-10-13T14:44:13Z"
-   },
-   "ow": {
-    "preco": 671,
-    "ida": "2026-12-21",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-13T14:42:18Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
-   "pista": true
-  },
-  {
    "iata": "ROM",
    "ow": {
     "preco": 1831,
@@ -235,14 +202,14 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1837,
+    "preco": 1832,
     "ida": "2026-12-19",
     "volta": "2026-12-21",
     "paradas": 2,
     "visto": "2026-10-13T14:44:13Z"
    },
    "ow": {
-    "preco": 676,
+    "preco": 675,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 0,
@@ -255,7 +222,7 @@
   {
    "iata": "NVT",
    "ow": {
-    "preco": 1936,
+    "preco": 1931,
     "ida": "2026-10-17",
     "volta": "",
     "paradas": 1,
@@ -263,19 +230,6 @@
    },
    "rastreada": true,
    "nome": "Navegantes",
-   "pista": false
-  },
-  {
-   "iata": "BVB",
-   "rt": {
-    "preco": 2169,
-    "ida": "2026-12-20",
-    "volta": "2027-01-02",
-    "paradas": 2,
-    "visto": "2026-10-09T16:43:18Z"
-   },
-   "rastreada": false,
-   "nome": "BVB",
    "pista": false
   },
   {
@@ -318,6 +272,19 @@
    "pista": false
   },
   {
+   "iata": "LIS",
+   "ow": {
+    "preco": 2304,
+    "ida": "2027-02-26",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-10T14:29:13Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": false
+  },
+  {
    "iata": "BUE",
    "rt": {
     "preco": 2325,
@@ -346,7 +313,7 @@
   {
    "iata": "SID",
    "ow": {
-    "preco": 2791,
+    "preco": 2784,
     "ida": "2027-03-08",
     "volta": "",
     "paradas": 1,
@@ -424,7 +391,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 5968,
+    "preco": 5953,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

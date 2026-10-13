@@ -1,5 +1,285 @@
 {
- "atualizado": "2026-10-13T19:52-03:00",
- "ok": false,
- "erro": "HTTP 400: wrong field: redirect_count\n"
+ "atualizado": "2026-10-13T19:53-03:00",
+ "ok": true,
+ "campos_api": [
+  {
+   "name": "actions_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "app_install_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "cancelled_actions_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "clicks_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "ecpc_eur",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "ecpc_rub",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "ecpc_usd",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "init_tools_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "inits_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "paid_actions_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "paid_profit_eur_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "paid_profit_rub_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "paid_profit_usd_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "price_eur_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "price_rub_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "price_usd_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "processing_actions_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "processing_profit_eur_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "processing_profit_rub_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "processing_profit_usd_sum",
+   "type": "money",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "redirects_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "searches_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  },
+  {
+   "name": "visitors_count",
+   "type": "int",
+   "available_filters": [
+    "eq",
+    "ne",
+    "le",
+    "lt",
+    "ge",
+    "gt"
+   ]
+  }
+ ],
+ "por_dia": [],
+ "por_programa": [],
+ "por_canal": []
 }

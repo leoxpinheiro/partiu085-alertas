@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-13T18:47+00:00",
+ "atualizado": "2026-10-13T19:47+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -14,6 +14,7 @@
   "RIO",
   "ROM",
   "SAO",
+  "SID",
   "SLZ",
   "SSA"
  ],
@@ -67,7 +68,7 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 833,
+    "preco": 835,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 1,
@@ -153,7 +154,7 @@
     "visto": "2026-10-11T16:37:15Z"
    },
    "ow": {
-    "preco": 495,
+    "preco": 496,
     "ida": "2026-11-03",
     "volta": "",
     "paradas": 1,
@@ -199,14 +200,14 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1826,
+    "preco": 1831,
     "ida": "2026-12-19",
     "volta": "2026-12-21",
     "paradas": 2,
     "visto": "2026-10-13T14:44:13Z"
    },
    "ow": {
-    "preco": 672,
+    "preco": 674,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 0,
@@ -232,7 +233,7 @@
   {
    "iata": "NVT",
    "ow": {
-    "preco": 1925,
+    "preco": 1930,
     "ida": "2026-10-17",
     "volta": "",
     "paradas": 1,
@@ -282,19 +283,6 @@
    "pista": false
   },
   {
-   "iata": "LIS",
-   "ow": {
-    "preco": 2304,
-    "ida": "2027-02-26",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-10T14:29:13Z"
-   },
-   "rastreada": true,
-   "nome": "Lisboa",
-   "pista": false
-  },
-  {
    "iata": "BUE",
    "rt": {
     "preco": 2325,
@@ -336,7 +324,7 @@
   {
    "iata": "SID",
    "ow": {
-    "preco": 2775,
+    "preco": 2781,
     "ida": "2027-03-08",
     "volta": "",
     "paradas": 1,
@@ -344,7 +332,7 @@
    },
    "rastreada": true,
    "nome": "Cabo Verde (Sal)",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "LIM",
@@ -399,6 +387,26 @@
    "pista": false
   },
   {
+   "iata": "LIS",
+   "rt": {
+    "preco": 5136,
+    "ida": "2026-12-28",
+    "volta": "2027-01-13",
+    "paradas": 1,
+    "visto": "2026-10-13T19:22:47Z"
+   },
+   "ow": {
+    "preco": 2304,
+    "ida": "2027-02-26",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-10T14:29:13Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": false
+  },
+  {
    "iata": "LED",
    "ow": {
     "preco": 5707,
@@ -414,7 +422,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 5934,
+    "preco": 5948,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

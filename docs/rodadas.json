@@ -1814,13 +1814,44 @@
    "THE",
    "CGB"
   ],
-  "rotas_com_dados": 15,
-  "candidatos": 2,
-  "alertas": 2,
+  "rotas_com_dados": 5,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": true,
+  "segundos": 1251,
+  "consultas": 910,
+  "erros": 251,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-13T13:24-03:00",
+  "rotas": [
+   "SSA",
+   "GYN",
+   "VIX",
+   "JDO",
+   "PMW",
+   "PAR",
+   "VCP",
+   "BHZ",
+   "NVT",
+   "POA",
+   "OPO",
+   "CGB",
+   "BSB",
+   "BEL",
+   "SLZ",
+   "CWB",
+   "FLN",
+   "IGU"
+  ],
+  "rotas_com_dados": 18,
+  "candidatos": 3,
+  "alertas": 3,
   "manual": false,
-  "segundos": 3049,
-  "consultas": 2742,
-  "erros": 503,
-  "parou_por_tempo": true
+  "segundos": 2172,
+  "consultas": 3276,
+  "erros": 464,
+  "parou_por_tempo": false
  }
 ]

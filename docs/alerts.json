@@ -1,9 +1,9 @@
 {
- "atualizado": "2026-10-13T12:47-03:00",
+ "atualizado": "2026-10-13T13:24-03:00",
  "alertas": [
   {
-   "id": "FOR-OPO-2026-10-22-1791906429",
-   "criado": "2026-10-13T12:47-03:00",
+   "id": "FOR-OPO-2026-10-20-1791908671",
+   "criado": "2026-10-13T13:24-03:00",
    "rota": "FOR-OPO",
    "destino": "OPO",
    "destino_nome": "Porto",
@@ -17,11 +17,15 @@
    "classe_txt": "🔥 IMPERDÍVEL",
    "cia_nome": "Tap Air Portugal",
    "escalas": 1,
-   "ida": "2026-10-22",
+   "ida": "2026-10-20",
    "volta": "2026-11-11",
    "vip": false,
    "vip_nome": "",
    "datas_ida": [
+    {
+     "dia": "2026-10-20",
+     "preco": 1705
+    },
     {
      "dia": "2026-10-22",
      "preco": 1705
@@ -30,10 +34,6 @@
    "datas_volta": [
     {
      "dia": "2026-11-11",
-     "preco": 2696
-    },
-    {
-     "dia": "2026-11-20",
      "preco": 2696
     },
     {
@@ -49,6 +49,7 @@
     {
      "mes": "Outubro 2026",
      "dias": [
+      "20",
       "22"
      ]
     }
@@ -58,7 +59,6 @@
      "mes": "Novembro 2026",
      "dias": [
       "11",
-      "20",
       "25"
      ]
     },
@@ -73,51 +73,147 @@
     "out"
    ],
    "verificado": true,
-   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTAtMjJqBRIDRk9ScgUSA09QT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
-   "link_compra": "https://www.aviasales.com/search/FOR2210OPO11111?marker=677880",
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTAtMjBqBRIDRk9ScgUSA09QT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2010OPO11111?marker=677880&currency=brl",
    "base": {
     "dias": 7,
     "menor_visto": 1699
    },
    "recorde": false,
-   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.705* o trecho\n🔁 Ida e volta a partir de *R$ 4.401*\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 22\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11, 20, 25\n▸ Dezembro/26: 01\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.705* o trecho\n🔁 Ida e volta a partir de *R$ 4.401*\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 20, 22\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11, 25\n▸ Dezembro/26: 01\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2010OPO11111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true
   },
   {
-   "id": "FOR-VIX-2026-11-10-1791906430",
-   "criado": "2026-10-13T12:47-03:00",
+   "id": "FOR-BEL-2026-11-03-1791908672",
+   "criado": "2026-10-13T13:24-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 600,
+   "preco_volta": 589,
+   "preco_tipico": 1073,
+   "desconto": 0.441,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Azul",
+   "escalas": 1,
+   "ida": "2026-11-03",
+   "volta": "2026-11-03",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-10-31",
+     "preco": 611
+    },
+    {
+     "dia": "2026-11-03",
+     "preco": 600
+    },
+    {
+     "dia": "2026-11-06",
+     "preco": 611
+    },
+    {
+     "dia": "2026-11-07",
+     "preco": 611
+    },
+    {
+     "dia": "2026-11-10",
+     "preco": 611
+    },
+    {
+     "dia": "2026-11-19",
+     "preco": 611
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-03",
+     "preco": 589
+    },
+    {
+     "dia": "2026-11-29",
+     "preco": 639
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Outubro 2026",
+     "dias": [
+      "31"
+     ]
+    },
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "03",
+      "06",
+      "07",
+      "10",
+      "19"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "03",
+      "29"
+     ]
+    }
+   ],
+   "meses": [
+    "out",
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMDNqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0311BEL03111?marker=677880&currency=brl",
+   "base": {
+    "dias": 7,
+    "menor_visto": 307
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 600* o trecho\n🔁 Ida e volta a partir de *R$ 1.189*\n🔥 *IMPERDÍVEL*\n🛫 Azul · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 31\n▸ Novembro/26: 03, 06, 07, 10, 19\n\n🗓️ *VOLTA*\n▸ Novembro/26: 03, 29\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0311BEL03111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-VIX-2026-11-11-1791908674",
+   "criado": "2026-10-13T13:24-03:00",
    "rota": "FOR-VIX",
    "destino": "VIX",
    "destino_nome": "Vitória",
    "tipo": "nacional",
    "modo": "trecho",
-   "preco": 624,
-   "preco_volta": 618,
-   "preco_tipico": 940,
-   "desconto": 0.336,
+   "preco": 623,
+   "preco_volta": 617,
+   "preco_tipico": 936,
+   "desconto": 0.334,
    "classe": "otima",
    "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
-   "cia_nome": "LATAM",
+   "cia_nome": "Gol",
    "escalas": 1,
-   "ida": "2026-11-10",
-   "volta": "2026-11-10",
+   "ida": "2026-11-11",
+   "volta": "2026-11-16",
    "vip": false,
    "vip_nome": "",
    "datas_ida": [
     {
-     "dia": "2026-10-27",
-     "preco": 655
+     "dia": "2026-11-11",
+     "preco": 623
     },
     {
-     "dia": "2026-10-28",
-     "preco": 655
-    },
-    {
-     "dia": "2026-11-10",
+     "dia": "2026-11-12",
      "preco": 624
     },
     {
-     "dia": "2026-11-11",
+     "dia": "2026-11-13",
      "preco": 624
     },
     {
@@ -125,23 +221,31 @@
      "preco": 624
     },
     {
+     "dia": "2026-11-17",
+     "preco": 624
+    },
+    {
      "dia": "2026-11-25",
      "preco": 624
+    },
+    {
+     "dia": "2026-11-26",
+     "preco": 624
+    },
+    {
+     "dia": "2026-12-02",
+     "preco": 624
+    },
+    {
+     "dia": "2026-12-08",
+     "preco": 623
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 623
     }
    ],
    "datas_volta": [
-    {
-     "dia": "2026-11-10",
-     "preco": 618
-    },
-    {
-     "dia": "2026-11-11",
-     "preco": 618
-    },
-    {
-     "dia": "2026-11-12",
-     "preco": 618
-    },
     {
      "dia": "2026-11-13",
      "preco": 618
@@ -151,19 +255,15 @@
      "preco": 618
     },
     {
-     "dia": "2026-11-15",
-     "preco": 618
-    },
-    {
      "dia": "2026-11-16",
-     "preco": 618
+     "preco": 617
     },
     {
      "dia": "2026-11-17",
      "preco": 618
     },
     {
-     "dia": "2026-11-24",
+     "dia": "2026-11-21",
      "preco": 618
     },
     {
@@ -177,23 +277,35 @@
     {
      "dia": "2026-11-30",
      "preco": 618
+    },
+    {
+     "dia": "2026-12-02",
+     "preco": 618
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 677
     }
    ],
    "ida_meses": [
     {
-     "mes": "Outubro 2026",
+     "mes": "Novembro 2026",
      "dias": [
-      "27",
-      "28"
+      "11",
+      "12",
+      "13",
+      "14",
+      "17",
+      "25",
+      "26"
      ]
     },
     {
-     "mes": "Novembro 2026",
+     "mes": "Dezembro 2026",
      "dias": [
-      "10",
-      "11",
-      "14",
-      "25"
+      "02",
+      "08",
+      "09"
      ]
     }
    ],
@@ -201,34 +313,38 @@
     {
      "mes": "Novembro 2026",
      "dias": [
-      "10",
-      "11",
-      "12",
       "13",
       "14",
-      "15",
       "16",
       "17",
-      "24",
+      "21",
       "25",
       "28",
       "30"
      ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "02",
+      "13"
+     ]
     }
    ],
    "meses": [
-    "out",
-    "nov"
+    "nov",
+    "dez"
    ],
    "verificado": true,
-   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTBqBRIDRk9ScgUSA1ZJWEIBAUgBmAEC&hl=pt-BR&curr=BRL",
-   "link_compra": "https://www.aviasales.com/search/FOR1011VIX10111?marker=677880",
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTFqBRIDRk9ScgUSA1ZJWEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1111VIX16111?marker=677880&currency=brl",
    "base": {
     "dias": 7,
     "menor_visto": 559
    },
    "recorde": false,
-   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 624* o trecho\n🔁 Ida e volta a partir de *R$ 1.242*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 27, 28\n▸ Novembro/26: 10, 11, 14, 25\n\n🗓️ *VOLTA*\n▸ Novembro/26: 10, 11, 12, 13, 14, 15, 16, 17, 24, 25, 28, 30\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 623* o trecho\n🔁 Ida e volta a partir de *R$ 1.240*\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 11, 12, 13, 14, 17, 25, 26\n▸ Dezembro/26: 02, 08, 09\n\n🗓️ *VOLTA*\n▸ Novembro/26: 13, 14, 16, 17, 21, 25, 28, 30\n▸ Dezembro/26: 02, 13\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1111VIX16111?marker=677880&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true
   },
   {
@@ -663,7 +779,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Lisboa* (LIS)\n💰 *R$ 1.668* o trecho\n🔁 Ida e volta a partir de *R$ 4.037*\n🔥 *IMPERDÍVEL*\n🛫 Iberia · 1 parada\n📉 _Menor preço que já vimos nesse trecho (7 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Outubro/26: 28\n▸ Novembro/26: 08, 13, 14, 15, 18, 19, 20, 25, 27, 28\n▸ Dezembro/26: 07\n\n🗓️ *VOLTA*\n▸ Novembro/26: 07, 11, 13, 14, 16, 23, 24, 25, 28, 30\n▸ Dezembro/26: 01, 30\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-13T12:47-03:00",
+    "quando": "2026-10-13T13:24-03:00",
     "preco": 1668,
     "status": "valendo"
    }

@@ -1,681 +1,503 @@
-Lote: UDI(n), MIL(n), AMS(n), PMW(a), PAR(a), MIA(a), MCZ(a), SAO(a), RIO(a), REC(a), MAD(n), BUE(a), VCP(a), BHZ(a), NVT(a), ROM(n), POA(a), OPO(a)
-Lote: UDI, MIL, AMS, PMW, PAR, MIA, MCZ, SAO, RIO, REC, MAD, BUE, VCP, BHZ, NVT, ROM, POA, OPO
-  ! Google FOR-UDI 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-26: IndexError: list index out of range
-  ! Google FOR-UDI 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-11-05: IndexError: list index out of range
-  ! Google FOR-UDI 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-11-09: IndexError: list index out of range
-  ! Google FOR-UDI 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-11-16: IndexError: list index out of range
-  ! Google FOR-UDI 2026-11-19: IndexError: list index out of range
-  ! Google FOR-UDI 2026-11-26: IndexError: list index out of range
-  ! Google FOR-UDI 2026-12-07: IndexError: list index out of range
-  ! Google FOR-UDI 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-UDI 2026-12-14: IndexError: list index out of range
-  ! Google FOR-UDI 2026-12-21: IndexError: list index out of range
-  ! Google FOR-UDI 2026-12-24: IndexError: list index out of range
-  ! Google FOR-UDI 2026-12-28: IndexError: list index out of range
-  ! Google UDI-FOR 2026-10-18: IndexError: list index out of range
-  ! Google UDI-FOR 2026-10-20: IndexError: list index out of range
-  ! Google UDI-FOR 2026-10-25: IndexError: list index out of range
-  ! Google UDI-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google UDI-FOR 2026-11-01: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-08: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-11: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-15: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-22: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-25: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-29: IndexError: list index out of range
-  ! Google UDI-FOR 2026-11-30: IndexError: list index out of range
-  ! Google UDI-FOR 2026-12-01: IndexError: list index out of range
-  ! Google UDI-FOR 2026-12-02: IndexError: list index out of range
-  ! UDI-FOR: muitos erros seguidos, parando
-FOR-UDI: 69+32 dias · menor ida R$ 1.120 · média R$ 1.463 · 23%
-  ! Google FOR-MIL 2026-10-28: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-03: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-06: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-13: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-11-22: IndexError: list index out of range
-  ! Google FOR-MIL 2026-11-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2026-12-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2027-01-01: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-06: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-07: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIL 2027-01-11: IndexError: list index out of range
-  ! Google FOR-MIL 2027-01-16: IndexError: list index out of range
-  ! Google MIL-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-21: IndexError: list index out of range
-  ! Google MIL-FOR 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-25: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-10: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-19: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-24: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-26: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-30: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2026-12-31: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-01: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-05: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-09: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-10: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-14: FlightsNotFound: no flights found; received error
-  ! Google MIL-FOR 2027-01-16: FlightsNotFound: no flights found; received error
-FOR-MIL: 75+65 dias · menor ida R$ 1.793 · média R$ 3.167 · 43%
-  ida e volta R$ 4.952 acima do teto da região (R$ 4.500) — sem alerta
-  ! Google FOR-AMS 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-11-03: IndexError: list index out of range
-  ! Google FOR-AMS 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-11-18: IndexError: list index out of range
-  ! Google FOR-AMS 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2026-12-28: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-02: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-04: IndexError: list index out of range
-  ! Google FOR-AMS 2027-01-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-AMS 2027-01-16: IndexError: list index out of range
-  ! Google AMS-FOR 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-10-27: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-11-03: IndexError: list index out of range
-  ! Google AMS-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-11-22: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-11-24: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-12-16: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-12-24: IndexError: list index out of range
-  ! Google AMS-FOR 2026-12-26: FlightsNotFound: no flights found; received error
-  ! Google AMS-FOR 2026-12-31: IndexError: list index out of range
-FOR-AMS: 73+78 dias · menor ida R$ 1.996 · média R$ 3.740 · 47%
-  ida e volta R$ 5.327 acima do teto da região (R$ 4.500) — sem alerta
-  ! Google FOR-PMW 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-11-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-PMW 2026-12-21: FlightsNotFound: no flights found; received error
-  ! FOR-PMW: muitos erros seguidos, parando
-  ! Google PMW-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google PMW-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! PMW-FOR: muitos erros seguidos, parando
-FOR-PMW: 55+5 dias · menor ida R$ 878 · média R$ 1.344 · 35%
-  ! Google FOR-PAR 2026-10-19: IndexError: list index out of range
-  ! Google FOR-PAR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-PAR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-PAR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-PAR 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-PAR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-PAR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! FOR-PAR: muitos erros seguidos, parando
-  ! Google PAR-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google PAR-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google PAR-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google PAR-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google PAR-FOR 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google PAR-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! PAR-FOR: muitos erros seguidos, parando
-FOR-PAR: 2+5 dias · menor ida R$ 2.828 · média R$ 3.172 · 11%
-  ! Google FOR-MIA 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-02: IndexError: list index out of range
-  ! Google FOR-MIA 2026-12-06: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2026-12-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-10: IndexError: list index out of range
-  ! Google FOR-MIA 2027-01-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-MIA 2027-01-16: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google MIA-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! MIA-FOR: muitos erros seguidos, parando
-FOR-MIA: 51+10 dias · menor ida R$ 2.359 · média R$ 2.877 · 18%
-  ! Google FOR-MCZ 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-MCZ 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-MCZ 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-MCZ 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-MCZ 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-MCZ 2026-10-31: FlightsNotFound: no flights found; received error
-  ! FOR-MCZ: muitos erros seguidos, parando
-  ! Google MCZ-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-20: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google MCZ-FOR 2026-11-22: FlightsNotFound: no flights found; received error
-  ! MCZ-FOR: muitos erros seguidos, parando
-FOR-MCZ: 8+15 dias · menor ida R$ 1.500 · média R$ 1.913 · 22%
-  ! Google FOR-SAO 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-29: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google FOR-SAO 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-SAO 2026-11-01: FlightsNotFound: no flights found; received error
-  ! FOR-SAO: muitos erros seguidos, parando
-  ! Google SAO-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-22: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-25: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-11-28: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-05: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-12: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-16: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-18: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-26: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-28: FlightsNotFound: no flights found; received error
-  ! Google SAO-FOR 2026-12-29: FlightsNotFound: no flights found; received error
-  ! SAO-FOR: muitos erros seguidos, parando
-FOR-SAO: 4+41 dias · menor ida R$ 1.548 · média R$ 779 · -99%
-  ! Google FOR-RIO 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-09: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google FOR-RIO 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-RIO 2026-11-26: FlightsNotFound: no flights found; received error
-  ! FOR-RIO: muitos erros seguidos, parando
-  ! Google RIO-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google RIO-FOR 2026-11-16: FlightsNotFound: no flights found; received error
-  ! RIO-FOR: muitos erros seguidos, parando
-FOR-RIO: 18+15 dias · menor ida R$ 692 · média R$ 1.384 · 50%
-  ! Google FOR-REC 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-REC 2026-11-19: FlightsNotFound: no flights found; received error
-  ! FOR-REC: muitos erros seguidos, parando
-  ! Google REC-FOR 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-18: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-20: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-28: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-06: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-10: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-12: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-14: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-18: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-20: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-22: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-24: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-25: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-04: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-07: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-08: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-09: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-11: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-12: FlightsNotFound: no flights found; received error
-  ! Google REC-FOR 2027-01-16: FlightsNotFound: no flights found; received error
-FOR-REC: 15+51 dias · menor ida R$ 453 · média R$ 1.405 · 68%
-  ! Google FOR-MAD 2026-10-19: IndexError: list index out of range
-  ! Google FOR-MAD 2026-10-20: IndexError: list index out of range
-  ! Google FOR-MAD 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-10-26: IndexError: list index out of range
-  ! Google FOR-MAD 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-10-31: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-01: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-02: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-11-06: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-07: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-11-11: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-13: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-14: IndexError: list index out of range
-  ! Google FOR-MAD 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-MAD 2026-11-16: IndexError: list index out of range
-  ! FOR-MAD: muitos erros seguidos, parando
-  ! Google MAD-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-10-26: IndexError: list index out of range
-  ! Google MAD-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-09: IndexError: list index out of range
-  ! Google MAD-FOR 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-12-14: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-17: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-19: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-21: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-22: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2026-12-24: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-26: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-28: IndexError: list index out of range
-  ! Google MAD-FOR 2026-12-30: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2027-01-02: IndexError: list index out of range
-  ! Google MAD-FOR 2027-01-06: IndexError: list index out of range
-  ! Google MAD-FOR 2027-01-07: IndexError: list index out of range
-  ! Google MAD-FOR 2027-01-10: FlightsNotFound: no flights found; received error
-  ! Google MAD-FOR 2027-01-13: FlightsNotFound: no flights found; received error
-FOR-MAD: 10+65 dias · menor ida R$ 2.344 · média R$ 2.798 · 16%
-  ! Google FOR-BUE 2026-10-18: IndexError: list index out of range
-  ! Google FOR-BUE 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-08: IndexError: list index out of range
-  ! Google FOR-BUE 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-11-25: IndexError: list index out of range
-  ! Google FOR-BUE 2026-11-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2026-12-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2027-01-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2027-01-03: IndexError: list index out of range
-  ! Google FOR-BUE 2027-01-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2027-01-06: FlightsNotFound: no flights found; received error
-  ! Google FOR-BUE 2027-01-13: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-18: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-11-21: IndexError: list index out of range
-  ! Google BUE-FOR 2026-11-25: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-12-06: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-12-12: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2026-12-13: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2027-01-02: IndexError: list index out of range
-  ! Google BUE-FOR 2027-01-07: FlightsNotFound: no flights found; received error
-  ! Google BUE-FOR 2027-01-09: IndexError: list index out of range
-  ! Google BUE-FOR 2027-01-16: FlightsNotFound: no flights found; received error
-FOR-BUE: 55+76 dias · menor ida R$ 1.272 · média R$ 1.319 · 4%
-  ! Google FOR-VCP 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-VCP 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-VCP 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google FOR-VCP 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-VCP 2027-01-05: FlightsNotFound: no flights found; received error
-  ! Google FOR-VCP 2027-01-09: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2026-12-14: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2026-12-25: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2027-01-08: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2027-01-12: FlightsNotFound: no flights found; received error
-  ! Google VCP-FOR 2027-01-15: FlightsNotFound: no flights found; received error
-FOR-VCP: 85+84 dias · menor ida R$ 867 · média R$ 1.496 · 42%
-  ida e volta R$ 1.579 acima do teto da região (R$ 1.448) — sem alerta
-  ! Google FOR-BHZ 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-10-31: FlightsNotFound: no flights found; received error
+Lote: VCP(a), BHZ(a), NVT(a), POA(a), OPO(a), CGB(a), BSB(a), BEL(a), CWB(a), SLZ(a), ROM(n), FLN(a), IGU(a), LIS(a), GYN(a), JDO(a), VIX(a), LON(n)
+Lote: VCP, BHZ, NVT, POA, OPO, CGB, BSB, BEL, CWB, SLZ, ROM, FLN, IGU, LIS, GYN, JDO, VIX, LON
+  ! Google FOR-VCP 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-11-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-01: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-04: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2026-12-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2027-01-01: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2027-01-04: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2027-01-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-VCP 2027-01-16: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google VCP-FOR 2026-10-28: FlightsNotFound: no flights found; received error
+  ! VCP-FOR: muitos erros seguidos, parando
+FOR-VCP: 65+3 dias · menor ida R$ 867 · média R$ 1.518 · 43%
+  ! Google FOR-BHZ 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-10-26: FlightsNotFound: no flights found; received error
   ! Google FOR-BHZ 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-11-04: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-11-07: FlightsNotFound: no flights found; received error
   ! Google FOR-BHZ 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-11-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-11-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-BHZ 2026-11-22: FlightsNotFound: no flights found; received error
   ! Google FOR-BHZ 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-27: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2026-12-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-13: FlightsNotFound: no flights found; received error
-  ! Google FOR-BHZ 2027-01-15: FlightsNotFound: no flights found; received error
+  ! FOR-BHZ: muitos erros seguidos, parando
+  ! Google BHZ-FOR 2026-10-18: FlightsNotFound: no flights found; received error
   ! Google BHZ-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google BHZ-FOR 2026-10-20: FlightsNotFound: no flights found; received error
   ! Google BHZ-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google BHZ-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-06: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-14: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-18: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-21: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-26: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-27: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-11-30: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-01: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-04: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-05: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-09: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-10: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-11: FlightsNotFound: no flights found; received error
+  ! Google BHZ-FOR 2026-12-12: FlightsNotFound: no flights found; received error
   ! BHZ-FOR: muitos erros seguidos, parando
-FOR-BHZ: 58+1 dias · menor ida R$ 750 · média R$ 912 · 18%
+FOR-BHZ: 25+33 dias · menor ida R$ 750 · média R$ 1.030 · 27%
+  ida e volta R$ 1.527 acima do teto da região (R$ 1.500) — sem alerta
   ! Google FOR-NVT 2026-10-18: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-10-19: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-10-26: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-10-31: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-04: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-NVT 2026-11-14: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-11-15: FlightsNotFound: no flights found; received error
   ! Google FOR-NVT 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-28: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-03: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-11: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-12: FlightsNotFound: no flights found; received error
-  ! Google FOR-NVT 2026-12-13: FlightsNotFound: no flights found; received error
   ! FOR-NVT: muitos erros seguidos, parando
   ! Google NVT-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google NVT-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google NVT-FOR 2026-10-20: FlightsNotFound: no flights found; received error
   ! Google NVT-FOR 2026-10-24: FlightsNotFound: no flights found; received error
   ! Google NVT-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-10-28: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-13: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-14: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google NVT-FOR 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google NVT-FOR 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google NVT-FOR 2026-10-27: FlightsNotFound: no flights found; received error
   ! NVT-FOR: muitos erros seguidos, parando
-FOR-NVT: 28+12 dias · menor ida R$ 812 · média R$ 1.146 · 29%
-  ! Google FOR-ROM 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-10-24: IndexError: list index out of range
-  ! Google FOR-ROM 2026-10-25: FlightsNotFound: no flights found; received error
+FOR-NVT: 13+3 dias · menor ida R$ 812 · média R$ 1.175 · 31%
+  ! Google FOR-POA 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-POA 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-POA 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-POA 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-POA 2026-10-27: IndexError: list index out of range
+  ! FOR-POA: muitos erros seguidos, parando
+  ! Google POA-FOR 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-11-13: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-11-14: FlightsNotFound: no flights found; received error
+  ! Google POA-FOR 2026-11-15: FlightsNotFound: no flights found; received error
+  ! POA-FOR: muitos erros seguidos, parando
+FOR-POA: 5+22 dias · menor ida R$ 1.540 · média R$ 1.261 · -22%
+  ! Google FOR-OPO 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-OPO 2026-10-26: FlightsNotFound: no flights found; received error
+  ! FOR-OPO: muitos erros seguidos, parando
+  ! Google OPO-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google OPO-FOR 2026-10-25: FlightsNotFound: no flights found; received error
+  ! OPO-FOR: muitos erros seguidos, parando
+FOR-OPO: 3+1 dias · menor ida R$ 1.705 · média R$ 3.650 · 53%
+  volta cara (R$ 4.941 vs média R$ 4.030) — sem alerta
+  ! Google FOR-CGB 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-CGB 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-CGB 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-CGB 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-CGB 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-CGB 2026-10-29: FlightsNotFound: no flights found; received error
+  ! FOR-CGB: muitos erros seguidos, parando
+  ! Google CGB-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-10-31: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-11-01: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-11-06: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google CGB-FOR 2026-11-08: IndexError: list index out of range
+  ! Google CGB-FOR 2026-11-09: FlightsNotFound: no flights found; received error
+  ! CGB-FOR: muitos erros seguidos, parando
+FOR-CGB: 6+12 dias · menor ida R$ 1.624 · média R$ 1.020 · -59%
+  ! Google FOR-BSB 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-10-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-14: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-11-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-01: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-14: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2026-12-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-BSB 2027-01-13: FlightsNotFound: no flights found; received error
+  ! FOR-BSB: muitos erros seguidos, parando
+  ! Google BSB-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google BSB-FOR 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google BSB-FOR 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google BSB-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! BSB-FOR: muitos erros seguidos, parando
+FOR-BSB: 47+1 dias · menor ida R$ 674 · média R$ 1.366 · 51%
+  ! Google FOR-BEL 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-BEL 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-BEL 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-BEL 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-BEL 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-BEL 2026-10-25: FlightsNotFound: no flights found; received error
+  ! FOR-BEL: muitos erros seguidos, parando
+  ! Google BEL-FOR 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google BEL-FOR 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google BEL-FOR 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google BEL-FOR 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google BEL-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! BEL-FOR: muitos erros seguidos, parando
+FOR-BEL: 2+7 dias · menor ida R$ 2.069 · média R$ 1.073 · -93%
+  ! Google FOR-CWB 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-04: IndexError: list index out of range
+  ! Google FOR-CWB 2026-11-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-15: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-17: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-11-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-14: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2026-12-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2027-01-04: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2027-01-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2027-01-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-CWB 2027-01-16: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-10-21: IndexError: list index out of range
+  ! Google CWB-FOR 2026-10-23: IndexError: list index out of range
+  ! Google CWB-FOR 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-10-28: IndexError: list index out of range
+  ! Google CWB-FOR 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-11-01: IndexError: list index out of range
+  ! Google CWB-FOR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google CWB-FOR 2026-11-04: IndexError: list index out of range
+  ! CWB-FOR: muitos erros seguidos, parando
+FOR-CWB: 55+8 dias · menor ida R$ 506 · média R$ 917 · 45%
+  ! Google FOR-SLZ 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-15: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-01: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-02: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-06: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-13: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-15: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2026-12-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2027-01-01: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2027-01-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2027-01-10: FlightsNotFound: no flights found; received error
+  ! Google FOR-SLZ 2027-01-12: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-11-22: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-11-25: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-12-02: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-12-14: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-12-20: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2026-12-24: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-01: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-02: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-04: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-05: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-07: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-09: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-13: FlightsNotFound: no flights found; received error
+  ! Google SLZ-FOR 2027-01-15: FlightsNotFound: no flights found; received error
+FOR-SLZ: 37+45 dias · menor ida R$ 740 · média R$ 1.209 · 39%
+  ida e volta R$ 1.496 acima do teto da região (R$ 1.100) — sem alerta
+  ! Google FOR-ROM 2026-10-20: IndexError: list index out of range
+  ! Google FOR-ROM 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-ROM 2026-10-24: FlightsNotFound: no flights found; received error
   ! Google FOR-ROM 2026-10-26: IndexError: list index out of range
-  ! Google FOR-ROM 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-03: FlightsNotFound: no flights found; received error
-h2 connection driver error: connection reset
-  ! Google FOR-ROM 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-08: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-09: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-26: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-11-30: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-12-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-ROM 2026-12-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-ROM 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-ROM 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-ROM 2026-10-29: FlightsNotFound: no flights found; received error
   ! FOR-ROM: muitos erros seguidos, parando
   ! Google ROM-FOR 2026-10-19: FlightsNotFound: no flights found; received error
   ! Google ROM-FOR 2026-10-20: FlightsNotFound: no flights found; received error
+h2 connection driver error: connection reset
   ! Google ROM-FOR 2026-10-24: FlightsNotFound: no flights found; received error
   ! Google ROM-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google ROM-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google ROM-FOR 2026-10-27: FlightsNotFound: no flights found; received error
-  ! ROM-FOR: muitos erros seguidos, parando
-FOR-ROM: 26+4 dias · menor ida R$ 1.915 · média R$ 3.612 · 47%
-  ! Google FOR-POA 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-POA 2026-10-20: FlightsNotFound: no flights found; received error
-  ! Google FOR-POA 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google FOR-POA 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-POA 2026-10-24: FlightsNotFound: no flights found; received error
-  ! Google FOR-POA 2026-10-25: FlightsNotFound: no flights found; received error
-  ! FOR-POA: muitos erros seguidos, parando
-  ! Google POA-FOR 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-10-26: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google POA-FOR 2026-11-02: FlightsNotFound: no flights found; received error
-  ! POA-FOR: muitos erros seguidos, parando
-FOR-POA: 2+8 dias · menor ida R$ 1.967 · média R$ 1.261 · -56%
-  ! Google FOR-OPO 2026-10-18: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-10-29: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-11-01: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google FOR-OPO 2026-11-03: FlightsNotFound: no flights found; received error
-  ! FOR-OPO: muitos erros seguidos, parando
-  ! Google OPO-FOR 2026-10-19: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-21: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-22: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-23: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-25: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-27: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-30: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-10-31: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-02: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-03: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-05: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-06: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-07: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-10: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-11: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-12: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-15: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-16: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-17: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-19: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-21: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-23: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-11-28: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-01: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-03: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-04: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-07: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-08: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-09: FlightsNotFound: no flights found; received error
-  ! Google OPO-FOR 2026-12-10: FlightsNotFound: no flights found; received error
-  ! OPO-FOR: muitos erros seguidos, parando
-FOR-OPO: 8+24 dias · menor ida R$ 1.705 · média R$ 3.650 · 53%
-  ! reconferir REC: FlightsNotFound
+  ! Google ROM-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-10-31: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-04: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-14: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-17: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-11-18: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-12-13: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-12-15: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-12-30: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2026-12-31: FlightsNotFound: no flights found; received error
+  ! Google ROM-FOR 2027-01-08: FlightsNotFound: no flights found; received error
+FOR-ROM: 5+71 dias · menor ida R$ 2.997 · média R$ 3.612 · 17%
+  ! Google FOR-FLN 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-10-20: IndexError: list index out of range
+  ! Google FOR-FLN 2026-10-21: IndexError: list index out of range
+  ! Google FOR-FLN 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-10-25: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-10-31: IndexError: list index out of range
+  ! Google FOR-FLN 2026-11-07: IndexError: list index out of range
+  ! Google FOR-FLN 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-11-14: IndexError: list index out of range
+  ! Google FOR-FLN 2026-11-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-11-21: IndexError: list index out of range
+  ! Google FOR-FLN 2026-11-28: IndexError: list index out of range
+  ! Google FOR-FLN 2026-11-29: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-FLN 2026-12-05: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-07: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-10: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-12: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-13: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-14: IndexError: list index out of range
+  ! Google FOR-FLN 2026-12-15: IndexError: list index out of range
+  ! FOR-FLN: muitos erros seguidos, parando
+  ! Google FLN-FOR 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-10-24: IndexError: list index out of range
+  ! Google FLN-FOR 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-10-31: IndexError: list index out of range
+  ! Google FLN-FOR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-09: IndexError: list index out of range
+  ! Google FLN-FOR 2026-11-14: IndexError: list index out of range
+  ! Google FLN-FOR 2026-11-15: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-25: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-26: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-28: IndexError: list index out of range
+  ! Google FLN-FOR 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-11-30: FlightsNotFound: no flights found; received error
+  ! Google FLN-FOR 2026-12-01: FlightsNotFound: no flights found; received error
+  ! FLN-FOR: muitos erros seguidos, parando
+FOR-FLN: 37+27 dias · menor ida R$ 620 · média R$ 956 · 35%
+  ! Google FOR-IGU 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-03: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-17: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-11-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-07: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-08: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-09: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-11: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-12: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-15: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-22: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2026-12-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2027-01-05: FlightsNotFound: no flights found; received error
+  ! Google FOR-IGU 2027-01-11: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-09: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-16: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-22: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-24: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-25: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-26: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-11-28: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-04: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-09: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-13: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-14: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-15: FlightsNotFound: no flights found; received error
+  ! Google IGU-FOR 2026-12-16: FlightsNotFound: no flights found; received error
+  ! IGU-FOR: muitos erros seguidos, parando
+FOR-IGU: 64+45 dias · menor ida R$ 716 · média R$ 1.191 · 40%
+  ida e volta R$ 1.717 acima do teto da região (R$ 1.460) — sem alerta
+  ! Google FOR-LIS 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-26: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google FOR-LIS 2026-10-29: FlightsNotFound: no flights found; received error
+  ! FOR-LIS: muitos erros seguidos, parando
+  ! Google LIS-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-10-22: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-01: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-02: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-04: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-05: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-10: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-11: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-12: FlightsNotFound: no flights found; received error
+  ! Google LIS-FOR 2026-11-13: FlightsNotFound: no flights found; received error
+  ! LIS-FOR: muitos erros seguidos, parando
+FOR-LIS: 4+15 dias · menor ida R$ 2.040 · média R$ 2.896 · 30%
+  ida e volta R$ 4.616 acima do teto da região (R$ 4.420) — sem alerta
+  ! Google FOR-GYN 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-10-30: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-10-31: FlightsNotFound: no flights found; received error
+  ! Google FOR-GYN 2026-11-01: FlightsNotFound: no flights found; received error
+  ! FOR-GYN: muitos erros seguidos, parando
+  ! Google GYN-FOR 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-21: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-23: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-24: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-27: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-28: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-29: FlightsNotFound: no flights found; received error
+  ! Google GYN-FOR 2026-10-30: FlightsNotFound: no flights found; received error
+  ! GYN-FOR: muitos erros seguidos, parando
+FOR-GYN: 8+4 dias · menor ida R$ 952 · média R$ 1.108 · 14%
+  ! Google FOR-JDO 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-JDO 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-JDO 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-JDO 2026-10-21: FlightsNotFound: no flights found; received error
+  ! FOR-JDO: muitos erros seguidos, parando
+FOR-JDO: sem dados suficientes (ida 0, volta 0)
+  ! Google FOR-VIX 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-VIX 2026-10-19: FlightsNotFound: no flights found; received error
+  ! Google FOR-VIX 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-VIX 2026-10-21: FlightsNotFound: no flights found; received error
+  ! FOR-VIX: muitos erros seguidos, parando
+FOR-VIX: sem dados suficientes (ida 0, volta 0)
+  ! Google FOR-LON 2026-10-18: FlightsNotFound: no flights found; received error
+  ! Google FOR-LON 2026-10-19: FlightsNotFound: no flights found; received error
+h2 connection driver error: connection reset
+  ! Google FOR-LON 2026-10-20: FlightsNotFound: no flights found; received error
+  ! Google FOR-LON 2026-10-21: FlightsNotFound: no flights found; received error
+  ! FOR-LON: muitos erros seguidos, parando
+FOR-LON: sem dados suficientes (ida 0, volta 0)
+  ! reconferir VIX: FlightsNotFound
   conferido LIS 2026-12-07: R$ 1.668 (valendo)
   ! reconferir THE: FlightsNotFound
-  conferido PMW 2026-11-18: R$ 1.082 (subiu)
 
-Rodada: 18 rotas · 0 candidatos · 0 alertas · 4226s
+Rodada: 18 rotas · 0 candidatos · 0 alertas · 2779s

@@ -1,11 +1,14 @@
 {
- "atualizado": "2026-10-13T09:30+00:00",
+ "atualizado": "2026-10-13T10:41+00:00",
  "pistas": [
+  "BEL",
   "BUE",
   "CWB",
   "IGU",
+  "LIS",
   "LON",
   "MAD",
+  "MIA",
   "POA",
   "REC",
   "RIO",
@@ -46,7 +49,7 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SSA",
@@ -197,7 +200,7 @@
    },
    "rastreada": true,
    "nome": "Lisboa",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "ROM",
@@ -211,6 +214,19 @@
    "rastreada": true,
    "nome": "Roma",
    "pista": true
+  },
+  {
+   "iata": "NVT",
+   "ow": {
+    "preco": 1921,
+    "ida": "2026-10-17",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-13T10:23:56Z"
+   },
+   "rastreada": true,
+   "nome": "Navegantes",
+   "pista": false
   },
   {
    "iata": "BVB",
@@ -288,7 +304,7 @@
    },
    "rastreada": true,
    "nome": "Miami",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "LIM",
@@ -353,6 +369,19 @@
    },
    "rastreada": false,
    "nome": "LED",
+   "pista": false
+  },
+  {
+   "iata": "ORL",
+   "rt": {
+    "preco": 5921,
+    "ida": "2027-01-16",
+    "volta": "2027-02-06",
+    "paradas": 2,
+    "visto": "2026-10-13T10:35:45Z"
+   },
+   "rastreada": true,
+   "nome": "Orlando",
    "pista": false
   },
   {

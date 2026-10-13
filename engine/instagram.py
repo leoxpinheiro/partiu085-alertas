@@ -497,7 +497,9 @@ def direct_automatico(conta: dict) -> None:
             if cm["id"] in feitos or enviados >= 30:
                 continue
             txt = (cm.get("text") or "").upper()
-            if not any(p in txt for p in palavras):
+            # gatilhos por palavra (ex.: "comenta FERIADO que eu te mando o guia"): mensagem própria; senão, a padrão (link do grupo)
+            gat = next((g for g in cfg.get("gatilhos", []) if any(p.strip().upper() in txt for p in g.get("palavras", []) if p.strip())), None)
+            if not gat and not any(p in txt for p in palavras):
                 continue
             usuario = cm.get("username") or (cm.get("from") or {}).get("username", "")
             if usuario and usuario.lower() == (conta.get("usuario") or "").lower():
@@ -511,8 +513,9 @@ def direct_automatico(conta: dict) -> None:
                 reg["dm"] = "expirado"
             else:
                 try:
+                    texto = msg if not gat else gat["mensagem"].replace("{link}", link_grupo()).replace("{site}", f"https://{REPO.split('/')[0]}.github.io/{REPO.split('/')[1]}")
                     r = requests.post(f"{API}/{USER}/messages", headers={"Authorization": f"Bearer {TOKEN}"},
-                                      json={"recipient": {"comment_id": cm["id"]}, "message": {"text": msg}}, timeout=30)
+                                      json={"recipient": {"comment_id": cm["id"]}, "message": {"text": texto}}, timeout=30)
                     j = r.json() if r.content else {}
                     if not r.ok or "error" in j:
                         raise RuntimeError((j.get("error") or {}).get("message") or f"HTTP {r.status_code}")
@@ -521,9 +524,9 @@ def direct_automatico(conta: dict) -> None:
                 except Exception as e:  # noqa: BLE001
                     reg["dm"] = "erro"
                     reg["erro"] = str(e)[:160]
-                if cfg.get("resposta") and reg["dm"] == "ok":
+                if (gat or cfg).get("resposta", cfg.get("resposta")) and reg["dm"] == "ok":
                     try:
-                        api("POST", f"{cm['id']}/replies", message=cfg["resposta"])
+                        api("POST", f"{cm['id']}/replies", message=(gat or {}).get("resposta") or cfg["resposta"])
                         reg["resposta"] = "ok"
                     except Exception as e:  # noqa: BLE001
                         reg["resposta"] = "erro"

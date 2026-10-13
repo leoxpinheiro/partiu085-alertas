@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feriadões saindo de Fortaleza · Partiu 085</title>
+<meta name="description" content="Os feriadões de 2026 e 2027 pra quem é de Fortaleza e o menor preço de passagem que o radar viu.">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--nv:#0B2440;--nv2:#123a63;--am:#FFC72C;--cr:#FBF6EC;--tx:#0B2440;--mu:#5b6b7f}
+*{box-sizing:border-box}body{margin:0;background:var(--cr);color:var(--tx);font:500 16px/1.5 "Plus Jakarta Sans",system-ui,sans-serif}
+header{background:var(--nv);color:#fff;padding:28px 18px 26px;text-align:center}
+header small{color:var(--am);font-weight:800;letter-spacing:.14em;font-size:12px}
+h1{font:400 40px/1.05 Anton,Impact,sans-serif;margin:8px 0 10px;text-transform:uppercase}
+header p{margin:0 auto;max-width:440px;color:#dbe6f3}
+main{max-width:560px;margin:0 auto;padding:18px 16px 40px}
+h2{font:400 26px/1.1 Anton,Impact,sans-serif;text-transform:uppercase;margin:26px 0 10px}
+.card{background:#fff;border-radius:18px;padding:6px 16px;box-shadow:0 4px 18px rgba(11,36,64,.07)}
+.l{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
+.l:last-child{border:0}.l b{display:block}.l small{color:var(--mu)}.l .v{font-weight:800;white-space:nowrap}
+.tag{display:inline-block;background:var(--am);color:var(--nv);font-weight:800;font-size:11px;border-radius:99px;padding:2px 9px;margin-left:6px}
+.nota{color:var(--mu);font-size:13px;margin:8px 2px}
+.cta{display:block;text-align:center;background:var(--nv);color:#fff;text-decoration:none;font-weight:800;border-radius:99px;padding:16px;margin:26px 0 8px}
+.cta span{display:block;color:var(--am);font-weight:600;font-size:13px}
+footer{text-align:center;color:var(--mu);font-size:13px;padding:0 16px 30px}
+</style></head><body>
+<header><small>PARTIU 085 · GUIA GRÁTIS</small><h1>Feriadões saindo de Fortaleza</h1><p>As datas que dão pra viajar sem gastar férias e o menor preço de passagem que o nosso radar viu.</p></header>
+<main>
+<h2>O que ainda falta em 2026</h2>
+<div class="card">
+ <div class="l"><div><b>Finados</b><small>segunda, 2/11</small></div><div class="v">31/10 a 2/11</div></div>
+ <div class="l"><div><b>Consciência Negra</b><small>sexta, 20/11 · feriado nacional desde 2024</small></div><div class="v">20 a 22/11</div></div>
+ <div class="l"><div><b>Natal</b><small>sexta, 25/12</small></div><div class="v">25 a 27/12</div></div>
+ <div class="l"><div><b>Ano Novo</b><small>sexta, 1/1/2027</small></div><div class="v">1 a 3/1</div></div>
+</div>
+<h2>Os feriadões de 2027</h2>
+<div class="card">
+ <div class="l"><div><b>Carnaval</b><small>seg e ter · ponto facultativo em muitos lugares</small></div><div class="v">6 a 9/2</div></div>
+ <div class="l"><div><b>São José</b><small>sexta, 19/3 · feriado em Fortaleza</small></div><div class="v">19 a 21/3</div></div>
+ <div class="l"><div><b>Data Magna + Paixão</b><span class="tag">SÓ NO CEARÁ</span><small>quinta e sexta · 4 dias seguidos</small></div><div class="v">25 a 28/3</div></div>
+ <div class="l"><div><b>Corpus Christi</b><small>quinta, 27/5 · emendando a sexta</small></div><div class="v">27 a 30/5</div></div>
+ <div class="l"><div><b>Independência</b><small>terça, 7/9 · emendando a segunda</small></div><div class="v">4 a 7/9</div></div>
+ <div class="l"><div><b>N. Sra. Aparecida</b><small>terça, 12/10 · emendando a segunda</small></div><div class="v">9 a 12/10</div></div>
+ <div class="l"><div><b>Finados</b><small>terça, 2/11 · emendando a segunda</small></div><div class="v">30/10 a 2/11</div></div>
+ <div class="l"><div><b>Proclamação da República</b><small>segunda, 15/11</small></div><div class="v">13 a 15/11</div></div>
+</div>
+<p class="nota">Em 2027, Dia do Trabalho (1/5), Consciência Negra (20/11) e Natal (25/12) caem num sábado. Feriados nacionais pelo calendário da ANBIMA; 19/3 é feriado em Fortaleza e 25/3 é feriado estadual do Ceará.</p>
+<h2>Menor preço que o radar viu agora</h2>
+<div class="card" id="precos"><div class="l"><div><small>Carregando os preços do radar…</small></div></div></div>
+<p class="nota" id="pnota">Só a ida, a partir de. Preço de passagem muda a qualquer hora.</p>
+<a class="cta" href="https://bit.ly/radar085">Quero o alerta quando cair<span>grupo grátis no WhatsApp · passagens saindo de Fortaleza</span></a>
+</main>
+<footer>@partiu.085 · radar de passagens saindo de Fortaleza</footer>
+<script>
+fetch('../status.json?'+Date.now()).then(r=>r.json()).then(s=>{const R=s.rotas||{},M=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+ const L=Object.entries(R).filter(([k,v])=>v.menor&&v.tipo==='nacional').sort((a,b)=>a[1].menor-b[1].menor).slice(0,8)
+  .concat(Object.entries(R).filter(([k,v])=>v.menor&&v.tipo==='internacional').sort((a,b)=>a[1].menor-b[1].menor).slice(0,4));
+ const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
+ document.getElementById('precos').innerHTML=L.map(([k,v])=>{const d=v.dia_menor||'';return `<div class="l"><div><b>${v.nome||k}</b><small>${d?`em ${d.slice(8,10)}/${d.slice(5,7)}`:''}${v.cia?' · '+v.cia:''}</small></div><div class="v">${br(v.menor)}</div></div>`}).join('');
+ const q=(Object.values(R).map(v=>v.quando||'').sort().pop()||'');if(q)document.getElementById('pnota').textContent=`Só a ida, a partir de, na data indicada. Visto pelo radar em ${q.slice(8,10)}/${q.slice(5,7)}. Preço muda a qualquer hora.`;
+}).catch(()=>{document.getElementById('precos').innerHTML='<div class="l"><div><small>Não deu pra carregar agora. Entra no grupo pra receber os alertas.</small></div></div>'});
+</script>
+</body></html>

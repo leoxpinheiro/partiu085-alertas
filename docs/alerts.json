@@ -1,6 +1,73 @@
 {
- "atualizado": "2026-10-13T05:18-03:00",
+ "atualizado": "2026-10-13T06:29-03:00",
  "alertas": [
+  {
+   "id": "FOR-VIX-2026-11-10-1791883792",
+   "criado": "2026-10-13T06:29-03:00",
+   "rota": "FOR-VIX",
+   "destino": "VIX",
+   "destino_nome": "Vitória",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 783,
+   "preco_volta": 649,
+   "preco_tipico": 1034,
+   "desconto": 0.243,
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2026-11-10",
+   "volta": "2026-11-13",
+   "vip": false,
+   "vip_nome": "",
+   "datas_ida": [
+    {
+     "dia": "2026-11-10",
+     "preco": 783
+    },
+    {
+     "dia": "2026-11-11",
+     "preco": 785
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-13",
+     "preco": 649
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "10",
+      "11"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "13"
+     ]
+    }
+   ],
+   "meses": [
+    "nov"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMTBqBRIDRk9ScgUSA1ZJWEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1011VIX13111?marker=677880",
+   "base": {
+    "dias": 7,
+    "menor_visto": 559
+   },
+   "recorde": false,
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 783* o trecho\n🔁 Ida e volta a partir de *R$ 1.432*\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10, 11\n\n🗓️ *VOLTA*\n▸ Novembro/26: 13\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-REC-2026-12-05-1791873098",
    "criado": "2026-10-13T03:31-03:00",
@@ -77,7 +144,12 @@
    },
    "recorde": false,
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Recife* (REC)\n💰 *R$ 442* o trecho\n🔁 Ida e volta a partir de *R$ 885*\n🔥 *IMPERDÍVEL*\n🛫 Azul · voo direto\n\n🗓️ *IDA*\n▸ Novembro/26: 11\n▸ Dezembro/26: 05\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 01, 08\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-13T06:29-03:00",
+    "preco": 442,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-SLZ-2026-10-22-1791860818",
@@ -767,9 +839,9 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Palmas* (PMW)\n📍 _Capital do Tocantins, porta do Jalapão_\n💰 *R$ 570* o trecho\n🔁 Ida e volta a partir de *R$ 1.343*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n📉 _Menor preço que já vimos nesse trecho (3 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Novembro/26: 18, 20\n▸ Dezembro/26: 03\n\n🗓️ *VOLTA*\n▸ Novembro/26: 24, 26\n▸ Dezembro/26: 05\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-13T00:07-03:00",
-    "preco": 605,
-    "status": "valendo"
+    "quando": "2026-10-13T06:29-03:00",
+    "preco": 1082,
+    "status": "subiu"
    }
   },
   {

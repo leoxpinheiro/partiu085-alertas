@@ -146,9 +146,9 @@
    "motivo": "padrão"
   },
   "MIA": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (7 de ~90 dias)"
   },
   "ORL": {
    "prioridade": "baixa",
@@ -158,12 +158,12 @@
   "NYC": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (4 de ~90 dias)"
+   "motivo": "poucos voos (2 de ~90 dias)"
   },
   "BUE": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (2 de ~90 dias)"
   },
   "SCL": {
    "prioridade": "baixa",
@@ -198,7 +198,7 @@
   "MVD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (5 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -253,7 +253,7 @@
   "FRA": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "motivo": "poucos voos (7 de ~90 dias)"
   },
   "PUJ": {
    "prioridade": "baixa",
@@ -271,25 +271,25 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-13T09:18-03:00",
+ "quando": "2026-10-13T10:18-03:00",
  "ultimo_lote": [
-  "PMW",
-  "PAR",
-  "MIA",
-  "SAO",
-  "RIO",
-  "PUJ",
-  "MDE",
-  "REC",
-  "SDQ",
-  "MVD",
-  "BUE",
-  "FRA",
-  "ORL",
-  "NYC",
-  "BPS",
-  "VCP",
-  "BHZ",
-  "NVT"
+  "POA",
+  "OPO",
+  "UDI",
+  "MIL",
+  "CGB",
+  "BSB",
+  "AMS",
+  "BEL",
+  "SLZ",
+  "CWB",
+  "SCL",
+  "CTG",
+  "PTY",
+  "BOG",
+  "FLN",
+  "IGU",
+  "LIS",
+  "SID"
  ]
 }

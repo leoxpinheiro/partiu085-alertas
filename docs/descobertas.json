@@ -1,12 +1,11 @@
 {
- "atualizado": "2026-10-13T12:18+00:00",
+ "atualizado": "2026-10-13T13:18+00:00",
  "pistas": [
   "BEL",
   "BUE",
   "CWB",
   "IGU",
   "MAD",
-  "POA",
   "REC",
   "RIO",
   "ROM",
@@ -61,6 +60,19 @@
    "pista": true
   },
   {
+   "iata": "MVD",
+   "ow": {
+    "preco": 831,
+    "ida": "2026-11-21",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-13T13:04:18Z"
+   },
+   "rastreada": true,
+   "nome": "Montevidéu",
+   "pista": false
+  },
+  {
    "iata": "CWB",
    "rt": {
     "preco": 877,
@@ -71,19 +83,6 @@
    },
    "rastreada": true,
    "nome": "Curitiba",
-   "pista": true
-  },
-  {
-   "iata": "POA",
-   "ow": {
-    "preco": 912,
-    "ida": "2026-11-24",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-09T13:10:33Z"
-   },
-   "rastreada": true,
-   "nome": "Porto Alegre",
    "pista": true
   },
   {
@@ -214,7 +213,7 @@
   {
    "iata": "NVT",
    "ow": {
-    "preco": 1922,
+    "preco": 1921,
     "ida": "2026-10-17",
     "volta": "",
     "paradas": 1,
@@ -303,6 +302,19 @@
    "pista": false
   },
   {
+   "iata": "SID",
+   "ow": {
+    "preco": 2769,
+    "ida": "2027-03-08",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-13T12:20:25Z"
+   },
+   "rastreada": true,
+   "nome": "Cabo Verde (Sal)",
+   "pista": false
+  },
+  {
    "iata": "LIM",
    "rt": {
     "preco": 3645,
@@ -370,7 +382,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 5923,
+    "preco": 5921,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

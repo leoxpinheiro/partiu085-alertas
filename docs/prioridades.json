@@ -38,7 +38,7 @@
   "JPA": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (27 de ~90 dias)"
   },
   "MCZ": {
    "prioridade": "alta",
@@ -46,9 +46,9 @@
    "motivo": "voo todo dia, preço muda muito"
   },
   "AJU": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "SLZ": {
    "prioridade": "alta",
@@ -68,7 +68,7 @@
   "MAO": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (1 de ~90 dias)"
+   "motivo": "poucos voos (17 de ~90 dias)"
   },
   "POA": {
    "prioridade": "alta",
@@ -226,9 +226,9 @@
    "motivo": "2 alertas em 30 dias"
   },
   "BPS": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (17 de ~90 dias)"
   },
   "PMW": {
    "prioridade": "alta",
@@ -271,18 +271,11 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-13T05:19-03:00",
+ "quando": "2026-10-13T06:30-03:00",
  "ultimo_lote": [
-  "JDO",
-  "VIX",
-  "AJU",
-  "NAT",
-  "JPA",
-  "BPS",
   "UDI",
   "MIL",
   "AMS",
-  "MAD",
   "PMW",
   "PAR",
   "MIA",
@@ -290,6 +283,13 @@
   "SAO",
   "RIO",
   "REC",
-  "BUE"
+  "MAD",
+  "BUE",
+  "VCP",
+  "BHZ",
+  "NVT",
+  "ROM",
+  "POA",
+  "OPO"
  ]
 }

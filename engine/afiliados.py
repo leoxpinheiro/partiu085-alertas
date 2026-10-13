@@ -14,7 +14,10 @@ URL = "https://api.travelpayouts.com/statistics/v1/execute_query"
 
 def consulta(corpo):
     r = requests.post(URL, headers={"X-Access-Token": TOKEN, "Content-Type": "application/json"}, json=corpo, timeout=60)
-    j = r.json() if r.content else {}
+    try:
+        j = r.json() if r.content else {}
+    except ValueError:
+        raise RuntimeError(f"HTTP {r.status_code}: {r.text[:200]}")
     if not r.ok:
         raise RuntimeError(f"HTTP {r.status_code}: {str(j)[:200]}")
     return j.get("results", [])

@@ -1,0 +1,39 @@
+name: Abastecer agenda (piloto automático)
+on:
+  schedule:
+    - cron: "23 9 * * *"    # 06:23 em Fortaleza
+    - cron: "53 15 * * *"   # 12:53 em Fortaleza
+  workflow_dispatch:
+    inputs:
+      teste:
+        description: "Teste (salva num branch separado, não mexe na agenda)"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: abastecer
+jobs:
+  abastecer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: cd engine/abastecer && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
+      - env:
+          NODE_PATH: ${{ github.workspace }}/engine/abastecer/node_modules
+        run: node engine/abastecer/abastecer.js ${{ inputs.teste && '--teste' || '' }}
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/ig docs/ig_fila.json
+          git diff --cached --quiet && exit 0
+          if [ "${{ inputs.teste }}" = "true" ]; then
+            git checkout -q -b abastecer-teste && git commit -q -m "teste do abastecer" && git push -q -f origin abastecer-teste; exit 0
+          fi
+          git commit -q -m "Piloto automático: agenda abastecida"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q && exit 0; sleep $((RANDOM % 15 + 5)); done; exit 1

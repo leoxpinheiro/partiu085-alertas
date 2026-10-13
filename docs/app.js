@@ -173,7 +173,7 @@ function montarTextoDinheiro(a) {
   if (a.volta_meses && a.volta_meses.length) L.push("", "🗓️ *VOLTA*", ...a.volta_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
   if (a.milhas && a.milhas.length) L.push("", `💎 *Em milhas* (ida em ${a.ida.slice(8, 10)}/${a.ida.slice(5, 7)}):`, ...a.milhas.map(m => `▸ ${m.programa}: ${Number(m.milhas).toLocaleString("pt-BR")}${m.taxa ? ` + ${brl(m.taxa)} de taxas` : ""}`));
   const av = aj.aviso_preco ?? AVISO_PADRAO; if (av.trim()) L.push("", av.trim());
-  if (aj.link_afiliado !== false && a.link_compra) L.push(`🛒 Ver e comprar: ${a.link_compra}`);
+  if (aj.link_afiliado !== false && a.link_compra) L.push(`🛒 Ver e comprar: ${a.link_compra.replace(/(marker=\d+)(\.\w+)?/, "$1.whatsapp")}`);
   else if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);
   if (a.tipo === "internacional" && (aj.link_seguro || aj.link_chip)) { L.push(""); if (aj.link_seguro) L.push(`🛡️ Seguro viagem: ${aj.link_seguro}`); if (aj.link_chip) L.push(`📱 Internet no exterior (chip/eSIM): ${aj.link_chip}`); }
   return L.join("\n");
@@ -388,6 +388,18 @@ function filaEnvio() {
   return L.sort((x, y) => y.q.localeCompare(x.q));
 }
 /* 📡 saúde do radar: rodadas nas últimas 24h, rotas atualizadas, respostas do Google */
+function cardAfiliados() {
+  if (S.afil === undefined) { S.afil = null; getJSON("afiliados.json", {}).then(d => { S.afil = d || {}; if (/#dashboard|^#?$/.test(location.hash)) render(); }); return ""; }
+  const d = S.afil; if (!d) return "";
+  const soma = (L, k) => (L || []).reduce((t, x) => t + (+x[k] || 0), 0), dia = d.por_dia || [];
+  const cl = soma(dia, "clicks_count") || soma(dia, "redirects_count"), pagas = soma(dia, "paid_actions_count"), proc = soma(dia, "processing_actions_count");
+  const ganho = soma(dia, "paid_profit_eur_sum"), prev = soma(dia, "processing_profit_eur_sum"), eur = v => "€ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const canais = (d.por_canal || []).filter(x => x.sub_id).map(x => `<span>${esc(x.sub_id)}: <b>${(+x.clicks_count || +x.redirects_count || 0)}</b> cliques</span>`).join(" · ");
+  return `<div class="card saude"><b>💰 Comissões de afiliado · últimos 60 dias</b>
+    ${d.ok ? `<div class="saude-l"><span>Cliques nos links <b>${cl}</b></span><span>Vendas confirmadas <b>${pagas}</b></span><span>Em análise <b>${proc}</b></span><span>Ganho <b>${eur(ganho)}</b>${prev ? ` (+ ${eur(prev)} em análise)` : ""}</span></div>
+    ${canais ? `<small class="sub">${canais}</small>` : `<small class="sub">Os links agora saem marcados por canal (WhatsApp, Telegram) pra você ver de onde vem cada venda. Atualiza todo dia às 8h.</small>`}`
+    : `<small class="sub">Ainda não deu pra ler a Travelpayouts: ${esc(d.erro || "sem dados")}</small>`}</div>`;
+}
 function saudeRadar() { const ag = Date.now(), lim = ag - 864e5, rd = (S.rodadas || []).filter(r => !r.manual && Date.parse(r.quando) >= lim);
   const R = Object.values((S.status || {}).rotas || {}), at = R.filter(r => r.quando && Date.parse(r.quando) >= lim).length, tot = R.length || 1;
   const q = rd.reduce((p, r) => p + (r.consultas || 0), 0), e = rd.reduce((p, r) => p + (r.erros || 0), 0), taxa = q ? Math.round((1 - e / q) * 100) : null;
@@ -412,7 +424,7 @@ function pDash() {
   const a7 = A.filter(a => a.criado.slice(0, 10) >= diaMenos(h, 6));
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
-  return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) + saudeRadar() +
+  return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) + saudeRadar() + cardAfiliados() +
     `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
     ${typeof agendaHTML === "function" ? agendaHTML(fila.length) : ""}
     <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). Alertas cujo preço já subiu ficam de fora.</div></div><a class="bt pri" href="#enviar">${ic("send")}Abrir Modo envio</a></div>

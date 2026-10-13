@@ -37,7 +37,7 @@ def main():
         except Exception as e:  # noqa: BLE001
             out["campos_api"] = str(e)[:200]
         nomes = json.dumps(out.get("campos_api"))
-        cand = ["redirect_count", "clicks_count", "clicks", "inits_count", "searches_count", "paid_actions_count", "processing_actions_count", "cancelled_actions_count", "paid_profit_eur_sum", "processing_profit_eur_sum", "paid_profit_rub_sum"]
+        cand = ["clicks_count", "redirects_count", "inits_count", "searches_count", "paid_actions_count", "processing_actions_count", "cancelled_actions_count", "paid_profit_eur_sum", "processing_profit_eur_sum", "paid_profit_rub_sum"]
         campos = [c for c in cand if f'"{c}"' in nomes] or ["paid_actions_count", "paid_profit_eur_sum"]
         _ = ["redirect_count", "paid_actions_count", "processing_actions_count", "cancelled_actions_count", "paid_profit_eur_sum", "processing_profit_eur_sum"]
         try:

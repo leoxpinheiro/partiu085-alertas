@@ -295,7 +295,7 @@ def classe(desc: float) -> tuple[str, str]:
 
 def link_aviasales(dest: str, ida: str, volta: str) -> str:
     u = f"https://www.aviasales.com/search/{C.ORIGEM}{ida[8:10]}{ida[5:7]}{dest}{volta[8:10]}{volta[5:7]}1"
-    return u + (f"?marker={TP_MARKER}&currency=brl" if TP_MARKER else "?currency=brl")
+    return u + (f"?marker={TP_MARKER}.whatsapp&currency=brl" if TP_MARKER else "?currency=brl")
 
 
 def mes_curto(g: dict) -> str:
@@ -399,7 +399,7 @@ def postar_telegram(texto: str, aj: dict, foto: bytes | None = None) -> bool:
     """Posta no canal. Com foto: imagem com o texto na legenda (ou imagem + texto separado, se o texto for grande)."""
     if not (TG_TOKEN and TG_CHAT and aj.get("telegram_ativo", True)):
         return False
-    txt = para_telegram(texto)
+    txt = re.sub(r"(marker=\d+)\.\w+", r"\1.telegram", para_telegram(texto))  # comissão separada por canal
     try:
         if foto:
             leg = txt if len(txt) <= 1024 else None

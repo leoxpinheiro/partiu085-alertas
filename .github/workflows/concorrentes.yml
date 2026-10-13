@@ -1,0 +1,25 @@
+name: Radar de concorrentes
+on:
+  schedule:
+    - cron: "37 10 * * 1"   # segunda 07:37 em Fortaleza
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests
+      - env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python engine/concorrentes.py
+      - run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/concorrentes.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Radar de concorrentes"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q && exit 0; sleep 7; done; exit 1

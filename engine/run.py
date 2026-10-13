@@ -161,7 +161,7 @@ def _um_dia(orig: str, dest: str, dia: str, max_esc: int):
             return dia, google_trecho(orig, dest, dia, max_esc), None
         except Exception as e:  # noqa: BLE001
             err = e
-            time.sleep(2 + 2 * t)
+            time.sleep(1.5)
     return dia, None, err
 
 

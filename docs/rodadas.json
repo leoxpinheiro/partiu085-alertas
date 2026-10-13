@@ -1791,5 +1791,23 @@
   "alertas": 0,
   "manual": false,
   "segundos": 1665
+ },
+ {
+  "quando": "2026-10-13T11:55-03:00",
+  "rotas": [
+   "SAO",
+   "RIO",
+   "REC",
+   "LIS",
+   "BUE"
+  ],
+  "rotas_com_dados": 5,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": true,
+  "segundos": 1251,
+  "consultas": 910,
+  "erros": 251,
+  "parou_por_tempo": false
  }
 ]

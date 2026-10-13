@@ -131,14 +131,14 @@
    "motivo": "2 alertas em 30 dias"
   },
   "ROM": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "LON": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "AMS": {
    "prioridade": "normal",
@@ -178,12 +178,12 @@
   "BOG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (2 de ~90 dias)"
+   "motivo": "poucos voos (6 de ~90 dias)"
   },
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (1 de ~90 dias)"
+   "motivo": "poucos voos (3 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -193,7 +193,7 @@
   "CUN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (11 de ~90 dias)"
   },
   "MVD": {
    "prioridade": "baixa",
@@ -216,9 +216,9 @@
    "motivo": "2 alertas em 30 dias"
   },
   "CGR": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "NVT": {
    "prioridade": "alta",
@@ -241,9 +241,9 @@
    "motivo": "padrão"
   },
   "BCN": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "MIL": {
    "prioridade": "normal",
@@ -271,25 +271,25 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-13T02:38-03:00",
+ "quando": "2026-10-13T03:32-03:00",
  "ultimo_lote": [
   "SSA",
   "BUE",
-  "PMW",
-  "MIA",
-  "PAR",
-  "MCZ",
-  "SAO",
-  "RIO",
-  "REC",
   "VCP",
   "BHZ",
   "NVT",
-  "LON",
-  "LIM",
-  "CUN",
-  "CGR",
-  "BCN",
-  "THE"
+  "THE",
+  "MAO",
+  "POA",
+  "CGB",
+  "OPO",
+  "BSB",
+  "BEL",
+  "CWB",
+  "SLZ",
+  "IGU",
+  "FLN",
+  "LIS",
+  "GYN"
  ]
 }

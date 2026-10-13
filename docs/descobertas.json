@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-13T21:47+00:00",
+ "atualizado": "2026-10-13T22:24+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -26,6 +26,19 @@
   }
  ],
  "destinos": [
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 337,
+    "ida": "2026-10-30",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-09T23:13:01Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
+   "pista": true
+  },
   {
    "iata": "SLZ",
    "ow": {
@@ -125,26 +138,6 @@
    "pista": true
   },
   {
-   "iata": "REC",
-   "rt": {
-    "preco": 1314,
-    "ida": "2026-10-23",
-    "volta": "2026-10-30",
-    "paradas": 0,
-    "visto": "2026-10-09T21:59:05Z"
-   },
-   "ow": {
-    "preco": 337,
-    "ida": "2026-10-30",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-09T23:13:01Z"
-   },
-   "rastreada": true,
-   "nome": "Recife",
-   "pista": true
-  },
-  {
    "iata": "BHZ",
    "rt": {
     "preco": 1509,
@@ -154,7 +147,7 @@
     "visto": "2026-10-11T16:37:15Z"
    },
    "ow": {
-    "preco": 498,
+    "preco": 497,
     "ida": "2026-11-03",
     "volta": "",
     "paradas": 1,
@@ -213,7 +206,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1836,
+    "preco": 1835,
     "ida": "2026-12-19",
     "volta": "2026-12-21",
     "paradas": 2,
@@ -285,7 +278,7 @@
   {
    "iata": "SID",
    "ow": {
-    "preco": 2789,
+    "preco": 2788,
     "ida": "2027-03-08",
     "volta": "",
     "paradas": 1,
@@ -363,7 +356,7 @@
   {
    "iata": "LIS",
    "rt": {
-    "preco": 5149,
+    "preco": 5148,
     "ida": "2026-12-28",
     "volta": "2027-01-13",
     "paradas": 1,
@@ -396,7 +389,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 5964,
+    "preco": 5963,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

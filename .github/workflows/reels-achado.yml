@@ -15,7 +15,7 @@ concurrency:
 jobs:
   video:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - run: git fetch -q origin main && git reset -q --hard origin/main
@@ -25,7 +25,7 @@ jobs:
       - run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           cd engine/video && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
-      - run: pip install requests
+      - run: pip install requests numpy scipy
       - env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_ADMIN_ID: ${{ secrets.TELEGRAM_ADMIN_ID }}

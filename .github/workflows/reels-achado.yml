@@ -1,0 +1,41 @@
+name: Reels do achado (vídeo do dia)
+
+on:
+  schedule:
+    - cron: "17 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: git fetch -q origin main && git reset -q --hard origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          cd engine/video && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
+      - run: pip install requests
+      - env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_ID: ${{ secrets.TELEGRAM_ADMIN_ID }}
+          NODE_PATH: ${{ github.workspace }}/engine/video/node_modules
+        run: python engine/reels_achado.py
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs/ig docs/ig_fila.json
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Reels do achado: vídeo do dia"
+          for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done

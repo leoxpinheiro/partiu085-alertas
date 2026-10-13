@@ -9,6 +9,10 @@ on:
         description: "Teste (salva num branch separado, não mexe na agenda)"
         type: boolean
         default: false
+      previa:
+        description: "Só desenhar estes conteúdos (ids ct-..., separados por vírgula) num branch de prévia"
+        type: string
+        default: ""
 permissions:
   contents: write
 concurrency:
@@ -25,11 +29,15 @@ jobs:
       - run: cd engine/abastecer && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
       - env:
           NODE_PATH: ${{ github.workspace }}/engine/abastecer/node_modules
+          PREVIA: ${{ inputs.previa }}
         run: node engine/abastecer/abastecer.js ${{ inputs.teste && '--teste' || '' }}
       - name: Salvar
         run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"
+          if [ -n "${{ inputs.previa }}" ]; then
+            git add -f docs/previa && git checkout -q -b abastecer-previa && git commit -q -m "prévia" && git push -q -f origin abastecer-previa; exit 0
+          fi
           git add docs/ig docs/ig_fila.json
           git diff --cached --quiet && exit 0
           if [ "${{ inputs.teste }}" = "true" ]; then

@@ -20,7 +20,7 @@ const iso = d => d.toISOString().slice(0, 16) + '-03:00';
     const noDia = fila.filter(x => x.tipo !== 'story' && (x.quando || '').startsWith(dia)).length + (auto.auto_oferta ? (auto.horarios_oferta || []).length : 0);
     let livres = Math.max(0, POR_DIA - noDia);
     for (const h of HS) { const q = `${dia}T${h}-03:00`; if (!livres) break; if (Date.parse(q) < Date.now() + 2.5 * 3600e3 || ocupado(q)) continue; vagas.push(q); livres--; } }
-  if (!vagas.length) { console.log('agenda já está cheia'); return; }
+  if (!vagas.length && !process.env.PREVIA) { console.log('agenda já está cheia'); return; }
   // abre o painel sem token, só pra desenhar os carrosséis com o mesmo código dele
   const tipos = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml' };
   const srv = http.createServer((q, r) => { let n = decodeURIComponent(q.url.split('?')[0]); if (n === '/') n = '/index.html'; const f = path.join(DOCS, n);
@@ -30,7 +30,12 @@ const iso = d => d.toISOString().slice(0, 16) + '-03:00';
   await pg.goto(`http://localhost:${srv.address().port}/`, { waitUntil: 'networkidle' }); await pg.waitForFunction(() => typeof postsConteudo === 'function' && typeof CONTEUDO !== 'undefined', null, { timeout: 60000 });
   await pg.evaluate(async () => { await document.fonts.ready; await Promise.all([...document.fonts].map(f => f.load().catch(() => null))); await document.fonts.ready; });
   console.log('fontes:', await pg.evaluate(() => [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family).filter((v, i, a) => a.indexOf(v) === i).join(', ')));
-  const conteudos = (await pg.evaluate(() => postsConteudo().map(p => ({ id: p.id, titulo: p.titulo, valido: p.valido || '', data: p.data || '', semFoto: /CAPA SEM FOTO/.test(p.porque || ''), n: p.telas.length })))).filter(p => !usados.has(p.id) && !p.semFoto);
+  if (process.env.PREVIA) { fs.mkdirSync(path.join(DOCS, 'previa'), { recursive: true });
+    for (const id of process.env.PREVIA.split(',')) { const imgs = await pg.evaluate(async pid => { const p = postsConteudo().find(x => x.id === pid); if (!p) return []; const o = [];
+        for (const fn of p.telas) { const cv = document.createElement('canvas'); cv.width = PW; cv.height = PH; await fn(cv.getContext('2d')); o.push(cv.toDataURL('image/jpeg', .85).split(',')[1]); } return o; }, id);
+      imgs.forEach((d, j) => fs.writeFileSync(path.join(DOCS, 'previa', `${id}-${j + 1}.jpg`), Buffer.from(d, 'base64'))); console.log('prévia', id, imgs.length); }
+    await b.close(); srv.close(); return; }
+  const conteudos = (await pg.evaluate(() => postsConteudo().map(p => ({ id: p.id, titulo: p.titulo, valido: p.valido || '', data: p.data || '', semFoto: /CAPA SEM FOTO/.test(p.porque || ''), rev: !!(CONTEUDO.find(c => 'ct-' + c.id === p.id) || {}).revisar, n: p.telas.length })))).filter(p => !usados.has(p.id) && !p.semFoto && !p.rev);
   const videos = vp.filter(v => v.grupo === 'Dicas' && v.arq && !usados.has('vp-' + v.id));
   console.log(`vagas: ${vagas.join(', ')} · carrosséis livres: ${conteudos.length} · vídeos de dica livres: ${videos.length}`);
   const base = Date.now().toString(36), novos = []; let k = 0, vez = 0;

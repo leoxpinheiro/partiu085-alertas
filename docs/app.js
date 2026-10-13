@@ -171,7 +171,8 @@ function montarTextoDinheiro(a) {
   L.push("", "🗓️ *IDA*", ...a.ida_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
   if (a.volta_meses && a.volta_meses.length) L.push("", "🗓️ *VOLTA*", ...a.volta_meses.map(g => `▸ ${curto(g)}: ${g.dias.join(", ")}`));
   const av = aj.aviso_preco ?? AVISO_PADRAO; if (av.trim()) L.push("", av.trim());
-  if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);
+  if (aj.link_afiliado !== false && a.link_compra) L.push(`🛒 Ver e comprar: ${a.link_compra}`);
+  else if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);
   return L.join("\n");
 }
 function reaplicarTextos() {
@@ -938,7 +939,8 @@ function pAjustes() {
             <div class="form" style="grid-template-columns:1fr;margin-top:10px">${txt("link_whatsapp_milhas", "Link do grupo de milhas", "Vazio = usa o link principal")}
             <div class="field"><label>Rodapé de milhas</label><textarea data-aj="rodape_milhas" rows="2" style="min-height:64px" placeholder="Vazio = usa o rodapé principal">${esc(a.rodape_milhas || "")}</textarea></div></div></details>
           <div class="field"><label>Como vai ficar</label><div class="texto" id="prev-rodape">${esc(previaTexto())}</div></div>
-          <label class="chk"><input type="checkbox" data-aj="mostrar_link" ${a.mostrar_link ? "checked" : ""}> Mostrar link do voo no texto</label>
+          <label class="chk"><input type="checkbox" data-aj="link_afiliado" ${a.link_afiliado !== false ? "checked" : ""}> 🛒 Mostrar link de compra com o nosso código de afiliado (você ganha comissão quando alguém compra)</label>
+          <label class="chk"><input type="checkbox" data-aj="mostrar_link" ${a.mostrar_link ? "checked" : ""}> Mostrar link do Google Voos (só quando o de afiliado estiver desligado)</label>
           <label class="chk"><input type="checkbox" data-aj="linha_premium" ${a.linha_premium ? "checked" : ""}> Incluir “⭐ Você recebeu em primeira mão por ser Premium.”</label>
           <label class="chk"><input type="checkbox" data-aj="telegram_ativo" ${a.telegram_ativo !== false ? "checked" : ""}> Postar automaticamente no canal do Telegram</label>
         </div></div>

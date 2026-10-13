@@ -295,7 +295,7 @@ def classe(desc: float) -> tuple[str, str]:
 
 def link_aviasales(dest: str, ida: str, volta: str) -> str:
     u = f"https://www.aviasales.com/search/{C.ORIGEM}{ida[8:10]}{ida[5:7]}{dest}{volta[8:10]}{volta[5:7]}1"
-    return u + (f"?marker={TP_MARKER}" if TP_MARKER else "")
+    return u + (f"?marker={TP_MARKER}&currency=brl" if TP_MARKER else "?currency=brl")
 
 
 def mes_curto(g: dict) -> str:
@@ -329,7 +329,9 @@ def montar_texto(a: dict, aj: dict) -> str:
     aviso = aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._")
     if aviso and aviso.strip():
         L += ["", aviso.strip()]
-    if aj.get("mostrar_link"):
+    if aj.get("link_afiliado", True) and a.get("link_compra"):
+        L.append(f"🛒 Ver e comprar: {a['link_compra']}")
+    elif aj.get("mostrar_link"):
         L.append(f"🔗 {a['link_google']}")
     if aj.get("linha_premium"):
         L.append("⭐ Você recebeu em primeira mão por ser Premium.")

@@ -538,7 +538,7 @@ def direct_automatico(conta: dict) -> None:
 
 
 AUTO, AUTO_FILA = DOCS / "ig_auto.json", DOCS / "ig_auto_fila.json"
-AUTO_PADRAO = {"pausado": False, "auto_oferta": True, "horarios_oferta": ["19:00"], "rodape": ""}
+AUTO_PADRAO = {"pausado": False, "auto_oferta": True, "horarios_oferta": ["19:00"], "rodape": "", "auto_reels_achado": False, "auto_conteudo": False, "auto_videos": False, "aviso_horas": 2}
 
 
 def vagas_automaticas(fila: list, auto: dict) -> list:
@@ -582,6 +582,18 @@ def main():
     feitos = 0
     if auto.get("pausado"):
         print("robô pausado pelo painel: não publica nada")
+    # aviso antes do que vai sair sozinho (aprovado pelo piloto automático, não pelo Leo)
+    if not auto.get("pausado"):
+        agora_dt = datetime.now(FUSO)
+        for p in fila:
+            if not (p.get("auto_aprovado") and p.get("aprovado") and p.get("quando")) or st.get(p["id"], {}).get("status") or st.get(p["id"], {}).get("avisado"):
+                continue
+            falta = (datetime.fromisoformat(p["quando"]) - agora_dt).total_seconds() / 3600
+            if 0 < falta <= float(auto.get("aviso_horas", 2)):
+                avisar_admin(f"🤖 Vai sair sozinho às {p['quando'][11:16]} ({p['quando'][8:10]}/{p['quando'][5:7]}): {p.get('titulo', '')}\n\n"
+                             "Se não quiser, abre o painel › Instagram › Agenda e tira da agenda (ou pausa o robô). Se não fizer nada, publica.\n"
+                             "https://leoxpinheiro.github.io/partiu085-alertas/#instagram")
+                st[p["id"]] = {**st.get(p["id"], {}), "avisado": agora}
     for p in ([] if auto.get("pausado") else fila):
         s_ = st.get(p["id"], {})
         if s_.get("status") == "publicado":

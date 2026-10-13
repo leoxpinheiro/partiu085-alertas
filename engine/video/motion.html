@@ -70,7 +70,7 @@ function cena(t){
  // ===== herói (ponto → pílula → bolinha)
  const h=hero(t);if(h){const[x,y,w,hh,r,cor]=h,pu=t<2.6?1+.08*kick(t):1;c.save();c.translate(x,y);c.scale(pu,pu);c.fillStyle=cor;c.shadowColor='rgba(255,199,44,.55)';c.shadowBlur=50;rr(-w/2,-hh/2,w,hh,r);c.fill();c.restore();
   const tu=ev(t,3.15,3.5),to=ev(t,3.75,4.0,'inexpo');if(tu>0&&to<1){c.save();rr(x-w/2,y-hh/2,w,hh,r);c.clip();
-   const fs=caber(`FORTALEZA ✈ ${NOME}`,780,74);T(`FORTALEZA  ✈  ${NOME}`,540,980+(1-tu)*90-to*90,fs,{cor:NV,esp:2});c.restore();}
+   const fs=caber(`FORTALEZA WW ${NOME}`,780,74),w1=larg('FORTALEZA',fs,'Anton',400,2),w2=larg(NOME,fs,'Anton',400,2),gp=fs*1.3,x0=540-(w1+gp+w2)/2,yy=980+(1-tu)*90-to*90;T('FORTALEZA',x0+w1/2,yy,fs,{cor:NV,esp:2});aviao(x0+w1+gp/2,yy,0,fs/95,NV);T(NOME,x0+w1+gp+w2/2,yy,fs,{cor:NV,esp:2});c.restore();}
   fenda('ROTA DO DIA',540,800,40,ev(t,3.3,3.6),ev(t,3.9,4.1,'inexpo'),{font:'J',peso:800,esp:10,cor:AM});}
  // ===== 2. ROTA (4.35–7): a bolinha se divide em duas, a rota se desenha
  if(t>=4.3&&t<7.2){const sp=ev(t,4.35,4.9),A={x:lerp(540,PA.x,sp),y:lerp(980,PA.y,sp)},B={x:lerp(540,PB.x,sp),y:lerp(980,PB.y,sp)},q=ev(t,4.9,6.05,'io');

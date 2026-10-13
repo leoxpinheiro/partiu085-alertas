@@ -333,6 +333,12 @@ def montar_texto(a: dict, aj: dict) -> str:
         L.append(f"🛒 Ver e comprar: {a['link_compra']}")
     elif aj.get("mostrar_link"):
         L.append(f"🔗 {a['link_google']}")
+    if a.get("tipo") == "internacional" and (aj.get("link_seguro") or aj.get("link_chip")):
+        L.append("")
+        if aj.get("link_seguro"):
+            L.append(f"🛡️ Seguro viagem: {aj['link_seguro']}")
+        if aj.get("link_chip"):
+            L.append(f"📱 Internet no exterior (chip/eSIM): {aj['link_chip']}")
     if aj.get("linha_premium"):
         L.append("⭐ Você recebeu em primeira mão por ser Premium.")
     modelo = aj.get("rodape", "✈️ Receba alertas no WhatsApp: {link}")

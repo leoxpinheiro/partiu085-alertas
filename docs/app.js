@@ -173,6 +173,7 @@ function montarTextoDinheiro(a) {
   const av = aj.aviso_preco ?? AVISO_PADRAO; if (av.trim()) L.push("", av.trim());
   if (aj.link_afiliado !== false && a.link_compra) L.push(`🛒 Ver e comprar: ${a.link_compra}`);
   else if (aj.mostrar_link && a.link_google) L.push(`🔗 ${a.link_google}`);
+  if (a.tipo === "internacional" && (aj.link_seguro || aj.link_chip)) { L.push(""); if (aj.link_seguro) L.push(`🛡️ Seguro viagem: ${aj.link_seguro}`); if (aj.link_chip) L.push(`📱 Internet no exterior (chip/eSIM): ${aj.link_chip}`); }
   return L.join("\n");
 }
 function reaplicarTextos() {
@@ -939,6 +940,7 @@ function pAjustes() {
             <div class="form" style="grid-template-columns:1fr;margin-top:10px">${txt("link_whatsapp_milhas", "Link do grupo de milhas", "Vazio = usa o link principal")}
             <div class="field"><label>Rodapé de milhas</label><textarea data-aj="rodape_milhas" rows="2" style="min-height:64px" placeholder="Vazio = usa o rodapé principal">${esc(a.rodape_milhas || "")}</textarea></div></div></details>
           <div class="field"><label>Como vai ficar</label><div class="texto" id="prev-rodape">${esc(previaTexto())}</div></div>
+          <div class="form" style="grid-template-columns:1fr 1fr;margin:6px 0 4px">${txt("link_seguro", "🛡️ Link de afiliado · seguro viagem", "Ex.: o seu link da Assist Card. Vai nos alertas internacionais e na página de links")}${txt("link_chip", "📱 Link de afiliado · chip/eSIM", "Ex.: o seu link da Airalo ou Holafly")}</div>
           <label class="chk"><input type="checkbox" data-aj="link_afiliado" ${a.link_afiliado !== false ? "checked" : ""}> 🛒 Mostrar link de compra com o nosso código de afiliado (você ganha comissão quando alguém compra)</label>
           <label class="chk"><input type="checkbox" data-aj="mostrar_link" ${a.mostrar_link ? "checked" : ""}> Mostrar link do Google Voos (só quando o de afiliado estiver desligado)</label>
           <label class="chk"><input type="checkbox" data-aj="linha_premium" ${a.linha_premium ? "checked" : ""}> Incluir “⭐ Você recebeu em primeira mão por ser Premium.”</label>

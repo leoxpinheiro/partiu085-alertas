@@ -87,6 +87,8 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": 
       <span class="t"><b>${esc(g.nome)}</b><span>${esc(g.desc)}</span></span>
       ${g.preco ? `<span class="pr">${esc(g.preco)}</span>` : `<span class="seta">→</span>`}
     </a>`).join("") : `<p style="text-align:center;color:var(--sub)">Em breve.</p>`;
+  try { const aj = await (await fetch("ajustes.json?t=" + Date.now())).json(); const P = [[aj.link_seguro, "🛡️", "Seguro viagem", "Obrigatório pra Europa. Cote antes de viajar."], [aj.link_chip, "📱", "Chip / eSIM internacional", "Internet no celular assim que pousar."]].filter(x => x[0]);
+    if (P.length) document.getElementById("lista").insertAdjacentHTML("beforeend", `<h2 style="margin:22px 0 10px">Antes de viajar</h2>` + P.map(([u, e, n, d]) => `<a class="g" href="${esc(u)}" target="_blank" rel="noopener sponsored"><span class="ic" style="display:grid;place-items:center;font-size:22px">${e}</span><span class="t"><b>${n}</b><span>${d}</span></span><span class="seta">→</span></a>`).join("")); } catch (e) { }
   const brl = v => "R$ " + Math.round(+v || 0).toLocaleString("pt-BR");
   if (ult.length) document.getElementById("achados").innerHTML = `<h2>Últimos achados do radar</h2>${ult.map(x => `<div class="ach"><b>Fortaleza ➜ ${esc(x.destino_nome || x.destino)}</b><span>${x.preco_volta ? `ida e volta ${brl(x.preco + x.preco_volta)}` : `${brl(x.preco)} o trecho`}</span></div>`).join("")}<p>Quem estava no grupo recebeu na hora. Os preços eram do dia do alerta.</p>`;
 })();

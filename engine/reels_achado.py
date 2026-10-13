@@ -105,7 +105,10 @@ def main():
     if not x:
         print("sem achado bom hoje")
         return
-    q = vaga(fila, hoje)
+    if any(v.get("id", "").startswith(f"ig-ach-{hoje.strftime('%m%d')}-") for v in ig.ler(ig.DOCS / "videos_prontos.json", [])):
+        print("já tem o vídeo de hoje")
+        return
+    q = vaga(fila, hoje) if AUTO else "-"
     if not q:
         print("sem horário livre")
         return
@@ -130,13 +133,17 @@ def main():
            + (f"\n📅 Melhor época: {x['mes']}" if x.get("mes") else "") + f"\n\n🕐 Preço visto pelo radar hoje, {hoje.strftime('%d/%m')}. Muda a qualquer hora."
            + "\n\n💬 Comenta EU QUERO que eu te mando os próximos 📩\n🔔 Ativa o sininho: alerta grátis de passagem saindo de Fortaleza"
            + "\n\n#fortaleza #ceara #passagensbaratas #promocaodepassagem #viagem #partiu085")
-    fila.append({"id": pid, "titulo": f"🎬 Reels do achado: {x['nome']} por {brl(x['preco'])}", "tipo": "reels", "imagens": [f"ig/{capa.name}"], "video_pronto": f"ig/{mp4.name}", "dur": dur,
+    if AUTO:  # só entra na agenda se o piloto automático do reels estiver ligado; senão fica só em 🎬 Vídeos prontos
+      fila.append({"id": pid, "titulo": f"🎬 Reels do achado: {x['nome']} por {brl(x['preco'])}", "tipo": "reels", "imagens": [f"ig/{capa.name}"], "video_pronto": f"ig/{mp4.name}", "dur": dur,
                  "legenda": leg, "quando": q, "aprovado": AUTO, "auto_aprovado": AUTO, "tentativa": 0, "criado": hoje.isoformat(timespec="minutes"), "origem": tag})
     ig.salvar(ig.FILA, fila)
     vp = ig.ler(ig.DOCS / "videos_prontos.json", [])  # também aparece em 🎬 Vídeos prontos
     vp.append({"id": pid, "titulo": f"Achei passagem pra {x['nome']} por {brl(x['preco'])}", "grupo": "Achado do dia", "arq": f"ig/{mp4.name}", "capa": f"ig/{capa.name}", "dur": dur,
                "data": hoje.date().isoformat(), "legenda": leg, "criado": hoje.isoformat(timespec="minutes")})
     ig.salvar(ig.DOCS / "videos_prontos.json", vp)
+    if not AUTO:
+        print("ok (só em Vídeos prontos)", pid)
+        return
     if AUTO:
         ig.avisar_admin(f"🎬 Reels do achado pronto: {x['nome']} por {brl(x['preco'])}. Vai sair sozinho {q[8:10]}/{q[5:7]} às {q[11:16]} (piloto automático). Se não quiser, tira da agenda no painel.")
     else:

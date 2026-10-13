@@ -18,6 +18,7 @@ import statistics
 import sys
 import time
 import traceback
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -148,25 +149,48 @@ def google_trecho(orig: str, dest: str, dia: str, max_escalas: int) -> dict | No
             "escalas": max(0, len(b.flights) - 1)}
 
 
-def varrer(orig: str, dest: str, max_esc: int, aj: dict) -> list[dict]:
-    out, erros = [], 0
-    d = date.today() + timedelta(days=int(aj["dias_inicio"]))
-    fim = date.today() + timedelta(days=int(aj["dias_fim"]))
-    while d <= fim:
-        try:
-            o = google_trecho(orig, dest, d.isoformat(), max_esc)
-            erros = 0
-            if o:
-                out.append(o)
-        except Exception as e:  # noqa: BLE001
-            erros += 1
-            log(f"  ! Google {orig}-{dest} {d}: {type(e).__name__}: {str(e)[:100]}")
-            if erros >= 4:
-                log(f"  ! {orig}-{dest}: muitos erros seguidos, parando")
-                break
-            time.sleep(4)
+CONT = {"consultas": 0, "erros": 0}  # saúde da rodada
+
+
+def _um_dia(orig: str, dest: str, dia: str, max_esc: int):
+    """Uma data: tenta de novo uma vez se o Google responder com erro (acontece à toa de vez em quando)."""
+    err = None
+    for t in range(2):
         time.sleep(C.PAUSA_GOOGLE)
-        d += timedelta(days=int(aj["passo_dias"]))
+        try:
+            return dia, google_trecho(orig, dest, dia, max_esc), None
+        except Exception as e:  # noqa: BLE001
+            err = e
+            time.sleep(2 + 2 * t)
+    return dia, None, err
+
+
+def varrer(orig: str, dest: str, max_esc: int, aj: dict) -> list[dict]:
+    """Varre a janela de datas com alguns robôs em paralelo (bem mais rápido) e sem desistir por 4 erros seguidos."""
+    d, fim, passo = date.today() + timedelta(days=int(aj["dias_inicio"])), date.today() + timedelta(days=int(aj["dias_fim"])), int(aj["passo_dias"])
+    dias = []
+    while d <= fim:
+        dias.append(d.isoformat())
+        d += timedelta(days=passo)
+    n = max(1, min(6, int(aj.get("paralelo", 3))))
+    out, erros, tipos = [], 0, {}
+    with ThreadPoolExecutor(max_workers=n) as ex:
+        for i in range(0, len(dias), 12):
+            res = list(ex.map(lambda x: _um_dia(orig, dest, x, max_esc), dias[i:i + 12]))
+            for dia, o, e in res:
+                CONT["consultas"] += 1
+                if e is not None:
+                    erros += 1
+                    CONT["erros"] += 1
+                    tipos[type(e).__name__] = tipos.get(type(e).__name__, 0) + 1
+                elif o:
+                    out.append(o)
+            if i == 0 and erros >= len(res):  # o primeiro bloco inteiro deu erro: Google bloqueou ou rota sem voo
+                log(f"  ! {orig}-{dest}: o Google não respondeu nas primeiras datas, pulando")
+                break
+    out.sort(key=lambda x: x["dia"])
+    if erros:
+        log(f"  {orig}-{dest}: {len(out)} datas com preço · {erros} sem resposta ({', '.join(f'{k} {v}' for k, v in tipos.items())})")
     return out
 
 
@@ -547,7 +571,13 @@ def rodada() -> None:
     log(f"Lote: {', '.join(r['iata'] for r in lote)}")
 
     candidatos, resumo, calendarios = [], {}, {}
+    limite_s = float(aj.get("limite_minutos", 50)) * 60
+    parou = False
     for r in lote:
+        if time.time() - inicio > limite_s and not BASE_SAIDA:
+            log(f"⏱️ Tempo da rodada esgotado ({int((time.time() - inicio) / 60)} min): salvo o que já tenho e paro aqui.")
+            parou = True
+            break
         rota = f"{C.ORIGEM}-{r['iata']}"
         ida, volta = coletar(r, aj)
         quando = agora().isoformat(timespec="minutes")
@@ -704,7 +734,8 @@ def rodada() -> None:
     rodadas.append({"quando": agora().isoformat(timespec="minutes"), "rotas": [r["iata"] for r in lote],
                     "rotas_com_dados": sum(1 for v in resumo.values() if v.get("ofertas")),
                     "candidatos": len(candidatos), "alertas": len(novos),
-                    "manual": bool(ROTAS_AGORA), "segundos": int(time.time() - inicio)})
+                    "manual": bool(ROTAS_AGORA), "segundos": int(time.time() - inicio),
+                    "consultas": CONT["consultas"], "erros": CONT["erros"], "parou_por_tempo": parou})
     salvar_json(LOG_FILE, rodadas[-400:])
     status = ler_json(STATUS_FILE, {"rotas": {}})
     status.setdefault("rotas", {}).update(resumo)

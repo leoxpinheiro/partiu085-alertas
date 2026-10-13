@@ -9,6 +9,7 @@ on:
 
 permissions:
   actions: write
+  contents: read
 
 concurrency:
   group: relogio
@@ -19,6 +20,29 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 230
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docs/status.json
+            engine/.telegram_admin
+          sparse-checkout-cone-mode: false
+      - name: Vigia (avisa se o radar ficou mais de 3h sem terminar uma rodada)
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_ID: ${{ secrets.TELEGRAM_ADMIN_ID }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request, urllib.parse
+          from datetime import datetime, timezone, timedelta
+          u = json.load(open("docs/status.json")).get("ultima_rodada", "")
+          h = (datetime.now(timezone(timedelta(hours=-3))) - datetime.fromisoformat(u)).total_seconds() / 3600 if u else 99
+          print(f"última rodada: {u} ({h:.1f}h)")
+          chat = os.environ.get("TELEGRAM_ADMIN_ID") or (open("engine/.telegram_admin").read().strip() if os.path.exists("engine/.telegram_admin") else "")
+          if h > 3 and chat and os.environ.get("TELEGRAM_BOT_TOKEN"):
+              msg = f"⚠️ Radar Partiu 085: nenhuma rodada terminou nas últimas {h:.0f}h. Já mandei rodar de novo; se continuar, me avise."
+              urllib.request.urlopen(f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/sendMessage", urllib.parse.urlencode({"chat_id": chat, "text": msg}).encode(), timeout=20)
+          PY
       - name: Rodar o radar agora
         env:
           GH_TOKEN: ${{ github.token }}

@@ -383,6 +383,15 @@ function filaEnvio() {
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
   return L.sort((x, y) => y.q.localeCompare(x.q));
 }
+/* 📡 saúde do radar: rodadas nas últimas 24h, rotas atualizadas, respostas do Google */
+function saudeRadar() { const ag = Date.now(), lim = ag - 864e5, rd = (S.rodadas || []).filter(r => !r.manual && Date.parse(r.quando) >= lim);
+  const R = Object.values((S.status || {}).rotas || {}), at = R.filter(r => r.quando && Date.parse(r.quando) >= lim).length, tot = R.length || 1;
+  const q = rd.reduce((p, r) => p + (r.consultas || 0), 0), e = rd.reduce((p, r) => p + (r.erros || 0), 0), taxa = q ? Math.round((1 - e / q) * 100) : null;
+  const ult = (S.rodadas || []).slice(-1)[0], hUlt = ult ? (ag - Date.parse(ult.quando)) / 36e5 : 99, cobre = Math.round(at / tot * 100);
+  const bom = hUlt < 3 && rd.length >= 8 && cobre >= 60 && (taxa == null || taxa >= 70);
+  const st = (n, t) => `<div><b>${n}</b><span>${t}</span></div>`;
+  return `<div class="card saude ${bom ? "ok" : "warn"}"><div class="saude-h"><b>📡 Saúde do radar: ${bom ? "✅ funcionando bem" : "⚠️ atenção"}</b><small>última rodada ${ult ? haQuanto(ult.quando) : "—"}</small></div>
+    <div class="saude-g">${st(rd.length, "rodadas em 24h")}${st(`${at}/${R.length}`, "destinos atualizados em 24h")}${st(taxa == null ? "—" : taxa + "%", "consultas que o Google respondeu")}${st(ult ? Math.round((ult.segundos || 0) / 60) + " min" : "—", "duração da última rodada")}</div></div>`; }
 function pDash() {
   carregarMilhas();
   const h = hojeISO(), A = S.alertas;
@@ -399,7 +408,7 @@ function pDash() {
   const a7 = A.filter(a => a.criado.slice(0, 10) >= diaMenos(h, 6));
   const hojeN = A.filter(a => a.criado.slice(0, 10) === h).length;
   const stat = (n, t, href, cor) => `<a class="mv-s ini" href="${href}" style="--c:${cor}"><b>${n}</b><span>${t}</span></a>`;
-  return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) +
+  return head("Início", "O resumo do dia: o que o radar achou e o que ainda falta enviar", statusPill()) + saudeRadar() +
     `<div class="mv-nums ini4">${stat(`${hojeN}<small>/${META_DIA}</small>`, "alertas em dinheiro hoje", "#alertas", "#16A34A")}${stat(miHoje, "alertas em milhas hoje", "#milhas", "#FF7A00")}${stat(promos, "promoções de milhas valendo", "#promocoes", "#8B5CF6")}${stat(enviadosHoje, "enviados hoje", "#alertas", "#64748B")}</div>
     ${typeof agendaHTML === "function" ? agendaHTML(fila.length) : ""}
     <div class="card" style="margin-bottom:var(--space-4)"><div class="card-h"><div><h3>Falta enviar</h3><div class="desc">O que ainda não foi marcado como enviado (ontem e hoje). Alertas cujo preço já subiu ficam de fora.</div></div><a class="bt pri" href="#enviar">${ic("send")}Abrir Modo envio</a></div>

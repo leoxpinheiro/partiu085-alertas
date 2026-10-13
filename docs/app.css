@@ -1115,3 +1115,10 @@ body.kb .bottom{display:none!important}
 .vp-c.feito{opacity:.55}.vp-i{display:flex;flex-direction:column;gap:2px}.vp-i small{font-size:11.5px;color:var(--text-tertiary)}.vp-i b{font-size:14px;line-height:1.3}
 .vp-bts{display:flex;flex-wrap:wrap;gap:6px}.vp-bts .bt{flex:1 1 auto}
 @media(max-width:560px){.vp-grade{grid-template-columns:1fr 1fr;gap:10px}.vp-c{padding:7px}.vp-bts .bt{font-size:11.5px;padding:0 8px}}
+.lc-prog b{font-size:15px}.lc-bar{height:10px;border-radius:99px;background:var(--tile);margin-top:8px;overflow:hidden}.lc-bar i{display:block;height:100%;background:#22A06B;border-radius:99px}
+.lc-dia{margin-top:12px}.lc-dia.hoje{box-shadow:0 0 0 3px #FFC72C}.lc-dia.passou{opacity:.75}.lc-dh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}.lc-dh small{color:var(--text-tertiary)}
+.lc-it{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border,rgba(127,127,127,.15))}.lc-it .chk{flex:1;align-items:flex-start}.lc-it.ok span{text-decoration:line-through;opacity:.6}.lc-it .bt{flex:0 0 auto}
+.lc-txts details{margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--tile)}.lc-txts summary{cursor:pointer;font-weight:700}.lc-txts pre{white-space:pre-wrap;font:13px/1.45 "Plus Jakarta Sans",sans-serif;margin:8px 0}
+.lc-dest{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.lc-dest a{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:inherit;font-size:12px;font-weight:700}
+.lc-dest img{width:100%;aspect-ratio:1;object-fit:cover;object-position:center;border-radius:50%}
+@media(max-width:560px){.lc-dest{grid-template-columns:repeat(3,1fr)}}

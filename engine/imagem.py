@@ -127,10 +127,11 @@ def card_alerta(a: dict, alto: bool = False) -> bytes:
         d.rounded_rectangle((bx, by, bx + bw, by + bh), 28, outline=(80, 104, 130), width=2)
         cx = bx + bw / 2
         d.text((cx, by + 52), "IDA E VOLTA", font=jak(22, 700), fill=(200, 208, 218), anchor="ms")
-        iv = brl(a["preco"] + a["preco_volta"])
+        par = a.get("par") or {}
+        iv = brl(par["total"]) if par else brl(a["preco"] + a["preco_volta"])
         tv = caber(d, iv, 68, 40, bw - 40, anton)
         d.text((cx, by + 50 + tv), iv, font=anton(tv), fill=BRANCO, anchor="ms")
-        d.text((cx, by + bh - 24), "somando ida + volta", font=jak(20, 600), fill=(200, 208, 218), anchor="ms")
+        d.text((cx, by + bh - 24), f"{par['ida'][8:10]}/{par['ida'][5:7]} a {par['volta'][8:10]}/{par['volta'][5:7]}" if par else "somando ida + volta", font=jak(20, 600), fill=(200, 208, 218), anchor="ms")
     yd = max(yb + 96, by + bh + 52)
 
     if alto:

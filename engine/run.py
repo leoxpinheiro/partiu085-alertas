@@ -323,6 +323,21 @@ def milhas_do_voo(dest: str, dia: str) -> list[dict]:
     return out
 
 
+def casar_ida_volta(idas: list, voltas: list) -> dict | None:
+    """Ida e volta casada: a combinação mais barata em que a volta é de 3 a 21 dias depois da ida."""
+    from datetime import date
+    melhor = None
+    for i in idas:
+        di = date.fromisoformat(i["dia"])
+        for v in voltas:
+            dur = (date.fromisoformat(v["dia"]) - di).days
+            if getattr(C, "DURACAO_MIN", 3) <= dur <= getattr(C, "DURACAO_MAX", 21):
+                tot = i["preco"] + v["preco"]
+                if not melhor or tot < melhor["total"] or (tot == melhor["total"] and abs(dur - 7) < abs(melhor["dias"] - 7)):
+                    melhor = {"ida": i["dia"], "volta": v["dia"], "total": round(tot), "dias": dur}
+    return melhor
+
+
 def montar_texto(a: dict, aj: dict) -> str:
     esc = a["escalas"]
     paradas = "voo direto" if esc == 0 else f"{esc} parada" + ("s" if esc and esc > 1 else "")
@@ -336,7 +351,10 @@ def montar_texto(a: dict, aj: dict) -> str:
     if ref.get("texto"):
         L.append(f"📍 _{ref['texto']}_")
     L.append(f"💰 *{brl(a['preco'])}* o trecho")
-    if a.get("preco_volta"):
+    if a.get("par"):
+        p = a["par"]
+        L.append(f"🔁 Ida e volta: *{brl(p['total'])}* (ida {p['ida'][8:10]}/{p['ida'][5:7]}, volta {p['volta'][8:10]}/{p['volta'][5:7]} · {p['dias']} dias)")
+    elif a.get("preco_volta"):
         L.append(f"🔁 Ida e volta a partir de *{brl(a['preco'] + a['preco_volta'])}*")
     L.append(f"{emoji} *{rotulo}*")
     L.append(f"🛫 {a['cia_nome'] or '—'} · {paradas}")
@@ -741,6 +759,10 @@ def rodada() -> None:
             "link_google": google_link(C.ORIGEM, r["iata"], mi["dia"]),
             "link_compra": link_aviasales(r["iata"], mi["dia"], mv["dia"]),
         }
+        par = casar_ida_volta(c["d_ida"], c["d_volta"])
+        if par:
+            a["par"] = par
+            a["link_compra"] = link_aviasales(r["iata"], par["ida"], par["volta"])
         passado = [h for h in hist.get(f"{C.ORIGEM}-{r['iata']}", []) if h["dia"] < agora().date().isoformat()]
         if passado:
             menor_visto = min(h["minimo"] for h in passado)

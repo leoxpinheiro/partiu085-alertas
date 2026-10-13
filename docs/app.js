@@ -163,7 +163,8 @@ function montarTextoDinheiro(a) {
   const L = ["🚨 *O RADAR APITOU!*", "", `✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`];
   const rf = refDe(a.destino); if (rf && rf.texto) L.push(`📍 _${rf.texto}_`);
   L.push(`💰 *${brl(a.preco)}* o trecho`);
-  if (a.preco_volta) L.push(`🔁 Ida e volta a partir de *${brl(a.preco + a.preco_volta)}*`);
+  if (a.par) L.push(`🔁 Ida e volta: *${brl(a.par.total)}* (ida ${a.par.ida.slice(8, 10)}/${a.par.ida.slice(5, 7)}, volta ${a.par.volta.slice(8, 10)}/${a.par.volta.slice(5, 7)} · ${a.par.dias} dias)`);
+  else if (a.preco_volta) L.push(`🔁 Ida e volta a partir de *${brl(a.preco + a.preco_volta)}*`);
   L.push(`${rot[0]} *${rot[1]}*`);
   L.push(`🛫 ${a.cia_nome || "—"}${paradas ? " · " + paradas : ""}`);
   if (a.recorde && a.base) L.push(`📉 _Menor preço que já vimos nesse trecho (${a.base.dias} dias de pesquisa)_`);

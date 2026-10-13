@@ -32,6 +32,8 @@ DESTINOS = [
     ("IGU", "Foz do Iguaçu", "nacional", 2240),
     ("FEN", "Fernando de Noronha", "nacional", 2560),
     ("JDO", "Juazeiro do Norte", "nacional", 880),
+    ("CXJ", "Gramado (Caxias do Sul)", "nacional", 2240),
+    ("IOS", "Ilhéus", "nacional", 1440),
     # Internacionais
     ("LIS", "Lisboa", "internacional", 3800),
     ("OPO", "Porto", "internacional", 4000),
@@ -52,6 +54,8 @@ DESTINOS = [
     ("CUN", "Cancún", "internacional", 3600),
     ("MVD", "Montevidéu", "internacional", 2700),
     ("SID", "Cabo Verde (Sal)", "internacional", 3200),
+    ("AUA", "Aruba", "internacional", 3900),
+    ("CUR", "Curaçao", "internacional", 3900),
 ]
 
 # Quantos meses à frente procurar

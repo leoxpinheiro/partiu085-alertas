@@ -431,7 +431,7 @@ async function vbGravar(v, ini, dur, prog) {
   const blob = new Blob(partes, { type: mime.split(";")[0] }); return blob.size > 50e3 ? blob : null;
 }
 
-function estAbas(cur) { return `<div class="est-abas">${[["estudio", "🎬 Reels"], ["carrossel", "🖼️ Carrosséis"]].map(([k, n]) => `<a href="#${k}" class="pill ${cur === k ? "on" : ""}">${n}</a>`).join("")}</div>`; }
+function estAbas(cur) { return `<div class="est-abas">${[["estudio", "🎬 Reels"], ["videos", "🎞️ Vídeos"], ["carrossel", "🖼️ Carrosséis"]].map(([k, n]) => `<a href="#${k}" class="pill ${cur === k ? "on" : ""}">${n}</a>`).join("")}</div>`; }
 
 /* recorte: escolhe o trecho arrastando, vê na miniatura e toca o pedaço antes de enviar */
 const mmss = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;

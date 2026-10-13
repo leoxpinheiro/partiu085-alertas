@@ -211,7 +211,7 @@ const MENU = [
   ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"], ["pedidos", "zap", "Pedidos ao Claude"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
-  ["Instagram", [["pauta", "star", "Pauta e calendário"], ["instagram", "calendar", "Agenda"], ["desempenho", "chart", "Desempenho"], ["estudio", "play", "Estúdio: Reels e carrossel"], ["respostas", "send", "Respostas prontas"]], "#A78BFA"],
+  ["Instagram", [["pauta", "star", "Pauta e calendário"], ["instagram", "calendar", "Agenda"], ["desempenho", "chart", "Desempenho"], ["estudio", "play", "Estúdio: Reels e carrossel"], ["videos", "play", "🎬 Vídeos prontos"], ["respostas", "send", "Respostas prontas"]], "#A78BFA"],
   ["Ferramentas", [["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#64748B", true],
   ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8", true],
 ];
@@ -242,7 +242,7 @@ function navs() {
 }
 function render() {
   const pag = navs();
-  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash, instagram: typeof pInstagram === "function" ? pInstagram : pDash, respostas: typeof pRespostas === "function" ? pRespostas : pDash, estudio: typeof pEstudio === "function" ? pEstudio : pDash, carrossel: typeof pCarrossel === "function" ? pCarrossel : pDash, desempenho: typeof pDesempenho === "function" ? pDesempenho : pDash, pedidos: typeof pPedidos === "function" ? pPedidos : pDash }[pag] || pDash;
+  const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash, instagram: typeof pInstagram === "function" ? pInstagram : pDash, respostas: typeof pRespostas === "function" ? pRespostas : pDash, estudio: typeof pEstudio === "function" ? pEstudio : pDash, videos: typeof pVideos === "function" ? pVideos : pDash, carrossel: typeof pCarrossel === "function" ? pCarrossel : pDash, desempenho: typeof pDesempenho === "function" ? pDesempenho : pDash, pedidos: typeof pPedidos === "function" ? pPedidos : pDash }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
   if (pag === "milhas" && typeof mapaMilhas === "function") setTimeout(mapaMilhas, 0);

@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"
-          git add docs/ig docs/ig_fila.json
+          git add docs/ig docs/ig_fila.json docs/videos_prontos.json
           git diff --cached --quiet && exit 0
           git commit -q -m "Reels do achado: vídeo do dia"
           for i in 1 2 3; do git pull --rebase -X theirs -q && git push -q && exit 0; sleep 5; done

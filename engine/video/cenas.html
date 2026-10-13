@@ -24,6 +24,15 @@ const CENA={
  preco(s,u,a){txt(s.pre||"POR APENAS",W/2,700,64,"Anton","#fff","center",400,a*eo(u/.3));const k=eo((u-.35)/1.0),v=Math.round(s.valor*k),pun=u>1.35?1+.12*Math.max(0,1-(u-1.35)/.25):1;
   txt("R$ "+v.toLocaleString("pt-BR"),W/2,900,caber("R$ "+s.valor.toLocaleString("pt-BR"),W-120,260,"Anton"),"Anton",AM,"center",400,a*cl((u-.3)/.15),pun);
   txt(s.det,W/2,1080,40,"Jakarta","#fff","center",700,a*eo((u-1.5)/.3));if(s.iv)pill(s.iv,W/2,1180,36,"rgba(255,255,255,.95)",NV,a*eo((u-1.9)/.3));},
+ versus(s,u,a){txt(s.titulo||"",W/2,470,64,"Anton","#fff","center",400,a*eo(u/.3));
+  [[s.antes,"ANTES","rgba(120,20,30,.78)","#FF8A8A",0],[s.depois,"COM O RADAR","rgba(8,20,38,.82)",AM,1]].forEach(([L,rot,bg,cor,k])=>{const t0=.3+k*1.5,e=eo((u-t0)/.35);if(e<=0)return;const y0=560+k*560;
+   c.save();c.globalAlpha=a*e;c.fillStyle=bg;c.beginPath();c.roundRect(70+(1-e)*(k?300:-300),y0,W-140,500,40);c.fill();c.restore();
+   txt(rot,W/2,y0+70,50,"Anton",cor,"center",400,a*e);
+   L.forEach((l,i)=>{const kk=eo((u-t0-.25-i*.22)/.3);txt((k?"✓  ":"✗  ")+l,130,y0+170+i*100,44,"Jakarta","#fff","left",800,a*kk);});});},
+ numeros(s,u,a){if(s.titulo)txt(s.titulo,W/2,480,72,"Anton","#fff","center",400,a*eo(u/.3));
+  s.itens.forEach(([n,l],i)=>{const t0=.3+i*.55,e=eo((u-t0)/.35);if(e<=0)return;const y=640+i*330;caixa(90,y,W-180,290,a*e*.9);
+   const v=Math.round(n*eo((u-t0)/1.0));txt(String(v),W/2,y+120,170,"Anton",AM,"center",400,a*e,u>t0+1&&u<t0+1.25?1.08:1);txt(l,W/2,y+235,38,"Jakarta","#fff","center",800,a*e);});
+  if(s.nota)txt(s.nota,W/2,640+s.itens.length*330+20,28,"Jakarta","rgba(255,255,255,.85)","center",700,a*eo((u-1.8)/.3));},
  gancho(s,u,a,o){ if(s.pill)pill(s.pill,W/2,s.y0-130,34,AM,NV,eo(u/.35)*a);
   s.linhas.forEach((w,i)=>{const k=u-.2-i*(s.passo||.28);if(k<0)return;const amarelo=(s.amarelas||[]).includes(i);const sz=caber(w,W-140,s.tam||170,"Anton");txt(w,W/2,s.y0+i*(sz*1.03),sz,"Anton",amarelo?AM:"#fff","center",400,a,eb(k/.35)*(1+o*.25));});
   if(s.sub)txt(s.sub,W/2,s.y0+s.linhas.length*(s.tam||170)+30,40,"Jakarta","#fff","center",700,a*eo((u-.3-s.linhas.length*.28)/.3));},

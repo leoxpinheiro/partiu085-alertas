@@ -94,6 +94,10 @@ def main():
     fila.append({"id": pid, "titulo": f"🎬 Reels do achado: {x['nome']} por {brl(x['preco'])}", "tipo": "reels", "imagens": [f"ig/{capa.name}"], "video_pronto": f"ig/{mp4.name}", "dur": 16,
                  "legenda": leg, "quando": q, "aprovado": False, "tentativa": 0, "criado": hoje.isoformat(timespec="minutes"), "origem": tag})
     ig.salvar(ig.FILA, fila)
+    vp = ig.ler(ig.DOCS / "videos_prontos.json", [])  # também aparece em 🎬 Vídeos prontos
+    vp.append({"id": pid, "titulo": f"Achei passagem pra {x['nome']} por {brl(x['preco'])}", "grupo": "Achado do dia", "arq": f"ig/{mp4.name}", "capa": f"ig/{capa.name}", "dur": 15,
+               "data": hoje.date().isoformat(), "legenda": leg, "criado": hoje.isoformat(timespec="minutes")})
+    ig.salvar(ig.DOCS / "videos_prontos.json", vp)
     ig.avisar_admin(f"🎬 Reels do achado pronto: {x['nome']} por {brl(x['preco'])}. Está na agenda ({q[8:10]}/{q[5:7]} às {q[11:16]}) esperando você aprovar. Dá pra baixar e postar com música também.")
     print("ok", pid, q)
 

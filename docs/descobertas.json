@@ -1,11 +1,13 @@
 {
- "atualizado": "2026-10-13T16:49+00:00",
+ "atualizado": "2026-10-13T17:47+00:00",
  "pistas": [
   "BEL",
+  "BHZ",
   "BSB",
   "BUE",
   "CWB",
   "IGU",
+  "LON",
   "MAD",
   "REC",
   "RIO",
@@ -64,7 +66,7 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 836,
+    "preco": 835,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 1,
@@ -149,9 +151,16 @@
     "paradas": 2,
     "visto": "2026-10-11T16:37:15Z"
    },
+   "ow": {
+    "preco": 496,
+    "ida": "2026-11-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-13T17:07:06Z"
+   },
    "rastreada": true,
    "nome": "Belo Horizonte",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "MAD",
@@ -187,6 +196,26 @@
    "pista": true
   },
   {
+   "iata": "BSB",
+   "rt": {
+    "preco": 1831,
+    "ida": "2026-12-19",
+    "volta": "2026-12-21",
+    "paradas": 2,
+    "visto": "2026-10-13T14:44:13Z"
+   },
+   "ow": {
+    "preco": 674,
+    "ida": "2026-12-21",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-13T14:42:18Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
+   "pista": true
+  },
+  {
    "iata": "ROM",
    "ow": {
     "preco": 1831,
@@ -200,29 +229,9 @@
    "pista": true
   },
   {
-   "iata": "BSB",
-   "rt": {
-    "preco": 1832,
-    "ida": "2026-12-19",
-    "volta": "2026-12-21",
-    "paradas": 2,
-    "visto": "2026-10-13T14:44:13Z"
-   },
-   "ow": {
-    "preco": 675,
-    "ida": "2026-12-21",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-13T14:42:18Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
-   "pista": true
-  },
-  {
    "iata": "NVT",
    "ow": {
-    "preco": 1931,
+    "preco": 1930,
     "ida": "2026-10-17",
     "volta": "",
     "paradas": 1,
@@ -256,7 +265,7 @@
    },
    "rastreada": true,
    "nome": "Londres",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "EVN",
@@ -311,9 +320,22 @@
    "pista": false
   },
   {
+   "iata": "THE",
+   "ow": {
+    "preco": 2449,
+    "ida": "2026-10-13",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-10T15:26:37Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
+   "pista": false
+  },
+  {
    "iata": "SID",
    "ow": {
-    "preco": 2784,
+    "preco": 2781,
     "ida": "2027-03-08",
     "volta": "",
     "paradas": 1,
@@ -391,7 +413,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 5953,
+    "preco": 5948,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,
@@ -425,19 +447,6 @@
    },
    "rastreada": false,
    "nome": "MOW",
-   "pista": false
-  },
-  {
-   "iata": "THE",
-   "rt": {
-    "preco": 6947,
-    "ida": "2026-10-13",
-    "volta": "2026-10-13",
-    "paradas": 1,
-    "visto": "2026-10-11T22:43:10Z"
-   },
-   "rastreada": true,
-   "nome": "Teresina",
    "pista": false
   }
  ]

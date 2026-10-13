@@ -35,8 +35,8 @@ const iso = d => d.toISOString().slice(0, 16) + '-03:00';
   console.log(`vagas: ${vagas.join(', ')} · carrosséis livres: ${conteudos.length} · vídeos de dica livres: ${videos.length}`);
   const base = Date.now().toString(36), novos = []; let k = 0, vez = 0;
   for (const q of vagas) {
-    // reveza: vídeo (se tiver) a cada 3 posts, senão carrossel
-    const querVideo = auto.auto_videos && videos.length && (vez % 3 === 1 || !auto.auto_conteudo || !conteudos.length);
+    // reveza: vídeo e carrossel, um de cada (começa pelo vídeo)
+    const querVideo = auto.auto_videos && videos.length && (vez % 2 === 0 || !auto.auto_conteudo || !conteudos.length);
     vez++;
     if (querVideo) { const v = videos.shift(), id = `ig-auto-${base}-${++k}`;
       novos.push({ id, titulo: v.titulo.replace(/^🆕\s*Motion:\s*/, '🎬 '), tipo: 'reels', imagens: [v.capa], video_pronto: v.arq, dur: v.dur || 20, legenda: v.legenda, quando: q, aprovado: true, auto_aprovado: true, tentativa: 0, criado: iso(agora), origem: 'vp-' + v.id }); continue; }

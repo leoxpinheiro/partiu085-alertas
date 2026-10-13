@@ -1,4 +1,4 @@
-name: Comissões de afiliado
+name: Números do dia (comissões e ranking)
 on:
   schedule:
     - cron: "11 11 * * *"   # 08:11 em Fortaleza
@@ -15,10 +15,11 @@ jobs:
       - env:
           TRAVELPAYOUTS_TOKEN: ${{ secrets.TRAVELPAYOUTS_TOKEN }}
         run: python engine/afiliados.py
+      - run: python engine/ranking.py
       - run: |
           git config user.name "partiu085-bot"
           git config user.email "partiu085-bot@users.noreply.github.com"
-          git add docs/afiliados.json
+          git add docs/afiliados.json docs/ig_ranking.json
           git diff --cached --quiet && exit 0
           git commit -q -m "Comissões de afiliado"
           for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q && exit 0; sleep 7; done; exit 1

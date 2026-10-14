@@ -510,7 +510,7 @@ function noticiaHTML() {
   const vivas = todas.filter(o => !ntOculta(o.x) && o.v.ate >= h), ehMi = o => o.x.cat === "milhas" || ntCategoria(o.x) !== "AVIAÇÃO · CEARÁ" && ntCategoria(o.x) !== "AEROPORTO";
   const lmi = vivas.filter(ehMi).slice(0, 20), lvo = vivas.filter(o => !ehMi(o)).slice(0, 14), lista = [...lmi, ...lvo], velhas = todas.filter(o => ntOculta(o.x) || o.v.ate < h);
   const linha = ({ x, i, v }, viva) => `<div class="pa-ni ${PA.ntSel === i ? "on" : ""} ${viva ? "" : "velha"}">${x.img ? `<img class="pa-nimg" src="${esc(x.img)}" alt="" loading="lazy">` : `<span class="pa-nimg vazio">${ntCategoria(x) === "MILHAS" ? "💳" : ntCategoria(x) === "SALA VIP" ? "🛋️" : "✈️"}</span>`}<div><b>${esc(x.titulo)}</b><small>${esc(x.fonte || "")} · ${x.data ? dataCurta(x.data.slice(0, 10)).toLowerCase() : ""} · <span class="${viva ? (v.ate === h ? "neg" : "pos") : ""}">${ntOculta(x) ? "removida" : viva ? (v.ate === h ? "último dia pra postar" : `vale até ${v.ate.slice(8, 10)}/${v.ate.slice(5, 7)}`) : "passou"}${v.explicita ? " (data da promoção)" : ""}</span></small></div>
-      <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm ${PA.ntSel === i ? "ok" : "pri"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Criar post"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
+      <a class="bt sm ghost" href="${esc(x.link_real || x.link)}" target="_blank" rel="noopener">${ic("ext")}Abrir</a>${viva ? `<button class="bt sm ghost" data-act="ntrem" data-i="${i}" title="tirar da lista">✕</button><button class="bt sm pri" data-act="ntfundo" data-i="${i}" title="O Claude pesquisa e faz um carrossel completo, explicando tudo no próprio post">✨ Aprofundar</button><button class="bt sm ${PA.ntSel === i ? "ok" : "ghost"}" data-act="ntusar" data-i="${i}">${PA.ntSel === i ? "✓ Abaixo" : "Post rápido"}</button>` : ntOculta(x) ? `<button class="bt sm" data-act="ntvolta" data-i="${i}">Voltar</button>` : ""}</div>`;
   const nAuto = +(load("p085_nt_auto_n") || 1), hsAuto = load("p085_nt_auto_hs2") || "16:30, 21:00";
   return `<div class="card pa-nt nt-auto"><h3>⚡ Notícias de hoje no automático</h3>
     <div class="desc">Eu escolho as melhores notícias quentes (milhas com lista de parceiros primeiro), monto os posts do nosso jeito e coloco na agenda. Vai pro primeiro horário livre (se 16:30 já tiver post, vai pras 21h). Use quando sair notícia quente: vira um post extra no dia.</div>
@@ -708,9 +708,9 @@ try { PA.ntEd = JSON.parse(localStorage.getItem("p085_nt_ed") || "{}"); } catch 
 async function postsDaNoticia(x) {
   if (ntTemDet(x)) return postsMilhaNossos(x);
   const cat = ntCategoria(x), tit = ntTitulo(x.titulo), res = ntResumo(x), prog = PROG_NT.find(p => p[0].test(x.titulo));
-  const iata = x.img ? "" : ntFotoIata(x);
-  const im = await ntImg(x.img || (iata ? `fotos/${iata}.jpg` : ""));
-  const credito = x.img ? `Foto: ${x.fonte}` : iata ? "Foto ilustrativa" : "";
+  const iata = ntFotoIata(x);  // nunca a foto da matéria (é de outro site): só as nossas
+  const im = await ntImg(iata ? `fotos/${iata}.jpg` : "");
+  const credito = iata ? "Foto ilustrativa" : "";
   const tema = ["escuro", "creme", "amarelo"][[...(x.link || tit)].reduce((a, ch) => (a * 31 + ch.charCodeAt(0)) % 9973, 7) % 3], K = TEMA[tema];
   const BASE = tema === "escuro" ? [11, 36, 64] : tema === "creme" ? [246, 241, 228] : [245, 197, 49], base = `rgb(${BASE})`, baseA = a => `rgba(${BASE},${a})`;
   const vd = validadeNoticia(x);
@@ -771,11 +771,15 @@ async function postNoticia() {
 }
 document.addEventListener("input", e => { const k = e.target.dataset && e.target.dataset.nt; if (k) PA.nt[k] = e.target.value; });
 document.addEventListener("change", e => { if (e.target.dataset && e.target.dataset.ntFoto !== undefined) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { PA.nt.foto = r.result; toast("Foto carregada. Toque em Gerar arte."); }; r.readAsDataURL(f); } });
-document.addEventListener("click", e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
+document.addEventListener("click", async e => { const b = e.target.closest('[data-act^="nt"]'); if (!b) return;
   if (b.dataset.act === "ntextrair") { PA.nt.pontos = extrairPontos(PA.nt.texto); if (!PA.nt.titulo) PA.nt.titulo = curto((PA.nt.texto.split(/\n|[.!]\s/).map(x => x.trim()).find(x => x.length > 15) || ""), 60); render(); }
   else if (b.dataset.act === "ntgerar") { PA.ntSel = null; if (!PA.nt.titulo && !PA.nt.pontos) { toast("Preencha o título ou os pontos."); return; } render(); }
   else if (b.dataset.act === "ntrem" || b.dataset.act === "ntvolta") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x) return; const k = ntChave(x);
     PA.ntOcultas = b.dataset.act === "ntrem" ? [...new Set([...(PA.ntOcultas || []), k])] : (PA.ntOcultas || []).filter(z => z !== k); if (PA.ntSel === +b.dataset.i) PA.ntSel = null; salvarOcultas(); render(); }
+  else if (b.dataset.act === "ntfundo") { const x = (PA.noticias || [])[+b.dataset.i]; if (!x || typeof pdCarregar !== "function") return; b.disabled = true; await pdCarregar();
+    PD.lista.push({ id: "pd-" + Date.now().toString(36), urgente: true, criado: isoLocal(new Date()), status: "novo",
+      texto: `APROFUNDAR NOTÍCIA em carrossel nosso: "${x.titulo}" (fonte: ${x.fonte || ""} · ${x.link_real || x.link || ""}).\n\nComo fazer: leia a matéria e PESQUISE em mais 1 ou 2 fontes confiáveis. Escreva um carrossel completo no array CONTEUDO de docs/conteudo.js (formato dos existentes, 5 a 7 telas, revisar: true) que explique TUDO no próprio post, sem mandar a pessoa pra outro site: o que é, os números exatos (destinos, datas, milhas/preço, taxas, regras, prazo), quem pode aproveitar, se vale pra quem sai de Fortaleza (use docs/status.json pros nossos preços), passo a passo de como fazer e o "vale a pena?" honesto. Feche com uma pergunta que faça comentar (ex.: "comenta o seu cartão que a gente te diz…") ou um "Comenta PALAVRA que eu te mando" (gatilho em docs/ig_dm_cfg.json). Foto de capa: só do catálogo aprovado (nunca a foto da matéria). Fonte citada só na última tela/legenda, em letra pequena. Se não der pra confirmar os fatos, responda "nao" explicando.` });
+    if (await pdSalvar("Pedido: aprofundar notícia")) toast("Pedido enviado! O Claude pesquisa e monta o carrossel completo na próxima passada (8h46, 13h46 ou 19h46). Ele aparece em Pauta › Conteúdo.", 8000); b.disabled = false; }
   else if (b.dataset.act === "ntusar") { if (!(PA.noticias || [])[+b.dataset.i]) return; PA.ntSel = +b.dataset.i; render(); setTimeout(() => { const g = document.getElementById("pa-grade"); if (g) g.scrollIntoView({ behavior: "smooth" }); }, 500); } });
 
 
@@ -799,7 +803,7 @@ async function mcTodos() {
   add(EDU.filter(x => !EDU_FRACO.has(x.id)).map(x => fGuia(x)), "Guia");
   if (!PA.noticias) PA.noticias = (await getJSON("noticias.json", { itens: [] })).itens || [];
   await carregarOcultas();
-  for (const x of noticiasValidas().slice(0, 24)) add([(await postsDaNoticia(x))[0]], "Notícia");
+  // notícia crua não entra mais no calendário: use ✨ Aprofundar em Notícias (vira carrossel completo em Conteúdo)
   return L.map(p => ({ ...p, rot: p.semana === 1 ? "Semana 1" : p.semana === 2 ? "Semana 2" : p.noticia ? "Notícia" : p.rot }));
 }
 function mcCard(p, i) {

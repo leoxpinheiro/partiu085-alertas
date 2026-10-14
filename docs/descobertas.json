@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-14T01:25+00:00",
+ "atualizado": "2026-10-14T02:25+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -171,26 +171,6 @@
    "pista": true
   },
   {
-   "iata": "RIO",
-   "rt": {
-    "preco": 1599,
-    "ida": "2026-10-30",
-    "volta": "2026-11-01",
-    "paradas": 1,
-    "visto": "2026-10-10T02:12:14Z"
-   },
-   "ow": {
-    "preco": 473,
-    "ida": "2026-11-08",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-10T13:29:43Z"
-   },
-   "rastreada": true,
-   "nome": "Rio de Janeiro",
-   "pista": true
-  },
-  {
    "iata": "ROM",
    "ow": {
     "preco": 1831,
@@ -224,17 +204,24 @@
    "pista": true
   },
   {
-   "iata": "EVN",
-   "ow": {
-    "preco": 2304,
-    "ida": "2026-11-02",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-10-10T14:48:18Z"
+   "iata": "RIO",
+   "rt": {
+    "preco": 1944,
+    "ida": "2027-01-09",
+    "volta": "2027-01-16",
+    "paradas": 1,
+    "visto": "2026-10-13T02:25:43Z"
    },
-   "rastreada": false,
-   "nome": "EVN",
-   "pista": false
+   "ow": {
+    "preco": 473,
+    "ida": "2026-11-08",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-10T13:29:43Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
+   "pista": true
   },
   {
    "iata": "MIA",
@@ -247,6 +234,19 @@
    },
    "rastreada": true,
    "nome": "Miami",
+   "pista": false
+  },
+  {
+   "iata": "EVN",
+   "ow": {
+    "preco": 2493,
+    "ida": "2026-11-02",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-14T02:06:17Z"
+   },
+   "rastreada": false,
+   "nome": "EVN",
    "pista": false
   },
   {
@@ -348,19 +348,6 @@
    "pista": false
   },
   {
-   "iata": "WAW",
-   "rt": {
-    "preco": 4936,
-    "ida": "2026-11-23",
-    "volta": "2026-12-02",
-    "paradas": 2,
-    "visto": "2026-10-10T02:22:30Z"
-   },
-   "rastreada": false,
-   "nome": "WAW",
-   "pista": false
-  },
-  {
    "iata": "LIS",
    "rt": {
     "preco": 5152,
@@ -381,6 +368,19 @@
    "pista": false
   },
   {
+   "iata": "WAW",
+   "rt": {
+    "preco": 5908,
+    "ida": "2026-12-05",
+    "volta": "2026-12-20",
+    "paradas": 2,
+    "visto": "2026-10-12T16:51:04Z"
+   },
+   "rastreada": false,
+   "nome": "WAW",
+   "pista": false
+  },
+  {
    "iata": "ORL",
    "rt": {
     "preco": 5967,
@@ -396,11 +396,11 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 6828,
-    "ida": "2026-11-05",
-    "volta": "2026-11-19",
-    "paradas": 4,
-    "visto": "2026-10-10T02:18:29Z"
+    "preco": 7910,
+    "ida": "2026-12-04",
+    "volta": "2027-01-09",
+    "paradas": 3,
+    "visto": "2026-10-10T19:03:18Z"
    },
    "rastreada": false,
    "nome": "MOW",

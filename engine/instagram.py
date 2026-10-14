@@ -540,6 +540,83 @@ def direct_automatico(conta: dict) -> None:
         salvar(DM_LOG, log)
 
 
+# ----------------------------------------------------------------------------- votação do radar
+# Posts com "VOTAÇÃO DO RADAR" na legenda: cada comentário com um destino vira voto (1 por pessoa por destino).
+# Os 5 mais votados ganham prioridade "alta" no radar (engine/run.py lê docs/votos_destinos.json) por 30 dias.
+VOTOS = DOCS / "votos_destinos.json"
+MARCA_VOTO = "VOTAÇÃO DO RADAR"
+APELIDOS = {"SAO": ["SP", "SAMPA", "GUARULHOS", "CONGONHAS"], "RIO": ["RJ", "RIO"], "BHZ": ["BH", "CONFINS"], "POA": ["POA"],
+            "FLN": ["FLORIPA"], "NYC": ["NY", "NEW YORK"], "BUE": ["ARGENTINA"], "SCL": ["CHILE"], "FEN": ["NORONHA"],
+            "IGU": ["FOZ", "CATARATAS"], "ORL": ["DISNEY"], "JDO": ["JUAZEIRO", "CARIRI"], "LIS": ["PORTUGAL"], "PAR": ["FRANCA"],
+            "ROM": ["ITALIA"], "MAD": ["ESPANHA"], "CUN": ["MEXICO"], "NVT": ["BETO CARRERO", "CAMBORIU"], "BPS": ["ARRAIAL", "TRANCOSO"],
+            "MIA": ["MIAMI"], "LON": ["INGLATERRA"], "AMS": ["HOLANDA"], "SID": ["CABO VERDE"], "PUJ": ["PUNTA"], "BSB": ["DF"]}
+
+
+def _norm(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", t.upper()) if unicodedata.category(c) != "Mn")
+
+
+def destinos_no_texto(txt: str, rotas: list) -> list:
+    import re
+    t, achou = " " + re.sub(r"[^A-Z0-9 ]", " ", _norm(txt)) + " ", []
+    termos = [(_norm(r["nome"]), r["iata"]) for r in rotas] + [(a, i) for i, L in APELIDOS.items() for a in L]
+    for termo, iata in sorted(termos, key=lambda x: -len(x[0])):  # mais longo primeiro: "PORTO ALEGRE" antes de "PORTO"
+        if f" {termo} " in t:
+            t = t.replace(f" {termo} ", " # ")
+            if iata not in achou:
+                achou.append(iata)
+    return achou
+
+
+def votacao(conta: dict) -> None:
+    rotas = ler(DOCS / "rotas.json", [])
+    nomes = {r["iata"]: r["nome"] for r in rotas}
+    v = ler(VOTOS, {"votos": {}, "respondidos": []})
+    agora = datetime.now(FUSO)
+    posts = [m for m in conta.get("midias", []) if MARCA_VOTO in (m.get("legenda") or "").upper()
+             and (m.get("quando") or "")[:10] >= (agora - timedelta(days=35)).date().isoformat()]
+    if not posts:
+        return
+    votos, outros, resp = {}, [], set(v.get("respondidos", []))
+    respondidas = 0
+    for m in posts:
+        coms, url, params = [], f"{m['id']}/comments", {"fields": "id,text,username,from", "limit": 100}
+        for _ in range(5):
+            j = api("GET", url, **params)
+            coms += j.get("data", [])
+            nxt = ((j.get("paging") or {}).get("cursors") or {}).get("after")
+            if not nxt or not (j.get("paging") or {}).get("next"):
+                break
+            params["after"] = nxt
+        for cm in coms:
+            u = (cm.get("username") or (cm.get("from") or {}).get("username") or "?").lower()
+            if u == (conta.get("usuario") or "").lower():
+                continue
+            ach = destinos_no_texto(cm.get("text") or "", rotas)
+            if not ach:
+                if len(outros) < 40:
+                    outros.append((cm.get("text") or "")[:60])
+                continue
+            for i in ach:
+                votos.setdefault(i, set()).add(u)
+            if cm["id"] not in resp and respondidas < 25:
+                try:
+                    nm = " e ".join(nomes.get(i, i) for i in ach[:2])
+                    api("POST", f"{cm['id']}/replies", message=f"Anotado! ✈️ Seu voto pra {nm} já tá contando no radar 👀")
+                    respondidas += 1
+                except Exception as e:  # noqa: BLE001
+                    print("votação resposta:", e)
+                resp.add(cm["id"])
+    cont = {i: len(us) for i, us in sorted(votos.items(), key=lambda x: -len(x[1]))}
+    inicio = min(m["quando"][:10] for m in posts)
+    salvar(VOTOS, {"atualizado": agora.isoformat(timespec="minutes"), "posts": [m.get("link") for m in posts],
+                   "ate": (datetime.fromisoformat(inicio) + timedelta(days=30)).date().isoformat(),
+                   "contagem": cont, "top": [i for i, n in cont.items() if n >= 2][:5],
+                   "nomes": {i: nomes.get(i, i) for i in cont}, "outros": outros, "respondidos": sorted(resp)[-2000:]})
+    print("votação:", cont)
+
+
 AUTO, AUTO_FILA = DOCS / "ig_auto.json", DOCS / "ig_auto_fila.json"
 AUTO_PADRAO = {"pausado": False, "auto_oferta": True, "horarios_oferta": ["19:00"], "rodape": "", "auto_reels_achado": False, "auto_conteudo": False, "auto_videos": False, "aviso_horas": 2}
 
@@ -661,6 +738,10 @@ def main():
         direct_automatico(conta)
     except Exception as e:  # noqa: BLE001
         print("direct:", e)
+    try:
+        votacao(conta)
+    except Exception as e:  # noqa: BLE001
+        print("votação:", e)
     velho = (datetime.now(FUSO) - timedelta(minutes=55)).isoformat()
     if not feitos and conta.get("ok") and conta.get("quando", "") > velho and not APENAS:
         salvar(STATUS, st)

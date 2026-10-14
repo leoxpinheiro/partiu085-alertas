@@ -576,12 +576,16 @@ def escolher_lote(rotas: list[dict], aj: dict) -> list[dict]:
     corte = (agora() - timedelta(days=30)).isoformat()
     agora_ts = agora().timestamp()
     pri = {}
+    votos = ler_json(DOCS / "votos_destinos.json", {})
+    votados = set(votos.get("top") or []) if votos.get("ate", "") >= agora().date().isoformat() else set()
 
     def urgencia(r):
         st = status.get(r["iata"], {})
         a30 = sum(1 for e in enviados if e.get("rota") == f"{C.ORIGEM}-{r['iata']}" and e.get("quando", "") >= corte)
         auto, motivo = prioridade_auto(r, st, a30)
         p = r.get("prioridade") if r.get("prioridade") in PESO else auto
+        if r.get("prioridade") not in PESO and r["iata"] in votados:  # votação do radar no Instagram
+            p, motivo = "alta", f"pedido pelos seguidores ({votos.get('contagem', {}).get(r['iata'])} votos)"
         pri[r["iata"]] = {"prioridade": p, "auto": auto, "motivo": motivo}
         try:
             horas = (agora_ts - datetime.fromisoformat(st["quando"]).timestamp()) / 3600

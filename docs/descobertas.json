@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-13T23:24+00:00",
+ "atualizado": "2026-10-14T00:24+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -9,6 +9,7 @@
   "IGU",
   "LON",
   "MAD",
+  "MIL",
   "MVD",
   "REC",
   "RIO",
@@ -158,19 +159,6 @@
    "pista": true
   },
   {
-   "iata": "MAD",
-   "ow": {
-    "preco": 1571,
-    "ida": "2026-11-20",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-12T18:08:48Z"
-   },
-   "rastreada": true,
-   "nome": "Madri",
-   "pista": true
-  },
-  {
    "iata": "RIO",
    "rt": {
     "preco": 1599,
@@ -302,6 +290,26 @@
    "pista": true
   },
   {
+   "iata": "MAD",
+   "rt": {
+    "preco": 3473,
+    "ida": "2027-03-02",
+    "volta": "2027-03-11",
+    "paradas": 0,
+    "visto": "2026-10-14T00:03:01Z"
+   },
+   "ow": {
+    "preco": 1571,
+    "ida": "2026-11-20",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-12T18:08:48Z"
+   },
+   "rastreada": true,
+   "nome": "Madri",
+   "pista": true
+  },
+  {
    "iata": "LIM",
    "rt": {
     "preco": 3645,
@@ -326,6 +334,19 @@
    "rastreada": false,
    "nome": "PNZ",
    "pista": false
+  },
+  {
+   "iata": "MIL",
+   "rt": {
+    "preco": 4127,
+    "ida": "2027-03-08",
+    "volta": "2027-03-18",
+    "paradas": 1,
+    "visto": "2026-10-14T00:01:14Z"
+   },
+   "rastreada": true,
+   "nome": "Milão",
+   "pista": true
   },
   {
    "iata": "PAR",

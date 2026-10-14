@@ -28,7 +28,7 @@
   "REC": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "4 alertas em 30 dias"
+   "motivo": "5 alertas em 30 dias"
   },
   "NAT": {
    "prioridade": "alta",
@@ -78,7 +78,7 @@
   "CWB": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "3 alertas em 30 dias"
+   "motivo": "4 alertas em 30 dias"
   },
   "FLN": {
    "prioridade": "alta",
@@ -271,30 +271,30 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-13T20:24-03:00",
+ "quando": "2026-10-13T21:24-03:00",
  "ultimo_lote": [
+  "GYN",
+  "VIX",
+  "JDO",
+  "PMW",
+  "PAR",
+  "BHZ",
+  "VCP",
+  "NVT",
+  "POA",
+  "UDI",
+  "MIL",
+  "AMS",
+  "BPS",
+  "MAD",
+  "CTG",
+  "PTY",
+  "BOG",
+  "SID",
   "OPO",
   "CGB",
-  "BSB",
-  "BEL",
-  "SLZ",
-  "CWB",
-  "FLN",
-  "IGU",
-  "MIA",
-  "LIS",
-  "THE",
-  "MAO",
-  "BUE",
-  "SAO",
-  "RIO",
-  "REC",
-  "MCZ",
-  "BCN",
-  "NAT",
-  "AJU",
-  "SSA",
-  "JPA",
-  "NYC"
+  "ROM",
+  "LON",
+  "BSB"
  ]
 }

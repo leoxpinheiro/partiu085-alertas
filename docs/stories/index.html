@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stories · Partiu 085</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+
+:root{--nv:#0B2440;--am:#F5C531;--cr:#FBF6EC;--mu:#5b6b7f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--cr);color:var(--nv)}
+header{background:var(--nv);color:#fff;padding:22px 16px}
+header h1{font-family:Anton,Impact,sans-serif;font-weight:400;font-size:30px;text-transform:uppercase}
+header p{color:#c9d6e6;font-size:14px;margin-top:6px;line-height:1.5}
+main{max-width:620px;margin:0 auto;padding:12px 14px 60px}
+h2{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:22px;margin:24px 2px 8px}
+.st{display:grid;grid-template-columns:120px 1fr;gap:14px;background:#fff;border-radius:18px;padding:12px;margin-top:12px;box-shadow:0 4px 16px rgba(11,36,64,.07)}
+.st>div,.cp>div{min-width:0;overflow-wrap:anywhere}
+.st.feito{opacity:.5}
+video{width:120px;height:213px;border-radius:12px;background:#ddd;object-fit:cover}
+.dia{font-size:12px;font-weight:800;color:#1F5FBF;text-transform:uppercase;letter-spacing:.06em}
+.t{font-weight:800;font-size:17px;margin:2px 0 8px}
+.fig{display:inline-flex;align-items:center;gap:6px;background:var(--am);border-radius:99px;padding:4px 10px;font-size:13px;font-weight:800;margin-bottom:8px}
+.cp{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px dashed #c9d2dc;border-radius:12px;padding:8px 10px;margin-top:6px;font-size:14px;line-height:1.35}
+.cp small{display:block;color:var(--mu);font-size:11px;font-weight:700;text-transform:uppercase}
+button,.bx{flex:none;border:0;background:var(--nv);color:#fff;font-weight:800;font-size:13px;border-radius:99px;padding:8px 12px;cursor:pointer;text-decoration:none}
+button.ok{background:#1a8f4c}
+.obs{font-size:13px;color:var(--mu);margin-top:8px;line-height:1.45}
+.acoes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.bx.cl{background:#e9edf2;color:var(--nv)}
+</style></head><body>
+<header><h1>Stories · contagem pro grupo</h1><p>Baixa o vídeo, posta no story do perfil indicado e coloca a figurinha. Toca em <b>Copiar</b> pra pegar o texto certinho de cada figurinha.</p></header>
+<main id="m"></main>
+<script>
+const GRUPO="https://bit.ly/radar085";
+const S=[
+ {dia:"Hoje · 14/10",perfil:"@partiu.085",arq:"01-contagem-c5.mp4",t:"Faltam 5 dias",fig:"⏰ Contagem regressiva",cp:[["Nome da contagem","Grupo grátis do Partiu 085"],["Data","19/10 às 9h"]],obs:"Põe a contagem embaixo do texto. Quem tocar em “Lembrar” recebe aviso quando abrir."},
+ {dia:"Hoje · 14/10",perfil:"@partiu.085",arq:"07-caixinha-destinos.mp4",t:"Caixinha: pra onde o radar deve olhar?",fig:"❓ Caixinha de perguntas",cp:[["Pergunta da caixinha","Pra onde você quer ir saindo de Fortaleza? ✈️"]],obs:"Coloca no espaço da setinha 👇. As respostas viram ideia de post, e os mais pedidos você pode repostar."},
+ {dia:"15/10",perfil:"@partiu.085",arq:"02-contagem-c4.mp4",t:"Faltam 4 dias",fig:"⏰ Contagem regressiva",cp:[],obs:"Reusa a mesma contagem do dia 14 (aparece em “Contagem regressiva” → suas contagens)."},
+ {dia:"15/10",perfil:"@partiu.085",arq:"08-enquete-o-que-ver.mp4",t:"Enquete: o que você quer ver mais?",fig:"📊 Enquete (4 opções)",cp:[["Pergunta","O que você quer ver mais aqui?"],["Opção 1","🔥 Promoção relâmpago"],["Opção 2","📰 Notícia de aeroporto"],["Opção 3","🤓 Curiosidades"],["Opção 4","💳 Milhas e cartões"]],obs:"Na enquete, toca em “Adicionar opção” até ter 4. Põe embaixo da lista."},
+ {dia:"16/10",perfil:"@partiu.085",arq:"03-contagem-c3.mp4",t:"Faltam 3 dias",fig:"⏰ Contagem regressiva",cp:[],obs:"Mesma contagem."},
+ {dia:"16/10",perfil:"@partiu.085",arq:"09-quiz-juazeiro.mp4",t:"Quiz: quanto pra Juazeiro?",fig:"🧠 Quiz",cp:[["Pergunta","Quanto o radar já achou pra Juazeiro?"],["Resposta A ✅ (marcar como certa)","R$ 286"],["Resposta B","R$ 590"],["Resposta C","R$ 890"]],obs:"No quiz, toca na letra A pra marcar como a certa. A resposta sai no story do dia 17."},
+ {dia:"17/10",perfil:"@partiu.085",arq:"04-contagem-c2.mp4",t:"Faltam 2 dias",fig:"⏰ Contagem regressiva",cp:[],obs:"Mesma contagem."},
+ {dia:"17/10",perfil:"@partiu.085",arq:"10-quiz-resposta.mp4",t:"Resposta do quiz",fig:"💬 Figurinha de texto (opcional)",cp:[["Texto","Quem acertou? 👀"]],obs:"Opcional: repostar umas respostas do quiz antes desse."},
+ {dia:"18/10",perfil:"@partiu.085",arq:"05-contagem-c1.mp4",t:"Falta 1 dia",fig:"⏰ Contagem regressiva",cp:[],obs:"Mesma contagem."},
+ {dia:"18/10",perfil:"@partiu.085",arq:"11-curiosidade-recife.mp4",t:"Curiosidade: a volta de Recife",fig:"🎚️ Barra de emoji",cp:[["Pergunta da barra","Isso te deixou chocado?"],["Emoji","😱"]],obs:"A barra de emoji é só arrastar: gera interação fácil."},
+ {dia:"18/10",perfil:"@leoxpinheiro (seu)",arq:"12-perfil-leo-criei-um-radar.mp4",t:"Seu perfil: criei um radar",fig:"＠ Menção + 🔗 Link",cp:[["Menção","@partiu.085"],["Link (figurinha Link)",GRUPO],["Texto do link","Entrar no grupo grátis"],["Legenda pra falar/escrever","Gente, olha que legal o que eu montei: um robô que fica o dia todo procurando passagem barata saindo de Fortaleza. Quando cai, ele avisa. Amanhã abro um grupo grátis no WhatsApp. Segue lá o @partiu.085 👇"]],obs:"Põe a menção bem no rodapé, onde está escrito “Segue lá 👉”."},
+ {dia:"19/10",perfil:"@leoxpinheiro (seu)",arq:"13-perfil-leo-achados-da-semana.mp4",t:"Seu perfil: o que o radar achou",fig:"＠ Menção + 🔗 Link",cp:[["Menção","@partiu.085"],["Link (figurinha Link)",GRUPO],["Texto do link","Quero os alertas"]],obs:"Posta depois do “É hoje” do @partiu.085 e reposta ele também."},
+ {dia:"19/10",perfil:"@partiu.085",arq:"06-contagem-hoje.mp4",t:"É hoje! O grupo abriu",fig:"🔗 Link",cp:[["Link (figurinha Link)",GRUPO],["Texto do link","ENTRAR NO GRUPO GRÁTIS"]],obs:"Põe o link no lugar do “Toca no link 👇”. Fixa esse story nos Destaques (Grupo)."},
+];
+const K="stories-feitos",F=(()=>{try{return JSON.parse(localStorage.getItem(K)||"{}")}catch(e){return {}}})();
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let dia="";document.getElementById("m").innerHTML=S.map((x,i)=>{const h=x.dia!==dia?`<h2>${esc(x.dia)}</h2>`:"";dia=x.dia;
+ return h+`<div class="st ${F[i]?"feito":""}" id="s${i}"><video src="${x.arq}" muted loop playsinline autoplay preload="metadata"></video><div>
+ <div class="dia">${esc(x.perfil)}</div><div class="t">${esc(x.t)}</div><span class="fig">${esc(x.fig)}</span>
+ ${x.cp.map(([l,v])=>`<div class="cp"><div><small>${esc(l)}</small>${esc(v)}</div><button data-v="${esc(v)}">Copiar</button></div>`).join("")}
+ <p class="obs">💡 ${esc(x.obs)}</p>
+ <div class="acoes"><a class="bx" href="${x.arq}" download>⬇ Baixar vídeo</a><button class="bx cl" data-f="${i}">${F[i]?"✓ Postado":"Marcar postado"}</button></div></div></div>`}).join("");
+document.addEventListener("click",async e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.v!==undefined){try{await navigator.clipboard.writeText(b.dataset.v)}catch(er){const t=document.createElement("textarea");t.value=b.dataset.v;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()}
+  b.textContent="Copiado ✓";b.classList.add("ok");setTimeout(()=>{b.textContent="Copiar";b.classList.remove("ok")},1600);}
+ if(b.dataset.f!==undefined){const i=b.dataset.f;F[i]=!F[i];try{localStorage.setItem(K,JSON.stringify(F))}catch(er){}
+  document.getElementById("s"+i).classList.toggle("feito",!!F[i]);b.textContent=F[i]?"✓ Postado":"Marcar postado";}});
+</script></body></html>

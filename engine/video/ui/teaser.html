@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="uikit.css"><style>
+#t1,#t2,#t3{left:90px;right:90px;top:300px;font-size:104px}
+#t3{top:330px;font-size:96px}
+#rad{left:140px;top:820px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,#fff 0,#fff 60%,#F6F1E6 100%);box-shadow:0 40px 100px rgba(11,36,64,.16),inset 0 0 0 3px #E8DFCC}
+#rad .r{position:absolute;border:3px solid #E6DCC8;border-radius:50%}
+#rad .x{position:absolute;background:#EDE5D4}
+#sw{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(31,95,191,0) 0deg,rgba(31,95,191,0) 290deg,rgba(31,95,191,.32) 359deg,rgba(31,95,191,0) 360deg)}
+#rad img{position:absolute;left:340px;top:340px;width:120px;height:120px;border-radius:50%;box-shadow:0 10px 30px rgba(11,36,64,.25)}
+.bl{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:var(--am);box-shadow:0 0 0 8px rgba(245,197,49,.3)}
+.pp{position:absolute;white-space:nowrap;translate:-50% 0;background:var(--nv);color:#fff;font-weight:800;font-size:34px;border-radius:999px;padding:14px 26px;transform-origin:50% 100%}
+.pp b{color:var(--am)}
+.nt{left:110px;width:860px;height:190px;display:flex;align-items:center;gap:30px;padding:0 40px}
+.nt img{width:104px;height:104px;border-radius:28px}
+.nt .t1{font-size:28px;color:var(--mu);font-weight:600}.nt .t2{font-size:46px;font-weight:800;margin-top:2px}
+#cal{left:240px;top:760px;width:600px;height:640px;overflow:hidden;transform-origin:50% 0}
+#cal .top{height:150px;background:var(--nv);color:var(--am);font-size:54px;font-weight:800;display:flex;align-items:center;justify-content:center;letter-spacing:.12em}
+#cal .n{font-size:330px;font-weight:800;text-align:center;letter-spacing:-.05em;line-height:1.1}
+#cal .d{text-align:center;font-size:44px;font-weight:700;color:var(--mu);margin-top:-20px}
+#sub{left:120px;right:120px;top:1460px;text-align:center;font-size:44px;font-weight:700;color:var(--nv2);line-height:1.3}
+#lem{left:0;width:1080px;top:1060px;text-align:center}
+#lem .pill{font-size:52px;padding:30px 56px;background:var(--am);color:var(--nv);box-shadow:0 20px 50px rgba(245,197,49,.45)}
+#marca{left:0;width:1080px;top:1240px}
+#nota{left:120px;right:120px;top:1520px}
+#fim{left:90px;right:90px;top:640px;font-size:96px;text-align:center}
+</style></head><body>
+<div id="grid"></div>
+<div class="a h" id="t1">Tem um radar ligado em <span class="hl">Fortaleza</span></div>
+<div class="a h" id="t2">procurando passagem barata <span class="az">24 horas por dia</span></div>
+<div class="a h" id="t3">Até agora, só a gente via o que ele acha.</div>
+<div class="a" id="rad"><div class="r" style="inset:100px"></div><div class="r" style="inset:200px"></div><div class="r" style="inset:300px"></div>
+ <div class="x" style="left:398px;top:0;width:4px;height:800px"></div><div class="x" style="top:398px;left:0;height:4px;width:800px"></div>
+ <div id="sw"></div><img src="icone.png"><div id="blips"></div></div>
+<div class="a card nt" id="n1"><img src="icone.png"><div><div class="t1">Partiu 085 · agora</div><div class="t2">🚨 Belém · R$ 307</div></div></div>
+<div class="a card nt" id="n2"><img src="icone.png"><div><div class="t1">Partiu 085 · 10 min</div><div class="t2">🔥 Juazeiro · R$ 286</div></div></div>
+<div class="a card nt" id="n3"><img src="icone.png"><div><div class="t1">Partiu 085 · 1 h</div><div class="t2">🔥 Recife · R$ 323</div></div></div>
+<div class="a h" id="fim">A partir de</div>
+<div class="a card" id="cal"><div class="top">OUTUBRO</div><div class="n">19</div><div class="d">segunda-feira</div></div>
+<div class="a" id="sub">ele começa a avisar você no <b>grupo grátis do WhatsApp</b></div>
+<div class="a" id="lem"><span class="pill">🔔 Ativa o lembrete</span></div>
+<div class="a marca" id="marca"><img src="icone.png">@partiu.085</div>
+<div class="a nota" id="nota">Preços que o radar viu em 13 e 14/10/2026, só a ida. Mudam a qualquer hora.</div>
+<script src="uikit.js"></script><script>
+// achados reais (só a ida, vistos em 13–14/10): ângulo no radar, raio, texto
+const BL=[[600,210,'Belém','R$ 307',1.2],[630,520,'Juazeiro','R$ 286',1.75],[400,700,'Recife','R$ 323',2.3],[190,260,'Lisboa','R$ 1.674',2.85],[200,540,'Buenos Aires','R$ 1.276',3.4]];
+$('blips').innerHTML=BL.map((b,i)=>`<div class="bl" id="bl${i}" style="left:${b[0]}px;top:${b[1]}px"></div><div class="pp" id="pp${i}" style="left:${b[0]}px;top:${b[1]-96}px">${b[2]} <b>${b[3]}</b></div>`).join('');
+window.TOTAL=17;
+window.SFX=[['whoosh',.2],['pop',.5],...BL.map(b=>['pop2',b[4]]),['swish',4.3],['whoosh',7.4],['pop',7.9],['pop',8.5],['pop',9.1],['swish',10.4],['riser',10.6,1.2],['impact',11.8],['swish',14.2],['tap',14.5],['pop',15.0]];
+window.MUSICA={entra:.3,drop:11.8,quebra:9.6};
+window.quadro=t=>{
+ kin('t1',t,.25,.08,4.2); kin('t2',t,4.55,.07,7.35); kin('t3',t,7.75,.06,10.3);
+ // radar
+ const r=SP(t,.4,6,9),ro=eio(P(t,7.2,7.8));
+ st('rad',{opacity:t<.4||t>7.9?0:1,transform:tf(0,L(0,-1500,ro),L(.4,1,cl(r,0,1.1)))});
+ $('sw').style.transform=`rotate(${t*150}deg)`;
+ BL.forEach((b,i)=>{const s=SP(t,b[4],9,13);st('bl'+i,{transform:`scale(${cl(s,0,1.4)})`,boxShadow:`0 0 0 ${8+20*P(t,b[4],b[4]+.6)}px rgba(245,197,49,${.35*(1-P(t,b[4],b[4]+.6))})`});
+  st('pp'+i,{opacity:P(t,b[4]+.05,b[4]+.12),transform:`scale(${cl(SP(t,b[4]+.05),0,1.15)})`});});
+ // notificações caindo
+ [['n3',7.85],['n2',8.45],['n1',9.05]].forEach(([id,a],i)=>{const s=SP(t,a);const depois=[8.45,9.05,99].slice(i).filter(x=>x<99);
+  let y=L(-260,760,cl(s,0,1.05));[8.45,9.05].forEach(b=>{if(b>a)y+=230*cl(SP(t,b),0,1.05)});
+  const o=eio(P(t,10.25+i*.06,10.6+i*.06));st(id,{top:'0px',opacity:t<a?0:1-o,transform:tf(0,y-L(0,180,o),L(.9,1,cl(s,0,1))*L(1,.9,o))});});
+ // calendário 19
+ kin('fim',t,10.55,.08,14.05);
+ const c=SP(t,10.95,6,10),co=eio(P(t,13.9,14.3));
+ st('cal',{opacity:t<10.95||t>14.35?0:1,transform:`translateY(${L(0,-400,co)}px) perspective(1600px) rotateX(${L(-95,0,cl(c,0,1.05))}deg) scale(${L(1,.6,co)})`});
+ st('sub',{opacity:P(t,11.8,12.1)*(1-P(t,13.9,14.2)),transform:tf(0,L(40,0,eo(P(t,11.8,12.3))))});
+ // final
+ const l=SP(t,14.3);st('lem',{opacity:t<14.3?0:1,transform:tf(0,0,cl(l,0,1.15)*(1-.06*Math.sin(Math.PI*P(t,14.5,14.75))))});
+ st('marca',{opacity:P(t,14.8,15.1),transform:tf(0,L(30,0,eo(P(t,14.8,15.2))))});st('nota',{opacity:P(t,15.0,15.3)});
+ st('grid',{transform:`translateY(${-t*6}px)`});
+};
+window.pronto=pronto();
+</script></body></html>

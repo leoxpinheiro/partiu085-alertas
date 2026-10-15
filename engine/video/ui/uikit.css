@@ -1,0 +1,16 @@
+@font-face{font-family:J;src:url("PlusJakartaSans[wght].ttf");font-weight:200 800}
+:root{--nv:#0B2440;--nv2:#173A5E;--az:#1F5FBF;--az2:#3E86E8;--am:#F5C531;--am2:#FFE9A8;--cr:#FBF6EC;--cr2:#F1E8D6;--mu:#6B7A8C;--li:#DCE3EA}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--cr);font-family:J,sans-serif;color:var(--nv)}
+.a{position:absolute;will-change:transform,opacity}
+.card{background:#fff;border-radius:48px;box-shadow:0 30px 80px rgba(11,36,64,.14),0 4px 14px rgba(11,36,64,.06)}
+#grid{position:absolute;left:0;right:0;top:0;height:2400px;background-image:radial-gradient(rgba(11,36,64,.09) 2.5px,transparent 2.6px);background-size:54px 54px}
+.h{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+.w{display:inline-block;will-change:transform,opacity}
+.hl{background:var(--am);border-radius:18px;padding:0 16px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.az{color:var(--az)}
+.pill{display:inline-flex;align-items:center;gap:12px;background:var(--nv);color:#fff;font-weight:800;font-size:34px;border-radius:999px;padding:16px 30px}
+.wa{width:1em;height:1em;fill:currentColor}
+.marca{display:flex;justify-content:center;align-items:center;gap:22px;font-size:54px;font-weight:800}
+.marca img{width:110px;height:110px;border-radius:50%}
+.nota{text-align:center;font-size:26px;color:var(--mu);font-weight:600}

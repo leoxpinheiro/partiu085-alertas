@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="uikit.css"><style>
+#hoje{left:0;width:1080px;top:760px;text-align:center;font-size:250px}
+#t1{left:90px;right:90px;top:300px;font-size:100px}
+#cf{position:absolute;inset:0;pointer-events:none}
+.c{position:absolute;width:22px;height:40px;border-radius:6px}
+#ph{left:200px;top:640px;width:680px;height:1060px;border-radius:80px;background:var(--nv);padding:22px}
+#ph .scr{width:100%;height:100%;border-radius:60px;background:#fff;overflow:hidden;position:relative}
+.lst{position:absolute;left:0;right:0;height:150px;display:flex;align-items:center;gap:22px;padding:0 34px;border-bottom:2px solid #F0EADF}
+.lst .av{width:90px;height:90px;border-radius:50%;background:var(--cr2);flex:none}
+.lst b{font-size:32px;display:block}.lst small{font-size:24px;color:var(--mu);font-weight:600}
+.lst .bd{margin-left:auto;background:var(--am);color:var(--nv);font-weight:800;font-size:24px;border-radius:999px;padding:6px 16px}
+#grp{position:absolute;inset:0;background:var(--cr2)}
+#grp .hd{height:140px;background:#fff;display:flex;align-items:center;gap:20px;padding:30px 34px 0}
+#grp .hd img{width:76px;height:76px;border-radius:50%}#grp .hd b{font-size:32px;display:block}#grp .hd small{font-size:24px;color:var(--mu);font-weight:600}
+#sys{position:absolute;left:0;right:0;top:180px;text-align:center}#sys span{background:#fff;border-radius:16px;padding:10px 22px;font-size:24px;font-weight:700;color:var(--mu)}
+.mg{position:absolute;left:24px;right:70px;background:#fff;border-radius:10px 34px 34px 34px;padding:24px 28px;font-size:29px;line-height:1.42;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.06);transform-origin:0 0}
+.mg b{font-weight:800}
+#tap{left:560px;top:930px;font-size:100px}
+.ch{left:0;width:1080px;text-align:center}
+.ch span{display:inline-flex;gap:14px;align-items:center;background:#fff;border-radius:999px;padding:24px 44px;font-size:50px;font-weight:800;box-shadow:0 20px 50px rgba(11,36,64,.12)}
+#cta{left:0;width:1080px;top:1100px;text-align:center}
+#cta .pill{font-size:52px;padding:30px 56px;background:var(--am);color:var(--nv);box-shadow:0 20px 50px rgba(245,197,49,.45)}
+#fim{left:90px;right:90px;top:640px;font-size:100px;text-align:center}
+#marca{left:0;width:1080px;top:1290px}
+</style></head><body>
+<div id="grid"></div>
+<div id="cf"></div>
+<div class="a h" id="hoje">É <span class="hl">hoje</span>.</div>
+<div class="a h" id="t1">O grupo do radar <span class="hl">abriu</span>.</div>
+<div class="a" id="ph"><div class="scr">
+ <div class="lst" style="top:60px"><div class="av"></div><div><b>Família 💛</b><small>bom dia!</small></div></div>
+ <div class="lst" id="row" style="top:210px"><img src="icone.png" style="width:90px;height:90px;border-radius:50%"><div><b>Radar 085 · grátis</b><small>grupo novo · toque pra entrar</small></div><span class="bd">novo</span></div>
+ <div class="lst" style="top:360px"><div class="av"></div><div><b>Trabalho</b><small>reunião 14h</small></div></div>
+ <div class="lst" style="top:510px"><div class="av"></div><div><b>Pelada de quinta ⚽</b><small>quem vai?</small></div></div>
+ <div id="grp"><div class="hd"><img src="icone.png"><div><b>Radar 085 · grátis</b><small>grupo do WhatsApp</small></div></div>
+  <div id="sys"><span>Você entrou no grupo</span></div>
+  <div class="mg" id="m1" style="top:250px">Bem-vindo ao <b>Radar 085</b> ✈️<br>Aqui chegam as passagens baratas saindo de Fortaleza, na hora.</div>
+  <div class="mg" id="m2" style="top:490px">🚨 <b>O RADAR APITOU!</b><br>✈️ <b>Fortaleza ➜ Belém</b><br>💰 <b>R$ 307</b> o trecho</div>
+ </div></div></div>
+<div class="a" id="tap">👆</div>
+<div class="a ch" id="k1" style="top:620px"><span>✅ Grátis</span></div>
+<div class="a ch" id="k2" style="top:800px"><span>🔔 Alerta na hora</span></div>
+<div class="a ch" id="k3" style="top:980px"><span>✈️ Só saindo de Fortaleza</span></div>
+<div class="a h" id="fim">Entra que o próximo alerta é <span class="hl">seu</span>.</div>
+<div class="a" id="cta"><span class="pill">Toca no link da bio 👆</span></div>
+<div class="a marca" id="marca"><img src="icone.png">@partiu.085</div>
+<script src="uikit.js"></script><script>
+// confete na paleta (determinístico)
+let sd=7;const rnd=()=>(sd=(sd*16807)%2147483647)/2147483647;const CF=[];const cores=['#F5C531','#0B2440','#1F5FBF','#3E86E8','#F5C531'];
+$('cf').innerHTML=Array.from({length:70},(_,i)=>{CF.push({x:rnd()*1080,v:500+rnd()*700,r:rnd()*720-360,d:rnd()*.5,w:rnd()*40-20});return `<i class="c" id="cf${i}" style="background:${cores[i%5]}"></i>`}).join('');
+window.TOTAL=15.5;
+window.SFX=[['impact',.35],['riser',.1,.3],['whoosh',2.45],['swish',2.9],['pop',3.4],['tap',4.6],['whoosh',4.75],['pop2',5.4],['pop2',6.4],['impact',7.4],['swish',9.6],['pop',10.1],['pop',10.5],['pop',10.9],['swish',12.3],['impact',12.9],['pop',13.4]];
+window.MUSICA={entra:.3,drop:7.4,quebra:5.4};
+window.quadro=t=>{
+ const h=SP(t,.3,6,10),ho=eio(P(t,2.2,2.55));
+ st('hoje',{opacity:t<.3?0:1-ho,transform:tf(0,L(0,-300,ho),cl(h,0,1.2))});
+ CF.forEach((c,i)=>{const e=t-.3-c.d;const el=$('cf'+i);if(e<0||t>3.2){el.style.opacity=0;return;}el.style.opacity=1-P(t,2.6,3.2);
+  el.style.transform=`translate(${c.x+c.w*e*10}px,${-80+c.v*e+300*e*e}px) rotate(${c.r*e}deg)`;});
+ kin('t1',t,2.55,.08,9.5);
+ // celular: lista → toque → grupo
+ const p=SP(t,2.9,6,9),po=eio(P(t,9.4,9.8));
+ st('ph',{opacity:t<2.9||t>9.8?0:1-po,transform:tf(0,L(1300,0,cl(p,0,1.05))+L(0,-300,po),L(1,.8,po))});
+ st('row',{background:t>4.55&&t<4.8?'#F6F1E4':'#fff'});
+ st('tap',{opacity:P(t,4.0,4.15)*(1-P(t,4.8,4.9)),transform:tf(L(120,0,eo(P(t,4.0,4.4))),L(160,0,eo(P(t,4.0,4.4))),1-.15*Math.sin(Math.PI*P(t,4.55,4.8)))});
+ const g=eio(P(t,4.7,5.1));st('grp',{transform:`translateX(${L(680,0,g)}px)`});
+ st('sys',{opacity:P(t,5.1,5.3)});
+ [['m1',5.4],['m2',6.4]].forEach(([id,a])=>st(id,{opacity:P(t,a,a+.08),transform:`scale(${cl(SP(t,a,8,12),0,1.08)})`}));
+ $('m2').style.boxShadow=`0 0 0 ${10*Math.sin(Math.PI*P(t,7.4,7.9))}px rgba(245,197,49,.55),0 6px 18px rgba(0,0,0,.06)`;
+ // benefícios
+ [['k1',10.0],['k2',10.4],['k3',10.8]].forEach(([id,a],i)=>{const s=SP(t,a),o=eio(P(t,12.1+i*.06,12.45+i*.06));st(id,{opacity:t<a?0:1-o,transform:tf(L(-60,0,cl(s,0,1)),L(-120*i*0,0,0)-L(0,200,o),cl(s,0,1.15),L(-6,0,cl(s,0,1)))});});
+ // final
+ kin('fim',t,12.5,.07);
+ st('cta',{opacity:t<13.1?0:1,transform:tf(0,0,cl(SP(t,13.1),0,1.15))});
+ st('marca',{opacity:P(t,13.5,13.8),transform:tf(0,L(30,0,eo(P(t,13.5,13.9))))});
+ st('grid',{transform:`translateY(${-t*6}px)`});
+};
+window.pronto=pronto();
+</script></body></html>

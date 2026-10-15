@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="uikit.css"><style>
+.tt{left:90px;right:90px;top:300px;font-size:100px}
+#bar{left:240px;width:600px;top:560px;height:16px;display:flex;gap:14px}
+#bar i{flex:1;border-radius:9px;background:#E8DFCC;overflow:hidden;position:relative}#bar i b{position:absolute;left:0;top:0;bottom:0;background:var(--nv);border-radius:9px}
+/* 1 procura */
+#bus{left:110px;top:760px;width:860px;padding:44px 50px}
+#bus .q{display:flex;align-items:center;gap:22px;font-size:52px;font-weight:800;height:120px;border-radius:30px;background:var(--cr);padding:0 34px;overflow:hidden}
+#spin{width:54px;height:54px;border-radius:50%;border:7px solid #E3D9C5;border-top-color:var(--az);flex:none}
+#dest{color:var(--az)}
+#bus .m{display:flex;justify-content:space-between;margin-top:36px}
+#bus .m div{font-size:30px;color:var(--mu);font-weight:700}#bus .m b{display:block;font-size:76px;color:var(--nv);letter-spacing:-.03em}
+/* 2 confere */
+.cf{left:110px;width:860px;height:210px;display:flex;align-items:center;gap:34px;padding:0 46px}
+.cf .ic{width:110px;height:110px;border-radius:50%;display:grid;place-items:center;font-size:56px;font-weight:800;flex:none}
+.cf b{font-size:52px;font-weight:800;display:block}.cf span{font-size:32px;font-weight:700;color:var(--mu)}
+.cf .pr{margin-left:auto;font-size:56px;font-weight:800;letter-spacing:-.03em}
+/* 3 whatsapp */
+#ph{left:200px;top:640px;width:680px;height:1060px;border-radius:80px;background:var(--nv);padding:22px}
+#ph .scr{width:100%;height:100%;border-radius:60px;background:var(--cr2);overflow:hidden;position:relative}
+#ph .hd{height:140px;background:#fff;display:flex;align-items:center;gap:20px;padding:30px 34px 0}
+#ph .hd img{width:76px;height:76px;border-radius:50%}#ph .hd b{font-size:32px;display:block}#ph .hd small{font-size:24px;color:var(--mu);font-weight:600}
+#msg{position:absolute;left:24px;right:70px;top:190px;background:#fff;border-radius:10px 34px 34px 34px;padding:26px 30px;font-size:29px;line-height:1.42;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.06);transform-origin:0 0}
+#msg b{font-weight:800}#msg .lk{display:inline-block;margin-top:12px;background:var(--am);color:var(--nv);border-radius:999px;padding:8px 22px;font-weight:800}
+#cmp{left:90px;right:90px;top:620px;font-size:92px;text-align:center}
+#fsub{left:120px;right:120px;top:960px;text-align:center;font-size:44px;font-weight:700;color:var(--nv2)}
+#cta{left:0;width:1080px;top:1120px;text-align:center}
+#cta .pill{font-size:50px;padding:30px 54px;background:var(--am);color:var(--nv);box-shadow:0 20px 50px rgba(245,197,49,.45)}
+#marca{left:0;width:1080px;top:1300px}
+#nota{left:120px;right:120px;top:1520px}
+</style></head><body>
+<div id="grid"></div>
+<div class="a h tt" id="t0" style="text-align:center">Como o radar <span class="hl">funciona</span></div>
+<div class="a h tt" id="t1">1. Ele <span class="az">procura</span></div>
+<div class="a h tt" id="t2">2. Ele <span class="az">confere</span> de novo</div>
+<div class="a h tt" id="t3">3. Ele te <span class="az">avisa</span></div>
+<div class="a" id="bar"><i><b id="g1"></b></i><i><b id="g2"></b></i><i><b id="g3"></b></i></div>
+<div class="a card" id="bus"><div class="q"><div id="spin"></div><span>FOR →</span><span id="dest">São Paulo</span></div>
+ <div class="m"><div><b id="cn">0</b>destinos vigiados</div><div style="text-align:right"><b>24h</b>dia e noite</div></div></div>
+<div class="a card cf" id="c1"><div class="ic" style="background:var(--cr2);color:var(--mu)">✕</div><div><b>Rio de Janeiro</b><span>conferiu de novo: subiu</span></div><div class="pr" style="color:var(--mu);text-decoration:line-through">R$ 519</div></div>
+<div class="a card cf" id="c2"><div class="ic" style="background:var(--az);color:#fff">✓</div><div><b>Foz do Iguaçu</b><span>conferiu de novo: valendo</span></div><div class="pr">R$ 642</div></div>
+<div class="a" id="ph"><div class="scr"><div class="hd"><img src="icone.png"><div><b>Radar 085 · grátis</b><small>grupo do WhatsApp</small></div></div>
+ <div id="msg">🚨 <b>O RADAR APITOU!</b><br>✈️ <b>Fortaleza ➜ Foz do Iguaçu</b><br>💰 <b>R$ 642</b> o trecho<br>🔁 Ida e volta: <b>R$ 1.506</b><br>🗓️ Ida 15/12 · volta 31/12<br><span class="lk">🛒 Ver e comprar</span></div></div></div>
+<div class="a h" id="cmp">Você compra <span class="hl">direto</span> no site.</div>
+<div class="a" id="fsub">Sem taxa, sem intermediário. A gente só avisa.</div>
+<div class="a" id="cta"><span class="pill">Grupo grátis · abre 19/10</span></div>
+<div class="a marca" id="marca"><img src="icone.png">@partiu.085</div>
+<div class="a nota" id="nota">Exemplos reais do radar em 13 e 14/10/2026. Preço muda a qualquer hora.</div>
+<script src="uikit.js"></script><script>
+const DS=['São Paulo','Lisboa','Recife','Miami','Belém','Santiago','Natal','Madri','Salvador','Buenos Aires','Paris','Curitiba','Orlando','Porto Alegre','Roma','Manaus'];
+window.TOTAL=18.5;
+window.SFX=[['whoosh',.2],['swish',2.3],['pop',2.7],...Array.from({length:14},(_,i)=>['tick',3+i*.2]),['swish',6.4],['pop',7.0],['hit',7.7],['pop',8.6],['impact',9.3],['swish',10.5],['whoosh',10.9],['pop2',12.0],['swish',14.4],['impact',15.0],['pop',16.0]];
+window.MUSICA={entra:.3,drop:6.4,quebra:4.6};
+window.quadro=t=>{
+ kin('t0',t,.2,.09,2.2);kin('t1',t,2.35,.09,6.3);kin('t2',t,6.5,.08,10.4);kin('t3',t,10.55,.09,14.3);
+ // barra de progresso dos passos
+ st('bar',{opacity:P(t,2.4,2.6)*(1-P(t,14.2,14.4))});
+ st('g1',{width:100*eio(P(t,2.5,6.3))+'%'});st('g2',{width:100*eio(P(t,6.6,10.4))+'%'});st('g3',{width:100*eio(P(t,10.7,14.3))+'%'});
+ // 1 procura
+ const b=SP(t,2.6),bo=eio(P(t,6.15,6.5));
+ st('bus',{opacity:t<2.6||t>6.5?0:1,transform:tf(L(0,-1100,bo),L(300,0,cl(b,0,1.1)),L(.85,1,cl(b,0,1.1)))});
+ $('spin').style.transform=`rotate(${t*540}deg)`;$('dest').textContent=DS[Math.floor(Math.max(0,t-2.8)/.17)%DS.length];
+ $('cn').textContent=Math.round(54*ex(P(t,3.0,5.2)));
+ // 2 confere
+ [['c1',6.75,760],['c2',7.35,1010]].forEach(([id,a,y],i)=>{const s=SP(t,a),o=eio(P(t,10.2+i*.07,10.55+i*.07));
+  st(id,{top:y+'px',opacity:t<a||t>10.65+i*.07?0:1,transform:tf(L(1100,0,cl(s,0,1.05))+L(0,-1100,o),0,1,L(5,0,cl(s,0,1)))});});
+ // descartado esmaece, aprovado pulsa
+ st('c1',{filter:`grayscale(${P(t,7.7,8.1)})`});$('c1').style.opacity=t<6.75||t>10.65?0:L(1,.55,P(t,7.8,8.2));
+ const pu=Math.sin(Math.PI*P(t,9.3,9.65));$('c2').querySelector('.ic').style.transform=`scale(${1+.25*pu})`;
+ // 3 whatsapp
+ const ph=SP(t,10.85,6,9),po=eio(P(t,14.1,14.5));
+ st('ph',{opacity:t<10.85||t>14.5?0:1,transform:tf(0,L(1300,0,cl(ph,0,1.05))+L(0,-200,po),L(1,.8,po))});$('ph').style.opacity=t<10.85?0:1-po;
+ const m=SP(t,12.0,8,12);st('msg',{opacity:P(t,12.0,12.1),transform:`scale(${cl(m,0,1.08)})`});
+ // fim
+ kin('cmp',t,14.6,.08);st('fsub',{opacity:P(t,15.3,15.6),transform:tf(0,L(40,0,eo(P(t,15.3,15.8))))});
+ st('cta',{opacity:t<15.9?0:1,transform:tf(0,0,cl(SP(t,15.9),0,1.15))});
+ st('marca',{opacity:P(t,16.3,16.6),transform:tf(0,L(30,0,eo(P(t,16.3,16.7))))});st('nota',{opacity:P(t,16.5,16.8)});
+ st('grid',{transform:`translateY(${-t*6}px)`});
+};
+window.pronto=pronto();
+</script></body></html>

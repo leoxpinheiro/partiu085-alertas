@@ -1,11 +1,5 @@
 <!doctype html><html><head><meta charset="utf-8">
-<style>
-@font-face{font-family:J;src:url("PlusJakartaSans[wght].ttf");font-weight:200 800}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1080px;height:1920px;overflow:hidden;background:#F5F4EF;font-family:J,sans-serif;color:#0B2440}
-.a{position:absolute;will-change:transform,opacity}
-.card{background:#fff;border-radius:48px;box-shadow:0 30px 80px rgba(11,36,64,.13),0 4px 14px rgba(11,36,64,.06)}
-#grid{position:absolute;left:0;right:0;top:0;height:2400px;background-image:radial-gradient(rgba(11,36,64,.07) 2.5px,transparent 2.6px);background-size:54px 54px}
+<link rel="stylesheet" href="uikit.css"><style>
 /* notificação */
 #nt{left:110px;width:860px;height:200px;display:flex;align-items:center;gap:30px;padding:0 40px;overflow:hidden}
 #nt img{width:112px;height:112px;border-radius:30px;flex:none}
@@ -17,10 +11,10 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#F5F4EF;font-fam
 #arc{position:absolute;left:0;top:70px;width:900px;height:260px}
 #plane{position:absolute;font-size:64px;left:0;top:0}
 #pr{position:absolute;left:60px;right:60px;top:400px}
-#de{font-size:36px;color:#7a8696;font-weight:600}#de s{text-decoration-thickness:4px;text-decoration-color:#e5484d}
+#de{font-size:36px;color:#7a8696;font-weight:600}#de s{text-decoration-thickness:4px;text-decoration-color:var(--az)}
 #val{font-size:190px;font-weight:800;letter-spacing:-.04em;line-height:1.05;display:flex;align-items:baseline;gap:14px}
 #val small{font-size:70px}
-#tag{position:absolute;right:60px;bottom:40px;background:#FFE7E1;color:#d23a2c;font-weight:800;font-size:34px;padding:14px 24px;border-radius:999px}
+#tag{position:absolute;right:60px;bottom:40px;background:var(--am);color:var(--nv);font-weight:800;font-size:34px;padding:14px 24px;border-radius:999px}
 #cia{position:absolute;left:60px;bottom:52px;font-size:32px;color:#4b5a6c;font-weight:700}
 /* gráfico */
 #gr{left:90px;top:560px;width:900px;height:720px;padding:56px 60px}
@@ -29,15 +23,15 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#F5F4EF;font-fam
 .leg{position:absolute;bottom:50px;font-size:28px;font-weight:700;display:flex;align-items:center;gap:12px}.leg i{width:34px;height:8px;border-radius:9px;display:inline-block}
 #btn{left:300px;top:1360px;width:480px;height:130px;border-radius:999px;background:#0B2440;color:#fff;font-size:44px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:16px}
 #mao{font-size:110px;left:640px;top:1430px}
-#wipe{left:0;top:0;width:1080px;height:1920px;background:#F5C531}
+#wipe{left:0;top:0;width:1080px;height:1920px;background:var(--am)}
 #partiu{left:0;width:1080px;top:820px;text-align:center;font-size:190px;font-weight:800;letter-spacing:-.04em}
 /* datas */
 .dt{left:110px;width:860px;height:200px;display:flex;align-items:center;gap:34px;padding:0 50px}
 .dt .ic{width:110px;height:110px;border-radius:32px;display:grid;place-items:center;font-size:58px;flex:none}
 .dt b{display:block;font-size:52px;font-weight:800}.dt span{font-size:32px;color:#7a8696;font-weight:700}
 /* chat */
-#chat{left:90px;top:380px;width:900px;height:1180px;overflow:hidden;background:#EFE7DC}
-#ch-h{height:150px;background:#0B2440;color:#fff;display:flex;align-items:center;gap:26px;padding:0 44px}
+#chat{left:90px;top:380px;width:900px;height:1180px;overflow:hidden;background:var(--cr2)}
+#ch-h{height:150px;background:var(--nv);color:#fff;display:flex;align-items:center;gap:26px;padding:0 44px}
 #ch-h img{width:90px;height:90px;border-radius:50%;background:#fff}
 #ch-h b{font-size:40px;display:block}#ch-h small{font-size:28px;opacity:.75}
 .bb{left:40px;width:640px;background:#fff;border-radius:10px 36px 36px 36px;padding:26px 32px;box-shadow:0 6px 16px rgba(0,0,0,.07)}
@@ -45,8 +39,8 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#F5F4EF;font-fam
 /* final */
 #busca{left:110px;top:860px;width:860px;height:150px;border-radius:999px;display:flex;align-items:center;gap:24px;padding:0 50px;font-size:42px;font-weight:600;overflow:hidden;white-space:nowrap}
 #cur{display:inline-block;width:4px;height:52px;background:#0B2440;vertical-align:middle;margin-left:4px}
-#cta{left:110px;top:860px;width:860px;height:150px;border-radius:999px;background:#25D366;color:#fff;font-size:48px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:20px}
-#cta svg{width:56px;height:56px;fill:#fff}
+#cta{left:110px;top:860px;width:860px;height:150px;border-radius:999px;background:var(--am);color:var(--nv);box-shadow:0 20px 50px rgba(245,197,49,.45);font-size:48px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:20px}
+#cta svg{width:56px;height:56px;fill:var(--nv)}
 #ctasub{left:0;width:1080px;top:1060px;text-align:center;font-size:40px;font-weight:700;color:#4b5a6c}
 #marca{left:0;width:1080px;top:1180px;display:flex;justify-content:center;align-items:center;gap:22px;font-size:54px;font-weight:800}
 #marca img{width:110px;height:110px;border-radius:50%}
@@ -64,15 +58,15 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#F5F4EF;font-fam
 </div>
 <div class="a card" id="gr"><h3>Belém · últimos 9 dias</h3><p>preço da passagem saindo de Fortaleza</p>
  <svg id="svg" width="820" height="400" viewBox="0 0 820 400"></svg>
- <div class="leg" style="left:60px"><i style="background:#c3ccd6"></i>preço normal</div><div class="leg" style="left:380px"><i style="background:#F5B800"></i>menor preço do dia</div>
+ <div class="leg" style="left:60px"><i style="background:#C9D3DD"></i>preço normal</div><div class="leg" style="left:380px"><i style="background:#F5C531"></i>menor preço do dia</div>
 </div>
 <div class="a" id="btn">Ver as datas 👉</div>
 <div class="a" id="wipe"></div>
 <div class="a" id="mao">👆</div>
 <div class="a" id="partiu">Partiu! ✈️</div>
-<div class="a card dt" id="d1"><div class="ic" style="background:#E6F0FF">🛫</div><div><b>Ida · dom 08/11</b><span>Fortaleza → Belém</span></div></div>
-<div class="a card dt" id="d2"><div class="ic" style="background:#FFF4D6">🛬</div><div><b>Volta · sex 20/11</b><span>12 dias de viagem</span></div></div>
-<div class="a card dt" id="d3"><div class="ic" style="background:#E3F7EA">💸</div><div><b>Ida e volta R$ 913</b><span>pelo menor preço que o radar achou</span></div></div>
+<div class="a card dt" id="d1"><div class="ic" style="background:#E3ECFA">🛫</div><div><b>Ida · dom 08/11</b><span>Fortaleza → Belém</span></div></div>
+<div class="a card dt" id="d2"><div class="ic" style="background:var(--am2)">🛬</div><div><b>Volta · sex 20/11</b><span>12 dias de viagem</span></div></div>
+<div class="a card dt" id="d3"><div class="ic" style="background:var(--cr2)">💸</div><div><b>Ida e volta R$ 913</b><span>pelo menor preço que o radar achou</span></div></div>
 <div class="a card" id="chat"><div id="ch-h"><img src="icone.png"><div><b>Radar 085 · grátis</b><small>alertas de passagem saindo de FOR</small></div></div>
  <div class="a bb" id="b1"><b>🚨 Belém · R$ 307</b><span>Gol · ida e volta R$ 913</span><em>21:56</em></div>
  <div class="a bb" id="b2"><b>🔥 Juazeiro · R$ 286</b><span>LATAM · ida e volta R$ 670</span><em>22:06</em></div>
@@ -97,9 +91,9 @@ const MED=[1277,1176,1073,1073,928,934,1073,1188,876],MIN=[548,685,573,573,307,6
 const sx=i=>40+i*(740/8),sy=v=>360-(v-250)/(1300-250)*330;
 const ln=a=>a.map((v,i)=>`${i?'L':'M'}${sx(i)} ${sy(v)}`).join(' ');
 $('svg').innerHTML=`${[400,800,1200].map(v=>`<line x1="20" x2="800" y1="${sy(v)}" y2="${sy(v)}" stroke="#eef1f4" stroke-width="3"/><text x="800" y="${sy(v)-10}" text-anchor="end" font-size="24" fill="#a3aebb" font-family="J" font-weight="600">R$ ${br(v)}</text>`).join('')}
-<path id="lmed" d="${ln(MED)}" fill="none" stroke="#c3ccd6" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
-<path id="lmin" d="${ln(MIN)}" fill="none" stroke="#F5B800" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
-<circle id="dot" cx="${sx(8)}" cy="${sy(307)}" r="16" fill="#F5B800" stroke="#fff" stroke-width="6"/><circle id="ring" cx="${sx(8)}" cy="${sy(307)}" r="16" fill="none" stroke="#F5B800" stroke-width="5"/>
+<path id="lmed" d="${ln(MED)}" fill="none" stroke="#C9D3DD" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+<path id="lmin" d="${ln(MIN)}" fill="none" stroke="#F5C531" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/>
+<circle id="dot" cx="${sx(8)}" cy="${sy(307)}" r="16" fill="#F5C531" stroke="#fff" stroke-width="6"/><circle id="ring" cx="${sx(8)}" cy="${sy(307)}" r="16" fill="none" stroke="#F5C531" stroke-width="5"/>
 <g id="lbl"><rect x="${sx(8)-210}" y="${sy(307)-120}" width="230" height="76" rx="38" fill="#0B2440"/><text x="${sx(8)-95}" y="${sy(307)-70}" text-anchor="middle" font-size="36" font-weight="800" fill="#fff" font-family="J">R$ 307</text></g>`;
 const arc=$('arcf'),AL=arc.getTotalLength(),lmed=$('lmed'),lmin=$('lmin'),LM=lmed.getTotalLength(),LN=lmin.getTotalLength();
 arc.style.strokeDasharray=AL;lmed.style.strokeDasharray=LM;lmin.style.strokeDasharray=LN;

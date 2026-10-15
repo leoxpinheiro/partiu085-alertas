@@ -1,0 +1,28 @@
+name: Teste de vozes (grátis)
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  vozes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg >/dev/null && pip install -q edge-tts
+      - name: Gerar amostras
+        run: |
+          mkdir -p docs/vozes
+          edge-tts --list-voices | grep -iE "pt-BR|Multilingual" | tee docs/vozes/lista.txt
+          T="Seu voo atrasou? Presta atenção, porque a regra muda agora no dia vinte e seis de outubro. Com duas horas de espera, a companhia tem que te dar comida. Com quatro horas, hotel e transporte, se você precisar dormir fora. E guarda todo recibo, viu? Sem comprovante, sem reembolso."
+          for v in pt-BR-ThalitaMultilingualNeural pt-BR-AntonioNeural pt-BR-FranciscaNeural pt-BR-MacerioMultilingualNeural en-US-AndrewMultilingualNeural en-US-AvaMultilingualNeural; do
+            for r in +0% +12%; do
+              edge-tts --voice $v --rate=$r --text "$T" --write-media "docs/vozes/$v$r.mp3" || echo "falhou $v"
+            done
+          done
+          ls -la docs/vozes
+      - name: Salvar no branch de teste
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add -f docs/vozes && git checkout -q -b vozes-teste && git commit -q -m "amostras de voz" && git push -q -f origin vozes-teste

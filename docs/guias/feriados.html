@@ -51,7 +51,7 @@ footer{text-align:center;color:var(--mu);font-size:13px;padding:0 16px 30px}
 <footer>@partiu.085 · radar de passagens saindo de Fortaleza</footer>
 <script>
 fetch('../feriados.json?'+Date.now()).then(r=>r.json()).then(F=>{const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR'),dm=d=>d.slice(8,10)+'/'+d.slice(5,7);
- document.getElementById('fer').innerHTML=(F.feriados||[]).slice(0,3).map(f=>`<h2>${f.nome}: ida e volta nas datas</h2><div class="card">${f.destinos.slice(0,8).map(x=>`<div class="l"><div><b>${x.nome}</b><small>ida ${dm(x.ida.dia)} · volta ${dm(x.volta.dia)}${x.ida.escalas===0?' · ida direta':''}</small></div><div class="v">${br(x.total)}</div></div>`).join('')}</div><p class="nota">Por pessoa, visto pelo radar em ${dm(f.visto)}. Preço muda a qualquer hora.</p>`).join('');}).catch(()=>{});
+ document.getElementById('fer').innerHTML=(F.feriados||[]).slice(0,4).map(f=>`<h2>${f.nome}: ida e volta nas datas</h2><div class="card">${f.destinos.slice(0,8).map(x=>`<div class="l"><div><b>${x.nome}</b><small>ida ${dm(x.ida.dia)} · volta ${dm(x.volta.dia)}${x.ida.escalas===0?' · ida direta':''}</small></div><div class="v">${br(x.total)}</div></div>`).join('')}</div><p class="nota">Por pessoa, visto pelo radar em ${dm(f.visto)}. Preço muda a qualquer hora.</p>`).join('');}).catch(()=>{});
 fetch('../status.json?'+Date.now()).then(r=>r.json()).then(s=>{const R=s.rotas||{},M=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
  const L=Object.entries(R).filter(([k,v])=>v.menor&&v.tipo==='nacional').sort((a,b)=>a[1].menor-b[1].menor).slice(0,8)
   .concat(Object.entries(R).filter(([k,v])=>v.menor&&v.tipo==='internacional').sort((a,b)=>a[1].menor-b[1].menor).slice(0,4));

@@ -18,7 +18,8 @@
     "R$13",
     "Azul"
    ]
-  ]
+  ],
+  "fala": "Milhas ou dinheiro? Aprende a conta em dez segundos."
  },
  "regras": [
   {
@@ -31,7 +32,8 @@
      "in",
      "Exemplo: R$ 1.200 − R$ 80 de taxas = R$ 1.120"
     ]
-   ]
+   ],
+   "fala": "Primeiro, pega o preço em dinheiro e tira as taxas."
   },
   {
    "n": "2",
@@ -47,7 +49,8 @@
      "ok",
      "É quanto cada mil milhas vale nessa passagem"
     ]
-   ]
+   ],
+   "fala": "Depois, divide pelas milhas, em mil. Mil cento e vinte reais por quarenta mil milhas dá vinte e oito reais."
   },
   {
    "n": "3",
@@ -63,7 +66,8 @@
      "no",
      "Deu menos? Paga em dinheiro e guarda as milhas"
     ]
-   ]
+   ],
+   "fala": "Deu mais que o valor do milheiro? Usa as milhas. Deu menos? Paga em dinheiro."
   },
   {
    "n": "R$",
@@ -83,12 +87,15 @@
      "ok",
      "Azul Fidelidade: até R$ 12–13"
     ]
-   ]
+   ],
+   "fala": "E um bom preço de milheiro hoje é até dezesseis reais na Smiles, vinte e seis na Latam e treze na Azul."
   }
  ],
  "fim": {
   "titulo": "Salva pra fazer a conta <em>na hora de emitir</em>.",
   "cta": "Manda pra quem junta milhas e nunca usa 💎",
-  "fonte": "Valores de passagem são exemplo. Referência do milheiro: Melhores Destinos (2026). Confira o preço do dia antes de comprar milhas."
- }
+  "fonte": "Valores de passagem são exemplo. Referência do milheiro: Melhores Destinos (2026). Confira o preço do dia antes de comprar milhas.",
+  "fala": "Salva pra fazer a conta na hora de emitir, e manda pra quem junta milha e nunca usa."
+ },
+ "voz": "pt-BR-ThalitaMultilingualNeural"
 }

@@ -18,7 +18,8 @@
     "100ml",
     "líquido intl."
    ]
-  ]
+  ],
+  "fala": "O que pode levar na mala de mão? Essas são as regras que mais pegam gente no raio-x."
  },
  "regras": [
   {
@@ -39,7 +40,8 @@
      "in",
      "A companhia pode pesar e medir no embarque"
     ]
-   ]
+   ],
+   "fala": "O limite é de dez quilos, numa mala de cinquenta e cinco por trinta e cinco por vinte e cinco centímetros. E ainda cabe uma mochila embaixo do assento."
   },
   {
    "n": "100ml",
@@ -59,7 +61,8 @@
      "in",
      "Vale também pra quem faz conexão internacional"
     ]
-   ]
+   ],
+   "fala": "Líquido só tem limite em voo internacional: frascos de até cem mililitros, num saquinho transparente de um litro."
   },
   {
    "n": "100Wh",
@@ -79,7 +82,8 @@
      "in",
      "Na LATAM, não pode usar pra carregar durante o voo"
     ]
-   ]
+   ],
+   "fala": "Power bank vai só na mala de mão, nunca despachado. Até cem watts-hora, pode levar."
   },
   {
    "n": "5",
@@ -95,7 +99,8 @@
      "no",
      "Internacional: só despachada, do free shop ou em frasco de até 100 ml"
     ]
-   ]
+   ],
+   "fala": "Em voo nacional, dá pra levar até cinco garrafas de bebida de um litro."
   },
   {
    "n": "DICA",
@@ -110,12 +115,15 @@
      "ok",
      "Remédio, documento e carregador: sempre com você"
     ]
-   ]
+   ],
+   "fala": "E se despacharem sua mala na porta do avião, tira o power bank antes."
   }
  ],
  "fim": {
   "titulo": "Salva antes de fazer <em>a próxima mala</em>.",
   "cta": "Manda pra quem sempre leva mala demais 😅",
-  "fonte": "Fontes: regras de bagagem de Azul, Gol e LATAM (mar/2026, via Melhores Destinos) e regras de bateria da ANAC e IATA (abr/2026). Confirme com a sua companhia antes de viajar."
- }
+  "fonte": "Fontes: regras de bagagem de Azul, Gol e LATAM (mar/2026, via Melhores Destinos) e regras de bateria da ANAC e IATA (abr/2026). Confirme com a sua companhia antes de viajar.",
+  "fala": "Salva antes de fazer a próxima mala, e manda pra quem sempre leva mala demais."
+ },
+ "voz": "pt-BR-AntonioNeural"
 }

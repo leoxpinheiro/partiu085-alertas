@@ -1,0 +1,37 @@
+name: Informativo narrado
+on:
+  workflow_dispatch:
+    inputs:
+      temas:
+        description: "Arquivos em engine/video/ui/dados (sem .json), separados por vírgula"
+        type: string
+        required: true
+permissions:
+  contents: write
+jobs:
+  narrar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg fonts-noto-color-emoji >/dev/null
+          cd engine/video && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
+      - run: pip install -q edge-tts numpy scipy
+      - name: Narrar
+        env:
+          NODE_PATH: ${{ github.workspace }}/engine/video/node_modules
+        run: |
+          mkdir -p docs/narrados
+          for t in $(echo "${{ inputs.temas }}" | tr ',' ' '); do
+            python engine/video/ui/narrar_info.py engine/video/ui/dados/$t.json docs/narrados/info-$t.mp4
+            ffmpeg -v error -y -ss 3.3 -i docs/narrados/info-$t.mp4 -frames:v 1 -q:v 3 docs/narrados/info-$t.jpg
+          done
+      - name: Salvar no branch de prévia
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add -f docs/narrados && git checkout -q -b informativo-previa && git commit -q -m "informativos narrados" && git push -q -f origin informativo-previa

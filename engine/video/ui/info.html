@@ -51,7 +51,8 @@ const V=window.VID||{tema:'REGRA DE ATRASO',foto:'hd-mala-2.jpg',capa:{tag:'✈�
 const AM=x=>(x||'').replace(/<em>/g,'<span class="am">').replace(/<\/em>/g,'</span>');
 const R=V.regras,NR=R.length;
 // linha do tempo
-const TC=4.2,TF=3.8,dur=r=>3.6+.55*(r.itens||[]).length;let acc=TC;const T0=R.map(r=>{const a=acc;acc+=dur(r);return a;});const TFIM=acc;window.TOTAL=TFIM+TF;
+const TC=V.capa.dur||4.2,TF=V.fim.dur||3.8,dur=r=>r.dur||(3.6+.55*(r.itens||[]).length);
+const passo=r=>{const n=(r.itens||[]).length;return n?Math.max(.55,Math.min(1.6,(dur(r)-2.4)/n)):.55;};let acc=TC;const T0=R.map(r=>{const a=acc;acc+=dur(r);return a;});const TFIM=acc;window.TOTAL=TFIM+TF;
 // monta capa
 $('foto').style.backgroundImage=`url(${V.foto})`;$('ctag').textContent=V.capa.tag;$('ctit').innerHTML=AM(V.capa.titulo);$('csub').textContent=V.capa.sub||'';
 $('cchips').innerHTML=(V.capa.chips||[]).map(c=>`<div class="g"><b>${c[0]}</b><span>${c[1]}</span></div>`).join('');
@@ -59,7 +60,7 @@ $('prog').innerHTML=R.map((_,i)=>`<i><b id="pb${i}"></b></i>`).join('');$('rtagt
 $('regras').innerHTML=R.map((r,i)=>`<div class="rg" id="rg${i}"><div class="rn" style="font-size:${r.n.length<=2?280:r.n.length<=3?250:r.n.length<=4?210:180}px">${r.n}${r.nsub?`<small style="${r.n.length>=4?'display:block;margin:14px 0 0 6px;font-size:64px':''}">${r.nsub}</small>`:''}</div><div class="ri">${r.icone||''}</div><div class="rcol"><div class="rt" id="rt${i}">${AM(r.titulo)}</div>
  <div class="rl">${(r.itens||[]).map((it,j)=>`<div class="c" id="c${i}_${j}"><b class="${it[0]}">${it[0]==='ok'?'✓':it[0]==='no'?'✕':'i'}</b><span>${it[1]}</span></div>`).join('')}</div></div></div>`).join('');
 $('ft').innerHTML=AM(V.fim.titulo);$('fctat').textContent=V.fim.cta;$('fonte').textContent=V.fim.fonte||'';
-window.SFX=[['whoosh',.2],['pop',.9],['swish',TC-.4],...R.flatMap((r,i)=>[['whoosh',T0[i]],['impact',T0[i]+.35],...(r.itens||[]).map((_,j)=>['pop2',T0[i]+1.4+j*.55])]),['swish',TFIM],['pop',TFIM+1.1]];
+window.SFX=[['whoosh',.2],['pop',.9],['swish',TC-.4],...R.flatMap((r,i)=>[['whoosh',T0[i]],['impact',T0[i]+.35],...(r.itens||[]).map((_,j)=>['pop2',T0[i]+1.4+j*passo(r)])]),['swish',TFIM],['pop',TFIM+1.1]];
 window.MUSICA={entra:.3,drop:TC,quebra:Math.max(1.6,TC-2.2)};
 window.quadro=t=>{
  // capa: foto com zoom lento + título cinético
@@ -80,7 +81,7 @@ window.quadro=t=>{
   const n=el.querySelector('.rn');n.style.transform=`scale(${cl(SP(t,a+.25,7,10),0,1.12)})`;n.style.transformOrigin='left bottom';
   const ic=el.querySelector('.ri');ic.style.transform=`rotate(${L(-30,-8,cl(SP(t,a+.4),0,1))}deg) scale(${cl(SP(t,a+.4),0,1.1)})`;
   kin('rt'+i,t,a+.6,.06);
-  (r.itens||[]).forEach((_,j)=>{const c=$(`c${i}_${j}`),ca=a+1.4+j*.55;c.style.opacity=P(t,ca,ca+.1);c.style.transform=`translateX(${L(-60,0,eo(P(t,ca,ca+.35)))}px)`;
+  (r.itens||[]).forEach((_,j)=>{const c=$(`c${i}_${j}`),ca=a+1.4+j*passo(r);c.style.opacity=P(t,ca,ca+.1);c.style.transform=`translateX(${L(-60,0,eo(P(t,ca,ca+.35)))}px)`;
    c.querySelector('b').style.transform=`scale(${cl(SP(t,ca+.1,9,13),0,1.2)})`;});});
  // fim
  st('fim',{opacity:t>=TFIM?1:0});kin('ft',t,TFIM+.1,.07);

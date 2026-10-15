@@ -16,6 +16,11 @@ const { chromium } = require('playwright'); const fs = require('fs'), path = req
   ff.stdin.end(); await new Promise(r => ff.on('close', r)); await b.close(); srv.close();
   const sfx = path.join(tmp, 'sfx.json'), wav = path.join(tmp, 't.wav'); fs.writeFileSync(sfx, JSON.stringify(Object.assign({ total: TOTAL, sfx: SFX, semente: 3 }, MUS)));
   execFileSync('python3', [path.join(__dirname, '..', 'trilha.py'), sfx, wav], { stdio: 'inherit' });
+  if (process.env.NARRACAO) {  // narração por cima, música baixinha por trás
+    const vol = process.env.TRILHA_VOL || '0.16', mix = path.join(tmp, 'mix.wav');
+    execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', wav, '-i', process.env.NARRACAO, '-filter_complex', `[0:a]volume=${vol}[m];[1:a]aresample=48000,volume=1.0[v];[m][v]amix=inputs=2:duration=first:dropout_transition=0:normalize=0,loudnorm=I=-14:TP=-1.5[o]`, '-map', '[o]', mix]);
+    execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', silen, '-i', mix, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', saida]);
+  } else
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', silen, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', saida]);
   console.log('ok', saida, TOTAL + 's');
 })();

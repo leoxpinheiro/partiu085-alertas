@@ -1,9 +1,124 @@
-{"tema":"REGRA DE ATRASO","foto":"hd-mala-2.jpg",
- "capa":{"tag":"✈️ VOO ATRASADO","titulo":"Voo atrasou? <em>Seus direitos mudam dia 26/10.</em>","sub":"O que a companhia tem que te dar em cada hora de espera, pela regra nova da ANAC.","chips":[["2h","comida"],["4h","hotel"],["4h+","reembolso"]]},
- "regras":[
-  {"n":"1h","nsub":"de espera","icone":"📶","titulo":"Internet e telefone <em>saem da lista</em>.","itens":[["no","A companhia não é mais obrigada a dar internet e telefone"],["in","Mas tem que te manter informado o atraso inteiro"]]},
-  {"n":"2h","nsub":"de espera","icone":"🍽️","titulo":"A companhia te dá <em>comida</em>.","itens":[["ok","Voucher ou crédito pra comer"],["ok","Vale também em cancelamento e overbooking"]]},
-  {"n":"4h","nsub":"de espera","icone":"🏨","titulo":"<em>Hotel e transporte</em> se precisar dormir fora.","itens":[["ok","Quem mora na cidade pode receber o transporte pra casa"],["ok","Remarcar, reembolso ou outro transporte: você escolhe"]]},
-  {"n":"NOVO","icone":"🧾","titulo":"Em caso excepcional, <em>você paga e eles devolvem</em>.","itens":[["in","Quando não dá pra atender no aeroporto, a cia pode reembolsar comida, transporte e hotel"],["ok","Até 7 dias depois que você mandar os comprovantes"],["no","Sem comprovante, sem reembolso"]]},
-  {"n":"DICA","icone":"📸","titulo":"Print do atraso e <em>todo recibo guardado</em>.","itens":[["ok","Print do aviso de atraso no app, com data e hora"],["ok","Nota do restaurante, do hotel e da corrida"],["in","Se não pagarem: reclama no Anac Passageiro (gov.br)"]]}],
- "fim":{"titulo":"Salva esse vídeo <em>pra quando precisar</em>.","cta":"Manda pra quem viaja com você ✈️","fonte":"Fonte: Resolução ANAC nº 813/2026, que altera a Resolução 400 e vale a partir de 26/10/2026. Informação geral, não é orientação jurídica."}}
+{
+ "tema": "REGRA DE ATRASO",
+ "foto": "hd-mala-2.jpg",
+ "capa": {
+  "tag": "✈️ VOO ATRASADO",
+  "titulo": "Voo atrasou? <em>Seus direitos mudam dia 26/10.</em>",
+  "sub": "O que a companhia tem que te dar em cada hora de espera, pela regra nova da ANAC.",
+  "chips": [
+   [
+    "2h",
+    "comida"
+   ],
+   [
+    "4h",
+    "hotel"
+   ],
+   [
+    "4h+",
+    "reembolso"
+   ]
+  ],
+  "fala": "Seu voo atrasou? Presta atenção, porque a regra muda agora, no dia vinte e seis de outubro."
+ },
+ "regras": [
+  {
+   "n": "1h",
+   "nsub": "de espera",
+   "icone": "📶",
+   "titulo": "Internet e telefone <em>saem da lista</em>.",
+   "itens": [
+    [
+     "no",
+     "A companhia não é mais obrigada a dar internet e telefone"
+    ],
+    [
+     "in",
+     "Mas tem que te manter informado o atraso inteiro"
+    ]
+   ],
+   "fala": "Com uma hora de atraso, internet e telefone saem da lista. Mas a companhia tem que continuar te informando."
+  },
+  {
+   "n": "2h",
+   "nsub": "de espera",
+   "icone": "🍽️",
+   "titulo": "A companhia te dá <em>comida</em>.",
+   "itens": [
+    [
+     "ok",
+     "Voucher ou crédito pra comer"
+    ],
+    [
+     "ok",
+     "Vale também em cancelamento e overbooking"
+    ]
+   ],
+   "fala": "Com duas horas, ela tem que te dar comida: voucher ou crédito pra você comer."
+  },
+  {
+   "n": "4h",
+   "nsub": "de espera",
+   "icone": "🏨",
+   "titulo": "<em>Hotel e transporte</em> se precisar dormir fora.",
+   "itens": [
+    [
+     "ok",
+     "Quem mora na cidade pode receber o transporte pra casa"
+    ],
+    [
+     "ok",
+     "Remarcar, reembolso ou outro transporte: você escolhe"
+    ]
+   ],
+   "fala": "Com quatro horas, hotel e transporte, se você precisar dormir fora. E você escolhe: remarcar, reembolso ou outro transporte."
+  },
+  {
+   "n": "NOVO",
+   "icone": "🧾",
+   "titulo": "Em caso excepcional, <em>você paga e eles devolvem</em>.",
+   "itens": [
+    [
+     "in",
+     "Quando não dá pra atender no aeroporto, a cia pode reembolsar comida, transporte e hotel"
+    ],
+    [
+     "ok",
+     "Até 7 dias depois que você mandar os comprovantes"
+    ],
+    [
+     "no",
+     "Sem comprovante, sem reembolso"
+    ]
+   ],
+   "fala": "E o que é novo: em caso excepcional, você paga e a companhia devolve em até sete dias. Mas só com comprovante."
+  },
+  {
+   "n": "DICA",
+   "icone": "📸",
+   "titulo": "Print do atraso e <em>todo recibo guardado</em>.",
+   "itens": [
+    [
+     "ok",
+     "Print do aviso de atraso no app, com data e hora"
+    ],
+    [
+     "ok",
+     "Nota do restaurante, do hotel e da corrida"
+    ],
+    [
+     "in",
+     "Se não pagarem: reclama no Anac Passageiro (gov.br)"
+    ]
+   ],
+   "fala": "Então já sabe: tira print do aviso de atraso e guarda todo recibo."
+  }
+ ],
+ "fim": {
+  "titulo": "Salva esse vídeo <em>pra quando precisar</em>.",
+  "cta": "Manda pra quem viaja com você ✈️",
+  "fonte": "Fonte: Resolução ANAC nº 813/2026, que altera a Resolução 400 e vale a partir de 26/10/2026. Informação geral, não é orientação jurídica.",
+  "fala": "Salva esse vídeo pra quando precisar, e manda pra quem viaja com você."
+ },
+ "voz": "pt-BR-ThalitaMultilingualNeural"
+}

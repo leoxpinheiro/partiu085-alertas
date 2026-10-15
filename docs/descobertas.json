@@ -1,12 +1,11 @@
 {
- "atualizado": "2026-10-15T16:30+00:00",
+ "atualizado": "2026-10-15T17:40+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "BSB",
   "CWB",
   "FLN",
-  "IGU",
   "MAD",
   "MIA",
   "MIL",
@@ -50,16 +49,16 @@
    "pista": true
   },
   {
-   "iata": "REC",
+   "iata": "BHZ",
    "ow": {
-    "preco": 344,
-    "ida": "2026-12-28",
+    "preco": 447,
+    "ida": "2026-11-03",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-11T16:54:32Z"
+    "paradas": 1,
+    "visto": "2026-10-14T11:49:15Z"
    },
    "rastreada": true,
-   "nome": "Recife",
+   "nome": "Belo Horizonte",
    "pista": true
   },
   {
@@ -86,6 +85,19 @@
    },
    "rastreada": true,
    "nome": "Salvador",
+   "pista": true
+  },
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 697,
+    "ida": "2026-10-23",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-12T23:41:46Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
    "pista": true
   },
   {
@@ -128,19 +140,6 @@
    "pista": false
   },
   {
-   "iata": "IGU",
-   "rt": {
-    "preco": 1021,
-    "ida": "2027-04-10",
-    "volta": "2027-04-22",
-    "paradas": 1,
-    "visto": "2026-10-11T17:01:04Z"
-   },
-   "rastreada": true,
-   "nome": "Foz do Iguaçu",
-   "pista": true
-  },
-  {
    "iata": "SCL",
    "ow": {
     "preco": 1188,
@@ -156,7 +155,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1409,
+    "preco": 1405,
     "ida": "2026-11-12",
     "volta": "2026-11-14",
     "paradas": 1,
@@ -194,24 +193,17 @@
    "pista": true
   },
   {
-   "iata": "BHZ",
+   "iata": "IGU",
    "rt": {
-    "preco": 1509,
-    "ida": "2026-10-22",
-    "volta": "2026-10-25",
-    "paradas": 2,
-    "visto": "2026-10-11T16:37:15Z"
-   },
-   "ow": {
-    "preco": 447,
-    "ida": "2026-11-03",
-    "volta": "",
+    "preco": 1788,
+    "ida": "2026-11-18",
+    "volta": "2026-11-21",
     "paradas": 1,
-    "visto": "2026-10-14T11:49:15Z"
+    "visto": "2026-10-13T13:32:40Z"
    },
    "rastreada": true,
-   "nome": "Belo Horizonte",
-   "pista": true
+   "nome": "Foz do Iguaçu",
+   "pista": false
   },
   {
    "iata": "FLN",
@@ -223,7 +215,7 @@
     "visto": "2026-10-14T20:58:57Z"
    },
    "ow": {
-    "preco": 559,
+    "preco": 557,
     "ida": "2026-11-26",
     "volta": "",
     "paradas": 2,
@@ -256,7 +248,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2109,
+    "preco": 2103,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
@@ -269,7 +261,7 @@
   {
    "iata": "VIX",
    "rt": {
-    "preco": 2319,
+    "preco": 2313,
     "ida": "2026-12-20",
     "volta": "2026-12-27",
     "paradas": 3,
@@ -365,19 +357,6 @@
    "pista": true
   },
   {
-   "iata": "LIM",
-   "rt": {
-    "preco": 3645,
-    "ida": "2027-04-15",
-    "volta": "2027-04-29",
-    "paradas": 3,
-    "visto": "2026-10-11T16:45:44Z"
-   },
-   "rastreada": true,
-   "nome": "Lima",
-   "pista": false
-  },
-  {
    "iata": "PNZ",
    "rt": {
     "preco": 3706,
@@ -393,7 +372,7 @@
   {
    "iata": "SFO",
    "ow": {
-    "preco": 3793,
+    "preco": 3782,
     "ida": "2027-01-23",
     "volta": "",
     "paradas": 2,

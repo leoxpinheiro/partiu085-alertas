@@ -1,10 +1,11 @@
 {
- "atualizado": "2026-10-15T00:23+00:00",
+ "atualizado": "2026-10-15T01:24+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "BSB",
   "CWB",
+  "FLN",
   "IGU",
   "MAD",
   "MIL",
@@ -220,9 +221,16 @@
     "paradas": 2,
     "visto": "2026-10-14T20:58:57Z"
    },
+   "ow": {
+    "preco": 558,
+    "ida": "2026-11-26",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-15T00:34:24Z"
+   },
    "rastreada": true,
    "nome": "Florianópolis",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "RIO",
@@ -353,6 +361,19 @@
    },
    "rastreada": false,
    "nome": "PNZ",
+   "pista": false
+  },
+  {
+   "iata": "SFO",
+   "ow": {
+    "preco": 3787,
+    "ida": "2027-01-23",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-15T01:00:46Z"
+   },
+   "rastreada": false,
+   "nome": "SFO",
    "pista": false
   },
   {

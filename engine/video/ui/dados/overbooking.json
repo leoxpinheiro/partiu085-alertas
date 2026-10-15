@@ -1,0 +1,129 @@
+{
+ "tema": "OVERBOOKING",
+ "foto": "hd-janela-1.jpg",
+ "voz": "en-US-AndrewMultilingualNeural",
+ "capa": {
+  "tag": "✈️ OVERBOOKING",
+  "titulo": "Voo lotado e você ficou de fora? <em>Isso vale dinheiro.</em>",
+  "sub": "O que a companhia te deve quando vende mais passagem do que assento.",
+  "chips": [
+   [
+    "1º",
+    "voluntários"
+   ],
+   [
+    "~2 mil",
+    "em reais"
+   ],
+   [
+    "você",
+    "escolhe"
+   ]
+  ],
+  "fala": "Voo lotado e você ficou de fora? Isso tem nome, overbooking. E vale dinheiro."
+ },
+ "regras": [
+  {
+   "n": "1º",
+   "nsub": "voluntários",
+   "icone": "🙋",
+   "titulo": "Antes de barrar alguém, <em>a cia pede voluntário</em>.",
+   "itens": [
+    [
+     "ok",
+     "Quem aceita negocia: dinheiro, voucher, milhas"
+    ],
+    [
+     "in",
+     "Vai se oferecer? Negocia antes de levantar a mão"
+    ]
+   ],
+   "fala": "Antes de barrar alguém, a companhia tem que pedir voluntário. Vai se oferecer? Negocia antes."
+  },
+  {
+   "n": "250",
+   "nsub": "DES",
+   "icone": "💵",
+   "titulo": "Ninguém topou e você ficou? <em>Compensação na hora.</em>",
+   "itens": [
+    [
+     "ok",
+     "Voo no Brasil: 250 DES, cerca de R$ 1.975"
+    ],
+    [
+     "ok",
+     "Voo internacional: 500 DES, cerca de R$ 3.950"
+    ],
+    [
+     "in",
+     "DES é a moeda do FMI, o valor muda com o câmbio"
+    ]
+   ],
+   "fala": "Se não teve voluntário e você ficou de fora, a compensação é na hora. Em voo nacional, quase dois mil reais. Internacional, perto de quatro mil."
+  },
+  {
+   "n": "VOCÊ",
+   "nsub": "escolhe",
+   "icone": "🔀",
+   "titulo": "E ainda <em>escolhe</em> como seguir.",
+   "itens": [
+    [
+     "ok",
+     "Próximo voo disponível"
+    ],
+    [
+     "ok",
+     "Reembolso integral, com taxa de embarque"
+    ],
+    [
+     "ok",
+     "Ou outro transporte, se der"
+    ]
+   ],
+   "fala": "E você ainda escolhe: vai no próximo voo, pega o dinheiro de volta, ou segue por outro transporte."
+  },
+  {
+   "n": "2h",
+   "nsub": "de espera",
+   "icone": "🍽️",
+   "titulo": "Enquanto espera, <em>a assistência continua</em>.",
+   "itens": [
+    [
+     "ok",
+     "A partir de 2h: alimentação"
+    ],
+    [
+     "ok",
+     "Passou de 4h com pernoite: hotel e transporte"
+    ]
+   ],
+   "fala": "Enquanto espera, a assistência continua. Duas horas, comida. Passou de quatro horas e vai dormir fora, hotel e transporte."
+  },
+  {
+   "n": "PAPEL",
+   "icone": "📄",
+   "titulo": "Pede <em>por escrito</em> o motivo.",
+   "itens": [
+    [
+     "ok",
+     "Declaração dizendo por que você não embarcou"
+    ],
+    [
+     "ok",
+     "Guarda o cartão de embarque e os recibos"
+    ],
+    [
+     "in",
+     "A compensação não tira o direito de ir à Justiça"
+    ]
+   ],
+   "fala": "E pede por escrito o motivo de você não ter embarcado. Guarda tudo, porque a compensação não tira seu direito de ir à Justiça."
+  }
+ ],
+ "fim": {
+  "titulo": "Salva pra quando <em>o voo lotar</em>.",
+  "cta": "Manda pra quem viaja com você ✈️",
+  "fonte": "Fonte: Resolução ANAC nº 400/2016 (arts. 22 a 24). Valores em reais aproximados, de julho/2026. Informação geral, não é orientação jurídica.",
+  "fala": "Salva pra quando o voo lotar, e manda pra quem viaja com você."
+ }
+}

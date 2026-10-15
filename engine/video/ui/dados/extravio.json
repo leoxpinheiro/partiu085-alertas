@@ -1,0 +1,121 @@
+{
+ "tema": "MALA EXTRAVIADA",
+ "foto": "hd-mala-3.jpg",
+ "voz": "en-US-AvaMultilingualNeural",
+ "capa": {
+  "tag": "🧳 MALA EXTRAVIADA",
+  "titulo": "Sua mala não chegou? <em>Não saia do aeroporto.</em>",
+  "sub": "O passo a passo e os prazos que a companhia tem que cumprir.",
+  "chips": [
+   [
+    "7 dias",
+    "pra achar"
+   ],
+   [
+    "+7",
+    "indenizar"
+   ],
+   [
+    "R$",
+    "despesas"
+   ]
+  ],
+  "fala": "Sua mala não apareceu na esteira? Antes de sair do aeroporto, presta atenção nisso aqui."
+ },
+ "regras": [
+  {
+   "n": "RIB",
+   "nsub": "na hora",
+   "icone": "📝",
+   "titulo": "Reclama <em>antes de sair</em> do desembarque.",
+   "itens": [
+    [
+     "ok",
+     "Preencha o RIB no balcão da companhia"
+    ],
+    [
+     "ok",
+     "Anote o número do protocolo"
+    ],
+    [
+     "in",
+     "Não deu tempo? Registre no SAC ou por e-mail"
+    ]
+   ],
+   "fala": "Primeiro: reclama ali mesmo, no balcão da companhia. Preenche o relatório de bagagem e guarda o número do protocolo."
+  },
+  {
+   "n": "7",
+   "nsub": "dias",
+   "icone": "🔎",
+   "titulo": "No Brasil, a companhia tem <em>7 dias</em> pra achar.",
+   "itens": [
+    [
+     "ok",
+     "E entrega no endereço que você indicar"
+    ],
+    [
+     "in",
+     "Voo internacional: até 21 dias"
+    ]
+   ],
+   "fala": "Em voo nacional, a companhia tem sete dias pra achar sua mala e entregar onde você estiver. Em voo internacional, vinte e um dias."
+  },
+  {
+   "n": "R$",
+   "nsub": "básico",
+   "icone": "🧾",
+   "titulo": "Ficou sem nada? <em>Compra o básico e guarda a nota.</em>",
+   "itens": [
+    [
+     "ok",
+     "Roupa e higiene são ressarcidas se você está fora de casa"
+    ],
+    [
+     "ok",
+     "Pagamento em até 7 dias depois dos comprovantes"
+    ]
+   ],
+   "fala": "Ficou sem roupa, sem escova de dente? Compra o básico e guarda a nota. Se você tá fora de casa, a companhia te devolve em até sete dias."
+  },
+  {
+   "n": "+7",
+   "nsub": "dias",
+   "icone": "💰",
+   "titulo": "Não achou? <em>Indenização em mais 7 dias.</em>",
+   "itens": [
+    [
+     "ok",
+     "No Brasil: até 14 dias contando tudo"
+    ],
+    [
+     "ok",
+     "A taxa que você pagou pra despachar volta também"
+    ]
+   ],
+   "fala": "Se a mala não aparecer, a companhia tem mais sete dias pra te indenizar. E a taxa que você pagou pra despachar, volta também."
+  },
+  {
+   "n": "DANO",
+   "icone": "🔓",
+   "titulo": "Mala chegou <em>quebrada ou aberta?</em>",
+   "itens": [
+    [
+     "ok",
+     "Você tem até 7 dias depois de receber pra reclamar"
+    ],
+    [
+     "in",
+     "Tira foto da mala antes de sair da esteira"
+    ]
+   ],
+   "fala": "E se a mala chegar quebrada ou aberta, você tem sete dias pra reclamar. Tira foto antes de sair da esteira."
+  }
+ ],
+ "fim": {
+  "titulo": "Salva antes da <em>próxima viagem</em>.",
+  "cta": "Manda pra quem sempre despacha mala 🧳",
+  "fonte": "Fonte: Resolução ANAC nº 400/2016 (arts. 32 e 33), que a Res. 813/2026 não alterou. Informação geral, não é orientação jurídica.",
+  "fala": "Salva esse vídeo antes da próxima viagem, e manda pra quem sempre despacha mala."
+ }
+}

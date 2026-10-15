@@ -1,4 +1,4 @@
-// uso: node uirender.js pagina.html saida.mp4 [fps] [dados.json → window.VID]  (pagina define window.quadro(t), TOTAL, SFX, MUSICA)
+// uso: node uirender.js pagina.html saida.mp4 [fps]  (pagina define window.quadro(t), TOTAL, SFX, MUSICA)
 const { chromium } = require('playwright'); const fs = require('fs'), path = require('path'), http = require('http'), os = require('os'); const { execFileSync, spawn } = require('child_process');
 (async () => {
   const [pag, saida, fpsA, vidf] = process.argv.slice(2); const FPS = +(fpsA || 60); const raiz = path.dirname(path.resolve(pag));

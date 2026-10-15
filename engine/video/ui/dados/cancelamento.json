@@ -1,0 +1,109 @@
+{
+ "tema": "CANCELAR PASSAGEM",
+ "foto": "hd-asa-2.jpg",
+ "capa": {
+  "tag": "🎟️ CANCELAR PASSAGEM",
+  "titulo": "Comprou e se arrependeu? <em>Você tem 24 horas.</em>",
+  "sub": "As regras de cancelamento e reembolso que quase ninguém conhece.",
+  "chips": [
+   [
+    "24h",
+    "desistir"
+   ],
+   [
+    "7 dias",
+    "reembolso"
+   ],
+   [
+    "72h",
+    "aviso"
+   ]
+  ]
+ },
+ "regras": [
+  {
+   "n": "24h",
+   "nsub": "pra desistir",
+   "icone": "↩️",
+   "titulo": "Desistiu? <em>Cancela sem pagar nada.</em>",
+   "itens": [
+    [
+     "ok",
+     "Até 24h depois da compra, com reembolso total"
+    ],
+    [
+     "no",
+     "Só vale se você comprou com 7 dias ou mais antes do voo"
+    ]
+   ]
+  },
+  {
+   "n": "7",
+   "nsub": "dias",
+   "icone": "💸",
+   "titulo": "O reembolso tem prazo: <em>7 dias</em>.",
+   "itens": [
+    [
+     "ok",
+     "Contados a partir do dia que você pede"
+    ],
+    [
+     "in",
+     "Depois das 24h, vale a multa que estava na regra da tarifa"
+    ]
+   ]
+  },
+  {
+   "n": "72h",
+   "nsub": "de aviso",
+   "icone": "📅",
+   "titulo": "A companhia mudou seu voo? <em>Tem que avisar antes.</em>",
+   "itens": [
+    [
+     "ok",
+     "Mudança programada: aviso com pelo menos 72h"
+    ],
+    [
+     "ok",
+     "Mudou mais de 30 min (nacional) ou 1h (internacional)? Você escolhe: outro voo ou reembolso total"
+    ]
+   ]
+  },
+  {
+   "n": "NOME",
+   "icone": "✍️",
+   "titulo": "Errou o nome? <em>A correção é de graça.</em>",
+   "itens": [
+    [
+     "ok",
+     "A companhia tem que corrigir sem cobrar"
+    ],
+    [
+     "no",
+     "Vale pra erro de digitação, não pra trocar a pessoa"
+    ]
+   ]
+  },
+  {
+   "n": "IDA",
+   "nsub": "perdida",
+   "icone": "⚠️",
+   "titulo": "Não vai usar a ida? <em>Avisa pra não perder a volta.</em>",
+   "itens": [
+    [
+     "no",
+     "Se você não embarcar na ida, a companhia pode cancelar a volta"
+    ],
+    [
+     "ok",
+     "Em voo nacional, avise até o horário da ida e a volta fica garantida"
+    ]
+   ]
+  }
+ ],
+ "fim": {
+  "titulo": "Salva pra usar <em>quando precisar</em>.",
+  "cta": "Manda pra quem vive remarcando viagem 😅",
+  "fonte": "Fonte: Resolução ANAC nº 400/2016 (arts. 8, 11, 12, 19 e 29). Informação geral, não é orientação jurídica."
+ }
+}

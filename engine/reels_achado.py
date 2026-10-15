@@ -89,6 +89,80 @@ def vaga(fila, hoje):
     return None
 
 
+DIAS_SEM = ["seg", "ter", "qua", "qui", "sex", "sáb", "dom"]
+
+
+def _dm(d):
+    return f"{d[8:10]}/{d[5:7]}"
+
+
+def _dsem(d):
+    return DIAS_SEM[datetime.fromisoformat(d[:10]).weekday()]
+
+
+def dados_ui(a, hoje):
+    """Entrada do vídeo no estilo novo (engine/video/ui/achado.html): notificação → cartão do voo → gráfico → datas → grupo."""
+    alertas = ig.ler(ig.DOCS / "alerts.json", {}).get("alertas", [])
+    hist = ig.ler(ig.DOCS / "historico.json", {}).get(f"FOR-{a['destino']}") or []
+    hist = [h for h in hist if h.get("mediana") and h.get("minimo")][-10:]
+    tip = a.get("preco_tipico")
+    par = a.get("par")
+    nome = a["destino_nome"]
+    if par:
+        datas = [["🛫", f"Ida · {_dsem(par['ida'])} {_dm(par['ida'])}", f"Fortaleza → {nome}"],
+                 ["🛬", f"Volta · {_dsem(par['volta'])} {_dm(par['volta'])}", f"{par['dias']} dias de viagem"],
+                 ["💸", f"Ida e volta {brl(par['total'])}", "pelo menor preço que o radar achou"]]
+    else:
+        ds = [d["dia"] for d in a.get("datas_ida") or []]
+        datas = [["🛫", f"Ida a partir de {_dm(a['ida'])}" if a.get("ida") else "Ida", f"Fortaleza → {nome}"]]
+        if len(ds) > 1:
+            datas.append(["📅", "Outras datas de ida", ", ".join(_dm(d) for d in ds[1:5])])
+        datas.append(["💸", f"{brl(a['preco'])} só a ida", a.get("cia_nome") or "o trecho"])
+    lim = (hoje - timedelta(hours=72)).isoformat()
+    outros, vistos = [], {a["destino"]}
+    for x in alertas:
+        if x.get("criado", "") < lim or x["destino"] in vistos:
+            continue
+        vistos.add(x["destino"])
+        outros.append(x)
+        if len(outros) >= 3:
+            break
+    def linha(x, i):
+        iv = f" · ida e volta {brl(x['par']['total'])}" if x.get("par") else " · só a ida"
+        return [("🚨 " if i == 0 else "🔥 ") + f"{x['destino_nome']} · {brl(x['preco'])}", (x.get("cia_nome") or "") + iv, x["criado"][11:16]]
+    chat = [linha(x, i) for i, x in enumerate([a] + outros)]
+    dias = sorted({x["criado"][:10] for x in [a] + outros})
+    quando = " e ".join(sorted({_dm(d) for d in dias})) + f"/{dias[-1][:4]}" if dias else hoje.strftime("%d/%m/%Y")
+    return {"code": a["destino"], "nome": nome, "preco": int(round(a["preco"])),
+            "normal": int(round(tip)) if tip and tip > a["preco"] * 1.15 else 0,
+            "info": " · ".join(v for v in [a.get("cia_nome"), "só a ida" if a.get("modo", "trecho") == "trecho" else "ida e volta", f"visto em {_dm(a['criado'])}"] if v),
+            "tag": a.get("classe_txt") or "", "med": [h["mediana"] for h in hist], "min": [h["minimo"] for h in hist],
+            "datas": datas, "chat": chat,
+            "ctasub": "abre dia 19/10 · link na bio" if hoje.date().isoformat() < "2026-10-19" else "link na bio 👆",
+            "nota": f"Preços vistos pelo nosso radar em {quando}. Passagem muda de preço a qualquer hora."}
+
+
+def limpar_achados(hoje, dias=5):
+    """Tira de 🎬 Vídeos prontos os vídeos de achado com mais de 5 dias (a oferta já passou) e apaga os arquivos."""
+    vp = ig.ler(ig.DOCS / "videos_prontos.json", [])
+    fila = ig.ler(ig.FILA, [])
+    pendentes = {x.get("video_pronto") for x in fila if x.get("quando", "") >= hoje.isoformat()}
+    corte = (hoje - timedelta(days=dias)).date().isoformat()
+    fica = []
+    for v in vp:
+        velho = v.get("grupo") == "Achado do dia" and (v.get("data") or v.get("criado", "")[:10] or "9999") < corte
+        if velho and v.get("arq") not in pendentes:
+            for k in ("arq", "capa"):
+                f = ig.DOCS / (v.get(k) or "-")
+                if v.get(k) and f.is_file():
+                    f.unlink()
+            print("apaguei vídeo velho:", v.get("id"))
+        else:
+            fica.append(v)
+    if len(fica) != len(vp):
+        ig.salvar(ig.DOCS / "videos_prontos.json", fica)
+
+
 AUTO = False
 
 
@@ -96,6 +170,7 @@ def main():
     global AUTO
     AUTO = bool({**ig.AUTO_PADRAO, **ig.ler(ig.AUTO, {})}.get("auto_reels_achado"))
     hoje = datetime.now(ig.FUSO)
+    limpar_achados(hoje)
     fila = ig.ler(ig.FILA, [])
     tag = "achado-" + hoje.date().isoformat()
     if any(x.get("origem") == tag for x in fila):
@@ -119,13 +194,15 @@ def main():
     dm = Path("/tmp/motion.json")
     dm.write_text(json.dumps(dados_motion(x, hoje), ensure_ascii=False))
     vid = Path(__file__).resolve().parent / "video"
-    try:  # estilo novo: motion graphics + trilha própria
-        subprocess.run(["node", str(vid / "motion.js"), str(dm), str(mp4)], check=True)
-        t_capa, dur = "8.2", 20
-    except Exception as e:  # noqa: BLE001
-        print("motion falhou, uso o modelo antigo:", e)
-        subprocess.run(["node", str(vid / "render.js"), str(rot), str(mp4)], check=True)
-        t_capa, dur = "7.2", 16
+    alerta = ig.escolher_oferta(ig.ler(ig.STATUS, {}))
+    if not alerta:
+        print("sem alerta válido pro vídeo no estilo novo")
+        return
+    du = Path("/tmp/ui.json")
+    du.write_text(json.dumps(dados_ui(alerta, hoje), ensure_ascii=False))
+    # estilo novo (UI motion na paleta da marca) — o modelo antigo foi aposentado
+    subprocess.run(["node", str(vid / "ui" / "uirender.js"), str(vid / "ui" / "achado.html"), str(mp4), "60", str(du)], check=True)
+    t_capa, dur = "5.6", 22
     capa = ig.DOCS / "ig" / f"{pid}-1.jpg"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", t_capa, "-i", str(mp4), "-frames:v", "1", "-q:v", "3", str(capa)], check=True)
     rt = f"\n🔁 Ida e volta a partir de {brl(x['preco'] + x['volta'])}" if x.get("volta") else ""

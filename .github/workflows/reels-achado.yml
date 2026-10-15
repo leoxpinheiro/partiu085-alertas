@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 20
       - run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-color-emoji
           cd engine/video && npm init -y >/dev/null && npm i -s playwright@1.47.2 && npx playwright install --with-deps chromium
       - run: pip install requests numpy scipy
       - env:

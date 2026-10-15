@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-15T22:13+00:00",
+ "atualizado": "2026-10-15T23:23+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -154,7 +154,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1419,
+    "preco": 1420,
     "ida": "2026-11-12",
     "volta": "2026-11-14",
     "paradas": 1,
@@ -245,9 +245,22 @@
    "pista": true
   },
   {
+   "iata": "SJP",
+   "rt": {
+    "preco": 2035,
+    "ida": "2027-01-08",
+    "volta": "2027-01-22",
+    "paradas": 2,
+    "visto": "2026-10-15T22:43:55Z"
+   },
+   "rastreada": false,
+   "nome": "SJP",
+   "pista": false
+  },
+  {
    "iata": "MAO",
    "rt": {
-    "preco": 2124,
+    "preco": 2126,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
@@ -260,7 +273,7 @@
   {
    "iata": "VIX",
    "rt": {
-    "preco": 2336,
+    "preco": 2338,
     "ida": "2026-12-20",
     "volta": "2026-12-27",
     "paradas": 3,
@@ -345,7 +358,7 @@
   {
    "iata": "SFO",
    "ow": {
-    "preco": 3820,
+    "preco": 3823,
     "ida": "2027-01-23",
     "volta": "",
     "paradas": 2,
@@ -431,19 +444,6 @@
    },
    "rastreada": false,
    "nome": "BAK",
-   "pista": false
-  },
-  {
-   "iata": "PNZ",
-   "rt": {
-    "preco": 7451,
-    "ida": "2026-10-15",
-    "volta": "2026-10-17",
-    "paradas": 1,
-    "visto": "2026-10-14T18:39:58Z"
-   },
-   "rastreada": false,
-   "nome": "PNZ",
    "pista": false
   }
  ]

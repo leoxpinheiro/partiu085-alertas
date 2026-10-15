@@ -211,14 +211,32 @@ async function carregar() {
 const ic = (n, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 
 /* ------------------------------------------------------------ navegação */
-const MENU = [
-  ["", [["dashboard", "grid", "Início"], ["lancamento", "star", "🚀 Lançamento 19/10"], ["enviar", "send", "Modo envio"], ["pedidos", "zap", "Pedidos ao Claude"]]],
+/* Duas áreas de trabalho: 📡 Radar (alertas, milhas, rotas) e 📸 Instagram (pauta, agenda, estúdio, vídeos).
+   O código do Instagram só carrega quando você entra nele (o Radar abre bem mais rápido). */
+const MENU_RADAR = [
+  ["", [["dashboard", "grid", "Início"], ["enviar", "send", "Modo envio"]]],
   ["Dinheiro", [["alertas", "bell", "Alertas"], ["destinos", "globe", "Preços por destino"], ["historico", "chart", "Histórico"]], "#22C55E"],
   ["Milhas", [["milhas", "coins", "Alertas"], ["promocoes", "zap", "Promoções"]], "#FF7A00"],
-  ["Instagram", [["pauta", "star", "Pauta e calendário"], ["instagram", "calendar", "Agenda"], ["desempenho", "chart", "Desempenho"], ["estudio", "play", "Estúdio: Reels e carrossel"], ["videos", "play", "🎬 Vídeos prontos"], ["ideias", "zap", "💡 Ideias virais"], ["respostas", "send", "Respostas prontas"]], "#A78BFA"],
-  ["Ferramentas", [["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"]], "#64748B", true],
+  ["Ferramentas", [["criativos", "image", "Criar arte"], ["converter", "swap", "Converter texto"], ["grupos", "users", "Grupos e links"], ["pedidos", "zap", "Pedidos ao Claude"]], "#64748B", true],
   ["Configuração", [["rotas", "plane", "Rotas vigiadas"], ["ajustes", "gear", "Ajustes e APIs"]], "#94A3B8", true],
 ];
+const MENU_INSTA = [
+  ["", [["pauta", "star", "Pauta e calendário"], ["instagram", "calendar", "Agenda"], ["lancamento", "star", "🚀 Lançamento 19/10"], ["pedidos", "zap", "Pedidos ao Claude"]]],
+  ["Criar", [["estudio", "play", "Estúdio: Reels e carrossel"], ["videos", "play", "🎬 Vídeos prontos"], ["ideias", "zap", "💡 Ideias virais"]], "#A78BFA"],
+  ["Engajamento", [["desempenho", "chart", "Desempenho"], ["respostas", "send", "Respostas prontas"]], "#EC4899"],
+];
+const PAGS_INSTA = new Set(["pauta", "instagram", "lancamento", "estudio", "videos", "ideias", "desempenho", "respostas", "carrossel"]);
+const PRECISA_INSTA = new Set([...PAGS_INSTA, "converter", "pedidos"]);
+const MENU = MENU_RADAR.concat(MENU_INSTA);
+let AREA = "radar";
+function areaDe(pag) { return PAGS_INSTA.has(pag) ? "insta" : pag === "pedidos" ? AREA : "radar"; }
+let _insta = null;
+function carregarInsta() {
+  if (_insta) return _insta;
+  _insta = (async () => { for (const f of (window.SCRIPTS_INSTA || [])) await new Promise((ok, falha) => { const el = document.createElement("script"); el.src = f; el.onload = ok; el.onerror = () => falha(new Error(f)); document.body.appendChild(el); }); window.INSTA_OK = true; })();
+  _insta.catch(() => { _insta = null; });
+  return _insta;
+}
 const PAGS = MENU.flatMap(g => g[1]).concat([["carrossel", "image", "Carrosséis"]]);
 function contadorMenu(k) {
   const h = hojeISO();
@@ -230,13 +248,22 @@ function contadorMenu(k) {
 }
 function navs() {
   const pag = (location.hash || "#dashboard").slice(1).split("?")[0] || "dashboard";
+  AREA = areaDe(pag); document.body.classList.toggle("area-insta", AREA === "insta"); store("p085_ult_" + AREA, pag);
+  const areasHTML = cls => `<div class="areas ${cls}"><a href="#${load("p085_ult_radar") || "dashboard"}" class="r ${AREA === "radar" ? "on" : ""}">📡 Radar</a><a href="#${load("p085_ult_insta") || "pauta"}" class="g ${AREA === "insta" ? "on" : ""}">📸 Instagram</a></div>`;
+  const tb = $("#tabs"); if (tb) tb.innerHTML = areasHTML("areas-m");
   $("#rail").innerHTML = `<div class="side-top"><a class="side-brand" href="#dashboard"><img class="mark-img" src="marca/icone.png" alt=""><span><b>Partiu 085</b><small>Radar de passagens</small></span></a>
       <button class="side-tema" data-act="tema" title="Tema claro/escuro" aria-label="Tema claro/escuro">${ic("moon")}</button></div>` +
-    MENU.map(([t, itens, cor, fechadoPadrao]) => { const ativo = itens.some(([k]) => k === pag || (k === "estudio" && pag === "carrossel")), est = load("p085_side_" + t), fechado = t && !ativo && (est === null || est === undefined || est === "" ? !!fechadoPadrao : est === "f");
+    areasHTML("") +
+    (AREA === "insta" ? MENU_INSTA : MENU_RADAR).map(([t, itens, cor, fechadoPadrao]) => { const ativo = itens.some(([k]) => k === pag || (k === "estudio" && pag === "carrossel")), est = load("p085_side_" + t), fechado = t && !ativo && (est === null || est === undefined || est === "" ? !!fechadoPadrao : est === "f");
       return `<div class="side-g ${t ? "box" : ""} ${fechado ? "fechado" : ""}" style="--c:${cor || "transparent"}">${t ? `<button class="side-t" data-act="sidegrp" data-g="${t}">${t}<span class="side-chev">${fechado ? "▸" : "▾"}</span></button>` : ""}${fechado ? "" : itens.map(([k, i, n]) => { const c = contadorMenu(k);
       return `<a href="#${k}" class="${pag === k || (k === "estudio" && pag === "carrossel") ? "on" : ""}">${ic(i)}<span>${n}</span>${c ? `<b class="cnt" title="ainda não enviados">${c}</b>` : ""}</a>`; }).join("")}</div>`; }).join("");
   const cAl = contadorMenu("alertas"), cMi = contadorMenu("milhas");
-  $("#bottom").innerHTML = `<a href="#dashboard" class="${pag === "dashboard" ? "on" : ""}" aria-label="Início">${ic("grid")}<small>Início</small></a>
+  if (AREA === "insta") $("#bottom").innerHTML = `<a href="#pauta" class="${pag === "pauta" ? "on" : ""}">${ic("star")}<small>Pauta</small></a>
+    <a href="#instagram" class="${pag === "instagram" ? "on" : ""}">${ic("calendar")}<small>Agenda</small></a>
+    <a href="#dashboard" class="fab" aria-label="Voltar pro Radar" title="Voltar pro Radar">📡</a>
+    <a href="#videos" class="${pag === "videos" || pag === "estudio" ? "on" : ""}">${ic("play")}<small>Vídeos</small></a>
+    <button data-act="menu" aria-label="Menu">${ic("more")}<small>Menu</small></button>`;
+  else $("#bottom").innerHTML = `<a href="#dashboard" class="${pag === "dashboard" ? "on" : ""}" aria-label="Início">${ic("grid")}<small>Início</small></a>
     <a href="#alertas" class="${pag === "alertas" ? "on" : ""}" aria-label="Alertas">${ic("bell")}<small>Dinheiro</small>${cAl ? `<b class="cnt">${cAl}</b>` : ""}</a>
     <button class="fab" data-act="rodar" aria-label="Rodar radar agora">${ic("play")}</button>
     <a href="#milhas" class="${pag === "milhas" ? "on" : ""}" aria-label="Milhas">${ic("coins")}<small>Milhas</small>${cMi ? `<b class="cnt">${cMi}</b>` : ""}</a>
@@ -246,6 +273,11 @@ function navs() {
 }
 function render() {
   const pag = navs();
+  if (PRECISA_INSTA.has(pag) && !window.INSTA_OK) {
+    $("#main").innerHTML = `<div class="carregando">${ic("play")}<span>Abrindo a área do Instagram…</span></div>`;
+    carregarInsta().then(() => { if (location.hash.slice(1).split("?")[0] === pag) render(); }).catch(() => { $("#main").innerHTML = `<div class="card vazio">Não consegui abrir agora. Toque em atualizar.</div>`; });
+    return;
+  }
   const fn = { dashboard: pDash, alertas: pAlertas, rotas: pRotas, historico: pHist, converter: typeof pConversor === "function" ? pConversor : pConv, ajustes: pAjustes, criativos: pCriativos, destinos: pDestinos, grupos: pGrupos, marketing: pMarketing, milhas: pMilhas, promocoes: pPromocoes, enviar: pEnviar, pauta: typeof pPauta === "function" ? pPauta : pDash, instagram: typeof pInstagram === "function" ? pInstagram : pDash, respostas: typeof pRespostas === "function" ? pRespostas : pDash, estudio: typeof pEstudio === "function" ? pEstudio : pDash, lancamento: typeof pLancamento === "function" ? pLancamento : pDash, videos: typeof pVideos === "function" ? pVideos : pDash, ideias: typeof pIdeias === "function" ? pIdeias : pDash, carrossel: typeof pCarrossel === "function" ? pCarrossel : pDash, desempenho: typeof pDesempenho === "function" ? pDesempenho : pDash, pedidos: typeof pPedidos === "function" ? pPedidos : pDash }[pag] || pDash;
   if (pag === "criativos") setTimeout(desenharCriativo, 30);
   $("#main").innerHTML = fn();
@@ -1132,6 +1164,7 @@ window.addEventListener("beforeunload", e => { if (S.rotasSujo || S.ajustesSujo)
   const mc = (location.hash || "").match(/^#conectar=([\w-]+)/);
   if (mc) { store("p085_token", mc[1]); history.replaceState(null, "", location.pathname + "#dashboard"); setTimeout(() => toast("✓ Aparelho conectado. Pode usar normalmente."), 800); }
   await carregar(); render(); checarRodando();
+  setTimeout(() => carregarInsta().then(() => { if (/^#?(dashboard)?$/.test(location.hash) && !document.querySelector("input:focus,textarea:focus")) render(); }).catch(() => { }), 2500);
   if (token()) fetch(API, { headers: { Authorization: "Bearer " + token() } }).then(r => { const h = r.headers.get("github-authentication-token-expiration"); if (h) { S.tokenVence = Math.floor((new Date(h.replace(" UTC", "Z").replace(" ", "T")) - Date.now()) / 864e5); if (S.tokenVence <= 10) render(); } }).catch(() => { });
   setInterval(async () => { if (!S.rotasSujo && !S.ajustesSujo && !document.querySelector("input:focus,textarea:focus")) { await carregar(); if (S.mi && !S.mi.carregando) S.mi = null; if (!/converter|ajustes|rotas|milhas|pauta|respostas|estudio/.test(location.hash)) render(); } }, 120000);
 })();

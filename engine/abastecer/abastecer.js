@@ -27,7 +27,7 @@ const iso = d => d.toISOString().slice(0, 16) + '-03:00';
     if (!f.startsWith(DOCS) || !fs.existsSync(f) || !fs.statSync(f).isFile()) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'Content-Type': tipos[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(r); }).listen(0);
   const b = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {}); const pg = await b.newPage({ viewport: { width: 1200, height: 900 } });
   pg.on('pageerror', e => console.log('erro na página:', e.message));
-  await pg.goto(`http://localhost:${srv.address().port}/`, { waitUntil: 'networkidle' }); await pg.waitForFunction(() => typeof postsConteudo === 'function' && typeof CONTEUDO !== 'undefined', null, { timeout: 60000 });
+  await pg.goto(`http://localhost:${srv.address().port}/#pauta`, { waitUntil: 'networkidle' }); await pg.waitForFunction(() => typeof postsConteudo === 'function' && typeof CONTEUDO !== 'undefined', null, { timeout: 60000 });
   await pg.evaluate(async () => { await document.fonts.ready; await Promise.all([...document.fonts].map(f => f.load().catch(() => null))); await document.fonts.ready; });
   console.log('fontes:', await pg.evaluate(() => [...document.fonts].filter(f => f.status === 'loaded').map(f => f.family).filter((v, i, a) => a.indexOf(v) === i).join(', ')));
   if (process.env.PREVIA) { fs.mkdirSync(path.join(DOCS, 'previa'), { recursive: true });

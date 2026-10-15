@@ -1135,3 +1135,16 @@ body.kb .bottom{display:none!important}
 .iv-t{font-size:15.5px;line-height:1.3}.iv-g{font-weight:800;font-size:14px;color:var(--text-primary);background:rgba(255,199,44,.14);border-left:3px solid #FFC72C;padding:6px 10px;border-radius:8px}
 .iv-r{margin:0 0 0 18px;font-size:13px;display:flex;flex-direction:column;gap:3px}.iv-cta{font-size:13px}.iv-ref{text-decoration:underline}
 .saude-l{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 4px;font-size:13.5px}
+
+/* áreas de trabalho: Radar | Instagram */
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:rgba(127,127,127,.14);border-radius:12px;padding:4px;margin:4px 2px 12px}
+.areas a,.rail .areas a{display:flex;align-items:center;justify-content:center;height:36px;padding:0 6px;border-radius:9px;font-weight:800;font-size:13px;gap:4px;text-decoration:none;color:var(--text-body);white-space:nowrap}
+.areas a.r.on,.rail .areas a.r.on{background:#0B2440;color:#fff}
+.areas a.g.on,.rail .areas a.g.on{background:#7C3AED;color:#fff}
+.areas-m{margin:0;flex:1;max-width:240px}
+.areas-m a{height:34px;font-size:12.5px}
+@media (min-width:768px){#tabs{display:none!important}}
+@media (max-width:767px){#tabs{display:flex!important;flex:1;justify-content:center;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0}#tabs .areas-m a{padding:0 6px}}
+@media (max-width:767px){.top .brand span{display:none}.top{gap:10px}}
+body.area-insta .run{display:none}
+#bottom a.fab{font-size:22px;text-decoration:none}

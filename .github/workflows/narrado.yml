@@ -1,0 +1,28 @@
+name: Reels narrado (prévia)
+on:
+  workflow_dispatch:
+    inputs:
+      roteiros:
+        description: "Roteiros em engine/video/roteiros (nomes sem .json, separados por vírgula)"
+        type: string
+        required: true
+permissions:
+  contents: write
+jobs:
+  narrado:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg >/dev/null && pip install -q edge-tts
+      - name: Montar
+        run: |
+          mkdir -p docs/narrado
+          for r in $(echo "${{ inputs.roteiros }}" | tr ',' ' '); do
+            python engine/video/narrado.py engine/video/roteiros/$r.json docs/narrado/$r.mp4
+          done
+      - name: Salvar no branch de prévia
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add -f docs/narrado && git checkout -q -b narrado-previa && git commit -q -m "prévia narrado" && git push -q -f origin narrado-previa

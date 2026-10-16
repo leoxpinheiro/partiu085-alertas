@@ -1,15 +1,17 @@
 {
- "atualizado": "2026-10-16T12:06+00:00",
+ "atualizado": "2026-10-16T13:16+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "BSB",
   "CWB",
   "FLN",
+  "JDO",
   "MAD",
   "MIL",
   "MVD",
   "REC",
+  "RIO",
   "SAO",
   "SCL",
   "SID",
@@ -45,6 +47,19 @@
    },
    "rastreada": true,
    "nome": "Belém",
+   "pista": true
+  },
+  {
+   "iata": "JDO",
+   "ow": {
+    "preco": 409,
+    "ida": "2026-10-31",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-16T13:15:52Z"
+   },
+   "rastreada": true,
+   "nome": "Juazeiro do Norte",
    "pista": true
   },
   {
@@ -233,9 +248,16 @@
     "paradas": 0,
     "visto": "2026-10-15T10:28:20Z"
    },
+   "ow": {
+    "preco": 974,
+    "ida": "2026-11-15",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-16T12:43:19Z"
+   },
    "rastreada": true,
    "nome": "Rio de Janeiro",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SJP",
@@ -266,7 +288,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2277,
+    "preco": 2276,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,

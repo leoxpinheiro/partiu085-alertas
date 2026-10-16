@@ -47,6 +47,19 @@ async function copiar(txt) {
     const a = document.createElement("textarea"); a.value = txt; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove();
   }
 }
+/* 🏆 material do dia: sempre tem o que mandar no grupo, mesmo sem promoção relâmpago */
+function cardDoDia() {
+  const t = S.top5; if (!t || (!t.texto && !t.texto_baratos)) return "";
+  const hora = (t.atualizado || "").slice(11, 16);
+  const lin = (x, rel) => `<li><b>${esc(x.nome)}</b> · ida e volta ${brl(x.rt)} <small>${x.ida.slice(8, 10)}/${x.ida.slice(5, 7)} a ${x.volta.slice(8, 10)}/${x.volta.slice(5, 7)}${rel && x.d != null ? ` · ${x.d >= 0 ? Math.round(x.d * 100) + "% abaixo" : Math.round(-x.d * 100) + "% acima"} do normal` : ""}</small></li>`;
+  return `<div class="card dodia" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><b>📋 Pra mandar hoje no grupo</b><small class="micro">atualizado ${esc(hora)}</small></div>
+    ${t.texto ? `<div style="margin-top:10px"><div class="micro">🏆 Abaixo do preço normal de cada destino</div><ul style="margin:6px 0 8px 18px">${t.itens.map(x => lin(x, true)).join("")}</ul>
+      <button class="bt sm pri" data-act="cpdia" data-k="texto">${ic("copy")}<span>Copiar Top ${t.itens.length}</span></button></div>` : `<div class="micro" style="margin-top:8px">Hoje nenhum destino está abaixo do preço normal dele. Quando aparecer, entra aqui.</div>`}
+    ${t.texto_baratos ? `<div style="margin-top:12px"><div class="micro">💸 Ida e volta mais baratas de hoje (nacionais)</div><ul style="margin:6px 0 8px 18px">${t.baratos.map(x => lin(x, true)).join("")}</ul>
+      <button class="bt sm" data-act="cpdia" data-k="texto_baratos">${ic("copy")}<span>Copiar lista</span></button></div>` : ""}
+  </div>`;
+}
 const nomeCia = c => c || "—";
 const paradasTxt = n => n === 0 ? "voo direto" : `${n} parada${n > 1 ? "s" : ""}`;
 
@@ -203,6 +216,7 @@ async function carregar() {
   if (!S.gruposSujo) S.grupos = gp || GRUPOS_PADRAO.map(g => ({ ...g }));
   S.ultima = S.status.ultima_rodada || a.atualizado;
   S.pri = (await getJSON("prioridades.json", { prioridades: {} })).prioridades || {};
+  S.top5 = await getJSON("top5.json", null);
   S.ref = await getJSON("referencias.json", { ref: {}, regioes: {} });
   reaplicarTextos();
 }
@@ -542,6 +556,7 @@ function pAlertas() {
   const imp = L.filter(a => a.classe === "imperdivel").length, barato = L.slice().sort((x, y) => x.preco - y.preco)[0];
   return head("Alertas em dinheiro", "Tudo que o radar achou saindo de Fortaleza. Trabalhe pela aba <b>Pra enviar</b>: o botão Enviar abre a imagem e o texto prontos.",
     `<a class="bt pri" href="#enviar">${ic("send")}Modo envio</a>`) +
+    (aba === "enviar" ? cardDoDia() : "") +
     `<div class="a2-abas">${abas.map(([k, t, d]) => `<button class="a2-aba ${aba === k ? "on" : ""} ${k}" data-act="pill" data-g="aba" data-v="${k}"><b>${n(k)}</b><span>${t}</span><small>${d}</small></button>`).join("")}</div>
     <div class="a2-bar">
       <input class="busca" type="search" placeholder="Buscar cidade, código ou companhia…" data-f="q" value="${esc(F.q)}">
@@ -672,7 +687,7 @@ function pRotas() {
   const linhas = idx.map(i => {
     const r = S.rotas[i];
     const s = st[r.iata] || {};
-    const pa = (S.pri || {})[r.iata] || {}, auto = pa.auto || "normal", NOME = { alta: "Alta", normal: "Normal", baixa: "Baixa" };
+    const pa = (S.pri || {})[r.iata] || {}, auto = pa.auto || "normal", NOME = { turbo: "Turbo", alta: "Alta", normal: "Normal", baixa: "Baixa" };
     return `<tr class="${r.ativo === false ? "off" : ""}">
       <td><b class="iata">${esc(r.iata)}</b></td>
       <td class="rt-n"><b>${esc(r.nome)}</b><small>${r.tipo === "internacional" ? "Internacional" : "Nacional"}</small></td>
@@ -1029,6 +1044,7 @@ document.addEventListener("click", async e => {
     if (act === "menu") { document.body.classList.toggle("menu-aberto"); return; }
     if (act === "tema") { const n = document.documentElement.dataset.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = n; store("p085_tema", n); }
     else if (act === "marcar") { marcar(b.dataset.id, !enviado(A(b.dataset.id))); }
+    else if (act === "cpdia") { await copiar((S.top5 || {})[b.dataset.k] || ""); const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; setTimeout(() => { b.innerHTML = o; }, 1600); }
     else if (act === "copiar") { await copiar(A(b.dataset.id).texto); if (!enviado(A(b.dataset.id))) { marcar(b.dataset.id, true); toast(`Copiado: ${A(b.dataset.id).destino_nome} · ${brl(A(b.dataset.id).preco)} — marcado como enviado.`, 3500); return; } const o = b.innerHTML; b.innerHTML = ic("check") + "Copiado"; b.classList.add("done"); setTimeout(() => { b.innerHTML = o; b.classList.remove("done"); }, 1600); }
     else if (act === "vertexto") { const t = $("#tx-" + CSS.escape(b.dataset.id)); t.hidden = !t.hidden; b.textContent = t.hidden ? "Ver texto" : "Esconder"; }
     else if (act === "copiarvisiveis") { const L = filtrar(); await copiar(L.map(a => a.texto).join("\n\n\n")); toast(`✓ ${L.length} alertas copiados`); }

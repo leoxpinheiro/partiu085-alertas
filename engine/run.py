@@ -236,6 +236,7 @@ TETO_INICIAL = {"Nordeste": 1100, "Sudeste e Sul": 1500, "Centro-Oeste e Norte":
 TETO_PISO = {"Nordeste": 600, "Sudeste e Sul": 800, "Centro-Oeste e Norte": 900, "América do Sul": 1800,
              "Caribe e América do Norte": 2500, "Europa e África": 2800}
 DIAS_PRA_APRENDER = 30
+DIAS_ROTA_PROPRIA = 7   # com 7+ dias de histórico, a rota usa o próprio preço normal como teto
 _HIST_TETO: dict = {}
 
 
@@ -254,6 +255,10 @@ def teto_ida_volta(iata: str, tipo: str, aj: dict, hist: dict | None = None) -> 
     rts = sorted(ida[d] + volta[d] for d in ida if d in volta)
     if not rts:
         return ini
+    if len(rts) >= DIAS_ROTA_PROPRIA:
+        # cada rota com o próprio limite: o preço normal dela (mediana dos menores ida+volta de cada dia).
+        # Antes o teto da região era um máximo fixo e travava rotas mais caras (Salvador, Paris, Miami…) pra sempre.
+        return round(max(piso, statistics.median(rts) * 1.05))
     aprendido = statistics.median(rts) * 1.05  # o "melhor preço normal" da rota, com 5% de folga
     peso = min(1.0, len(rts) / DIAS_PRA_APRENDER)
     return round(max(piso, min(ini, ini * (1 - peso) + aprendido * peso)))
@@ -431,30 +436,104 @@ def imagem_alerta(a: dict) -> bytes | None:
         return None
 
 
+def normal_rt(iata: str, hist: dict | None = None) -> float | None:
+    """Preço normal de ida e volta da rota: mediana dos menores ida+volta de cada dia já varrido."""
+    h = hist if hist is not None else _HIST_TETO
+    hoje = agora().date().isoformat()
+    ida = {x["dia"]: x["minimo"] for x in h.get(f"{C.ORIGEM}-{iata}", []) if x["dia"] < hoje}
+    volta = {x["dia"]: x["minimo"] for x in h.get(f"{iata}-{C.ORIGEM}", []) if x["dia"] < hoje}
+    rts = [ida[d] + volta[d] for d in ida if d in volta]
+    return statistics.median(rts) if len(rts) >= DIAS_ROTA_PROPRIA else None
+
+
+def melhor_par(cal: dict) -> dict | None:
+    """Ida + volta mais barata (volta de 2 a 30 dias depois da ida), a partir do calendário da rota."""
+    hoje = agora().date().isoformat()
+    ida = [d for d in cal.get("ida", []) if d["dia"] > hoje]
+    volta = sorted((d for d in cal.get("volta", []) if d["dia"] > hoje), key=lambda d: d["dia"])
+    best = None
+    for d in ida:
+        d0 = date.fromisoformat(d["dia"])
+        vs = [v for v in volta if 2 <= (date.fromisoformat(v["dia"]) - d0).days <= 30]
+        if not vs:
+            continue
+        v = min(vs, key=lambda x: x["preco"])
+        if not best or d["preco"] + v["preco"] < best["rt"]:
+            best = {"ida": d["dia"], "volta": v["dia"], "preco": d["preco"], "preco_volta": v["preco"], "rt": d["preco"] + v["preco"],
+                    "cia": d.get("cia", "")}
+    return best
+
+
 def top5_do_dia(aj: dict) -> list[dict]:
-    """Os 5 destinos mais abaixo do preço normal hoje, só os que estão baratos também na ida e volta."""
+    """Os destinos mais abaixo do preço normal DELES hoje (ida e volta), pelo histórico de cada rota."""
     st = ler_json(DOCS / "status.json", {}).get("rotas") or {}
     lim = (agora() - timedelta(hours=30)).isoformat()
+    nomes = {r["iata"]: r["nome"] for r in carregar_rotas()}
     L = []
     for k, v in st.items():
-        if not (v.get("menor") and v.get("mediana") and v.get("menor_volta") and v.get("quando", "") >= lim):
+        if v.get("quando", "") < lim:
             continue
-        rt = v["menor"] + v["menor_volta"]
-        tip = v["mediana"] + (v.get("mediana_volta") or v["mediana"])
-        d = 1 - rt / tip
-        if d < 0.2 or rt > teto_ida_volta(k, v.get("tipo", "nacional"), aj):
+        v = {**v, "nome": v.get("nome") or nomes.get(k, k)}
+        cal = ler_json(CAL_DIR / f"{k}.json", {})
+        par = melhor_par(cal) if cal else None
+        normal = normal_rt(k)
+        if not par or not normal:
             continue
-        L.append({"k": k, "nome": v.get("nome") or k, "menor": v["menor"], "rt": rt, "d": d,
-                  "mes": (v.get("dia_menor") or v.get("melhor_mes") or "")[5:7], "intl": v.get("tipo") == "internacional"})
+        d = 1 - par["rt"] / normal
+        if d < float(aj.get("top5_desconto", 0.05)):
+            continue
+        L.append({"k": k, "nome": v.get("nome") or k, "menor": par["preco"], "rt": par["rt"], "d": d, "normal": round(normal),
+                  "ida": par["ida"], "volta": par["volta"], "cia": par["cia"],
+                  "mes": par["ida"][5:7], "intl": v.get("tipo") == "internacional"})
     return sorted(L, key=lambda x: -x["d"])[:5]
+
+
+def baratos_do_dia(n: int = 6) -> list[dict]:
+    """Menores ida e volta nacionais de hoje (preço absoluto), com quanto estão do normal de cada rota."""
+    st = ler_json(DOCS / "status.json", {}).get("rotas") or {}
+    lim = (agora() - timedelta(hours=30)).isoformat()
+    nomes = {r["iata"]: r["nome"] for r in carregar_rotas()}
+    L = []
+    for k, v in st.items():
+        if v.get("quando", "") < lim or v.get("tipo") != "nacional":
+            continue
+        cal = ler_json(CAL_DIR / f"{k}.json", {})
+        par = melhor_par(cal) if cal else None
+        if not par:
+            continue
+        normal = normal_rt(k)
+        L.append({"k": k, "nome": v.get("nome") or nomes.get(k, k), "rt": par["rt"], "menor": par["preco"], "ida": par["ida"],
+                  "volta": par["volta"], "normal": round(normal) if normal else None, "d": (1 - par["rt"] / normal) if normal else None})
+    return sorted(L, key=lambda x: x["rt"])[:n]
+
+
+def texto_baratos(L: list[dict], aj: dict) -> str:
+    hoje = agora().date().isoformat()
+    T = ["💸 *IDA E VOLTA MAIS BARATAS DE HOJE*", "_Saindo de Fortaleza, voos nacionais_", f"_{hoje[8:10]}/{hoje[5:7]}_", ""]
+    T += [f"✈️ *{x['nome']}* · *{brl(x['rt'])}* ({x['ida'][8:10]}/{x['ida'][5:7]} a {x['volta'][8:10]}/{x['volta'][5:7]})" for x in L]
+    T += ["", aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._").strip()]
+    modelo = aj.get("rodape", "✈️ Receba alertas no WhatsApp: {link}")
+    if modelo:
+        T += ["", modelo.replace("{link}", aj.get("link_whatsapp") or "https://bit.ly/radar085").strip()]
+    return "\n".join(T)
+
+
+def salvar_top5(aj: dict) -> None:
+    """Listas do dia pro painel (aba Pra enviar), sempre atualizadas, mesmo quando não tem promoção relâmpago."""
+    L = top5_do_dia(aj)
+    B = baratos_do_dia()
+    salvar_json(DOCS / "top5.json", {"atualizado": agora().isoformat(timespec="minutes"), "itens": L,
+                                     "texto": texto_top5(L, aj) if L else "",
+                                     "baratos": B, "texto_baratos": texto_baratos(B, aj) if B else ""})
 
 
 def texto_top5(L: list[dict], aj: dict) -> str:
     n = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"]
     meses = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
     hoje = agora().date().isoformat()
-    T = ["🏆 *TOP 5 DO DIA*", "_Os destinos mais abaixo do preço normal, saindo de Fortaleza_", f"_{hoje[8:10]}/{hoje[5:7]}_", ""]
-    T += [f"{n[i]} *{x['nome']}* · *{brl(x['menor'])}* o trecho · ida e volta {brl(x['rt'])}" + (f" ({meses[int(x['mes']) - 1]})" if x["mes"] else "")
+    T = [f"🏆 *TOP {len(L)} DO DIA*" if len(L) != 5 else "🏆 *TOP 5 DO DIA*", "_Destinos abaixo do preço normal deles, saindo de Fortaleza_", f"_{hoje[8:10]}/{hoje[5:7]}_", ""]
+    T += [f"{n[i]} *{x['nome']}* · ida e volta *{brl(x['rt'])}* ({x['ida'][8:10]}/{x['ida'][5:7]} a {x['volta'][8:10]}/{x['volta'][5:7]})"
+          + (f" · {x['d']:.0%} abaixo do normal" if x.get("d", 0) >= 0.1 else "")
           for i, x in enumerate(L)]
     T += ["", "👉 _Quer as datas de algum? Responde aqui o número._"]
     aviso = aj.get("aviso_preco", "⚠️ _Preço pode mudar a qualquer momento._")
@@ -538,12 +617,14 @@ def reconferir(salvos: list[dict], rotas: list[dict], aj: dict, maximo: int | No
 HUBS = {"SAO", "RIO", "BSB", "BHZ", "CNF", "REC", "SSA", "NAT", "JPA", "MCZ", "AJU", "SLZ", "THE", "BEL", "MAO",
         "POA", "CWB", "FLN", "VIX", "GYN", "LIS", "MIA", "ORL", "BUE"}
 NICHO = {"MDE", "PUJ", "SDQ", "CTG", "PTY", "SID", "UDI", "PMW", "ADZ", "AUA", "CUR", "HAV", "LPB", "VVI", "CUZ", "UIO", "ASU"}
-PESO = {"alta": 3.0, "normal": 1.5, "baixa": 0.6}
+PESO = {"turbo": 5.0, "alta": 3.0, "normal": 1.5, "baixa": 0.6}
 
 
 def prioridade_auto(r: dict, st: dict, alertas30: int) -> tuple[str, str]:
     """Devolve (prioridade, motivo) calculada pelos dados."""
     datas = (st or {}).get("ofertas")
+    if alertas30 >= 3:
+        return "turbo", f"{alertas30} alertas em 30 dias: promoção relâmpago, olha mais vezes"
     if alertas30 >= 2:
         return "alta", f"{alertas30} alertas em 30 dias"
     if datas is not None and datas < 35:
@@ -714,16 +795,28 @@ def rodada() -> None:
         log(f"\nVarredura turbo: {len(lote)} rotas salvas em {BASE_SAIDA} · {int(time.time()-inicio)}s")
         return
 
+    # "a promoção voltou": se o último alerta da rota já subiu e o preço caiu de novo pra perto dele, avisa outra vez
+    ultimo = {}
+    for a in salvos:
+        if a.get("rota") and a["criado"] > ultimo.get(a["rota"], {}).get("criado", ""):
+            ultimo[a["rota"]] = a
+    def voltou(c):
+        u = ultimo.get(c["rota"])
+        if not u or (u.get("conferido") or {}).get("status") != "subiu":
+            return False
+        return c["m_ida"]["preco"] <= u["preco"] * float(aj.get("volta_promo_tol", 1.10))
+    for c in candidatos:
+        c["voltou"] = voltou(c)
     limite = (agora() - timedelta(days=int(aj["dias_sem_repetir"]))).isoformat()
     recentes = [e for e in enviados if e["quando"] >= limite]
     candidatos = [c for c in candidatos
-                  if not any(e["rota"] == c["rota"] and c["m_ida"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
+                  if c["voltou"] or not any(e["rota"] == c["rota"] and c["m_ida"]["preco"] >= e["preco"] * 0.92 for e in recentes)]
     # descanso da rota: depois de um alerta, a mesma rota só volta se o preço cair bem mais
     descanso = (agora() - timedelta(days=float(aj.get("descanso_rota_dias", 4)))).isoformat()
     queda = 1 - float(aj.get("queda_para_repetir", 0.15))
     def em_descanso(c):
-        if c["r"].get("vip"):
-            return False  # pedido VIP: só respeita o "não repetir" curto
+        if c["r"].get("vip") or c.get("voltou"):
+            return False  # pedido VIP / promoção que voltou: não fica de castigo
         ant = [e["preco"] for e in enviados if e["rota"] == c["rota"] and e["quando"] >= descanso]
         return bool(ant) and c["m_ida"]["preco"] > min(ant) * queda
     bloqueados = [c["rota"] for c in candidatos if em_descanso(c)]
@@ -754,7 +847,7 @@ def rodada() -> None:
             "classe": k, "classe_txt": ktxt,
             "cia_nome": mi["cia"], "escalas": mi["escalas"],
             "ida": mi["dia"], "volta": mv["dia"],
-            "vip": bool(r.get("vip")), "vip_nome": r.get("vip_nome") or "",
+            "vip": bool(r.get("vip")), "vip_nome": r.get("vip_nome") or "", "voltou": bool(c.get("voltou")),
             "datas_ida": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_ida"]],
             "datas_volta": [{"dia": d["dia"], "preco": round(d["preco"])} for d in c["d_volta"]],
             "ida_meses": por_mes(c["d_ida"]), "volta_meses": por_mes(c["d_volta"]),
@@ -803,6 +896,10 @@ def rodada() -> None:
     status["modo"] = "trecho"
     status["tetos_iv"] = {r["iata"]: teto_ida_volta(r["iata"], r["tipo"], aj, hist) for r in rotas}
     salvar_json(STATUS_FILE, status)
+    try:
+        salvar_top5(aj)
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! top5 painel: {e}")
     try:
         postar_top5(aj)
     except Exception as e:  # noqa: BLE001

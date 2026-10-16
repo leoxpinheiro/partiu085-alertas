@@ -40,6 +40,13 @@ function agendaAjustesHTML() {
 
 /* ---------- Top 5 do dia: os destinos mais baratos em relação à média, a partir do nosso banco */
 function top5() {
+  // lista calculada pelo robô (docs/top5.json): compara com o preço normal de CADA rota (histórico dela).
+  // Se hoje tem menos de 3 abaixo do normal, mostra as ida e volta mais baratas do dia (nacionais).
+  const t = S.top5;
+  if (t && t.atualizado && Date.now() - new Date(t.atualizado).getTime() < 30 * 36e5) {
+    const L = (t.itens || []).length >= 3 ? t.itens : (t.baratos || []).slice(0, 5).map(x => ({ ...x, barato: 1 }));
+    return L.slice(0, 5).map(x => ({ ...x, mes: (x.ida || "").slice(5, 7) }));
+  }
   const R = (S.status && S.status.rotas) || {}, lim = Date.now() - 30 * 36e5;
   return Object.entries(R).filter(([k, v]) => v.menor && v.mediana && v.menor_volta && v.quando && new Date(v.quando).getTime() > lim)
     .map(([k, v]) => { const rt = v.menor + v.menor_volta, tip = v.mediana + (v.mediana_volta || v.mediana);
@@ -49,8 +56,10 @@ function top5() {
 }
 function textoTop5(L) {
   const n = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"], d = hojeISO();
-  const t = ["🏆 *TOP 5 DO DIA*", "_Os destinos mais abaixo do preço normal, saindo de Fortaleza_", `_${d.slice(8, 10)}/${d.slice(5, 7)}_`, "",
-    ...L.map((x, i) => `${n[i]} *${x.nome}* · *${brl(x.menor)}* o trecho · ida e volta ${brl(x.rt)}${x.mes ? ` (${MESES[+x.mes - 1].slice(0, 3).toLowerCase()})` : ""}`),
+  const dm = s => s ? `${s.slice(8, 10)}/${s.slice(5, 7)}` : "", bar = L[0] && L[0].barato;
+  const t = [bar ? "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*" : `🏆 *TOP ${L.length} DO DIA*`, bar ? "_Saindo de Fortaleza, voos nacionais_" : "_Destinos abaixo do preço normal deles, saindo de Fortaleza_", `_${d.slice(8, 10)}/${d.slice(5, 7)}_`, "",
+    ...L.map((x, i) => x.ida ? `${n[i]} *${x.nome}* · ida e volta *${brl(x.rt)}* (${dm(x.ida)} a ${dm(x.volta)})${!bar && x.d >= .1 ? ` · ${Math.round(x.d * 100)}% abaixo do normal` : ""}`
+      : `${n[i]} *${x.nome}* · *${brl(x.menor)}* o trecho · ida e volta ${brl(x.rt)}${x.mes ? ` (${MESES[+x.mes - 1].slice(0, 3).toLowerCase()})` : ""}`),
     "", "👉 _Quer as datas de algum? Responde aqui o número._", "", (S.ajustes || {}).aviso_preco ?? AVISO_PADRAO].join("\n");
   return textoFinal(t, "dinheiro");
 }
@@ -65,8 +74,9 @@ async function desenharTop5(cv, L) {
   c.fillStyle = "#fff"; c.font = `46px ${A}`; c.fillText("PARTIU 085", 172, 88); c.font = `700 22px ${J}`; c.fillStyle = "rgba(255,255,255,.85)"; c.fillText("@partiu.085", 174, 124);
   const d = hojeISO(), dt = `${d.slice(8, 10)}/${d.slice(5, 7)}`; c.font = `800 26px ${J}`; const ew = c.measureText(dt).width + 48;
   rr(c, W - 60 - ew, 72, ew, 56, 28); c.fillStyle = AM; c.fill(); c.fillStyle = NAVY; c.textAlign = "center"; c.fillText(dt, W - 60 - ew / 2, 101); c.textAlign = "left";
-  c.textBaseline = "alphabetic"; c.fillStyle = AM; c.font = `150px ${A}`; c.fillText("TOP 5 DO DIA", 60, 330);
-  c.fillStyle = "#fff"; c.font = `700 32px ${J}`; c.fillText("os mais abaixo do preço normal, saindo de Fortaleza", 64, 385);
+  c.textBaseline = "alphabetic"; const bar = L[0] && L[0].barato;
+  c.fillStyle = AM; c.font = `150px ${A}`; c.fillText(bar ? "MAIS BARATOS" : `TOP ${L.length} DO DIA`, 60, 330);
+  c.fillStyle = "#fff"; c.font = `700 32px ${J}`; c.fillText(bar ? "ida e volta mais baratas de hoje saindo de Fortaleza" : "abaixo do preço normal de cada destino, saindo de Fortaleza", 64, 385);
   const y0 = 440, rh = 112;
   L.forEach((x, i) => { const y = y0 + i * rh;
     rr(c, 60, y, W - 120, rh - 16, 24); c.fillStyle = i === 0 ? "rgba(255,200,0,.16)" : "rgba(255,255,255,.07)"; c.fill();
@@ -74,15 +84,15 @@ async function desenharTop5(cv, L) {
     c.fillStyle = NAVY; c.font = `44px ${A}`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(i + 1), 116, y + (rh - 16) / 2 + 2); c.textAlign = "left";
     c.fillStyle = "#fff"; c.font = `${caberR(c, x.nome.toUpperCase(), 52, 32, 470, t => `${t}px ${A}`)}px ${A}`; c.fillText(x.nome.toUpperCase(), 170, y + 36);
     const rf = (typeof refDe === "function" && refDe(x.k) || {}).curta; c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.65)";
-    c.fillText([x.mes ? "melhor em " + MESES[+x.mes - 1].toLowerCase() : "", rf || (x.intl ? "internacional" : "")].filter(Boolean).join(" · "), 172, y + 70);
-    c.textAlign = "right"; c.fillStyle = AM; c.font = `58px ${A}`; c.fillText(brl(x.menor), W - 96, y + 42);
-    c.font = `700 20px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText(x.rt ? "ida e volta " + brl(x.rt) : "o trecho", W - 96, y + 76); c.textAlign = "left"; c.textBaseline = "alphabetic"; });
+    c.fillText(x.ida ? `${x.ida.slice(8, 10)}/${x.ida.slice(5, 7)} a ${x.volta.slice(8, 10)}/${x.volta.slice(5, 7)}${!bar && x.d >= .1 ? ` · ${Math.round(x.d * 100)}% abaixo do normal` : ""}` : [x.mes ? "melhor em " + MESES[+x.mes - 1].toLowerCase() : "", rf || (x.intl ? "internacional" : "")].filter(Boolean).join(" · "), 172, y + 70);
+    c.textAlign = "right"; c.fillStyle = AM; c.font = `58px ${A}`; c.fillText(brl(x.ida ? x.rt : x.menor), W - 96, y + 42);
+    c.font = `700 20px ${J}`; c.fillStyle = "rgba(255,255,255,.75)"; c.fillText(x.ida ? "ida e volta" : x.rt ? "ida e volta " + brl(x.rt) : "o trecho", W - 96, y + 76); c.textAlign = "left"; c.textBaseline = "alphabetic"; });
   c.font = `600 22px ${J}`; c.fillStyle = "rgba(255,255,255,.55)"; c.textAlign = "center"; c.fillText("Preços de hoje no radar do Partiu 085 · podem mudar a qualquer momento", W / 2, H - 40); c.textAlign = "left";
 }
 function top5HTML(aberto) {
   const L = top5(), id = "top5-" + hojeISO(), env = S.marcados && S.marcados[id];
-  if (L.length < 3) return `<div class="card ev-top5 sub">Top 5 do dia: ainda poucos destinos com preço bom hoje (${L.length}). Aparece aqui sozinho depois das próximas rodadas.</div>`;
-  return `<details class="card ev-top5" ${aberto && !env ? "open" : ""}><summary><span>🏆 <b>Post do dia: Top 5 saindo de Fortaleza</b><small>${env ? "✓ já enviado hoje" : "o robô já posta no Telegram sozinho (dia útil às 17h, fim de semana às 10h)"}</small></span><span class="mapa-seta">▾</span></summary>
+  if (L.length < 3) return `<div class="card ev-top5 sub">Lista do dia: ainda poucos destinos com preço hoje (${L.length}). Aparece aqui sozinha depois das próximas rodadas.</div>`;
+  return `<details class="card ev-top5" ${aberto && !env ? "open" : ""}><summary><span>🏆 <b>Post do dia: ${L[0] && L[0].barato ? "ida e volta mais baratas de hoje" : "Top " + L.length + " abaixo do preço normal"}</b><small>${env ? "✓ já enviado hoje" : "o robô já posta no Telegram sozinho (dia útil às 17h, fim de semana às 10h)"}</small></span><span class="mapa-seta">▾</span></summary>
     <div class="ev-grid"><div><textarea class="ev-texto" id="t5-texto" spellcheck="false">${esc(textoTop5(L))}</textarea></div>
       <div class="ev-img"><canvas id="t5-cv"></canvas></div></div>
     <div class="ev-acts"><button class="bt pri" data-act="t5img"><span class="ej-n">1</span>Copiar imagem</button><button class="bt" data-act="t5txt"><span class="ej-n">2</span>Copiar texto</button>

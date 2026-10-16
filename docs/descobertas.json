@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-16T15:37+00:00",
+ "atualizado": "2026-10-16T16:16+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -7,6 +7,7 @@
   "CWB",
   "FLN",
   "JDO",
+  "LIS",
   "MAD",
   "MAO",
   "MIL",
@@ -51,7 +52,7 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 407,
+    "preco": 408,
     "ida": "2026-10-31",
     "volta": "",
     "paradas": 0,
@@ -248,7 +249,7 @@
     "visto": "2026-10-15T10:28:20Z"
    },
    "ow": {
-    "preco": 970,
+    "preco": 971,
     "ida": "2026-11-15",
     "volta": "",
     "paradas": 1,
@@ -281,7 +282,7 @@
     "visto": "2026-10-15T05:12:37Z"
    },
    "ow": {
-    "preco": 1119,
+    "preco": 1120,
     "ida": "2027-01-19",
     "volta": "",
     "paradas": 1,
@@ -294,7 +295,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2267,
+    "preco": 2269,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -424,9 +425,16 @@
     "paradas": 1,
     "visto": "2026-10-13T19:22:47Z"
    },
+   "ow": {
+    "preco": 1653,
+    "ida": "2026-10-16",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-12T16:51:47Z"
+   },
    "rastreada": true,
    "nome": "Lisboa",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "WAW",
@@ -444,7 +452,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 6891,
+    "preco": 6897,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

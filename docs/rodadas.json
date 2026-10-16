@@ -3848,8 +3848,9 @@
   "parou_por_tempo": false
  },
  {
-  "quando": "2026-10-16T07:57-03:00",
+  "quando": "2026-10-16T08:33-03:00",
   "rotas": [
+   "SID",
    "AJU",
    "SSA",
    "JPA",
@@ -3858,23 +3859,22 @@
    "JDO",
    "PMW",
    "PAR",
-   "LIM",
    "BHZ",
-   "MIL",
-   "CUN",
-   "FEN",
-   "PUJ",
    "VCP",
    "NVT",
-   "BSB"
+   "BSB",
+   "POA",
+   "OPO",
+   "MIL",
+   "BEL"
   ],
-  "rotas_com_dados": 15,
+  "rotas_com_dados": 17,
   "candidatos": 0,
   "alertas": 0,
   "manual": false,
-  "segundos": 1279,
-  "consultas": 2675,
-  "erros": 320,
+  "segundos": 2052,
+  "consultas": 3094,
+  "erros": 549,
   "parou_por_tempo": false
  }
 ]

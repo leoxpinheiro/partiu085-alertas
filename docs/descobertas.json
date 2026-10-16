@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-16T14:34+00:00",
+ "atualizado": "2026-10-16T15:37+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -8,10 +8,10 @@
   "FLN",
   "JDO",
   "MAD",
+  "MAO",
   "MIL",
   "MVD",
   "REC",
-  "RIO",
   "SAO",
   "SID",
   "SLZ",
@@ -51,7 +51,7 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 409,
+    "preco": 407,
     "ida": "2026-10-31",
     "volta": "",
     "paradas": 0,
@@ -248,7 +248,7 @@
     "visto": "2026-10-15T10:28:20Z"
    },
    "ow": {
-    "preco": 973,
+    "preco": 970,
     "ida": "2026-11-15",
     "volta": "",
     "paradas": 1,
@@ -256,7 +256,7 @@
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "SJP",
@@ -281,7 +281,7 @@
     "visto": "2026-10-15T05:12:37Z"
    },
    "ow": {
-    "preco": 1123,
+    "preco": 1119,
     "ida": "2027-01-19",
     "volta": "",
     "paradas": 1,
@@ -289,12 +289,12 @@
    },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "PET",
    "rt": {
-    "preco": 2274,
+    "preco": 2267,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -444,7 +444,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 6914,
+    "preco": 6891,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

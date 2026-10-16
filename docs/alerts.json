@@ -1,6 +1,121 @@
 {
- "atualizado": "2026-10-16T18:11-03:00",
+ "atualizado": "2026-10-16T19:08-03:00",
  "alertas": [
+  {
+   "id": "FOR-BCN-2026-12-07-1792188529",
+   "criado": "2026-10-16T19:08-03:00",
+   "rota": "FOR-BCN",
+   "destino": "BCN",
+   "destino_nome": "Barcelona",
+   "tipo": "internacional",
+   "modo": "trecho",
+   "preco": 1708,
+   "preco_volta": 3226,
+   "preco_tipico": 3203,
+   "desconto": 0.467,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Tap Air Portugal",
+   "escalas": 1,
+   "ida": "2026-12-07",
+   "volta": "2026-12-10",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": false,
+   "datas_ida": [
+    {
+     "dia": "2026-12-07",
+     "preco": 1708
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-12-10",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-09",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-13",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-14",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-15",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-16",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-17",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-18",
+     "preco": 3226
+    },
+    {
+     "dia": "2027-01-19",
+     "preco": 3226
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "07"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "10"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "09",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19"
+     ]
+    }
+   ],
+   "meses": [
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMDdqBRIDRk9ScgUSA0JDTkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0712BCN10121?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2026-12-07",
+    "volta": "2026-12-10",
+    "total": 4934,
+    "dias": 3
+   },
+   "base": {
+    "dias": 8,
+    "menor_visto": 1689
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Barcelona* (BCN)\n📍 _Espanha_\n💰 *R$ 1.708* o trecho\n🔁 Ida e volta: *R$ 4.934* (ida 07/12, volta 10/12 · 3 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 07\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 10\n▸ Janeiro/27: 09, 13, 14, 15, 16, 17, 18, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0712BCN10121?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-FRA-2026-12-06-1792185110",
    "criado": "2026-10-16T18:11-03:00",
@@ -93,7 +208,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Frankfurt* (FRA)\n📍 _Alemanha_\n💰 *R$ 1.837* o trecho\n🔁 Ida e volta a partir de *R$ 5.773*\n🔥 *IMPERDÍVEL*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 06\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 08, 10, 12, 14, 17, 18, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0612FRA10011?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-16T19:08-03:00",
+    "preco": 1837,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-ROM-2026-12-08-1792185112",
@@ -249,7 +369,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Roma* (ROM)\n📍 _Itália_\n💰 *R$ 1.948* o trecho\n🔁 Ida e volta: *R$ 5.321* (ida 01/12, volta 04/12 · 3 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10\n▸ Dezembro/26: 01, 07, 08\n\n🗓️ *VOLTA*\n▸ Novembro/26: 18, 19, 22, 24, 26\n▸ Dezembro/26: 02, 03, 04\n▸ Janeiro/27: 11, 12, 14, 15\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0112ROM04121?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-16T19:08-03:00",
+    "preco": 1948,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-BOG-2026-11-08-1792185113",
@@ -345,7 +470,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Bogotá* (BOG)\n📍 _Colômbia_\n💰 *R$ 2.736* o trecho\n🔁 Ida e volta: *R$ 5.608* (ida 06/12, volta 10/12 · 4 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 08, 15, 28\n▸ Dezembro/26: 06\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 07, 10\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0612BOG10121?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-16T19:08-03:00",
+    "preco": 2731,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-PAR-2026-11-24-1792181631",
@@ -1275,7 +1405,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Madri* (MAD)\n📍 _Espanha_\n💰 *R$ 1.708* o trecho\n🔁 Ida e volta: *R$ 4.913* (ida 24/10, volta 07/11 · 14 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 24\n\n🗓️ *VOLTA*\n▸ Novembro/26: 07, 14, 15, 21, 22, 29, 30\n▸ Dezembro/26: 01, 02, 04, 06, 09\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2410MAD07111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-16T14:47-03:00",
+    "quando": "2026-10-16T19:08-03:00",
     "preco": 1708,
     "status": "valendo"
    }
@@ -1442,7 +1572,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Milão* (MIL)\n📍 _Itália_\n💰 *R$ 1.814* o trecho\n🔁 Ida e volta: *R$ 5.051* (ida 04/11, volta 13/11 · 9 dias)\n🔥 *IMPERDÍVEL*\n🛫 Iberia · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 25\n▸ Novembro/26: 04, 23\n▸ Dezembro/26: 03, 07\n\n🗓️ *VOLTA*\n▸ Novembro/26: 13, 14, 22, 23, 25, 26, 27\n▸ Dezembro/26: 01, 02, 03, 09, 10\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0411MIL13111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-16T14:47-03:00",
+    "quando": "2026-10-16T19:08-03:00",
     "preco": 1814,
     "status": "valendo"
    }
@@ -1604,7 +1734,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Londres* (LON)\n💰 *R$ 1.749* o trecho\n🔁 Ida e volta: *R$ 6.043* (ida 06/11, volta 18/11 · 12 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 23, 27, 28\n▸ Novembro/26: 06\n▸ Dezembro/26: 11\n\n🗓️ *VOLTA*\n▸ Novembro/26: 18, 27, 30\n▸ Janeiro/27: 06, 09, 11, 15, 16, 17, 18, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0611LON18111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-16T14:47-03:00",
+    "quando": "2026-10-16T19:08-03:00",
     "preco": 1749,
     "status": "valendo"
    }
@@ -1678,7 +1808,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.725* o trecho\n🔁 Ida e volta a partir de *R$ 4.473*\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 23\n\n🗓️ *VOLTA*\n▸ Novembro/26: 20, 27\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2310OPO20111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-16T14:47-03:00",
+    "quando": "2026-10-16T19:08-03:00",
     "preco": 1725,
     "status": "valendo"
    }

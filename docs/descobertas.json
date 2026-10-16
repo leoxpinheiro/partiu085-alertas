@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-16T18:36+00:00",
+ "atualizado": "2026-10-16T19:46+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -10,6 +10,7 @@
   "MAO",
   "MIL",
   "MVD",
+  "PAR",
   "REC",
   "SAO",
   "SID",
@@ -218,6 +219,19 @@
    "pista": false
   },
   {
+   "iata": "PAR",
+   "ow": {
+    "preco": 1831,
+    "ida": "2026-10-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-16T11:47:30Z"
+   },
+   "rastreada": true,
+   "nome": "Paris",
+   "pista": true
+  },
+  {
    "iata": "FLN",
    "rt": {
     "preco": 1912,
@@ -247,7 +261,7 @@
     "visto": "2026-10-15T10:28:20Z"
    },
    "ow": {
-    "preco": 972,
+    "preco": 971,
     "ida": "2026-11-15",
     "volta": "",
     "paradas": 1,
@@ -280,7 +294,7 @@
     "visto": "2026-10-15T05:12:37Z"
    },
    "ow": {
-    "preco": 1122,
+    "preco": 1120,
     "ida": "2027-01-19",
     "volta": "",
     "paradas": 1,
@@ -293,7 +307,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2273,
+    "preco": 2269,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -423,7 +437,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 6909,
+    "preco": 6896,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

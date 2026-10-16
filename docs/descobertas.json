@@ -1,10 +1,9 @@
 {
- "atualizado": "2026-10-16T17:26+00:00",
+ "atualizado": "2026-10-16T18:36+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "BSB",
-  "CWB",
   "FLN",
   "JDO",
   "MAD",
@@ -127,19 +126,6 @@
    "pista": true
   },
   {
-   "iata": "CWB",
-   "rt": {
-    "preco": 877,
-    "ida": "2026-12-10",
-    "volta": "2027-01-29",
-    "paradas": 2,
-    "visto": "2026-10-12T18:11:50Z"
-   },
-   "rastreada": true,
-   "nome": "Curitiba",
-   "pista": true
-  },
-  {
    "iata": "MGF",
    "ow": {
     "preco": 995,
@@ -163,6 +149,19 @@
    },
    "rastreada": true,
    "nome": "Santiago",
+   "pista": false
+  },
+  {
+   "iata": "CWB",
+   "rt": {
+    "preco": 1417,
+    "ida": "2026-10-28",
+    "volta": "2026-10-30",
+    "paradas": 1,
+    "visto": "2026-10-13T00:27:18Z"
+   },
+   "rastreada": true,
+   "nome": "Curitiba",
    "pista": false
   },
   {
@@ -248,7 +247,7 @@
     "visto": "2026-10-15T10:28:20Z"
    },
    "ow": {
-    "preco": 971,
+    "preco": 972,
     "ida": "2026-11-15",
     "volta": "",
     "paradas": 1,
@@ -281,7 +280,7 @@
     "visto": "2026-10-15T05:12:37Z"
    },
    "ow": {
-    "preco": 1121,
+    "preco": 1122,
     "ida": "2027-01-19",
     "volta": "",
     "paradas": 1,
@@ -294,7 +293,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2271,
+    "preco": 2273,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -378,13 +377,6 @@
     "paradas": 0,
     "visto": "2026-10-14T00:03:01Z"
    },
-   "ow": {
-    "preco": 1571,
-    "ida": "2026-11-20",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-12T18:08:48Z"
-   },
    "rastreada": true,
    "nome": "Madri",
    "pista": true
@@ -431,7 +423,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 6902,
+    "preco": 6909,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 2,

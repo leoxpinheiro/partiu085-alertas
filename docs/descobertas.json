@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-17T18:29+00:00",
+ "atualizado": "2026-10-17T20:12+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -7,7 +7,6 @@
   "FLN",
   "JDO",
   "MAD",
-  "MAO",
   "MIL",
   "MVD",
   "PAR",
@@ -272,7 +271,7 @@
    },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "POA",
@@ -366,6 +365,19 @@
    "pista": true
   },
   {
+   "iata": "PEE",
+   "ow": {
+    "preco": 3791,
+    "ida": "2026-11-17",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-17T19:10:27Z"
+   },
+   "rastreada": false,
+   "nome": "PEE",
+   "pista": false
+  },
+  {
    "iata": "SFO",
    "ow": {
     "preco": 3823,
@@ -425,16 +437,16 @@
    "pista": true
   },
   {
-   "iata": "LIS",
-   "rt": {
-    "preco": 5152,
-    "ida": "2026-12-28",
-    "volta": "2027-01-13",
-    "paradas": 1,
-    "visto": "2026-10-13T19:22:47Z"
+   "iata": "YTO",
+   "ow": {
+    "preco": 5806,
+    "ida": "2027-01-05",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-17T19:53:48Z"
    },
-   "rastreada": true,
-   "nome": "Lisboa",
+   "rastreada": false,
+   "nome": "YTO",
    "pista": false
   },
   {

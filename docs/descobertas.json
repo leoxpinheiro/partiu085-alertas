@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-17T01:18+00:00",
+ "atualizado": "2026-10-17T02:29+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -149,11 +149,11 @@
     "visto": "2026-10-17T00:14:35Z"
    },
    "ow": {
-    "preco": 528,
-    "ida": "2026-12-12",
+    "preco": 508,
+    "ida": "2026-12-04",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-14T00:44:31Z"
+    "paradas": 1,
+    "visto": "2026-10-17T02:13:26Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
@@ -266,6 +266,19 @@
    "pista": true
   },
   {
+   "iata": "POA",
+   "rt": {
+    "preco": 2197,
+    "ida": "2026-12-08",
+    "volta": "2027-01-14",
+    "paradas": 2,
+    "visto": "2026-10-17T02:10:07Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
+   "pista": false
+  },
+  {
    "iata": "PET",
    "rt": {
     "preco": 2262,
@@ -331,19 +344,6 @@
    "pista": true
   },
   {
-   "iata": "MOW",
-   "ow": {
-    "preco": 3273,
-    "ida": "2026-12-05",
-    "volta": "",
-    "paradas": 4,
-    "visto": "2026-10-14T20:51:58Z"
-   },
-   "rastreada": false,
-   "nome": "MOW",
-   "pista": false
-  },
-  {
    "iata": "MAD",
    "rt": {
     "preco": 3476,
@@ -367,6 +367,19 @@
    },
    "rastreada": false,
    "nome": "SFO",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "ow": {
+    "preco": 4076,
+    "ida": "2027-03-10",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-14T13:09:51Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
    "pista": false
   },
   {

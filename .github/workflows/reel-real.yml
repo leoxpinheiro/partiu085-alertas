@@ -1,0 +1,30 @@
+name: Reels imagem real narrado
+on:
+  workflow_dispatch:
+    inputs:
+      roteiros:
+        description: "Arquivos em engine/video/real/roteiros (sem .json), separados por vírgula"
+        type: string
+        required: true
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get -qq update && sudo apt-get -qq install -y ffmpeg >/dev/null
+      - run: pip install -q edge-tts numpy scipy pillow fonttools
+      - name: Renderizar
+        run: |
+          mkdir -p docs/reels_real
+          for t in $(echo "${{ inputs.roteiros }}" | tr ',' ' '); do
+            python engine/video/real/reel_real.py engine/video/real/roteiros/$t.json docs/reels_real/$t.mp4
+            ffmpeg -v error -y -ss 0.8 -i docs/reels_real/$t.mp4 -frames:v 1 -q:v 3 docs/reels_real/$t.jpg
+          done
+      - name: Salvar no branch de prévia
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add -f docs/reels_real && git checkout -q -b reel-real-previa && git commit -q -m "reels imagem real" && git push -q -f origin reel-real-previa

@@ -1,0 +1,93 @@
+{
+ "tema": "REGRA NOVA · 2026",
+ "foto": "hd-janela-1.jpg",
+ "voz": "pt-BR-ThalitaMultilingualNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "🔋 REGRA NOVA",
+  "titulo": "Seu power bank pode <em>ficar no aeroporto.</em>",
+  "sub": "As companhias mudaram as regras em 2026. Pouca gente sabe.",
+  "chips": [
+   [
+    "2",
+    "no máximo"
+   ],
+   [
+    "100Wh",
+    "limite"
+   ],
+   [
+    "0",
+    "uso no voo"
+   ]
+  ],
+  "fala": "Seu power bank pode ficar no aeroporto. E quase ninguém sabe disso."
+ },
+ "regras": [
+  {
+   "n": "MÃO",
+   "nsub": "só",
+   "icone": "🎒",
+   "titulo": "Só vai na <em>mala de mão</em>.",
+   "itens": [
+    [
+     "no",
+     "Nunca na mala despachada"
+    ],
+    [
+     "in",
+     "Mandaram despachar a mala no portão? Tira ele antes"
+    ]
+   ],
+   "fala": "Primeiro: ele só vai na mala de mão. Se mandarem despachar sua mala no portão, tira o power bank antes."
+  },
+  {
+   "n": "0",
+   "nsub": "uso no voo",
+   "icone": "🚫",
+   "titulo": "No voo, ele fica <em>desligado e guardado</em>.",
+   "itens": [
+    [
+     "no",
+     "Não pode carregar o celular com ele"
+    ],
+    [
+     "no",
+     "Não pode recarregar na tomada do avião"
+    ],
+    [
+     "ok",
+     "Fica embaixo do assento da frente"
+    ]
+   ],
+   "fala": "Segundo: durante o voo, não pode usar nem recarregar. Ele fica guardado embaixo do assento da frente."
+  },
+  {
+   "n": "2",
+   "nsub": "no máximo",
+   "icone": "🔢",
+   "titulo": "No máximo dois, de até <em>100 Wh</em> cada.",
+   "itens": [
+    [
+     "ok",
+     "10 mil mAh: 37 Wh, pode"
+    ],
+    [
+     "ok",
+     "20 mil mAh: 74 Wh, pode"
+    ],
+    [
+     "no",
+     "30 mil mAh: 111 Wh, já passa"
+    ]
+   ],
+   "fala": "E terceiro: no máximo dois, de até cem watt-hora cada. O de trinta mil miliampère já passa do limite."
+  }
+ ],
+ "fim": {
+  "titulo": "Salva antes da <em>próxima viagem</em>.",
+  "cta": "Manda pra quem anda com power bank 🔋",
+  "fonte": "Fontes: ANAC (instrução de 24/04/2026) e regras de LATAM, GOL e Azul. Conta: mAh × 3,7 ÷ 1.000 = Wh. Confira com sua companhia.",
+  "fala": "Salva esse vídeo, e manda pra quem anda com power bank."
+ }
+}

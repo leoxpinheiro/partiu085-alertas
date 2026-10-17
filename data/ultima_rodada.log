@@ -1,70 +1,69 @@
-Pistas da Travelpayouts: MVD, SID
-Lote: MVD(b), SID(b), GYN(t), VIX(t), JDO(t), PMW(t), MAD(t), PAR(t), BSB(t), BHZ(t), OPO(t), NAT(a), MCZ(a), NYC(n), AJU(a), SSA(a), JPA(a)
-Lote: MVD, SID, GYN, VIX, JDO, PMW, MAD, PAR, BSB, BHZ, OPO, NAT, MCZ, NYC, AJU, SSA, JPA
-  FOR-MVD: 23 datas com preço · 68 sem resposta (IndexError 35, FlightsNotFound 33)
-  MVD-FOR: 16 datas com preço · 75 sem resposta (IndexError 45, FlightsNotFound 30)
-FOR-MVD: 23+16 dias · menor ida R$ 1.210 · média R$ 1.554 · 22%
-  FOR-SID: 4 datas com preço · 87 sem resposta (FlightsNotFound 34, TypeError 53)
-  SID-FOR: 4 datas com preço · 87 sem resposta (TypeError 57, FlightsNotFound 30)
-FOR-SID: 4+4 dias · menor ida R$ 5.200 · média R$ 5.143 · -1%
-  FOR-GYN: 88 datas com preço · 3 sem resposta (FlightsNotFound 3)
-  GYN-FOR: 88 datas com preço · 3 sem resposta (FlightsNotFound 2, IndexError 1)
-FOR-GYN: 88+88 dias · menor ida R$ 673 · média R$ 1.246 · 46%
-  ida e volta R$ 1.601 acima do teto da região (R$ 1.255) — sem alerta
-  FOR-VIX: 79 datas com preço · 12 sem resposta (FlightsNotFound 12)
-  VIX-FOR: 82 datas com preço · 9 sem resposta (FlightsNotFound 9)
-FOR-VIX: 79+82 dias · menor ida R$ 790 · média R$ 1.034 · 24%
-  ida e volta R$ 1.574 acima do teto da região (R$ 1.285) — sem alerta
-  FOR-JDO: 70 datas com preço · 21 sem resposta (FlightsNotFound 21)
-  JDO-FOR: 69 datas com preço · 22 sem resposta (IndexError 1, FlightsNotFound 21)
-FOR-JDO: 32+57 dias · menor ida R$ 397 · média R$ 2.394 · 83%
-  ida e volta R$ 630 acima do teto da região (R$ 610) — sem alerta
-  FOR-PMW: 76 datas com preço · 15 sem resposta (FlightsNotFound 15)
-  PMW-FOR: 78 datas com preço · 13 sem resposta (FlightsNotFound 10, IndexError 3)
-FOR-PMW: 73+78 dias · menor ida R$ 1.040 · média R$ 1.395 · 25%
-  ida e volta R$ 2.079 acima do teto da região (R$ 1.399) — sem alerta
-  FOR-MAD: 34 datas com preço · 57 sem resposta (FlightsNotFound 29, IndexError 28)
-  MAD-FOR: 56 datas com preço · 35 sem resposta (FlightsNotFound 28, IndexError 7)
-FOR-MAD: 34+56 dias · menor ida R$ 1.717 · média R$ 3.638 · 53%
-  FOR-PAR: 69 datas com preço · 22 sem resposta (IndexError 8, FlightsNotFound 14)
-  PAR-FOR: 81 datas com preço · 10 sem resposta (FlightsNotFound 10)
-FOR-PAR: 69+81 dias · menor ida R$ 1.906 · média R$ 3.357 · 43%
-  ida e volta R$ 5.634 acima do teto da região (R$ 5.443) — sem alerta
-  FOR-BSB: 82 datas com preço · 9 sem resposta (FlightsNotFound 9)
-  BSB-FOR: 87 datas com preço · 4 sem resposta (FlightsNotFound 4)
-FOR-BSB: 82+87 dias · menor ida R$ 930 · média R$ 1.318 · 29%
-  ida e volta R$ 1.847 acima do teto da região (R$ 1.521) — sem alerta
-  FOR-BHZ: 84 datas com preço · 7 sem resposta (FlightsNotFound 7)
-  BHZ-FOR: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
-FOR-BHZ: 84+90 dias · menor ida R$ 530 · média R$ 1.050 · 50%
-  FOR-OPO: 58 datas com preço · 33 sem resposta (FlightsNotFound 13, IndexError 20)
-  OPO-FOR: 71 datas com preço · 20 sem resposta (FlightsNotFound 20)
-FOR-OPO: 58+71 dias · menor ida R$ 2.742 · média R$ 3.725 · 26%
-  ida e volta R$ 5.482 acima do teto da região (R$ 4.638) — sem alerta
-  FOR-NAT: 83 datas com preço · 8 sem resposta (FlightsNotFound 8)
-  NAT-FOR: 74 datas com preço · 17 sem resposta (FlightsNotFound 17)
-FOR-NAT: 77+66 dias · menor ida R$ 1.206 · média R$ 2.112 · 43%
-  FOR-MCZ: 80 datas com preço · 10 sem resposta (FlightsNotFound 9, IndexError 1)
-  MCZ-FOR: 77 datas com preço · 14 sem resposta (FlightsNotFound 10, IndexError 4)
-FOR-MCZ: 80+72 dias · menor ida R$ 812 · média R$ 1.823 · 55%
-  ida e volta R$ 1.610 acima do teto da região (R$ 1.486) — sem alerta
-  FOR-NYC: 76 datas com preço · 15 sem resposta (IndexError 14, FlightsNotFound 1)
-FOR-NYC: 76+91 dias · menor ida R$ 3.204 · média R$ 4.327 · 26%
-  2 paradas e só 26% abaixo — sem alerta (filtro de qualidade)
-  FOR-AJU: 78 datas com preço · 11 sem resposta (IndexError 4, FlightsNotFound 7)
-  AJU-FOR: 62 datas com preço · 29 sem resposta (FlightsNotFound 7, IndexError 22)
-FOR-AJU: 74+56 dias · menor ida R$ 902 · média R$ 1.796 · 50%
-  FOR-SSA: 81 datas com preço · 9 sem resposta (IndexError 9)
-FOR-SSA: 74+86 dias · menor ida R$ 713 · média R$ 1.615 · 56%
-  ida e volta R$ 1.579 acima do teto da região (R$ 1.428) — sem alerta
-  FOR-JPA: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
-  JPA-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
-FOR-JPA: 80+83 dias · menor ida R$ 1.017 · média R$ 1.442 · 29%
-  ida e volta R$ 2.028 acima do teto da região (R$ 1.858) — sem alerta
-  em descanso (alerta recente): FOR-AJU
-  conferido LIS 2026-12-07: R$ 1.697 (valendo)
-  conferido FLN 2026-11-06: R$ 686 (valendo)
-  conferido BCN 2026-12-07: R$ 1.717 (valendo)
-  conferido AJU 2026-11-07: R$ 1.016 (valendo)
+Lote: BEL(t), SLZ(t), CGB(t), CWB(t), FLN(t), IGU(t), LIS(t), SAO(t), RIO(t), REC(t), BCN(a), ROM(t), VCP(a), NVT(a), POA(a), LON(a), AMS(a)
+Lote: BEL, SLZ, CGB, CWB, FLN, IGU, LIS, SAO, RIO, REC, BCN, ROM, VCP, NVT, POA, LON, AMS
+  FOR-BEL: 79 datas com preço · 12 sem resposta (FlightsNotFound 12)
+  BEL-FOR: 78 datas com preço · 13 sem resposta (FlightsNotFound 13)
+FOR-BEL: 78+78 dias · menor ida R$ 573 · média R$ 1.086 · 47%
+  FOR-SLZ: 78 datas com preço · 13 sem resposta (FlightsNotFound 13)
+  SLZ-FOR: 79 datas com preço · 12 sem resposta (FlightsNotFound 12)
+FOR-SLZ: 59+63 dias · menor ida R$ 883 · média R$ 1.275 · 31%
+  ida e volta R$ 1.651 acima do teto da região (R$ 1.405) — sem alerta
+  FOR-CGB: 81 datas com preço · 10 sem resposta (FlightsNotFound 6, IndexError 4)
+  CGB-FOR: 66 datas com preço · 25 sem resposta (FlightsNotFound 22, IndexError 3)
+FOR-CGB: 81+66 dias · menor ida R$ 599 · média R$ 1.113 · 46%
+  ida e volta R$ 1.566 acima do teto da região (R$ 1.228) — sem alerta
+  FOR-CWB: 62 datas com preço · 29 sem resposta (FlightsNotFound 24, IndexError 5)
+  CWB-FOR: 53 datas com preço · 38 sem resposta (IndexError 23, FlightsNotFound 15)
+FOR-CWB: 62+53 dias · menor ida R$ 652 · média R$ 1.050 · 38%
+  ida e volta R$ 1.428 acima do teto da região (R$ 996) — sem alerta
+  FOR-FLN: 49 datas com preço · 42 sem resposta (FlightsNotFound 17, IndexError 25)
+h2 connection driver error: connection reset
+  FLN-FOR: 65 datas com preço · 26 sem resposta (IndexError 17, FlightsNotFound 9)
+FOR-FLN: 49+65 dias · menor ida R$ 678 · média R$ 1.022 · 34%
+  ida e volta R$ 1.361 acima do teto da região (R$ 1.340) — sem alerta
+h2 connection driver error: connection reset
+  FOR-IGU: 85 datas com preço · 6 sem resposta (FlightsNotFound 6)
+FOR-IGU: 85+91 dias · menor ida R$ 880 · média R$ 1.200 · 27%
+  ida e volta R$ 1.855 acima do teto da região (R$ 1.410) — sem alerta
+FOR-LIS: 91+91 dias · menor ida R$ 1.697 · média R$ 3.019 · 44%
+  FOR-SAO: 88 datas com preço · 3 sem resposta (FlightsNotFound 3)
+FOR-SAO: 88+91 dias · menor ida R$ 628 · média R$ 1.068 · 41%
+FOR-RIO: 91+91 dias · menor ida R$ 704 · média R$ 1.198 · 41%
+  ida e volta R$ 1.749 acima do teto da região (R$ 1.224) — sem alerta
+FOR-REC: 91+91 dias · menor ida R$ 573 · média R$ 1.411 · 59%
+  ida e volta R$ 1.147 acima do teto da região (R$ 825) — sem alerta
+h2 connection driver error: connection reset
+  FOR-BCN: 79 datas com preço · 12 sem resposta (FlightsNotFound 7, IndexError 5)
+  BCN-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-BCN: 79+90 dias · menor ida R$ 1.717 · média R$ 3.236 · 47%
+  FOR-ROM: 71 datas com preço · 20 sem resposta (IndexError 15, FlightsNotFound 5)
+  ROM-FOR: 87 datas com preço · 4 sem resposta (FlightsNotFound 3, IndexError 1)
+FOR-ROM: 71+87 dias · menor ida R$ 1.938 · média R$ 3.555 · 45%
+h2 connection driver error: connection reset
+  FOR-VCP: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+  VCP-FOR: 88 datas com preço · 3 sem resposta (IndexError 1, FlightsNotFound 2)
+FOR-VCP: 90+88 dias · menor ida R$ 950 · média R$ 1.604 · 41%
+  ida e volta R$ 2.203 acima do teto da região (R$ 1.349) — sem alerta
+h2 connection driver error: connection reset
+  NVT-FOR: 89 datas com preço · 2 sem resposta (FlightsNotFound 2)
+FOR-NVT: 91+89 dias · menor ida R$ 891 · média R$ 1.235 · 28%
+  ida e volta R$ 1.812 acima do teto da região (R$ 1.469) — sem alerta
+h2 connection driver error: connection reset
+  FOR-POA: 70 datas com preço · 21 sem resposta (IndexError 15, FlightsNotFound 6)
+  POA-FOR: 82 datas com preço · 9 sem resposta (FlightsNotFound 8, IndexError 1)
+FOR-POA: 70+82 dias · menor ida R$ 1.085 · média R$ 1.494 · 27%
+  ida e volta R$ 2.172 acima do teto da região (R$ 1.600) — sem alerta
+  FOR-LON: 65 datas com preço · 26 sem resposta (FlightsNotFound 22, IndexError 4)
+  LON-FOR: 63 datas com preço · 28 sem resposta (FlightsNotFound 28)
+FOR-LON: 65+63 dias · menor ida R$ 1.759 · média R$ 3.492 · 50%
+  FOR-AMS: 70 datas com preço · 21 sem resposta (FlightsNotFound 14, IndexError 7)
+  AMS-FOR: 73 datas com preço · 18 sem resposta (FlightsNotFound 17, IndexError 1)
+FOR-AMS: 70+73 dias · menor ida R$ 2.031 · média R$ 3.943 · 48%
+  ! reconferir BHZ: FlightsNotFound
+  conferido FRA 2026-12-06: R$ 2.842 (subiu)
+  ! reconferir ROM: FlightsNotFound
+  conferido BOG 2026-11-08: R$ 2.747 (valendo)
+  conferido MIL 2026-11-04: R$ 1.824 (valendo)
+  ! reconferir LON: FlightsNotFound
+  conferido OPO 2026-10-23: R$ 1.735 (valendo)
 
-Rodada: 17 rotas · 0 candidatos · 0 alertas · 2078s
+Rodada: 17 rotas · 0 candidatos · 0 alertas · 1749s

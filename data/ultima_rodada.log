@@ -1,56 +1,57 @@
-Lote: RIO(t), MIA(a), MAO(a), BUE(a), REC(t), ROM(t), VIX(t), GYN(t), JDO(t), PMW(t), UDI(n), BPS(n), CGR(n), NAT(a), MCZ(a), SSA(a), JPA(a)
-Lote: RIO, MIA, MAO, BUE, REC, ROM, VIX, GYN, JDO, PMW, UDI, BPS, CGR, NAT, MCZ, SSA, JPA
-FOR-RIO: 91+91 dias · menor ida R$ 692 · média R$ 1.198 · 42%
-  ida e volta R$ 1.534 acima do teto da região (R$ 1.224) — sem alerta
-  FOR-MIA: 88 datas com preço · 3 sem resposta (IndexError 3)
-FOR-MIA: 88+91 dias · menor ida R$ 2.426 · média R$ 3.392 · 28%
-  2 paradas e só 28% abaixo — sem alerta (filtro de qualidade)
-FOR-MAO: 91+91 dias · menor ida R$ 946 · média R$ 1.303 · 27%
-  FOR-BUE: 87 datas com preço · 4 sem resposta (IndexError 4)
-  BUE-FOR: 89 datas com preço · 2 sem resposta (IndexError 2)
-FOR-BUE: 87+89 dias · menor ida R$ 1.334 · média R$ 1.506 · 11%
-FOR-REC: 91+91 dias · menor ida R$ 488 · média R$ 1.137 · 57%
-  ida e volta R$ 954 acima do teto da região (R$ 862) — sem alerta
-  FOR-ROM: 84 datas com preço · 7 sem resposta (IndexError 7)
-  ROM-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
-FOR-ROM: 84+90 dias · menor ida R$ 1.959 · média R$ 3.540 · 45%
-FOR-VIX: 91+91 dias · menor ida R$ 601 · média R$ 895 · 33%
-  FOR-GYN: 89 datas com preço · 2 sem resposta (IndexError 2)
-FOR-GYN: 89+91 dias · menor ida R$ 655 · média R$ 1.222 · 46%
-  ida e volta R$ 1.525 acima do teto da região (R$ 1.371) — sem alerta
-  JDO-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
-FOR-JDO: 38+68 dias · menor ida R$ 397 · média R$ 2.394 · 83%
-  ida e volta R$ 630 acima do teto da região (R$ 610) — sem alerta
-  FOR-PMW: 90 datas com preço · 1 sem resposta (IndexError 1)
-  PMW-FOR: 85 datas com preço · 6 sem resposta (IndexError 6)
-FOR-PMW: 89+84 dias · menor ida R$ 721 · média R$ 1.495 · 52%
-  ida e volta R$ 1.751 acima do teto da região (R$ 1.558) — sem alerta
-  FOR-UDI: 77 datas com preço · 14 sem resposta (IndexError 14)
-  UDI-FOR: 78 datas com preço · 13 sem resposta (IndexError 13)
-FOR-UDI: 77+76 dias · menor ida R$ 1.105 · média R$ 1.501 · 26%
-  ida e volta R$ 2.193 acima do teto da região (R$ 2.130) — sem alerta
-  FOR-BPS: 64 datas com preço · 26 sem resposta (IndexError 26)
-  BPS-FOR: 66 datas com preço · 24 sem resposta (IndexError 24)
-FOR-BPS: 60+66 dias · menor ida R$ 1.416 · média R$ 1.962 · 28%
-  ida e volta R$ 2.986 acima do teto da região (R$ 2.486) — sem alerta
-  FOR-CGR: 87 datas com preço · 4 sem resposta (IndexError 4)
-  CGR-FOR: 73 datas com preço · 18 sem resposta (IndexError 18)
-FOR-CGR: 87+73 dias · menor ida R$ 941 · média R$ 1.350 · 30%
-FOR-NAT: 83+77 dias · menor ida R$ 1.278 · média R$ 2.112 · 39%
-  FOR-MCZ: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
-  MCZ-FOR: 87 datas com preço · 4 sem resposta (IndexError 4)
-FOR-MCZ: 88+85 dias · menor ida R$ 872 · média R$ 1.823 · 52%
-  ida e volta R$ 1.670 acima do teto da região (R$ 1.493) — sem alerta
-  FOR-SSA: 78 datas com preço · 12 sem resposta (IndexError 12)
-FOR-SSA: 73+86 dias · menor ida R$ 713 · média R$ 1.615 · 56%
-  ida e volta R$ 1.579 acima do teto da região (R$ 1.551) — sem alerta
-  JPA-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
-FOR-JPA: 90+87 dias · menor ida R$ 1.017 · média R$ 1.442 · 29%
-  ida e volta R$ 2.115 acima do teto da região (R$ 1.930) — sem alerta
-  ✓ FOR-MAO R$ 946/trecho (-27%) 4 idas · 3 voltas
-  ✓ FOR-VIX R$ 601/trecho (-33%) 3 idas · 2 voltas
-  conferido PAR 2026-12-08: R$ 1.906 (valendo)
+Lote: BCN(a), MAD(t), VCP(a), NVT(a), PAR(t), POA(a), LON(a), BSB(t), BHZ(t), MIL(n), OPO(t), AJU(t), BEL(t), SLZ(t), CUN(b), CGB(t), CWB(t)
+Lote: BCN, MAD, VCP, NVT, PAR, POA, LON, BSB, BHZ, MIL, OPO, AJU, BEL, SLZ, CUN, CGB, CWB
+  FOR-BCN: 87 datas com preço · 4 sem resposta (IndexError 4)
+  BCN-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-BCN: 87+90 dias · menor ida R$ 1.717 · média R$ 3.562 · 52%
+  FOR-MAD: 44 datas com preço · 47 sem resposta (IndexError 47)
+  MAD-FOR: 77 datas com preço · 14 sem resposta (IndexError 14)
+FOR-MAD: 44+77 dias · menor ida R$ 1.717 · média R$ 3.420 · 50%
+FOR-VCP: 91+91 dias · menor ida R$ 918 · média R$ 1.626 · 44%
+  ida e volta R$ 2.320 acima do teto da região (R$ 1.366) — sem alerta
+FOR-NVT: 91+91 dias · menor ida R$ 800 · média R$ 1.165 · 31%
+  FOR-PAR: 83 datas com preço · 8 sem resposta (IndexError 8)
+FOR-PAR: 83+91 dias · menor ida R$ 1.906 · média R$ 3.638 · 48%
+  FOR-POA: 66 datas com preço · 25 sem resposta (IndexError 25)
+  POA-FOR: 88 datas com preço · 3 sem resposta (IndexError 2, FlightsNotFound 1)
+FOR-POA: 66+88 dias · menor ida R$ 1.042 · média R$ 1.432 · 27%
+  ida e volta R$ 2.087 acima do teto da região (R$ 1.738) — sem alerta
+h2 connection driver error: connection reset
+  FOR-LON: 89 datas com preço · 2 sem resposta (IndexError 2)
+FOR-LON: 89+91 dias · menor ida R$ 1.759 · média R$ 3.923 · 55%
+FOR-BSB: 91+91 dias · menor ida R$ 859 · média R$ 1.373 · 37%
+  ida e volta R$ 1.704 acima do teto da região (R$ 1.549) — sem alerta
+h2 connection driver error: connection reset
+FOR-BHZ: 91+91 dias · menor ida R$ 530 · média R$ 960 · 45%
+  FOR-MIL: 83 datas com preço · 8 sem resposta (IndexError 8)
+  MIL-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-MIL: 83+90 dias · menor ida R$ 1.978 · média R$ 3.341 · 41%
+  FOR-OPO: 68 datas com preço · 23 sem resposta (IndexError 23)
+FOR-OPO: 68+91 dias · menor ida R$ 2.742 · média R$ 3.728 · 26%
+  ida e volta R$ 5.481 acima do teto da região (R$ 4.653) — sem alerta
+  FOR-AJU: 81 datas com preço · 9 sem resposta (IndexError 9)
+  AJU-FOR: 70 datas com preço · 21 sem resposta (IndexError 21)
+FOR-AJU: 76+64 dias · menor ida R$ 824 · média R$ 1.716 · 52%
+FOR-BEL: 91+91 dias · menor ida R$ 611 · média R$ 1.085 · 44%
+FOR-SLZ: 69+76 dias · menor ida R$ 874 · média R$ 1.275 · 31%
+  ida e volta R$ 1.634 acima do teto da região (R$ 1.454) — sem alerta
+  FOR-CUN: 4 datas com preço · 87 sem resposta (IndexError 87)
+h2 connection driver error: connection reset
+h2 connection driver error: connection reset
+  CUN-FOR: 22 datas com preço · 69 sem resposta (IndexError 69)
+FOR-CUN: 4+22 dias · menor ida R$ 4.092 · média R$ 5.046 · 19%
+  FOR-CGB: 87 datas com preço · 4 sem resposta (IndexError 4)
+  CGB-FOR: 84 datas com preço · 7 sem resposta (IndexError 7)
+FOR-CGB: 87+84 dias · menor ida R$ 598 · média R$ 1.123 · 47%
+  ida e volta R$ 1.503 acima do teto da região (R$ 1.246) — sem alerta
+  FOR-CWB: 87 datas com preço · 4 sem resposta (IndexError 4)
+  CWB-FOR: 58 datas com preço · 33 sem resposta (IndexError 33)
+FOR-CWB: 87+58 dias · menor ida R$ 592 · média R$ 1.101 · 46%
+  ida e volta R$ 1.255 acima do teto da região (R$ 1.024) — sem alerta
+  ✓ FOR-MIL R$ 1.978/trecho (-41%) 12 idas · 12 voltas
+  ✓ FOR-BEL R$ 611/trecho (-44%) 12 idas · 6 voltas
+  ✓ FOR-NVT R$ 800/trecho (-31%) 3 idas · 4 voltas
+  conferido MAO 2026-11-15: R$ 946 (valendo)
+  conferido VIX 2026-11-10: R$ 601 (valendo)
   ! reconferir CUN: IndexError
-  conferido MIL 2026-11-04: R$ 2.167 (subiu)
 
-Rodada: 17 rotas · 2 candidatos · 2 alertas · 1090s
+Rodada: 17 rotas · 3 candidatos · 3 alertas · 1354s

@@ -1,6 +1,217 @@
 {
- "atualizado": "2026-10-18T16:12-03:00",
+ "atualizado": "2026-10-18T17:38-03:00",
  "alertas": [
+  {
+   "id": "FOR-OPO-2026-10-23-1792355903",
+   "criado": "2026-10-18T17:38-03:00",
+   "rota": "FOR-OPO",
+   "destino": "OPO",
+   "destino_nome": "Porto",
+   "tipo": "internacional",
+   "modo": "trecho",
+   "preco": 1735,
+   "preco_volta": 2728,
+   "preco_tipico": 3663,
+   "desconto": 0.526,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Tap Air Portugal",
+   "escalas": 1,
+   "ida": "2026-10-23",
+   "volta": "2026-11-11",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-10-23",
+     "preco": 1735
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-11",
+     "preco": 2728
+    },
+    {
+     "dia": "2026-11-30",
+     "preco": 2728
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Outubro 2026",
+     "dias": [
+      "23"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "11",
+      "30"
+     ]
+    }
+   ],
+   "meses": [
+    "out"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTAtMjNqBRIDRk9ScgUSA09QT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2310OPO11111?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2026-10-23",
+    "volta": "2026-11-11",
+    "total": 4463,
+    "dias": 19
+   },
+   "base": {
+    "dias": 12,
+    "menor_visto": 1699
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto* (OPO)\n📍 _Norte de Portugal_\n💰 *R$ 1.735* o trecho\n🔁 Ida e volta: *R$ 4.463* (ida 23/10, volta 11/11 · 19 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Outubro/26: 23\n\n🗓️ *VOLTA*\n▸ Novembro/26: 11, 30\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2310OPO11111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
+  {
+   "id": "FOR-BEL-2026-11-06-1792355905",
+   "criado": "2026-10-18T17:38-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 561,
+   "preco_volta": 556,
+   "preco_tipico": 1084,
+   "desconto": 0.482,
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2026-11-06",
+   "volta": "2026-11-09",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-11-06",
+     "preco": 561
+    },
+    {
+     "dia": "2026-11-07",
+     "preco": 561
+    },
+    {
+     "dia": "2026-11-12",
+     "preco": 561
+    },
+    {
+     "dia": "2026-11-18",
+     "preco": 611
+    },
+    {
+     "dia": "2026-12-05",
+     "preco": 611
+    },
+    {
+     "dia": "2026-12-12",
+     "preco": 611
+    },
+    {
+     "dia": "2026-12-30",
+     "preco": 611
+    },
+    {
+     "dia": "2026-12-31",
+     "preco": 611
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-09",
+     "preco": 556
+    },
+    {
+     "dia": "2026-12-01",
+     "preco": 606
+    },
+    {
+     "dia": "2026-12-03",
+     "preco": 606
+    },
+    {
+     "dia": "2027-01-13",
+     "preco": 606
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "06",
+      "07",
+      "12",
+      "18"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "05",
+      "12",
+      "30",
+      "31"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "09"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "01",
+      "03"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "13"
+     ]
+    }
+   ],
+   "meses": [
+    "nov",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMDZqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0611BEL09111?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2026-11-06",
+    "volta": "2026-11-09",
+    "total": 1117,
+    "dias": 3
+   },
+   "base": {
+    "dias": 12,
+    "menor_visto": 307
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 561* o trecho\n🔁 Ida e volta: *R$ 1.117* (ida 06/11, volta 09/11 · 3 dias)\n🔥 *IMPERDÍVEL*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 06, 07, 12, 18\n▸ Dezembro/26: 05, 12, 30, 31\n\n🗓️ *VOLTA*\n▸ Novembro/26: 09\n▸ Dezembro/26: 01, 03\n▸ Janeiro/27: 13\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0611BEL09111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-THE-2026-11-08-1792345050",
    "criado": "2026-10-18T14:37-03:00",
@@ -874,7 +1085,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Manaus* (MAO)\n💰 *R$ 946* o trecho\n🔁 Ida e volta: *R$ 1.888* (ida 17/11, volta 24/11 · 7 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 15, 17, 20, 21\n\n🗓️ *VOLTA*\n▸ Novembro/26: 17, 24, 25\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1711MAO24111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-18T12:55-03:00",
+    "quando": "2026-10-18T17:38-03:00",
     "preco": 946,
     "status": "valendo"
    }
@@ -964,7 +1175,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Vitória* (VIX)\n💰 *R$ 601* o trecho\n🔁 Ida e volta: *R$ 1.196* (ida 10/11, volta 14/11 · 4 dias)\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10, 11, 12\n\n🗓️ *VOLTA*\n▸ Novembro/26: 12, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1011VIX14111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-18T12:55-03:00",
+    "quando": "2026-10-18T17:38-03:00",
     "preco": 601,
     "status": "valendo"
    }
@@ -1115,7 +1326,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Paris* (PAR)\n💰 *R$ 1.906* o trecho\n🔁 Ida e volta: *R$ 5.652* (ida 10/11, volta 18/11 · 8 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10\n▸ Dezembro/26: 08\n\n🗓️ *VOLTA*\n▸ Novembro/26: 18, 25\n▸ Dezembro/26: 02, 10\n▸ Janeiro/27: 09, 13, 14, 15, 16, 17, 18, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1011PAR18111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-18T12:55-03:00",
+    "quando": "2026-10-18T17:38-03:00",
     "preco": 1906,
     "status": "valendo"
    }
@@ -2964,7 +3175,7 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Roma* (ROM)\n📍 _Itália_\n💰 *R$ 1.948* o trecho\n🔁 Ida e volta: *R$ 5.321* (ida 01/12, volta 04/12 · 3 dias)\n🔥 *IMPERDÍVEL*\n🛫 Tap Air Portugal · 1 parada\n\n🗓️ *IDA*\n▸ Novembro/26: 10\n▸ Dezembro/26: 01, 07, 08\n\n🗓️ *VOLTA*\n▸ Novembro/26: 18, 19, 22, 24, 26\n▸ Dezembro/26: 02, 03, 04\n▸ Janeiro/27: 11, 12, 14, 15\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0112ROM04121?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
    "telegram": true,
    "conferido": {
-    "quando": "2026-10-18T12:55-03:00",
+    "quando": "2026-10-18T17:38-03:00",
     "preco": 1959,
     "status": "valendo"
    }

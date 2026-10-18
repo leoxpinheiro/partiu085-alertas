@@ -1,13 +1,25 @@
 {
  "iata": "BOG",
  "nome": "Bogotá",
- "atualizado": "2026-10-17T12:40-03:00",
+ "atualizado": "2026-10-18T02:45-03:00",
  "ida": [
   {
-   "dia": "2026-10-24",
-   "preco": 4526.0,
+   "dia": "2026-10-30",
+   "preco": 2889.0,
    "cia": "LATAM",
-   "escalas": 2
+   "escalas": 1
+  },
+  {
+   "dia": "2026-10-31",
+   "preco": 2889.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-01",
+   "preco": 2655.0,
+   "cia": "LATAM",
+   "escalas": 1
   },
   {
    "dia": "2026-11-08",
@@ -16,26 +28,32 @@
    "escalas": 2
   },
   {
-   "dia": "2026-11-15",
+   "dia": "2026-11-14",
    "preco": 2655.0,
    "cia": "LATAM",
    "escalas": 1
   },
   {
    "dia": "2026-11-22",
-   "preco": 3113.0,
+   "preco": 3383.0,
    "cia": "LATAM",
    "escalas": 2
   },
   {
-   "dia": "2026-12-06",
-   "preco": 2752.0,
-   "cia": "Gol",
+   "dia": "2026-11-28",
+   "preco": 2655.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-29",
+   "preco": 2655.0,
+   "cia": "LATAM",
    "escalas": 1
   },
   {
    "dia": "2026-12-13",
-   "preco": 2655.0,
+   "preco": 2843.0,
    "cia": "LATAM",
    "escalas": 1
   },
@@ -65,25 +83,7 @@
   },
   {
    "dia": "2026-12-26",
-   "preco": 3346.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-12-27",
    "preco": 3545.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2027-01-02",
-   "preco": 4195.0,
-   "cia": "LATAM",
-   "escalas": 2
-  },
-  {
-   "dia": "2027-01-03",
-   "preco": 4292.0,
    "cia": "LATAM",
    "escalas": 1
   },
@@ -94,8 +94,20 @@
    "escalas": 1
   },
   {
+   "dia": "2027-01-05",
+   "preco": 4027.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-07",
+   "preco": 3235.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
    "dia": "2027-01-09",
-   "preco": 3266.0,
+   "preco": 3408.0,
    "cia": "LATAM",
    "escalas": 2
   },
@@ -112,12 +124,6 @@
    "escalas": 1
   },
   {
-   "dia": "2027-01-14",
-   "preco": 3433.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
    "dia": "2027-01-16",
    "preco": 3290.0,
    "cia": "LATAM",
@@ -125,24 +131,18 @@
   },
   {
    "dia": "2027-01-17",
-   "preco": 2889.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2027-01-18",
-   "preco": 2889.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2027-01-19",
-   "preco": 3601.0,
+   "preco": 2996.0,
    "cia": "Gol",
    "escalas": 2
   }
  ],
  "volta": [
+  {
+   "dia": "2026-10-24",
+   "preco": 5596.0,
+   "cia": "LATAM",
+   "escalas": 2
+  },
   {
    "dia": "2026-10-29",
    "preco": 3557.0,
@@ -150,44 +150,86 @@
    "escalas": 2
   },
   {
-   "dia": "2026-11-08",
+   "dia": "2026-10-30",
+   "preco": 3664.0,
+   "cia": "Gol",
+   "escalas": 2
+  },
+  {
+   "dia": "2026-11-07",
+   "preco": 3322.0,
+   "cia": "Avianca",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-15",
    "preco": 2896.0,
    "cia": "LATAM",
    "escalas": 1
   },
   {
-   "dia": "2026-11-12",
-   "preco": 3322.0,
+   "dia": "2026-11-19",
+   "preco": 2870.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-21",
+   "preco": 2896.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-22",
+   "preco": 4279.0,
    "cia": "COPA",
    "escalas": 2
   },
   {
-   "dia": "2026-11-23",
-   "preco": 3703.0,
+   "dia": "2026-12-02",
+   "preco": 2870.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-12-03",
+   "preco": 2896.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-02",
+   "preco": 4118.0,
    "cia": "Avianca",
    "escalas": 2
   },
   {
-   "dia": "2026-11-25",
-   "preco": 3122.0,
-   "cia": "Gol",
-   "escalas": 2
-  },
-  {
-   "dia": "2027-01-03",
-   "preco": 4129.0,
-   "cia": "Avianca",
-   "escalas": 2
-  },
-  {
-   "dia": "2027-01-08",
+   "dia": "2027-01-15",
    "preco": 3467.0,
    "cia": "Avianca",
    "escalas": 2
   },
   {
    "dia": "2027-01-17",
-   "preco": 3611.0,
+   "preco": 3467.0,
+   "cia": "Avianca",
+   "escalas": 2
+  },
+  {
+   "dia": "2027-01-18",
+   "preco": 3370.0,
+   "cia": "Avianca",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-19",
+   "preco": 3331.0,
+   "cia": "Avianca",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-21",
+   "preco": 3331.0,
    "cia": "Avianca",
    "escalas": 2
   }

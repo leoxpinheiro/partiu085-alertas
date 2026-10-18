@@ -1,11 +1,12 @@
 {
- "atualizado": "2026-10-18T06:50+00:00",
+ "atualizado": "2026-10-18T08:30+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "BSB",
   "FLN",
   "JDO",
+  "MAO",
   "MVD",
   "PAR",
   "RIO",
@@ -206,6 +207,26 @@
    "pista": false
   },
   {
+   "iata": "MAO",
+   "rt": {
+    "preco": 1833,
+    "ida": "2026-11-20",
+    "volta": "2026-11-26",
+    "paradas": 2,
+    "visto": "2026-10-18T07:10:49Z"
+   },
+   "ow": {
+    "preco": 1117,
+    "ida": "2027-01-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-16T13:21:16Z"
+   },
+   "rastreada": true,
+   "nome": "Manaus",
+   "pista": true
+  },
+  {
    "iata": "RIO",
    "rt": {
     "preco": 1920,
@@ -236,26 +257,6 @@
    },
    "rastreada": false,
    "nome": "SJP",
-   "pista": false
-  },
-  {
-   "iata": "MAO",
-   "rt": {
-    "preco": 2126,
-    "ida": "2026-11-20",
-    "volta": "2026-11-26",
-    "paradas": 1,
-    "visto": "2026-10-15T05:12:37Z"
-   },
-   "ow": {
-    "preco": 1117,
-    "ida": "2027-01-19",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-16T13:21:16Z"
-   },
-   "rastreada": true,
-   "nome": "Manaus",
    "pista": false
   },
   {
@@ -308,19 +309,6 @@
    },
    "rastreada": true,
    "nome": "Lisboa",
-   "pista": false
-  },
-  {
-   "iata": "JJD",
-   "ow": {
-    "preco": 2340,
-    "ida": "2027-01-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-14T07:55:13Z"
-   },
-   "rastreada": false,
-   "nome": "JJD",
    "pista": false
   },
   {

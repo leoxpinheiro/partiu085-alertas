@@ -1,0 +1,114 @@
+{
+ "tema": "RADAR PARTIU 085",
+ "foto": "hd-decolagem-1.jpg",
+ "voz": "pt-BR-AntonioNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "🇪🇺 DADOS DO NOSSO RADAR",
+  "titulo": "Europa saindo de Fortaleza por <em>menos de R$ 2 mil</em>?",
+  "sub": "Os menores preços que o radar achou de 6 a 17 de outubro.",
+  "chips": [
+   [
+    "10",
+    "cidades"
+   ],
+   [
+    "R$1.668",
+    "Lisboa"
+   ],
+   [
+    "1",
+    "parada"
+   ]
+  ],
+  "fala": "Dá pra ir pra Europa saindo de Fortaleza por menos de dois mil reais? Nosso radar diz que sim."
+ },
+ "regras": [
+  {
+   "n": "R$1.668",
+   "nsub": "Lisboa",
+   "icone": "🇵🇹",
+   "titulo": "Portugal: <em>Lisboa e Porto</em>.",
+   "itens": [
+    [
+     "ok",
+     "Lisboa: R$ 1.668 a ida"
+    ],
+    [
+     "ok",
+     "Porto: R$ 1.699 a ida"
+    ],
+    [
+     "in",
+     "Teve Lisboa sem escala por R$ 1.700"
+    ]
+   ],
+   "fala": "Lisboa saiu por mil seiscentos e sessenta e oito reais a ida. Porto, por mil seiscentos e noventa e nove."
+  },
+  {
+   "n": "R$1.690",
+   "nsub": "Barcelona",
+   "icone": "🇪🇸",
+   "titulo": "Espanha: <em>Madri e Barcelona</em>.",
+   "itens": [
+    [
+     "ok",
+     "Barcelona: R$ 1.690 a ida"
+    ],
+    [
+     "ok",
+     "Madri: R$ 1.694 a ida"
+    ]
+   ],
+   "fala": "Na Espanha, Barcelona e Madri ficaram na casa de mil e setecentos."
+  },
+  {
+   "n": "R$1.724",
+   "nsub": "Londres",
+   "icone": "🗼",
+   "titulo": "E ainda <em>Londres, Paris e Roma</em>.",
+   "itens": [
+    [
+     "ok",
+     "Londres: R$ 1.724"
+    ],
+    [
+     "ok",
+     "Frankfurt: R$ 1.786 · Milão: R$ 1.814"
+    ],
+    [
+     "ok",
+     "Paris: R$ 1.887 · Roma: R$ 1.908"
+    ]
+   ],
+   "fala": "E ainda teve Londres, Frankfurt, Milão, Paris e Roma, todas abaixo de dois mil a ida."
+  },
+  {
+   "n": "3.754",
+   "nsub": "ida e volta",
+   "icone": "🔁",
+   "titulo": "Somando a volta: <em>Porto e Madri abaixo de R$ 3.800</em>.",
+   "itens": [
+    [
+     "in",
+     "Porto: R$ 3.754 ida e volta"
+    ],
+    [
+     "in",
+     "Madri: R$ 3.759 ida e volta"
+    ],
+    [
+     "no",
+     "A maioria subiu em menos de 1 dia"
+    ]
+   ],
+   "fala": "Somando a volta, Porto e Madri ficaram abaixo de três mil e oitocentos. Mas atenção: a maioria subiu em menos de um dia."
+  }
+ ],
+ "fim": {
+  "titulo": "Quer saber quando <em>cair de novo</em>?",
+  "cta": "Alerta grátis no WhatsApp · link na bio",
+  "fonte": "Menores preços de ida vistos pelo radar Partiu 085 de 6 a 17/10/2026, saindo de Fortaleza, com até 1 parada, por pessoa. Preços mudam a toda hora.",
+  "fala": "Quer saber quando cair de novo? O alerta é de graça, no nosso grupo. Link na bio."
+ }
+}

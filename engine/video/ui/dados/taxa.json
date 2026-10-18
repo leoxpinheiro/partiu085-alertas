@@ -1,0 +1,92 @@
+{
+ "tema": "DINHEIRO ESQUECIDO",
+ "foto": "hd-mala-2.jpg",
+ "voz": "pt-BR-ThalitaMultilingualNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "💸 DINHEIRO ESQUECIDO",
+  "titulo": "Não vai mais viajar? <em>A taxa de embarque é sua.</em>",
+  "sub": "Vale até na passagem mais barata, sem reembolso.",
+  "chips": [
+   [
+    "100%",
+    "da taxa"
+   ],
+   [
+    "7 dias",
+    "prazo"
+   ],
+   [
+    "0",
+    "de multa nela"
+   ]
+  ],
+  "fala": "Comprou passagem e não vai mais viajar? Tem um dinheiro aí que é seu."
+ },
+ "regras": [
+  {
+   "n": "100%",
+   "nsub": "da taxa",
+   "icone": "🧾",
+   "titulo": "Cancelou? A taxa de embarque <em>volta inteira</em>.",
+   "itens": [
+    [
+     "ok",
+     "Vale até em tarifa sem reembolso"
+    ],
+    [
+     "ok",
+     "Vale também pra passagem com milhas"
+    ],
+    [
+     "in",
+     "A multa da companhia não pode incluir a taxa"
+    ]
+   ],
+   "fala": "Se você cancelar, a taxa de embarque volta inteira. Mesmo na tarifa mais barata, sem reembolso, e até em passagem com milhas."
+  },
+  {
+   "n": "7",
+   "nsub": "dias",
+   "icone": "⏱️",
+   "titulo": "A companhia tem <em>7 dias</em> pra devolver.",
+   "itens": [
+    [
+     "ok",
+     "Contados a partir do seu pedido"
+    ],
+    [
+     "in",
+     "No cartão, pode cair só na fatura seguinte"
+    ]
+   ],
+   "fala": "E a companhia tem sete dias pra devolver, contados do seu pedido."
+  },
+  {
+   "n": "PRINT",
+   "icone": "📸",
+   "titulo": "Antes de confirmar, <em>tira print</em>.",
+   "itens": [
+    [
+     "ok",
+     "Confere se a taxa está no valor devolvido"
+    ],
+    [
+     "ok",
+     "Anota o número do protocolo"
+    ],
+    [
+     "in",
+     "Negaram? Reclama no consumidor.gov.br"
+    ]
+   ],
+   "fala": "Antes de confirmar o cancelamento, tira print e confere se a taxa está no valor. Se negarem, reclama no consumidor ponto gov ponto br."
+  }
+ ],
+ "fim": {
+  "titulo": "Salva e <em>pega o que é seu</em>.",
+  "cta": "Manda pra quem desistiu de uma viagem",
+  "fonte": "Fonte: Resolução ANAC nº 400/2016, art. 29 (tarifas aeroportuárias devolvidas integralmente) e prazo de 7 dias. Informação geral, não é orientação jurídica.",
+  "fala": "Salva esse vídeo, e manda pra quem desistiu de uma viagem."
+ }
+}

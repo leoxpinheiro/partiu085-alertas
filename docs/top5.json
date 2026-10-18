@@ -1,16 +1,29 @@
 {
- "atualizado": "2026-10-18T19:15-03:00",
+ "atualizado": "2026-10-18T20:55-03:00",
  "itens": [
   {
    "k": "BHZ",
    "nome": "Belo Horizonte",
-   "menor": 530.0,
-   "rt": 1142.0,
-   "d": 0.2055652173913044,
+   "menor": 436.0,
+   "rt": 1048.0,
+   "d": 0.27095652173913043,
    "normal": 1438,
    "ida": "2026-11-12",
    "volta": "2026-11-14",
    "cia": "Gol",
+   "mes": "11",
+   "intl": false
+  },
+  {
+   "k": "AJU",
+   "nome": "Aracaju",
+   "menor": 824.0,
+   "rt": 1640.0,
+   "d": 0.15332989158492516,
+   "normal": 1937,
+   "ida": "2026-11-17",
+   "volta": "2026-11-28",
+   "cia": "LATAM",
    "mes": "11",
    "intl": false
   },
@@ -28,27 +41,14 @@
    "intl": false
   },
   {
-   "k": "AJU",
-   "nome": "Aracaju",
-   "menor": 824.0,
-   "rt": 1675.0,
-   "d": 0.1352607124419205,
-   "normal": 1937,
-   "ida": "2026-11-17",
-   "volta": "2026-12-12",
-   "cia": "LATAM",
-   "mes": "11",
-   "intl": false
-  },
-  {
    "k": "FRA",
    "nome": "Frankfurt",
    "menor": 1717.0,
-   "rt": 5044.0,
-   "d": 0.0628019323671497,
+   "rt": 5037.0,
+   "d": 0.0641025641025641,
    "normal": 5382,
    "ida": "2026-11-10",
-   "volta": "2026-11-14",
+   "volta": "2026-11-30",
    "cia": "Tap Air Portugal",
    "mes": "11",
    "intl": true
@@ -67,7 +67,7 @@
    "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_18/10_\n\n1️⃣ *Belo Horizonte* · ida e volta *R$ 1.142* (12/11 a 14/11) · 21% abaixo do normal\n2️⃣ *Florianópolis* · ida e volta *R$ 1.075* (06/11 a 09/11) · 15% abaixo do normal\n3️⃣ *Aracaju* · ida e volta *R$ 1.675* (17/11 a 12/12) · 14% abaixo do normal\n4️⃣ *Frankfurt* · ida e volta *R$ 5.044* (10/11 a 14/11)\n5️⃣ *Manaus* · ida e volta *R$ 1.888* (15/11 a 24/11)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_18/10_\n\n1️⃣ *Belo Horizonte* · ida e volta *R$ 1.048* (12/11 a 14/11) · 27% abaixo do normal\n2️⃣ *Aracaju* · ida e volta *R$ 1.640* (17/11 a 28/11) · 15% abaixo do normal\n3️⃣ *Florianópolis* · ida e volta *R$ 1.075* (06/11 a 09/11) · 15% abaixo do normal\n4️⃣ *Frankfurt* · ida e volta *R$ 5.037* (10/11 a 30/11)\n5️⃣ *Manaus* · ida e volta *R$ 1.888* (15/11 a 24/11)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
  "baratos": [
   {
    "k": "JDO",
@@ -90,6 +90,16 @@
    "d": -0.2137404580152671
   },
   {
+   "k": "BHZ",
+   "nome": "Belo Horizonte",
+   "rt": 1048.0,
+   "menor": 436.0,
+   "ida": "2026-11-12",
+   "volta": "2026-11-14",
+   "normal": 1438,
+   "d": 0.27095652173913043
+  },
+  {
    "k": "FLN",
    "nome": "Florianópolis",
    "rt": 1075.0,
@@ -102,22 +112,12 @@
   {
    "k": "BEL",
    "nome": "Belém",
-   "rt": 1117.0,
+   "rt": 1167.0,
    "menor": 561.0,
    "ida": "2026-11-06",
-   "volta": "2026-11-09",
+   "volta": "2026-12-01",
    "normal": 1179,
-   "d": 0.052586938083121315
-  },
-  {
-   "k": "BHZ",
-   "nome": "Belo Horizonte",
-   "rt": 1142.0,
-   "menor": 530.0,
-   "ida": "2026-11-12",
-   "volta": "2026-11-14",
-   "normal": 1438,
-   "d": 0.2055652173913044
+   "d": 0.010178117048346036
   },
   {
    "k": "VIX",
@@ -130,5 +130,5 @@
    "d": 0.011570247933884281
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_18/10_\n\n✈️ *Juazeiro do Norte* · *R$ 783* (21/11 a 23/11)\n✈️ *Recife* · *R$ 954* (20/11 a 01/12)\n✈️ *Florianópolis* · *R$ 1.075* (06/11 a 09/11)\n✈️ *Belém* · *R$ 1.117* (06/11 a 09/11)\n✈️ *Belo Horizonte* · *R$ 1.142* (12/11 a 14/11)\n✈️ *Vitória* · *R$ 1.196* (10/11 a 12/11)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_18/10_\n\n✈️ *Juazeiro do Norte* · *R$ 783* (21/11 a 23/11)\n✈️ *Recife* · *R$ 954* (20/11 a 01/12)\n✈️ *Belo Horizonte* · *R$ 1.048* (12/11 a 14/11)\n✈️ *Florianópolis* · *R$ 1.075* (06/11 a 09/11)\n✈️ *Belém* · *R$ 1.167* (06/11 a 01/12)\n✈️ *Vitória* · *R$ 1.196* (10/11 a 12/11)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085"
 }

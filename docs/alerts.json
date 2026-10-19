@@ -1,6 +1,123 @@
 {
- "atualizado": "2026-10-19T14:59-03:00",
+ "atualizado": "2026-10-19T15:52-03:00",
  "alertas": [
+  {
+   "id": "FOR-THE-2026-11-20-1792435968",
+   "criado": "2026-10-19T15:52-03:00",
+   "rota": "FOR-THE",
+   "destino": "THE",
+   "destino_nome": "Teresina",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 589,
+   "preco_volta": 528,
+   "preco_tipico": 1179,
+   "desconto": 0.5,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2026-11-20",
+   "volta": "2027-01-20",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-11-20",
+     "preco": 589
+    },
+    {
+     "dia": "2026-12-16",
+     "preco": 616
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2026-11-24",
+     "preco": 579
+    },
+    {
+     "dia": "2026-11-25",
+     "preco": 579
+    },
+    {
+     "dia": "2026-11-27",
+     "preco": 579
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 579
+    },
+    {
+     "dia": "2027-01-14",
+     "preco": 579
+    },
+    {
+     "dia": "2027-01-20",
+     "preco": 528
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "20"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "16"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Novembro 2026",
+     "dias": [
+      "24",
+      "25",
+      "27"
+     ]
+    },
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "09"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "14",
+      "20"
+     ]
+    }
+   ],
+   "meses": [
+    "nov",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMjBqBRIDRk9ScgUSA1RIRUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2011THE27111?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2026-11-20",
+    "volta": "2026-11-27",
+    "total": 1168,
+    "dias": 7
+   },
+   "base": {
+    "dias": 13,
+    "menor_visto": 430
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Teresina* (THE)\n💰 *R$ 589* o trecho\n🔁 Ida e volta: *R$ 1.168* (ida 20/11, volta 27/11 · 7 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Novembro/26: 20\n▸ Dezembro/26: 16\n\n🗓️ *VOLTA*\n▸ Novembro/26: 24, 25, 27\n▸ Dezembro/26: 09\n▸ Janeiro/27: 14, 20\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2011THE27111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-AJU-2026-11-18-1792432767",
    "criado": "2026-10-19T14:59-03:00",
@@ -86,7 +203,12 @@
    "recorde": true,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Aracaju* (AJU)\n💰 *R$ 824* o trecho\n🔁 Ida e volta: *R$ 1.710* (ida 08/12, volta 12/12 · 4 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n📉 _Menor preço que já vimos nesse trecho (13 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Novembro/26: 18, 19\n▸ Dezembro/26: 08\n\n🗓️ *VOLTA*\n▸ Dezembro/26: 12\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0812AJU12121?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-19T15:52-03:00",
+    "preco": 824,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-THE-2026-11-13-1792418283",

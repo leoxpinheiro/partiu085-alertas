@@ -1,14 +1,17 @@
 {
- "atualizado": "2026-10-19T17:28+00:00",
+ "atualizado": "2026-10-19T18:28+00:00",
  "pistas": [
   "BSB",
   "BUE",
+  "CWB",
   "JDO",
   "LIS",
   "MAO",
   "MVD",
   "PAR",
+  "REC",
   "SAO",
+  "SSA",
   "THE"
  ],
  "blogs": [
@@ -35,6 +38,19 @@
    },
    "rastreada": true,
    "nome": "Juazeiro do Norte",
+   "pista": true
+  },
+  {
+   "iata": "CWB",
+   "ow": {
+    "preco": 554,
+    "ida": "2027-02-17",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-19T18:13:30Z"
+   },
+   "rastreada": true,
+   "nome": "Curitiba",
    "pista": true
   },
   {
@@ -85,9 +101,16 @@
     "paradas": 0,
     "visto": "2026-10-18T11:32:56Z"
    },
+   "ow": {
+    "preco": 440,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-19T17:50:46Z"
+   },
    "rastreada": true,
    "nome": "Recife",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SAO",
@@ -120,7 +143,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "VAG",
@@ -259,19 +282,6 @@
    "rastreada": true,
    "nome": "Brasília",
    "pista": true
-  },
-  {
-   "iata": "LCA",
-   "ow": {
-    "preco": 2265,
-    "ida": "2026-11-24",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-19T15:58:04Z"
-   },
-   "rastreada": false,
-   "nome": "LCA",
-   "pista": false
   },
   {
    "iata": "LIS",

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-19T11:43+00:00",
+ "atualizado": "2026-10-19T12:27+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -115,7 +115,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 1052,
+    "preco": 1051,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -272,7 +272,7 @@
   {
    "iata": "CAI",
    "ow": {
-    "preco": 2368,
+    "preco": 2366,
     "ida": "2026-11-24",
     "volta": "",
     "paradas": 2,
@@ -305,7 +305,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2433,
+    "preco": 2432,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -314,6 +314,19 @@
    "rastreada": false,
    "nome": "PET",
    "pista": false
+  },
+  {
+   "iata": "BUE",
+   "rt": {
+    "preco": 2864,
+    "ida": "2026-12-14",
+    "volta": "2026-12-20",
+    "paradas": 1,
+    "visto": "2026-10-19T00:11:32Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
   },
   {
    "iata": "VLC",
@@ -327,19 +340,6 @@
    "rastreada": false,
    "nome": "VLC",
    "pista": false
-  },
-  {
-   "iata": "BUE",
-   "rt": {
-    "preco": 2866,
-    "ida": "2026-12-14",
-    "volta": "2026-12-20",
-    "paradas": 1,
-    "visto": "2026-10-19T00:11:32Z"
-   },
-   "rastreada": true,
-   "nome": "Buenos Aires",
-   "pista": true
   },
   {
    "iata": "CCS",
@@ -368,6 +368,19 @@
    "pista": false
   },
   {
+   "iata": "LED",
+   "ow": {
+    "preco": 4584,
+    "ida": "2027-04-16",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-19T11:16:50Z"
+   },
+   "rastreada": false,
+   "nome": "LED",
+   "pista": false
+  },
+  {
    "iata": "RAK",
    "rt": {
     "preco": 4587,
@@ -378,19 +391,6 @@
    },
    "rastreada": false,
    "nome": "RAK",
-   "pista": false
-  },
-  {
-   "iata": "LED",
-   "ow": {
-    "preco": 4587,
-    "ida": "2027-04-16",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-10-19T11:16:50Z"
-   },
-   "rastreada": false,
-   "nome": "LED",
    "pista": false
   },
   {

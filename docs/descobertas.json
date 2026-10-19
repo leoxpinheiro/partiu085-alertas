@@ -1,7 +1,6 @@
 {
- "atualizado": "2026-10-19T16:28+00:00",
+ "atualizado": "2026-10-19T17:28+00:00",
  "pistas": [
-  "BEL",
   "BSB",
   "BUE",
   "JDO",
@@ -9,7 +8,6 @@
   "MAO",
   "MVD",
   "PAR",
-  "RIO",
   "SAO",
   "THE"
  ],
@@ -40,19 +38,6 @@
    "pista": true
   },
   {
-   "iata": "BEL",
-   "ow": {
-    "preco": 538,
-    "ida": "2026-10-30",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-15T16:28:35Z"
-   },
-   "rastreada": true,
-   "nome": "Belém",
-   "pista": true
-  },
-  {
    "iata": "THE",
    "ow": {
     "preco": 745,
@@ -77,6 +62,19 @@
    "rastreada": true,
    "nome": "Montevidéu",
    "pista": true
+  },
+  {
+   "iata": "BEL",
+   "ow": {
+    "preco": 886,
+    "ida": "2026-10-27",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-17T17:59:18Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
+   "pista": false
   },
   {
    "iata": "REC",
@@ -114,7 +112,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 1048,
+    "preco": 1050,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -214,7 +212,7 @@
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "SJP",
@@ -245,11 +243,11 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 2237,
+    "preco": 2227,
     "ida": "2026-11-23",
     "volta": "2026-11-25",
-    "paradas": 1,
-    "visto": "2026-10-19T13:05:01Z"
+    "paradas": 2,
+    "visto": "2026-10-19T16:35:01Z"
    },
    "ow": {
     "preco": 689,
@@ -265,7 +263,7 @@
   {
    "iata": "LCA",
    "ow": {
-    "preco": 2260,
+    "preco": 2265,
     "ida": "2026-11-24",
     "volta": "",
     "paradas": 1,
@@ -291,7 +289,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2424,
+    "preco": 2429,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -304,7 +302,7 @@
   {
    "iata": "BUE",
    "rt": {
-    "preco": 2855,
+    "preco": 2862,
     "ida": "2026-12-14",
     "volta": "2026-12-20",
     "paradas": 1,
@@ -356,7 +354,7 @@
   {
    "iata": "NVT",
    "rt": {
-    "preco": 4313,
+    "preco": 4323,
     "ida": "2026-10-20",
     "volta": "2026-10-24",
     "paradas": 1,
@@ -369,7 +367,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 4569,
+    "preco": 4580,
     "ida": "2027-04-16",
     "volta": "",
     "paradas": 3,

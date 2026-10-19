@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-19T15:28+00:00",
+ "atualizado": "2026-10-19T16:28+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -11,7 +11,6 @@
   "PAR",
   "RIO",
   "SAO",
-  "SSA",
   "THE"
  ],
  "blogs": [
@@ -115,7 +114,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 1050,
+    "preco": 1048,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -123,7 +122,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "VAG",
@@ -246,7 +245,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 2241,
+    "preco": 2237,
     "ida": "2026-11-23",
     "volta": "2026-11-25",
     "paradas": 1,
@@ -264,6 +263,19 @@
    "pista": true
   },
   {
+   "iata": "LCA",
+   "ow": {
+    "preco": 2260,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-19T15:58:04Z"
+   },
+   "rastreada": false,
+   "nome": "LCA",
+   "pista": false
+  },
+  {
    "iata": "LIS",
    "ow": {
     "preco": 2339,
@@ -277,22 +289,9 @@
    "pista": true
   },
   {
-   "iata": "CAI",
-   "ow": {
-    "preco": 2363,
-    "ida": "2026-11-24",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-19T10:55:57Z"
-   },
-   "rastreada": false,
-   "nome": "CAI",
-   "pista": false
-  },
-  {
    "iata": "PET",
    "rt": {
-    "preco": 2428,
+    "preco": 2424,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -305,7 +304,7 @@
   {
    "iata": "BUE",
    "rt": {
-    "preco": 2860,
+    "preco": 2855,
     "ida": "2026-12-14",
     "volta": "2026-12-20",
     "paradas": 1,
@@ -355,9 +354,22 @@
    "pista": false
   },
   {
+   "iata": "NVT",
+   "rt": {
+    "preco": 4313,
+    "ida": "2026-10-20",
+    "volta": "2026-10-24",
+    "paradas": 1,
+    "visto": "2026-10-19T16:25:58Z"
+   },
+   "rastreada": true,
+   "nome": "Navegantes",
+   "pista": false
+  },
+  {
    "iata": "LED",
    "ow": {
-    "preco": 4577,
+    "preco": 4569,
     "ida": "2027-04-16",
     "volta": "",
     "paradas": 3,

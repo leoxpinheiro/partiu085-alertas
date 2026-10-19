@@ -196,9 +196,9 @@
    "motivo": "poucos voos (17 de ~90 dias)"
   },
   "MVD": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (33 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "SID": {
    "prioridade": "baixa",
@@ -258,7 +258,7 @@
   "PUJ": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (8 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "MDE": {
    "prioridade": "baixa",
@@ -271,8 +271,20 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-19T19:06-03:00",
+ "quando": "2026-10-19T20:06-03:00",
  "ultimo_lote": [
+  "BHZ",
+  "OPO",
+  "AJU",
+  "SLZ",
+  "SSA",
+  "BEL",
+  "CGB",
+  "CWB",
+  "AMS",
+  "MIA",
+  "FLN",
+  "IGU",
   "LIS",
   "SAO",
   "RIO",
@@ -283,18 +295,6 @@
   "GYN",
   "JDO",
   "ROM",
-  "PMW",
-  "MAD",
-  "NVT",
-  "MIL",
-  "FRA",
-  "BSB",
-  "PAR",
-  "PUJ",
-  "MDE",
-  "ORL",
-  "NAT",
-  "BPS",
-  "MVD"
+  "PMW"
  ]
 }

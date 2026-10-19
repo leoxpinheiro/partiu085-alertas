@@ -274,6 +274,23 @@ def tipico(chave: str, dias: list[dict], hist: dict) -> float | None:
     return max(base) if base else None
 
 
+def piso_normal(chave: str, hist: dict) -> float | None:
+    """O "melhor preço normal" da rota: mediana do MENOR preço de cada dia já varrido (sem contar hoje).
+    É com ele que se mede promoção de verdade. Comparar com a mediana de todas as datas (que inclui feriado
+    e alta temporada) fazia qualquer menor preço do dia parecer 40-50% mais barato."""
+    hoje = agora().date().isoformat()
+    mins = [h["minimo"] for h in hist.get(chave, []) if h["dia"] < hoje]
+    return statistics.median(mins) if len(mins) >= DIAS_ROTA_PROPRIA else None
+
+
+def classe_piso(desc: float) -> tuple[str, str]:
+    if desc >= 0.30:
+        return "imperdivel", "🔥 IMPERDÍVEL"
+    if desc >= 0.20:
+        return "otima", "⭐ ÓTIMA OPORTUNIDADE"
+    return "boa", "✅ BOA OPORTUNIDADE"
+
+
 def baratas(dias: list[dict], ref: float, tol: float, maximo: int = 12) -> list[dict]:
     """Datas até tol% acima do menor preço; no máximo `maximo` (as mais baratas), em ordem de data."""
     lim = ref * (1 + tol)
@@ -742,12 +759,16 @@ def rodada() -> None:
             continue
         if not t_ida or not t_volta:
             continue
+        pn = piso_normal(rota, hist)
+        if pn:  # régua de verdade: o menor preço normal da rota
+            t_ida = pn
         desc = 1 - m_ida["preco"] / t_ida
-        log(f"{rota}: {len(ida)}+{len(volta)} dias · menor ida {brl(m_ida['preco'])} · média {brl(t_ida)} · {desc:.0%}")
+        log(f"{rota}: {len(ida)}+{len(volta)} dias · menor ida {brl(m_ida['preco'])} · {'menor normal' if pn else 'média'} {brl(t_ida)} · {desc:.0%}")
         teto = float(r.get("teto") or 1e9)
         vip = bool(r.get("vip"))
         alvo = float(r.get("vip_alvo") or 0)
-        limiar = min(float(aj["desconto_minimo"]), float(aj.get("vip_desconto", 0.12))) if vip else float(aj["desconto_minimo"])
+        lim_base = float(aj.get("desconto_piso", 0.15)) if pn else float(aj["desconto_minimo"])
+        limiar = min(lim_base, float(aj.get("vip_desconto", 0.12))) if vip else lim_base
         no_alvo = vip and alvo > 0 and m_ida["preco"] <= alvo
         if (desc < limiar and not no_alvo) or m_ida["preco"] > teto:
             continue
@@ -785,7 +806,7 @@ def rodada() -> None:
         if r["tipo"] == "internacional" and (m_ida.get("escalas") or 0) >= 2 and desc < float(aj.get("desconto_2paradas", 0.30)) and not no_alvo:
             log(f"  2 paradas e só {desc:.0%} abaixo — sem alerta (filtro de qualidade)")
             continue
-        candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida,
+        candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida, "piso": bool(pn),
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
 
     if BASE_SAIDA:
@@ -836,14 +857,14 @@ def rodada() -> None:
     limite_n = 10 if ROTAS_AGORA else int(aj["max_alertas_por_rodada"])
     for c in candidatos[:limite_n]:
         r, mi, mv = c["r"], c["m_ida"], c["m_volta"]
-        k, ktxt = classe(c["desc"])
+        k, ktxt = classe_piso(c["desc"]) if c.get("piso") else classe(c["desc"])
         a = {
             "id": f"{c['rota']}-{mi['dia']}-{int(time.time())}",
             "criado": agora().isoformat(timespec="minutes"),
             "rota": c["rota"], "destino": r["iata"], "destino_nome": r["nome"], "tipo": r["tipo"],
             "modo": "trecho",
             "preco": round(mi["preco"]), "preco_volta": round(mv["preco"]),
-            "preco_tipico": round(c["t_ida"]), "desconto": round(c["desc"], 3),
+            "preco_tipico": round(c["t_ida"]), "desconto": round(c["desc"], 3), "regua": "menor_normal" if c.get("piso") else "media",
             "classe": k, "classe_txt": ktxt,
             "cia_nome": mi["cia"], "escalas": mi["escalas"],
             "ida": mi["dia"], "volta": mv["dia"],
@@ -877,6 +898,15 @@ def rodada() -> None:
             f"{len(a['datas_ida'])} idas · {len(a['datas_volta'])} voltas")
 
     reconferir(salvos, rotas, aj)
+    # alertas antigos (régua da média): marca os que não eram promoção de verdade, pra sair da fila de envio
+    for a in salvos:
+        if a.get("regua") or "fraco" in a:
+            continue
+        mins = [h["minimo"] for h in hist.get(a.get("rota", ""), []) if h["dia"] < a["criado"][:10]]
+        if len(mins) >= DIAS_ROTA_PROPRIA:
+            real = 1 - a["preco"] / statistics.median(mins)
+            a["desc_real"] = round(real, 3)
+            a["fraco"] = real < float(aj.get("desconto_piso", 0.15))
     corte = (agora() - timedelta(days=45)).isoformat()
     todos = novos + [a for a in salvos if a["criado"] >= corte]
     salvar_json(ALERTS_FILE, {"atualizado": agora().isoformat(timespec="minutes"), "alertas": todos})

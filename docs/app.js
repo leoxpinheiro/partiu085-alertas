@@ -392,7 +392,7 @@ function cardAlerta(a, compacto = false) {
     ${env ? `<div class="env-faixa">${ic("check", "i sm")}${S.marcados[a.id] === "descartado" ? "Tirado da fila (não enviado)" : "Enviado no grupo · " + new Date(S.marcados[a.id]).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</div>` : ""}
     <div class="al-top">
       <div><div class="rt">${ORIGEM} → ${esc(a.destino)} · ${a.tipo === "internacional" ? "INTERNACIONAL" : "NACIONAL"}</div><div class="ds">${esc(a.destino_nome)}</div></div>
-      <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}média ${brl(a.preco_tipico)}</small></div>
+      <div class="preco">${brl(a.preco)}<small>${trecho ? "o trecho · " : ""}${a.regua === "menor_normal" ? "normal" : "média"} ${brl(a.preco_tipico)}</small></div>
     </div>
     <div class="tags">
       <span class="tag ${k}">${ktxt} · −${pct(a.desconto)} ↘</span>
@@ -427,7 +427,7 @@ function notaAlerta(a) { return (a.desconto || 0) + (a.recorde ? .15 : 0) + (a.c
 function filaEnvio() {
   const lim = diaMenos(hojeISO(), 1);
   const lim4 = diaMenos(hojeISO(), 4), recente = c => c && c.status === "valendo" && Date.now() - new Date(c.quando).getTime() < 14 * 36e5;
-  const L = S.alertas.filter(a => !enviado(a) && ivBarato(a) && !(a.conferido && a.conferido.status === "subiu") && (a.criado.slice(0, 10) >= lim || (a.criado.slice(0, 10) >= lim4 && recente(a.conferido)))).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: a.criado.slice(0, 10) >= lim ? "Dinheiro" : "Repescagem", rep: a.criado.slice(0, 10) < lim, s: notaAlerta(a), t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
+  const L = S.alertas.filter(a => !enviado(a) && ivBarato(a) && !a.fraco && !(a.conferido && a.conferido.status === "subiu") && (a.criado.slice(0, 10) >= lim || (a.criado.slice(0, 10) >= lim4 && recente(a.conferido)))).map(a => ({ id: a.id, tipo: "dinheiro", cor: "#16A34A", rot: a.criado.slice(0, 10) >= lim ? "Dinheiro" : "Repescagem", rep: a.criado.slice(0, 10) < lim, s: notaAlerta(a), t: `${a.destino_nome}`, v: `${brl(a.preco)} o trecho`, d: a.desconto ? `−${pct(a.desconto)}` : "", q: a.criado, texto: a.texto, link: "#alertas" }));
   if (S.mi && !S.mi.carregando) (S.mi.ofertas || []).filter(o => o.ativa !== false && !enviado(o) && (o.busca_propria || o.publicado.slice(0, 10) >= lim)).forEach(o => L.push(o.busca_propria
     ? { id: o.id, tipo: "milhas", cor: COR_MOEDA[o.para] || "#FF7A00", rot: o.para, t: o.destino, v: `${milN(o.milhas)} milhas + ${taxaR(o.taxa)}`, d: o.desconto ? `−${pct(o.desconto)}` : "", q: o.publicado, texto: o.texto, link: "#milhas" }
     : { id: o.id, tipo: "promo", cor: "#8B5CF6", rot: MI_TIPOS[o.tipo], t: ([o.de, o.para].filter(Boolean).join(" → ") + (o.pct ? ` ${o.pct}%` : "")).trim() || (o.destino ? `${o.destino}${o.milhas ? " " + milN(o.milhas) + " milhas" : ""}` : o.titulo.slice(0, 40)), v: o.pct ? `${o.pct}%` : o.milhas ? `${milN(o.milhas)} milhas` : "", d: "", q: o.publicado, texto: o.texto, link: "#promocoes" }));
@@ -497,7 +497,7 @@ function diasIda(a) { return a.datas_ida ? a.datas_ida.map(d => d.dia) : (a.data
 function situacao(a) {
   if (S.marcados[a.id] === "descartado") return "fora";
   if (enviado(a)) return "enviados";
-  if ((a.conferido && a.conferido.status === "subiu") || !ivBarato(a)) return "fora";
+  if ((a.conferido && a.conferido.status === "subiu") || !ivBarato(a) || a.fraco) return "fora";
   return "enviar";
 }
 function filtrar() {
@@ -544,7 +544,7 @@ function pAlertas() {
     F.tipo && ["tipo", F.tipo === "nacional" ? "Nacional" : "Internacional"], F.reg && ["reg", F.reg],
     F.classe && ["classe", CLASSE_NOME[F.classe]], F.cia && ["cia", F.cia], F.mes && ["mes", `ida em ${MESES[+F.mes.slice(5, 7) - 1]}`],
     F.max && ["max", `até ${brl(+F.max)}`], F.direto && ["direto", "só direto"]].filter(Boolean);
-  const abas = [["enviar", "Pra enviar", "a fila de trabalho"], ["enviados", "Enviados", "já foram pro grupo"], ["fora", "Fora", "subiu, ida e volta caro ou tirado"], ["todos", "Todos", "tudo do período"]];
+  const abas = [["enviar", "Pra enviar", "a fila de trabalho"], ["enviados", "Enviados", "já foram pro grupo"], ["fora", "Fora", "subiu, não é promoção de verdade ou tirado"], ["todos", "Todos", "tudo do período"]];
   // agrupar por dia quando a ordem é "mais recentes"
   const h = hojeISO(), rotDia = d => d === h ? "Hoje" : d === diaMenos(h, 1) ? "Ontem" : new Date(d + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "2-digit" });
   let lista = "";

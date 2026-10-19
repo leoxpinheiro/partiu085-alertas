@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-19T01:15+00:00",
+ "atualizado": "2026-10-19T02:55+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -9,7 +9,6 @@
   "MVD",
   "PAR",
   "SAO",
-  "SSA",
   "THE"
  ],
  "blogs": [],
@@ -110,7 +109,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "VAG",
@@ -279,7 +278,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2432,
+    "preco": 2433,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -288,19 +287,6 @@
    "rastreada": false,
    "nome": "PET",
    "pista": false
-  },
-  {
-   "iata": "BUE",
-   "rt": {
-    "preco": 2865,
-    "ida": "2026-12-14",
-    "volta": "2026-12-20",
-    "paradas": 1,
-    "visto": "2026-10-19T00:11:32Z"
-   },
-   "rastreada": true,
-   "nome": "Buenos Aires",
-   "pista": true
   },
   {
    "iata": "VLC",
@@ -314,6 +300,19 @@
    "rastreada": false,
    "nome": "VLC",
    "pista": false
+  },
+  {
+   "iata": "BUE",
+   "rt": {
+    "preco": 2866,
+    "ida": "2026-12-14",
+    "volta": "2026-12-20",
+    "paradas": 1,
+    "visto": "2026-10-19T00:11:32Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
   },
   {
    "iata": "CCS",

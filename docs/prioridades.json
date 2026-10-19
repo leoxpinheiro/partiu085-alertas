@@ -23,7 +23,7 @@
   "SSA": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "motivo": "2 alertas em 30 dias"
   },
   "REC": {
    "prioridade": "turbo",
@@ -38,7 +38,7 @@
   "JPA": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "motivo": "2 alertas em 30 dias"
   },
   "MCZ": {
    "prioridade": "alta",
@@ -123,7 +123,7 @@
   "MAD": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "5 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "PAR": {
    "prioridade": "turbo",
@@ -196,9 +196,9 @@
    "motivo": "poucos voos (4 de ~90 dias)"
   },
   "MVD": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (31 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -271,24 +271,24 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-18T22:15-03:00",
+ "quando": "2026-10-18T23:55-03:00",
  "ultimo_lote": [
-  "MVD",
-  "FLN",
-  "IGU",
-  "LIS",
-  "SAO",
-  "RIO",
-  "REC",
-  "MAO",
-  "VIX",
-  "ROM",
-  "GYN",
-  "JDO",
-  "PMW",
-  "MAD",
-  "MCZ",
-  "SSA",
-  "JPA"
+  "BCN",
+  "VCP",
+  "NVT",
+  "PAR",
+  "BSB",
+  "BHZ",
+  "OPO",
+  "AJU",
+  "SLZ",
+  "BEL",
+  "CGB",
+  "CWB",
+  "AMS",
+  "MIA",
+  "SCL",
+  "SDQ",
+  "POA"
  ]
 }

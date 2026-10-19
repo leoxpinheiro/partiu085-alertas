@@ -1,56 +1,57 @@
-Lote: NVT(t), FRA(a), PAR(t), BSB(t), BHZ(t), OPO(t), AJU(t), SLZ(t), BEL(t), CGB(t), CWB(t), AMS(t), NYC(n), MIA(a), BUE(a), NAT(a), ORL(b)
-Lote: NVT, FRA, PAR, BSB, BHZ, OPO, AJU, SLZ, BEL, CGB, CWB, AMS, NYC, MIA, BUE, NAT, ORL
-FOR-NVT: 91+91 dias · menor ida R$ 725 · média R$ 1.165 · 38%
-  FOR-FRA: 66 datas com preço · 25 sem resposta (FlightsNotFound 1, IndexError 24)
-  FRA-FOR: 62 datas com preço · 29 sem resposta (IndexError 29)
-FOR-FRA: 66+62 dias · menor ida R$ 1.717 · média R$ 3.726 · 54%
-  FOR-PAR: 82 datas com preço · 9 sem resposta (IndexError 9)
-FOR-PAR: 82+91 dias · menor ida R$ 1.906 · média R$ 3.656 · 48%
-FOR-BSB: 91+91 dias · menor ida R$ 756 · média R$ 1.284 · 41%
-  ida e volta R$ 1.731 acima do teto da região (R$ 1.549) — sem alerta
-FOR-BHZ: 91+91 dias · menor ida R$ 436 · média R$ 898 · 51%
-  FOR-OPO: 67 datas com preço · 24 sem resposta (IndexError 24)
-FOR-OPO: 67+91 dias · menor ida R$ 1.735 · média R$ 3.686 · 53%
-  FOR-AJU: 83 datas com preço · 8 sem resposta (IndexError 8)
-  AJU-FOR: 70 datas com preço · 19 sem resposta (IndexError 18, FlightsNotFound 1)
-FOR-AJU: 78+65 dias · menor ida R$ 824 · média R$ 1.698 · 51%
-  SLZ-FOR: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
-FOR-SLZ: 69+74 dias · menor ida R$ 719 · média R$ 1.275 · 44%
-FOR-BEL: 91+91 dias · menor ida R$ 561 · média R$ 1.084 · 48%
-  FOR-CGB: 87 datas com preço · 4 sem resposta (IndexError 4)
-  CGB-FOR: 83 datas com preço · 8 sem resposta (IndexError 8)
-FOR-CGB: 86+83 dias · menor ida R$ 598 · média R$ 1.104 · 46%
-  ida e volta R$ 1.503 acima do teto da região (R$ 1.246) — sem alerta
-  FOR-CWB: 89 datas com preço · 2 sem resposta (IndexError 2)
-  CWB-FOR: 61 datas com preço · 30 sem resposta (IndexError 30)
-FOR-CWB: 89+61 dias · menor ida R$ 592 · média R$ 965 · 39%
-  ida e volta R$ 1.255 acima do teto da região (R$ 1.024) — sem alerta
-  FOR-AMS: 80 datas com preço · 11 sem resposta (IndexError 11)
-  AMS-FOR: 87 datas com preço · 4 sem resposta (IndexError 4)
-FOR-AMS: 80+87 dias · menor ida R$ 2.031 · média R$ 4.202 · 52%
-  FOR-NYC: 76 datas com preço · 15 sem resposta (IndexError 15)
-FOR-NYC: 76+91 dias · menor ida R$ 3.210 · média R$ 4.235 · 24%
-  2 paradas e só 24% abaixo — sem alerta (filtro de qualidade)
-  FOR-MIA: 89 datas com preço · 2 sem resposta (IndexError 2)
-FOR-MIA: 89+91 dias · menor ida R$ 2.518 · média R$ 3.392 · 26%
-  FOR-BUE: 88 datas com preço · 3 sem resposta (IndexError 3)
-  BUE-FOR: 88 datas com preço · 3 sem resposta (IndexError 3)
-FOR-BUE: 88+88 dias · menor ida R$ 1.298 · média R$ 1.506 · 14%
-FOR-NAT: 88+79 dias · menor ida R$ 1.035 · média R$ 1.977 · 48%
-  ! FOR-ORL: o Google não respondeu nas primeiras datas, pulando
-  FOR-ORL: 0 datas com preço · 12 sem resposta (IndexError 12)
-FOR-ORL: sem dados suficientes (ida 0, volta 0)
-  em descanso (alerta recente): FOR-NVT
-  ✓ FOR-BHZ R$ 436/trecho (-51%) 1 idas · 1 voltas
-  ✓ FOR-SLZ R$ 719/trecho (-44%) 3 idas · 1 voltas
-  ✓ FOR-MIA R$ 2.518/trecho (-26%) 10 idas · 1 voltas
-  conferido IGU 2026-11-08: R$ 625 (valendo)
-  conferido GYN 2026-11-07: R$ 630 (valendo)
-  conferido AMS 2026-10-29: R$ 2.031 (valendo)
-  ! reconferir CUN: IndexError
-  conferido AJU 2026-11-17: R$ 824 (valendo)
-  conferido FRA 2026-11-10: R$ 1.717 (valendo)
+Pistas da Travelpayouts: MVD
+Lote: MVD(n), FLN(t), IGU(t), LIS(t), SAO(t), RIO(t), REC(t), MAO(t), VIX(t), ROM(t), GYN(t), JDO(t), PMW(t), MAD(t), MCZ(a), SSA(a), JPA(a)
+Lote: MVD, FLN, IGU, LIS, SAO, RIO, REC, MAO, VIX, ROM, GYN, JDO, PMW, MAD, MCZ, SSA, JPA
+  FOR-MVD: 31 datas com preço · 60 sem resposta (IndexError 60)
+  MVD-FOR: 27 datas com preço · 64 sem resposta (IndexError 64)
+FOR-MVD: 31+27 dias · menor ida R$ 1.217 · média R$ 1.405 · 13%
+h2 connection driver error: connection reset
+  FOR-FLN: 57 datas com preço · 34 sem resposta (IndexError 34)
+  FLN-FOR: 70 datas com preço · 21 sem resposta (IndexError 21)
+FOR-FLN: 57+70 dias · menor ida R$ 561 · média R$ 1.053 · 47%
+FOR-IGU: 91+91 dias · menor ida R$ 625 · média R$ 1.055 · 41%
+FOR-LIS: 91+91 dias · menor ida R$ 1.697 · média R$ 3.031 · 44%
+FOR-SAO: 91+91 dias · menor ida R$ 628 · média R$ 877 · 28%
+FOR-RIO: 91+91 dias · menor ida R$ 704 · média R$ 1.069 · 34%
+  ida e volta R$ 1.556 acima do teto da região (R$ 1.224) — sem alerta
+FOR-REC: 91+91 dias · menor ida R$ 488 · média R$ 1.126 · 57%
+  ida e volta R$ 954 acima do teto da região (R$ 862) — sem alerta
+  MAO-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-MAO: 91+90 dias · menor ida R$ 946 · média R$ 1.303 · 27%
+  FOR-VIX: 89 datas com preço · 2 sem resposta (IndexError 2)
+FOR-VIX: 89+91 dias · menor ida R$ 601 · média R$ 895 · 33%
+  FOR-ROM: 75 datas com preço · 16 sem resposta (IndexError 16)
+FOR-ROM: 75+91 dias · menor ida R$ 1.938 · média R$ 4.181 · 54%
+FOR-GYN: 91+91 dias · menor ida R$ 630 · média R$ 1.153 · 45%
+  JDO-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-JDO: 38+67 dias · menor ida R$ 397 · média R$ 2.270 · 83%
+  ida e volta R$ 630 acima do teto da região (R$ 610) — sem alerta
+h2 connection driver error: connection reset
+  FOR-PMW: 88 datas com preço · 2 sem resposta (IndexError 2)
+  PMW-FOR: 84 datas com preço · 4 sem resposta (IndexError 4)
+FOR-PMW: 86+83 dias · menor ida R$ 721 · média R$ 1.346 · 46%
+  ida e volta R$ 1.751 acima do teto da região (R$ 1.539) — sem alerta
+  FOR-MAD: 57 datas com preço · 34 sem resposta (IndexError 34)
+  MAD-FOR: 74 datas com preço · 17 sem resposta (IndexError 17)
+FOR-MAD: 57+74 dias · menor ida R$ 1.717 · média R$ 3.485 · 51%
+  MCZ-FOR: 87 datas com preço · 4 sem resposta (IndexError 4)
+FOR-MCZ: 89+85 dias · menor ida R$ 816 · média R$ 1.522 · 46%
+  ida e volta R$ 1.522 acima do teto da região (R$ 1.493) — sem alerta
+  FOR-SSA: 83 datas com preço · 6 sem resposta (IndexError 6)
+  SSA-FOR: 89 datas com preço · 1 sem resposta (IndexError 1)
+FOR-SSA: 81+83 dias · menor ida R$ 588 · média R$ 1.486 · 60%
+  JPA-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-JPA: 89+86 dias · menor ida R$ 826 · média R$ 1.291 · 36%
+  em descanso (alerta recente): FOR-FLN
+  ✓ FOR-SSA R$ 588/trecho (-60%) 2 idas · 1 voltas
+  ✓ FOR-MAD R$ 1.717/trecho (-51%) 1 idas · 2 voltas
+  ✓ FOR-JPA R$ 826/trecho (-36%) 6 idas · 3 voltas
   conferido BHZ 2026-11-12: R$ 436 (valendo)
-  conferido BOG 2026-11-08: R$ 2.767 (valendo)
+  conferido SLZ 2026-11-06: R$ 719 (valendo)
+  conferido MIA 2026-11-03: R$ 2.548 (valendo)
+  conferido MAO 2026-11-15: R$ 946 (valendo)
+  conferido VIX 2026-11-10: R$ 601 (valendo)
+  ! reconferir PAR: FlightsNotFound
+  conferido CUN 2026-11-05: R$ 2.585 (valendo)
+  ! reconferir ROM: IndexError
 
-Rodada: 17 rotas · 3 candidatos · 3 alertas · 1201s
+Rodada: 17 rotas · 3 candidatos · 3 alertas · 1264s

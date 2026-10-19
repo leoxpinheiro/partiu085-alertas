@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-19T20:29+00:00",
+ "atualizado": "2026-10-19T21:29+00:00",
  "pistas": [
   "BSB",
   "BUE",
@@ -43,7 +43,7 @@
   {
    "iata": "CWB",
    "ow": {
-    "preco": 554,
+    "preco": 553,
     "ida": "2027-02-17",
     "volta": "",
     "paradas": 1,
@@ -102,7 +102,7 @@
     "visto": "2026-10-18T11:32:56Z"
    },
    "ow": {
-    "preco": 440,
+    "preco": 439,
     "ida": "2026-11-24",
     "volta": "",
     "paradas": 0,
@@ -135,7 +135,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 1050,
+    "preco": 1049,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -207,7 +207,7 @@
     "visto": "2026-10-18T07:10:49Z"
    },
    "ow": {
-    "preco": 1075,
+    "preco": 1074,
     "ida": "2027-01-19",
     "volta": "",
     "paradas": 1,
@@ -227,7 +227,7 @@
     "visto": "2026-10-16T23:56:26Z"
    },
    "ow": {
-    "preco": 613,
+    "preco": 612,
     "ida": "2027-03-05",
     "volta": "",
     "paradas": 0,
@@ -251,26 +251,13 @@
    "pista": false
   },
   {
-   "iata": "POA",
-   "rt": {
-    "preco": 2197,
-    "ida": "2026-12-08",
-    "volta": "2027-01-14",
-    "paradas": 2,
-    "visto": "2026-10-17T02:10:07Z"
-   },
-   "rastreada": true,
-   "nome": "Porto Alegre",
-   "pista": false
-  },
-  {
    "iata": "BSB",
    "rt": {
-    "preco": 2226,
+    "preco": 2112,
     "ida": "2026-11-23",
     "volta": "2026-11-25",
-    "paradas": 2,
-    "visto": "2026-10-19T16:35:01Z"
+    "paradas": 1,
+    "visto": "2026-10-19T20:46:16Z"
    },
    "ow": {
     "preco": 689,
@@ -282,6 +269,19 @@
    "rastreada": true,
    "nome": "Brasília",
    "pista": true
+  },
+  {
+   "iata": "POA",
+   "rt": {
+    "preco": 2197,
+    "ida": "2026-12-08",
+    "volta": "2027-01-14",
+    "paradas": 2,
+    "visto": "2026-10-17T02:10:07Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
+   "pista": false
   },
   {
    "iata": "LIS",
@@ -299,7 +299,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2429,
+    "preco": 2426,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -312,7 +312,7 @@
   {
    "iata": "BUE",
    "rt": {
-    "preco": 2861,
+    "preco": 2858,
     "ida": "2026-12-14",
     "volta": "2026-12-20",
     "paradas": 1,
@@ -364,7 +364,7 @@
   {
    "iata": "NVT",
    "rt": {
-    "preco": 4322,
+    "preco": 4317,
     "ida": "2026-10-20",
     "volta": "2026-10-24",
     "paradas": 1,
@@ -377,7 +377,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 4579,
+    "preco": 4573,
     "ida": "2027-04-16",
     "volta": "",
     "paradas": 3,
@@ -431,6 +431,19 @@
    },
    "rastreada": true,
    "nome": "Madri",
+   "pista": false
+  },
+  {
+   "iata": "TIA",
+   "rt": {
+    "preco": 5696,
+    "ida": "2027-06-01",
+    "volta": "2027-06-07",
+    "paradas": 2,
+    "visto": "2026-10-19T21:15:49Z"
+   },
+   "rastreada": false,
+   "nome": "TIA",
    "pista": false
   },
   {

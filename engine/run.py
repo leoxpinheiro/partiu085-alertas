@@ -806,6 +806,10 @@ def rodada() -> None:
         if r["tipo"] == "internacional" and (m_ida.get("escalas") or 0) >= 2 and desc < float(aj.get("desconto_2paradas", 0.30)) and not no_alvo:
             log(f"  2 paradas e só {desc:.0%} abaixo — sem alerta (filtro de qualidade)")
             continue
+        # promoção tem que ser usável: 2+ datas de ida e uma ida+volta casada de 3 a 21 dias
+        if not vip and (len(d_ida) < int(aj.get("min_datas_ida", 2)) or not casar_ida_volta(d_ida, d_volta)):
+            log(f"  só {len(d_ida)} data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)")
+            continue
         candidatos.append({"r": r, "rota": rota, "desc": desc, "t_ida": t_ida, "piso": bool(pn),
                            "m_ida": m_ida, "m_volta": m_volta, "d_ida": d_ida, "d_volta": d_volta})
 

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-20T13:35-03:00",
+ "atualizado": "2026-10-20T14:06-03:00",
  "itens": [
   {
    "k": "THE",
@@ -11,6 +11,19 @@
    "ida": "2026-12-16",
    "volta": "2027-01-11",
    "cia": "LATAM",
+   "mes": "12",
+   "intl": false
+  },
+  {
+   "k": "SSA",
+   "nome": "Salvador",
+   "menor": 465.0,
+   "rt": 926.0,
+   "d": 0.3112681294161398,
+   "normal": 1344,
+   "ida": "2026-12-14",
+   "volta": "2026-12-17",
+   "cia": "Gol",
    "mes": "12",
    "intl": false
   },
@@ -28,6 +41,19 @@
    "intl": false
   },
   {
+   "k": "SLZ",
+   "nome": "São Luís",
+   "menor": 465.0,
+   "rt": 1117.0,
+   "d": 0.16517189835575485,
+   "normal": 1338,
+   "ida": "2027-01-19",
+   "volta": "2027-01-22",
+   "cia": "LATAM",
+   "mes": "01",
+   "intl": false
+  },
+  {
    "k": "MAD",
    "nome": "Madri",
    "menor": 1711.0,
@@ -39,35 +65,9 @@
    "cia": "Tap Air Portugal",
    "mes": "12",
    "intl": true
-  },
-  {
-   "k": "BSB",
-   "nome": "Brasília",
-   "menor": 629.0,
-   "rt": 1247.0,
-   "d": 0.1470588235294118,
-   "normal": 1462,
-   "ida": "2026-12-25",
-   "volta": "2027-01-13",
-   "cia": "Azul",
-   "mes": "12",
-   "intl": false
-  },
-  {
-   "k": "JDO",
-   "nome": "Juazeiro do Norte",
-   "menor": 257.0,
-   "rt": 503.0,
-   "d": 0.13425129087779686,
-   "normal": 581,
-   "ida": "2027-01-19",
-   "volta": "2027-01-22",
-   "cia": "LATAM",
-   "mes": "01",
-   "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_20/10_\n\n1️⃣ *Teresina* · ida e volta *R$ 1.042* (16/12 a 11/01) · 36% abaixo do normal\n2️⃣ *Porto Seguro* · ida e volta *R$ 1.722* (17/01 a 21/01) · 27% abaixo do normal\n3️⃣ *Madri* · ida e volta *R$ 3.779* (03/12 a 05/12) · 16% abaixo do normal\n4️⃣ *Brasília* · ida e volta *R$ 1.247* (25/12 a 13/01) · 15% abaixo do normal\n5️⃣ *Juazeiro do Norte* · ida e volta *R$ 503* (19/01 a 22/01) · 13% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_20/10_\n\n1️⃣ *Teresina* · ida e volta *R$ 1.042* (16/12 a 11/01) · 36% abaixo do normal\n2️⃣ *Salvador* · ida e volta *R$ 926* (14/12 a 17/12) · 31% abaixo do normal\n3️⃣ *Porto Seguro* · ida e volta *R$ 1.722* (17/01 a 21/01) · 27% abaixo do normal\n4️⃣ *São Luís* · ida e volta *R$ 1.117* (19/01 a 22/01) · 17% abaixo do normal\n5️⃣ *Madri* · ida e volta *R$ 3.779* (03/12 a 05/12) · 16% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
  "baratos": [
   {
    "k": "JDO",
@@ -90,6 +90,16 @@
    "d": -0.11380145278450371
   },
   {
+   "k": "SSA",
+   "nome": "Salvador",
+   "rt": 926.0,
+   "menor": 465.0,
+   "ida": "2026-12-14",
+   "volta": "2026-12-17",
+   "normal": 1344,
+   "d": 0.3112681294161398
+  },
+  {
    "k": "THE",
    "nome": "Teresina",
    "rt": 1042.0,
@@ -102,12 +112,12 @@
   {
    "k": "SLZ",
    "nome": "São Luís",
-   "rt": 1165.0,
-   "menor": 635.0,
-   "ida": "2026-12-14",
-   "volta": "2027-01-01",
+   "rt": 1117.0,
+   "menor": 465.0,
+   "ida": "2027-01-19",
+   "volta": "2027-01-22",
    "normal": 1338,
-   "d": 0.12929745889387145
+   "d": 0.16517189835575485
   },
   {
    "k": "VIX",
@@ -118,17 +128,7 @@
    "volta": "2026-11-16",
    "normal": 1210,
    "d": 0.016528925619834656
-  },
-  {
-   "k": "BEL",
-   "nome": "Belém",
-   "rt": 1217.0,
-   "menor": 611.0,
-   "ida": "2026-11-19",
-   "volta": "2026-11-23",
-   "normal": 1179,
-   "d": -0.03223070398642913
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_20/10_\n\n✈️ *Juazeiro do Norte* · *R$ 503* (19/01 a 22/01)\n✈️ *Recife* · *R$ 920* (19/11 a 01/12)\n✈️ *Teresina* · *R$ 1.042* (16/12 a 11/01)\n✈️ *São Luís* · *R$ 1.165* (14/12 a 01/01)\n✈️ *Vitória* · *R$ 1.190* (12/11 a 16/11)\n✈️ *Belém* · *R$ 1.217* (19/11 a 23/11)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_20/10_\n\n✈️ *Juazeiro do Norte* · *R$ 503* (19/01 a 22/01)\n✈️ *Recife* · *R$ 920* (19/11 a 01/12)\n✈️ *Salvador* · *R$ 926* (14/12 a 17/12)\n✈️ *Teresina* · *R$ 1.042* (16/12 a 11/01)\n✈️ *São Luís* · *R$ 1.117* (19/01 a 22/01)\n✈️ *Vitória* · *R$ 1.190* (12/11 a 16/11)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085"
 }

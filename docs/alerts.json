@@ -1,6 +1,88 @@
 {
- "atualizado": "2026-10-19T22:37-03:00",
+ "atualizado": "2026-10-19T23:36-03:00",
  "alertas": [
+  {
+   "id": "FOR-NAT-2026-12-24-1792463783",
+   "criado": "2026-10-19T23:36-03:00",
+   "rota": "FOR-NAT",
+   "destino": "NAT",
+   "destino_nome": "Natal",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 563,
+   "preco_volta": 870,
+   "preco_tipico": 942,
+   "desconto": 0.402,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2026-12-24",
+   "volta": "2027-01-18",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-24",
+     "preco": 563
+    },
+    {
+     "dia": "2027-01-01",
+     "preco": 563
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-18",
+     "preco": 870
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "24"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "01"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "18"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMjRqBRIDRk9ScgUSA05BVEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0101NAT18011?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-01",
+    "volta": "2027-01-18",
+    "total": 1433,
+    "dias": 17
+   },
+   "base": {
+    "dias": 13,
+    "menor_visto": 563
+   },
+   "recorde": true,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Natal* (NAT)\n💰 *R$ 563* o trecho\n🔁 Ida e volta: *R$ 1.433* (ida 01/01, volta 18/01 · 17 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (13 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 24\n▸ Janeiro/27: 01\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 18\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0101NAT18011?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-THE-2026-11-11-1792460218",
    "criado": "2026-10-19T22:36-03:00",
@@ -151,7 +233,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Teresina* (THE)\n💰 *R$ 510* o trecho\n🔁 Ida e volta: *R$ 1.011* (ida 20/11, volta 27/11 · 7 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Novembro/26: 11, 20, 27\n▸ Dezembro/26: 16\n\n🗓️ *VOLTA*\n▸ Novembro/26: 14, 16, 17, 21, 24, 25, 27\n▸ Dezembro/26: 01, 06\n▸ Janeiro/27: 14, 20\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2011THE27111?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-19T23:36-03:00",
+    "preco": 789,
+    "status": "subiu"
+   }
   },
   {
    "id": "FOR-AJU-2026-11-17-1792456631",

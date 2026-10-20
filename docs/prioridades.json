@@ -58,7 +58,7 @@
   "THE": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "5 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BEL": {
    "prioridade": "turbo",
@@ -196,9 +196,9 @@
    "motivo": "poucos voos (17 de ~90 dias)"
   },
   "MVD": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (29 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -271,30 +271,30 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-19T22:06-03:00",
+ "quando": "2026-10-19T23:06-03:00",
  "ultimo_lote": [
+  "BHZ",
+  "OPO",
+  "AJU",
+  "SLZ",
+  "SSA",
+  "BEL",
+  "BUE",
+  "MCZ",
+  "JPA",
+  "VCP",
+  "BCN",
+  "POA",
+  "LON",
+  "MIL",
+  "NAT",
+  "FRA",
   "CGB",
   "CWB",
   "AMS",
   "MIA",
   "FLN",
   "IGU",
-  "LIS",
-  "SAO",
-  "RIO",
-  "THE",
-  "REC",
-  "MAO",
-  "VIX",
-  "GYN",
-  "JDO",
-  "ROM",
-  "PMW",
-  "MAD",
-  "NVT",
-  "BSB",
-  "PAR",
-  "BPS",
-  "MVD"
+  "SCL"
  ]
 }

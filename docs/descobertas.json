@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-20T16:36+00:00",
+ "atualizado": "2026-10-20T17:30+00:00",
  "pistas": [
   "BUE",
   "CWB",
@@ -55,11 +55,11 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 814,
+    "preco": 806,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-17T05:14:16Z"
+    "visto": "2026-10-20T16:21:21Z"
    },
    "rastreada": true,
    "nome": "Montevidéu",
@@ -147,7 +147,7 @@
   {
    "iata": "IGU",
    "rt": {
-    "preco": 1374,
+    "preco": 1373,
     "ida": "2027-03-13",
     "volta": "2027-03-20",
     "paradas": 1,
@@ -171,6 +171,19 @@
    "pista": false
   },
   {
+   "iata": "UDI",
+   "ow": {
+    "preco": 1809,
+    "ida": "2027-01-03",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-17T05:25:23Z"
+   },
+   "rastreada": true,
+   "nome": "Uberlândia",
+   "pista": false
+  },
+  {
    "iata": "MAO",
    "rt": {
     "preco": 1834,
@@ -178,6 +191,13 @@
     "volta": "2026-11-26",
     "paradas": 2,
     "visto": "2026-10-18T07:10:49Z"
+   },
+   "ow": {
+    "preco": 1070,
+    "ida": "2027-01-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-19T19:12:52Z"
    },
    "rastreada": true,
    "nome": "Manaus",
@@ -206,7 +226,7 @@
   {
    "iata": "POA",
    "rt": {
-    "preco": 2102,
+    "preco": 2100,
     "ida": "2026-11-28",
     "volta": "2027-01-17",
     "paradas": 2,
@@ -256,6 +276,19 @@
    "pista": true
   },
   {
+   "iata": "VLC",
+   "ow": {
+    "preco": 2865,
+    "ida": "2027-03-27",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-17T10:29:58Z"
+   },
+   "rastreada": false,
+   "nome": "VLC",
+   "pista": false
+  },
+  {
    "iata": "CCS",
    "rt": {
     "preco": 3438,
@@ -269,13 +302,33 @@
    "pista": false
   },
   {
+   "iata": "PEE",
+   "ow": {
+    "preco": 3791,
+    "ida": "2026-11-17",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-17T19:10:27Z"
+   },
+   "rastreada": false,
+   "nome": "PEE",
+   "pista": false
+  },
+  {
    "iata": "LIS",
    "rt": {
-    "preco": 4235,
+    "preco": 4231,
     "ida": "2026-10-28",
     "volta": "2026-11-09",
     "paradas": 1,
     "visto": "2026-10-20T01:02:57Z"
+   },
+   "ow": {
+    "preco": 2339,
+    "ida": "2026-12-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-18T00:06:27Z"
    },
    "rastreada": true,
    "nome": "Lisboa",
@@ -292,6 +345,19 @@
    },
    "rastreada": true,
    "nome": "Navegantes",
+   "pista": false
+  },
+  {
+   "iata": "LED",
+   "ow": {
+    "preco": 4557,
+    "ida": "2027-04-16",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-19T11:16:50Z"
+   },
+   "rastreada": false,
+   "nome": "LED",
    "pista": false
   },
   {
@@ -316,6 +382,13 @@
     "paradas": 1,
     "visto": "2026-10-16T21:39:37Z"
    },
+   "ow": {
+    "preco": 2678,
+    "ida": "2026-10-25",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-17T03:32:01Z"
+   },
    "rastreada": true,
    "nome": "Paris",
    "pista": true
@@ -336,7 +409,7 @@
   {
    "iata": "TIA",
    "rt": {
-    "preco": 5655,
+    "preco": 5650,
     "ida": "2027-06-01",
     "volta": "2027-06-07",
     "paradas": 2,
@@ -357,6 +430,19 @@
    },
    "rastreada": true,
    "nome": "Miami",
+   "pista": false
+  },
+  {
+   "iata": "YTO",
+   "ow": {
+    "preco": 5806,
+    "ida": "2027-01-05",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-17T19:53:48Z"
+   },
+   "rastreada": false,
+   "nome": "YTO",
    "pista": false
   },
   {

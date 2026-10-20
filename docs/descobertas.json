@@ -1,12 +1,11 @@
 {
- "atualizado": "2026-10-20T17:30+00:00",
+ "atualizado": "2026-10-20T18:31+00:00",
  "pistas": [
   "BUE",
   "CWB",
   "IGU",
   "LIS",
   "MAO",
-  "MVD",
   "PAR",
   "REC",
   "RIO",
@@ -14,6 +13,11 @@
   "THE"
  ],
  "blogs": [
+  {
+   "iata": "LIS",
+   "fonte": "Google Notícias",
+   "titulo": "Europa de executiva! Baixou: voos para Lisboa desde R$ 8.678 ida e volta saindo de Fortaleza ou R$ 10.161 de outras cidades - Melhores Destinos"
+  },
   {
    "iata": "SAO",
    "fonte": "Google Notícias",
@@ -55,7 +59,7 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 806,
+    "preco": 805,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 1,
@@ -63,7 +67,7 @@
    },
    "rastreada": true,
    "nome": "Montevidéu",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BEL",
@@ -147,7 +151,7 @@
   {
    "iata": "IGU",
    "rt": {
-    "preco": 1373,
+    "preco": 1372,
     "ida": "2027-03-13",
     "volta": "2027-03-20",
     "paradas": 1,
@@ -226,7 +230,7 @@
   {
    "iata": "POA",
    "rt": {
-    "preco": 2100,
+    "preco": 2099,
     "ida": "2026-11-28",
     "volta": "2027-01-17",
     "paradas": 2,
@@ -263,6 +267,19 @@
    "pista": false
   },
   {
+   "iata": "ORL",
+   "ow": {
+    "preco": 2652,
+    "ida": "2027-09-15",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-20T17:42:20Z"
+   },
+   "rastreada": true,
+   "nome": "Orlando",
+   "pista": false
+  },
+  {
    "iata": "BUE",
    "rt": {
     "preco": 2848,
@@ -286,6 +303,19 @@
    },
    "rastreada": false,
    "nome": "VLC",
+   "pista": false
+  },
+  {
+   "iata": "LDB",
+   "rt": {
+    "preco": 3067,
+    "ida": "2026-10-27",
+    "volta": "2026-11-03",
+    "paradas": 3,
+    "visto": "2026-10-20T18:29:32Z"
+   },
+   "rastreada": false,
+   "nome": "LDB",
    "pista": false
   },
   {
@@ -317,7 +347,7 @@
   {
    "iata": "LIS",
    "rt": {
-    "preco": 4231,
+    "preco": 4228,
     "ida": "2026-10-28",
     "volta": "2026-11-09",
     "paradas": 1,
@@ -409,7 +439,7 @@
   {
    "iata": "TIA",
    "rt": {
-    "preco": 5650,
+    "preco": 5646,
     "ida": "2027-06-01",
     "volta": "2027-06-07",
     "paradas": 2,

@@ -1,6 +1,88 @@
 {
- "atualizado": "2026-10-20T17:00-03:00",
+ "atualizado": "2026-10-20T17:59-03:00",
  "alertas": [
+  {
+   "id": "FOR-NAT-2026-12-24-1792529941",
+   "criado": "2026-10-20T17:59-03:00",
+   "rota": "FOR-NAT",
+   "destino": "NAT",
+   "destino_nome": "Natal",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 563,
+   "preco_volta": 870,
+   "preco_tipico": 826,
+   "desconto": 0.318,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2026-12-24",
+   "volta": "2027-01-21",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-24",
+     "preco": 563
+    },
+    {
+     "dia": "2027-01-01",
+     "preco": 563
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-21",
+     "preco": 870
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "24"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "01"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "21"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMjRqBRIDRk9ScgUSA05BVEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0101NAT21011?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-01",
+    "volta": "2027-01-21",
+    "total": 1433,
+    "dias": 20
+   },
+   "base": {
+    "dias": 14,
+    "menor_visto": 563
+   },
+   "recorde": true,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Natal* (NAT)\n💰 *R$ 563* o trecho\n🔁 Ida e volta: *R$ 1.433* (ida 01/01, volta 21/01 · 20 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (14 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 24\n▸ Janeiro/27: 01\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 21\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0101NAT21011?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
+   "telegram": true
+  },
   {
    "id": "FOR-BPS-2026-12-07-1792526429",
    "criado": "2026-10-20T17:00-03:00",
@@ -81,7 +163,12 @@
    "recorde": false,
    "milhas": [],
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Porto Seguro* (BPS)\n📍 _Porta de Trancoso e Arraial d'Ajuda (BA)_\n💰 *R$ 957* o trecho\n🔁 Ida e volta: *R$ 1.722* (ida 17/01, volta 21/01 · 4 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 07\n▸ Janeiro/27: 17\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 21\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1701BPS21011?marker=677880.whatsapp&currency=brl\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true
+   "telegram": true,
+   "conferido": {
+    "quando": "2026-10-20T17:59-03:00",
+    "preco": 957,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-SSA-2026-12-14-1792516016",

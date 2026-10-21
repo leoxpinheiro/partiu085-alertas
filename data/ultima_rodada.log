@@ -1,54 +1,54 @@
-Lote: PMW(t), BSB(t), MAD(t), BHZ(t), NVT(t), PAR(t), OPO(t), AJU(t), SLZ(t), SSA(t), BPS(t), BEL(t), CGB(t), CWB(t), AMS(t), MIA(t), POA(a), LON(a), ORL(b), PUJ(b), FLN(t), SAO(t), IGU(t)
-Lote: PMW, BSB, MAD, BHZ, NVT, PAR, OPO, AJU, SLZ, SSA, BPS, BEL, CGB, CWB, AMS, MIA, POA, LON, ORL, PUJ, FLN, SAO, IGU
-  FOR-PMW: 87 datas com preço · 2 sem resposta (IndexError 2)
+Lote: PMW(t), BSB(t), MAD(t), BHZ(t), NVT(t), PAR(t), OPO(t), AJU(t), SLZ(t), SSA(t), BPS(t), BEL(t), CGB(t), CWB(t), AMS(t), MIA(t), FLN(t), SAO(t), IGU(t), LIS(t), RIO(t), REC(t), THE(t)
+Lote: PMW, BSB, MAD, BHZ, NVT, PAR, OPO, AJU, SLZ, SSA, BPS, BEL, CGB, CWB, AMS, MIA, FLN, SAO, IGU, LIS, RIO, REC, THE
+  FOR-PMW: 86 datas com preço · 2 sem resposta (IndexError 2)
   PMW-FOR: 88 datas com preço · 3 sem resposta (IndexError 3)
-FOR-PMW: 87+88 dias · menor ida R$ 870 · menor normal R$ 709 · -23%
-FOR-BSB: 91+91 dias · menor ida R$ 629 · menor normal R$ 688 · 9%
-  FOR-MAD: 43 datas com preço · 48 sem resposta (IndexError 48)
-  MAD-FOR: 81 datas com preço · 10 sem resposta (IndexError 10)
-FOR-MAD: 43+81 dias · menor ida R$ 1.698 · menor normal R$ 1.717 · 1%
-FOR-BHZ: 91+91 dias · menor ida R$ 747 · menor normal R$ 694 · -8%
+FOR-PMW: 86+88 dias · menor ida R$ 870 · menor normal R$ 709 · -23%
+FOR-BSB: 91+91 dias · menor ida R$ 695 · menor normal R$ 688 · -1%
+  FOR-MAD: 58 datas com preço · 33 sem resposta (IndexError 32, FlightsNotFound 1)
+  MAD-FOR: 82 datas com preço · 9 sem resposta (IndexError 9)
+FOR-MAD: 58+82 dias · menor ida R$ 1.698 · menor normal R$ 1.717 · 1%
+  FOR-BHZ: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-BHZ: 90+91 dias · menor ida R$ 747 · menor normal R$ 694 · -8%
 FOR-NVT: 91+91 dias · menor ida R$ 766 · menor normal R$ 725 · -6%
-  FOR-PAR: 80 datas com preço · 11 sem resposta (IndexError 11)
-FOR-PAR: 80+91 dias · menor ida R$ 1.904 · menor normal R$ 1.900 · -0%
-  FOR-OPO: 67 datas com preço · 24 sem resposta (IndexError 24)
+  FOR-PAR: 83 datas com preço · 8 sem resposta (IndexError 8)
+FOR-PAR: 83+91 dias · menor ida R$ 1.904 · menor normal R$ 1.900 · -0%
+  FOR-OPO: 67 datas com preço · 24 sem resposta (IndexError 23, FlightsNotFound 1)
 FOR-OPO: 67+91 dias · menor ida R$ 1.714 · menor normal R$ 1.711 · -0%
-  FOR-AJU: 79 datas com preço · 10 sem resposta (IndexError 10)
-  AJU-FOR: 65 datas com preço · 25 sem resposta (IndexError 22, FlightsNotFound 3)
-FOR-AJU: 78+61 dias · menor ida R$ 956 · menor normal R$ 1.003 · 5%
-FOR-SLZ: 62+74 dias · menor ida R$ 857 · menor normal R$ 740 · -16%
-  FOR-SSA: 82 datas com preço · 8 sem resposta (IndexError 8)
-FOR-SSA: 79+85 dias · menor ida R$ 592 · menor normal R$ 683 · 13%
-  FOR-BPS: 66 datas com preço · 24 sem resposta (IndexError 24)
-  BPS-FOR: 69 datas com preço · 21 sem resposta (IndexError 21)
-FOR-BPS: 65+69 dias · menor ida R$ 1.097 · menor normal R$ 1.181 · 7%
+  FOR-AJU: 80 datas com preço · 9 sem resposta (IndexError 9)
+  AJU-FOR: 67 datas com preço · 23 sem resposta (IndexError 23)
+FOR-AJU: 79+63 dias · menor ida R$ 956 · menor normal R$ 1.003 · 5%
+  SLZ-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-SLZ: 62+73 dias · menor ida R$ 857 · menor normal R$ 740 · -16%
+  FOR-SSA: 80 datas com preço · 9 sem resposta (IndexError 9)
+FOR-SSA: 77+85 dias · menor ida R$ 536 · menor normal R$ 683 · 22%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-BPS: 65 datas com preço · 25 sem resposta (IndexError 25)
+  BPS-FOR: 71 datas com preço · 20 sem resposta (IndexError 20)
+FOR-BPS: 64+71 dias · menor ida R$ 1.097 · menor normal R$ 1.181 · 7%
 FOR-BEL: 91+90 dias · menor ida R$ 944 · menor normal R$ 573 · -65%
   FOR-CGB: 84 datas com preço · 7 sem resposta (IndexError 7)
   CGB-FOR: 86 datas com preço · 5 sem resposta (IndexError 5)
 FOR-CGB: 84+86 dias · menor ida R$ 789 · menor normal R$ 575 · -37%
-  FOR-CWB: 89 datas com preço · 2 sem resposta (IndexError 2)
-  CWB-FOR: 61 datas com preço · 30 sem resposta (IndexError 30)
-FOR-CWB: 89+61 dias · menor ida R$ 664 · menor normal R$ 474 · -40%
-  FOR-AMS: 79 datas com preço · 12 sem resposta (IndexError 12)
+  FOR-CWB: 88 datas com preço · 3 sem resposta (IndexError 3)
+  CWB-FOR: 63 datas com preço · 28 sem resposta (IndexError 28)
+FOR-CWB: 88+63 dias · menor ida R$ 664 · menor normal R$ 474 · -40%
+  FOR-AMS: 81 datas com preço · 10 sem resposta (IndexError 10)
   AMS-FOR: 89 datas com preço · 2 sem resposta (IndexError 2)
-FOR-AMS: 79+89 dias · menor ida R$ 2.007 · menor normal R$ 2.003 · -0%
+FOR-AMS: 81+89 dias · menor ida R$ 2.007 · menor normal R$ 2.003 · -0%
   FOR-MIA: 89 datas com preço · 2 sem resposta (IndexError 2)
-FOR-MIA: 89+91 dias · menor ida R$ 2.395 · menor normal R$ 2.369 · -1%
-  FOR-POA: 71 datas com preço · 20 sem resposta (IndexError 20)
-  POA-FOR: 85 datas com preço · 6 sem resposta (IndexError 6)
-FOR-POA: 71+85 dias · menor ida R$ 830 · menor normal R$ 808 · -3%
-  FOR-LON: 88 datas com preço · 3 sem resposta (IndexError 3)
-FOR-LON: 88+91 dias · menor ida R$ 1.740 · menor normal R$ 1.736 · -0%
-  ! FOR-ORL: o Google não respondeu nas primeiras datas, pulando
-  FOR-ORL: 0 datas com preço · 12 sem resposta (IndexError 12)
-FOR-ORL: sem dados suficientes (ida 0, volta 0)
-  ! FOR-PUJ: o Google não respondeu nas primeiras datas, pulando
-  FOR-PUJ: 0 datas com preço · 12 sem resposta (IndexError 12)
-FOR-PUJ: sem dados suficientes (ida 0, volta 0)
-  FOR-FLN: 52 datas com preço · 39 sem resposta (IndexError 39)
-  FLN-FOR: 70 datas com preço · 21 sem resposta (IndexError 21)
-FOR-FLN: 52+70 dias · menor ida R$ 634 · menor normal R$ 593 · -7%
-FOR-SAO: 91+91 dias · menor ida R$ 648 · menor normal R$ 588 · -10%
-FOR-IGU: 91+91 dias · menor ida R$ 852 · menor normal R$ 642 · -33%
+FOR-MIA: 89+91 dias · menor ida R$ 2.501 · menor normal R$ 2.369 · -6%
+  FOR-FLN: 49 datas com preço · 42 sem resposta (IndexError 42)
+  FLN-FOR: 67 datas com preço · 24 sem resposta (IndexError 24)
+FOR-FLN: 49+67 dias · menor ida R$ 634 · menor normal R$ 593 · -7%
+  FOR-SAO: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+FOR-SAO: 90+91 dias · menor ida R$ 648 · menor normal R$ 588 · -10%
+  FOR-IGU: 89 datas com preço · 2 sem resposta (FlightsNotFound 2)
+FOR-IGU: 89+91 dias · menor ida R$ 852 · menor normal R$ 642 · -33%
+FOR-LIS: 91+91 dias · menor ida R$ 1.676 · menor normal R$ 1.700 · 1%
+  RIO-FOR: 90 datas com preço · 1 sem resposta (IndexError 1)
+FOR-RIO: 91+90 dias · menor ida R$ 679 · menor normal R$ 595 · -14%
+FOR-REC: 91+90 dias · menor ida R$ 748 · menor normal R$ 419 · -79%
+FOR-THE: 45+74 dias · menor ida R$ 902 · menor normal R$ 1.104 · 18%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
 
-Rodada: 23 rotas · 0 candidatos · 0 alertas · 1709s
+Rodada: 23 rotas · 0 candidatos · 0 alertas · 1602s

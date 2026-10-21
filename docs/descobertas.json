@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-21T09:45+00:00",
+ "atualizado": "2026-10-21T10:45+00:00",
  "pistas": [
   "BUE",
   "CWB",
@@ -42,19 +42,6 @@
    },
    "rastreada": true,
    "nome": "Curitiba",
-   "pista": true
-  },
-  {
-   "iata": "RIO",
-   "ow": {
-    "preco": 610,
-    "ida": "2027-03-05",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-19T18:58:01Z"
-   },
-   "rastreada": true,
-   "nome": "Rio de Janeiro",
    "pista": true
   },
   {
@@ -189,9 +176,29 @@
    "pista": false
   },
   {
+   "iata": "RIO",
+   "rt": {
+    "preco": 1841,
+    "ida": "2026-12-01",
+    "volta": "2026-12-29",
+    "paradas": 2,
+    "visto": "2026-10-21T10:25:54Z"
+   },
+   "ow": {
+    "preco": 610,
+    "ida": "2027-03-05",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-19T18:58:01Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
    "iata": "POA",
    "rt": {
-    "preco": 1862,
+    "preco": 1864,
     "ida": "2027-03-01",
     "volta": "2027-03-08",
     "paradas": 1,
@@ -230,7 +237,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2449,
+    "preco": 2451,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 2,
@@ -274,19 +281,6 @@
    "pista": true
   },
   {
-   "iata": "VLC",
-   "ow": {
-    "preco": 2865,
-    "ida": "2027-03-27",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-17T10:29:58Z"
-   },
-   "rastreada": false,
-   "nome": "VLC",
-   "pista": false
-  },
-  {
    "iata": "LDB",
    "rt": {
     "preco": 3076,
@@ -328,7 +322,7 @@
   {
    "iata": "MAD",
    "rt": {
-    "preco": 3471,
+    "preco": 3474,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
     "paradas": 0,

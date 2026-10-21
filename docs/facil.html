@@ -33,14 +33,14 @@ pre{white-space:pre-wrap;font-family:inherit;font-size:14px;background:#F7F8FA;b
 .tag{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;background:#E3F5EA;color:#137a42;margin-left:6px;vertical-align:middle}
 </style></head><body>
 <header><h1>Postar hoje</h1><p id="hoje">Salva a imagem, copia o texto, cola no WhatsApp ou no Instagram.</p></header>
-<nav class="tabs"><a href="#roteiro">🚀 Roteiro</a><a href="#grupo" class="on">📲 Grupo</a><a href="#insta">📸 Instagram</a><a href="#reels">🎬 Reels</a><a href="index.html">⚙️ Painel completo</a></nav>
+<nav class="tabs"><a href="#roteiro" class="on">🚀 Roteiro</a><a href="#grupo">📲 Grupo</a><a href="#insta">📸 Instagram</a><a href="#reels">🎬 Reels</a><a href="index.html">⚙️ Painel completo</a></nav>
 <main>
 <section class="sec" id="s-roteiro">
  <h2>Roteiro de lançamento</h2>
  <div class="sub">Quarta, 21/10. Marca cada passo quando fizer. Os botões copiam o texto ou baixam a imagem.</div>
  <div id="rot"></div>
 </section>
-<section class="sec on" id="s-grupo">
+<section class="sec" id="s-grupo">
  <h2>Ofertas pro grupo</h2>
  <div class="sub" id="sub-grupo">Carregando o radar…</div>
  <div class="passo">👉 <b>1.</b> Toca em <b>Salvar imagem</b> · <b>2.</b> Toca em <b>Copiar texto</b> · <b>3.</b> No WhatsApp, manda a imagem e cola o texto na legenda.</div>
@@ -273,7 +273,7 @@ function roteiro(){
   box.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>copiar(b.dataset.t,b));
   box.querySelectorAll("[data-b]").forEach(b=>b.onclick=async()=>salvar([await blobDe(b.dataset.b)],"story-grupo-abriu",b));
 }
-function aba(){const h=(location.hash||"#grupo").slice(1);document.querySelectorAll(".sec").forEach(s=>s.classList.toggle("on",s.id==="s-"+h));document.querySelectorAll(".tabs a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+h))}
+function aba(){const h=(location.hash||"#roteiro").slice(1);document.querySelectorAll(".sec").forEach(s=>s.classList.toggle("on",s.id==="s-"+h));document.querySelectorAll(".tabs a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+h))}
 addEventListener("hashchange",aba);aba();
 $("#hoje").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long"})+" · salva a imagem, copia o texto e cola.";
 roteiro();ofertas();posts();reels();

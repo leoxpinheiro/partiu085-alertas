@@ -229,7 +229,7 @@ j('../alerts.json').then(a=>{const box=document.getElementById('deals');const li
  // só viagem de verdade: volta de 3 a 10 dias depois da ida
  const casa=x=>{let p=null;const I=(x.datas_ida||[]),V=(x.datas_volta||[]);for(const i of I)for(const v of V){const n=nd(i.dia,v.dia);if(n<3||n>10)continue;const t=i.preco+v.preco;if(!p||t<p.total)p={ida:i.dia,volta:v.dia,total:t,pi:i.preco}}
   if(!p&&!I.length)for(const d of (x.datas||[])){const n=nd(d.ida,d.volta);if(n<3||n>10)continue;if(!p||d.preco<p.total)p={ida:d.ida,volta:d.volta,total:d.preco,pi:x.modo==='trecho'?x.preco:Math.round(d.preco/2),rt:1}}return p};
- const L=((a&&a.alertas)||[]).filter(x=>!x.fraco&&x.regua==='menor_normal'&&Date.parse(x.criado)>=lim&&!((x.conferido||{}).status==='subiu')).sort((x,y)=>(y.desconto||0)-(x.desconto||0));
+ const L=((a&&a.alertas)||[]).filter(x=>!x.fraco&&x.regua==='menor_normal'&&Date.parse(x.criado)>=lim).sort((x,y)=>(y.desconto||0)-(x.desconto||0));
  const vist=new Set(),D=[];for(const x of L){if(vist.has(x.destino))continue;const p=casa(x);if(!p)continue;vist.add(x.destino);D.push({...x,par:p,preco:p.rt?p.total:p.pi,_rt:p.rt,preco_volta:0});if(D.length>=6)break;}
  if(!D.length){box.innerHTML='<div class="vazio">Nenhum achado nos últimos dias. Quando o preço cair, o alerta chega no grupo primeiro.</div>';return;}
  box.innerHTML=D.map(x=>{const iv=x.par?`Ida e volta ${br(x.par.total)} · ${dm(x.par.ida)} a ${dm(x.par.volta)}`:x.preco_volta?`Ida e volta a partir de ${br(x.preco+x.preco_volta)}`:'';

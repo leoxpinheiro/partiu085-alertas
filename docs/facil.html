@@ -169,7 +169,7 @@ async function ofertas(){
   const refs=(rf&&rf.ref)||{};const L=[],vistos=new Set(),agora=Date.now();
   const AL=(al.alertas||[]).slice().sort((x,y)=>y.criado.localeCompare(x.criado));
   for(const a of AL){
-    if(a.fraco||!a.criado||agora-new Date(a.criado)>24*3600e3||vistos.has(a.destino))continue;
+    if(a.fraco||(a.conferido||{}).status==='subiu'||!a.criado||agora-new Date(a.criado)>24*3600e3||vistos.has(a.destino))continue;
     let im=a.ida_meses,vm=a.volta_meses;
     if(!im||!im.length){const ds=(a.datas||[]);im=meses(ds.map(x=>x.ida));vm=meses(ds.map(x=>x.volta))}
     

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-21T18:49+00:00",
+ "atualizado": "2026-10-21T19:48+00:00",
  "pistas": [
   "BEL",
   "BUE",
@@ -11,7 +11,8 @@
   "PAR",
   "REC",
   "RIO",
-  "SAO"
+  "SAO",
+  "SSA"
  ],
  "blogs": [
   {
@@ -42,6 +43,19 @@
    },
    "rastreada": true,
    "nome": "Curitiba",
+   "pista": true
+  },
+  {
+   "iata": "BEL",
+   "ow": {
+    "preco": 806,
+    "ida": "2027-02-14",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-21T19:11:51Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
    "pista": true
   },
   {
@@ -78,19 +92,6 @@
    "pista": true
   },
   {
-   "iata": "BEL",
-   "ow": {
-    "preco": 969,
-    "ida": "2026-11-22",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-20T09:45:44Z"
-   },
-   "rastreada": true,
-   "nome": "Belém",
-   "pista": true
-  },
-  {
    "iata": "SSA",
    "ow": {
     "preco": 1045,
@@ -101,7 +102,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "VAG",
@@ -165,7 +166,7 @@
   {
    "iata": "PAR",
    "ow": {
-    "preco": 1791,
+    "preco": 1793,
     "ida": "2026-11-25",
     "volta": "",
     "paradas": 1,
@@ -178,7 +179,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1842,
+    "preco": 1843,
     "ida": "2026-12-01",
     "volta": "2026-12-29",
     "paradas": 2,
@@ -198,7 +199,7 @@
   {
    "iata": "POA",
    "rt": {
-    "preco": 1864,
+    "preco": 1866,
     "ida": "2027-03-01",
     "volta": "2027-03-08",
     "paradas": 1,
@@ -237,7 +238,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2452,
+    "preco": 2454,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 2,
@@ -322,7 +323,7 @@
   {
    "iata": "MAD",
    "rt": {
-    "preco": 3476,
+    "preco": 3479,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
     "paradas": 0,
@@ -381,7 +382,7 @@
   {
    "iata": "SVD",
    "ow": {
-    "preco": 4892,
+    "preco": 4897,
     "ida": "2027-03-30",
     "volta": "",
     "paradas": 2,
@@ -420,7 +421,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5769,
+    "preco": 5775,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 2,

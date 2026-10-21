@@ -64,51 +64,62 @@ const get=(p,d)=>fetch(p+"?t="+Date.now()).then(r=>r.ok?r.json():d).catch(()=>d)
 const IMG={};const img=n=>IMG[n]||(IMG[n]=new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>ok(null);i.src=n}));
 const LINK="https://bit.ly/radar085";
 
-function gflights(o){return "https://www.google.com/travel/flights?q="+encodeURIComponent(`Flights from FOR to ${o.k} on ${o.pares[0].ida} through ${o.pares[0].volta}`)+"&hl=pt-BR&curr=BRL"}
+const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const ddmm=s=>s.slice(8,10)+"/"+s.slice(5,7);
+function meses(lista){const g={};lista.slice().sort().forEach(d=>{const k=d.slice(0,7);(g[k]=g[k]||[]).push(d.slice(8,10))});return Object.keys(g).sort().map(k=>({mes:MES[+k.slice(5,7)-1]+" "+k.slice(0,4),dias:g[k]}))}
+const curto=g=>{const[n,y]=g.mes.split(" ");return y?`${n}/${y.slice(2)}`:n};
+const CLS={imperdivel:["🔥","IMPERDÍVEL"],otima:["⭐","ÓTIMA OPORTUNIDADE"],boa:["✅","BOA OPORTUNIDADE"]};
+const classeDe=d=>d>=.3?"imperdivel":d>=.2?"otima":"boa";
+const RODAPE="✈️ Receba alertas no WhatsApp: "+LINK;
 
-function texto(o){
-  const p=o.pares[0];
-  let t=`${o.d>=.3?"🚨":"🔥"} *${o.nome.toUpperCase()}* saindo de Fortaleza\n\n`;
-  t+=`✈️ ${o.cia}${o.direto?" · voo direto":""}\n`;
-  if(o.pares.length>1){t+=`📅 Datas:\n`+o.pares.map(x=>`• ${dsem(x.ida)} → ${dsem(x.volta)} · ${R(x.preco)}`).join("\n")+"\n"}
-  else t+=`📅 Ida ${dsem(p.ida)} · volta ${dsem(p.volta)}\n`;
-  t+=`\n💰 *Ida e volta ${R(o.total)}*\n`;
-  if(o.normal&&o.d>0) t+=`📉 ${Math.round(o.d*100)}% abaixo do normal da rota (${R(o.normal)})\n`;
-  t+=`\n🔎 Busca no Google Voos:\n${o.link||gflights(o)}\n\n⚠️ _Preço visto pelo radar ${o.visto}. Pode mudar a qualquer momento._`;
-  return t;
+// mesmo formato do alerta do radar (O RADAR APITOU)
+function texto(a){
+  if(a.texto0){let t=a.texto0.replace(/\s*✈️ Receba alertas no WhatsApp:.*$/s,"").trim();return t+"\n\n"+RODAPE}
+  const par=a.escalas===0?"voo direto":a.escalas?`${a.escalas} parada${a.escalas>1?"s":""}`:"";const r=CLS[a.classe];
+  const L=["🚨 *O RADAR APITOU!*","",`✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`];
+  if(a.ref)L.push(`📍 _${a.ref}_`);
+  L.push(`💰 *${R(a.preco)}* o trecho`);
+  if(a.par)L.push(`🔁 Ida e volta: *${R(a.par.total)}* (ida ${ddmm(a.par.ida)}, volta ${ddmm(a.par.volta)} · ${a.par.dias} dias)`);
+  L.push(`${r[0]} *${r[1]}*`);
+  if(a.cia_nome)L.push(`🛫 ${a.cia_nome}${par?" · "+par:""}`);
+  L.push("","🗓️ *IDA*",...a.ida_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  if(a.volta_meses&&a.volta_meses.length)L.push("","🗓️ *VOLTA*",...a.volta_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
+  L.push("","⚠️ _Preço pode mudar a qualquer momento._");
+  if(a.link_compra)L.push(`🛒 Ver e comprar: ${a.link_compra}`);
+  L.push("",RODAPE);return L.join("\n");
 }
 
 function fit(c,txt,max,size,font){do{c.font=`${size}px ${font}`;size-=4}while(c.measureText(txt).width>max&&size>40);return size+4}
 function rr(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r);}
-async function card(o){
+async function card(a){
   await document.fonts.load("100px Anton");
   const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const c=cv.getContext("2d");
   const g=c.createLinearGradient(0,0,W*.5,H);g.addColorStop(0,"#133a63");g.addColorStop(.55,"#0B2440");g.addColorStop(1,"#06172b");c.fillStyle=g;c.fillRect(0,0,W,H);
   const rg=c.createRadialGradient(W*.88,60,0,W*.88,60,520);rg.addColorStop(0,"rgba(62,134,232,.38)");rg.addColorStop(1,"rgba(62,134,232,0)");c.fillStyle=rg;c.fillRect(0,0,W,H);
   const ic=await img("marca/3d/airplane_departure_3d.png");
-  if(ic){c.save();c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=40;c.shadowOffsetY=24;c.translate(860,170);c.rotate(-.1);c.drawImage(ic,-150,-150,300,300);c.restore()}
-  // chip
-  const chip=o.d>=.3?"🚨 IMPERDÍVEL":o.d>=.2?"🔥 ÓTIMO PREÇO":"✅ ABAIXO DO NORMAL";
-  c.font="800 30px system-ui,sans-serif";const cw=c.measureText(chip).width+48;c.fillStyle="#F5C531";rr(c,64,60,cw,62,31);c.fill();c.fillStyle="#0B2440";c.textBaseline="middle";c.fillText(chip,88,92);
-  // nome
-  c.textBaseline="alphabetic";c.fillStyle="#fff";const nm=o.nome.toUpperCase();fit(c,nm,952,170,"Anton");c.fillText(nm,64,430);
-  c.font="700 34px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText(`Saindo de Fortaleza · ${o.cia}${o.direto?" · direto":""}`,68,488);
-  // card datas
-  const n=Math.min(o.pares.length,3),rh=118,cy=540;c.fillStyle="#fff";c.shadowColor="rgba(0,0,0,.25)";c.shadowBlur=40;c.shadowOffsetY=14;rr(c,64,cy,952,n*rh+24,30);c.fill();c.shadowColor="transparent";
-  const av=await img("marca/3d/calendar_3d.png");
-  for(let i=0;i<n;i++){const p=o.pares[i],y=cy+12+i*rh;
-    if(i){c.strokeStyle="#e3e8ef";c.setLineDash([10,8]);c.lineWidth=3;c.beginPath();c.moveTo(96,y);c.lineTo(984,y);c.stroke();c.setLineDash([])}
-    if(av)c.drawImage(av,92,y+19,80,80);
-    c.fillStyle="#0B2440";c.font="48px Anton";c.fillText(`${dsem(p.ida).toUpperCase()} → ${dsem(p.volta).toUpperCase()}`,196,y+66);
-    c.font="700 24px system-ui,sans-serif";c.fillStyle="#5E6E80";c.fillText("ida e volta",198,y+98);
-    c.font="58px Anton";c.fillStyle=i===0?"#1FA45B":"#0B2440";c.textAlign="right";c.fillText(R(p.preco),984,y+80);c.textAlign="left"}
-  // total
-  let ty=cy+n*rh+24+70;
-  c.font="700 34px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText(o.pares.length>1?"Ida e volta a partir de":"Ida e volta",64,ty);
-  c.fillStyle="#F5C531";c.font="200px Anton";c.fillText(R(o.total),60,ty+190);
-  ty+=250;
-  if(o.normal&&o.d>0){const t=`Normal da rota: ${R(o.normal)} · ${Math.round(o.d*100)}% abaixo`;c.font="800 34px system-ui,sans-serif";const w=c.measureText(t).width+48;c.fillStyle="#1FA45B";rr(c,64,ty,w,68,18);c.fill();c.fillStyle="#fff";c.textBaseline="middle";c.fillText(t,88,ty+35);c.textBaseline="alphabetic"}
-  c.font="600 24px system-ui,sans-serif";c.fillStyle="rgba(255,255,255,.6)";c.fillText(`Preço visto pelo radar ${o.visto}. Pode mudar a qualquer momento.`,64,1220);
+  if(ic){c.save();c.shadowColor="rgba(0,0,0,.45)";c.shadowBlur=40;c.shadowOffsetY=24;c.translate(870,160);c.rotate(-.1);c.drawImage(ic,-140,-140,280,280);c.restore()}
+  const r=CLS[a.classe],chip=`${r[0]} ${r[1]}`;
+  c.textBaseline="middle";c.font="800 30px system-ui,sans-serif";const cw=c.measureText(chip).width+48;c.fillStyle="#F5C531";rr(c,64,60,cw,62,31);c.fill();c.fillStyle="#0B2440";c.fillText(chip,88,92);
+  c.textBaseline="alphabetic";c.font="800 30px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText("FORTALEZA ➜",68,190);
+  c.fillStyle="#fff";const nm=a.destino_nome.toUpperCase();fit(c,nm,952,160,"Anton");c.fillText(nm,64,370);
+  const par=a.escalas===0?"voo direto":a.escalas?`${a.escalas} parada${a.escalas>1?"s":""}`:"";
+  c.font="700 32px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText(a.ref?`📍 ${a.ref}`:`${a.cia_nome||""}${par?" · "+par:""}`,68,428);
+  // preço
+  c.font="700 32px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText("A partir de",64,510);
+  c.fillStyle="#F5C531";c.font="170px Anton";const pt=R(a.preco);c.fillText(pt,60,680);const pw=c.measureText(pt).width;
+  c.font="800 38px system-ui,sans-serif";c.fillStyle="#fff";c.fillText("o trecho",84+pw,676);
+  let y=745;
+  if(a.par){c.font="800 36px system-ui,sans-serif";c.fillStyle="#fff";c.fillText(`🔁 Ida e volta ${R(a.par.total)}  ·  ${ddmm(a.par.ida)} a ${ddmm(a.par.volta)}`,64,y);y+=30}
+  // datas
+  const lin=[["IDA",a.ida_meses.slice(0,3)],["VOLTA",(a.volta_meses||[]).slice(0,3)]].filter(x=>x[1].length);
+  const nl=lin.reduce((s,x)=>s+x[1].length,0),ch=50+lin.length*66+nl*60;
+  c.fillStyle="#fff";c.shadowColor="rgba(0,0,0,.25)";c.shadowBlur=40;c.shadowOffsetY=14;rr(c,64,y,952,ch,30);c.fill();c.shadowColor="transparent";
+  let yy=y+30;const cal=await img("marca/3d/calendar_3d.png");if(cal)c.drawImage(cal,880,y+22,100,100);
+  for(const[t,gs]of lin){c.font="50px Anton";c.fillStyle="#1F5FBF";c.fillText(`🗓️ ${t}`,96,yy+50);yy+=66;
+    for(const g of gs){c.font="800 40px system-ui,sans-serif";c.fillStyle="#0B2440";let s=`▸ ${curto(g)}: ${g.dias.join(", ")}`;while(c.measureText(s).width>800&&s.length>10)s=s.replace(/, \d+$/,"")+"";if(s!==`▸ ${curto(g)}: ${g.dias.join(", ")}`)s+="…";c.fillText(s,100,yy+44);yy+=60}}
+  y+=ch+40;
+  if(a.normal&&a.d>0&&y<1150){const t=`${a.recorde?"📉 Menor preço já visto · ":""}${Math.round(a.d*100)}% abaixo do normal (${R(a.normal)}${a.normalRt?" ida e volta":" o trecho"})`;let fs=32;do{c.font=`800 ${fs}px system-ui,sans-serif`;fs-=2}while(c.measureText(t).width>900&&fs>18);const w=c.measureText(t).width+44;c.fillStyle="#1FA45B";rr(c,64,y,w,66,18);c.fill();c.fillStyle="#fff";c.textBaseline="middle";c.fillText(t,86,y+34);c.textBaseline="alphabetic"}
+  c.font="600 24px system-ui,sans-serif";c.fillStyle="rgba(255,255,255,.6)";c.fillText(`Preço visto pelo radar ${a.visto}. Pode mudar a qualquer momento.`,64,1225);
   const lg=await img("marca/icone.png");if(lg){c.save();c.beginPath();c.arc(88,1290,26,0,7);c.clip();c.drawImage(lg,62,1264,52,52);c.restore()}
   c.font="800 30px system-ui,sans-serif";c.fillStyle="#fff";c.fillText("@partiu.085",128,1301);
   c.font="800 28px system-ui,sans-serif";c.fillStyle="#F5C531";c.textAlign="right";c.fillText("Alertas grátis: bit.ly/radar085",1016,1301);c.textAlign="left";
@@ -125,33 +136,61 @@ function marca(bt,t){const o=bt.textContent;bt.textContent=t;bt.classList.add("o
 const blobDe=u=>fetch(u).then(r=>r.blob());
 
 function hora(s){const d=new Date(s);const h=new Date();const mesmo=d.toDateString()===h.toDateString();return (mesmo?"hoje":"em "+dt(s.slice(0,10)))+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}
+const isoHoje=()=>new Date(Date.now()-3*3600e3).toISOString().slice(0,10);
+
+// casa ida e volta como viagem de verdade: volta 3 a 10 dias depois da ida
+const nd=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+function casar(I,V){let best=null;
+  for(const x of I)for(const v of V){const n=nd(x.dia,v.dia);if(n<3||n>10)continue;const t=x.preco+v.preco;if(!best||t<best.total)best={ida:x.dia,volta:v.dia,total:t,dias:n,pi:x.preco,pv:v.preco}}
+  if(!best)return null;
+  const Ib=I.filter(x=>x.preco<=best.pi*1.08),Vb=V.filter(v=>v.preco<=best.pv*1.08);
+  const ida=Ib.filter(x=>Vb.some(v=>{const n=nd(x.dia,v.dia);return n>=3&&n<=10})).map(x=>x.dia);
+  const volta=Vb.filter(v=>ida.some(d=>{const n=nd(d,v.dia);return n>=3&&n<=10})).map(v=>v.dia);
+  return{par:best,ida:ida.slice(0,10),volta:volta.slice(0,10)}}
+const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://www.aviasales.com/search/FOR${f(p.ida)}${k}${f(p.volta)}1?marker=677880.whatsapp&currency=brl`};
+// top5 sem alerta: monta no mesmo formato usando o calendário da rota
+async function deTop5(i,refs,quando){
+  const cal=await get("calendario/"+i.k+".json",null);const hj=isoHoje();
+  if(!cal)return null;
+  const I=(cal.ida||[]).filter(x=>x.preco&&x.dia>hj),V=(cal.volta||[]).filter(x=>x.preco&&x.dia>hj);
+  const cs=casar(I,V);const best=cs&&cs.par,ida=cs?cs.ida:[],volta=cs?cs.volta:[],pi=best&&best.pi;
+  if(!best)return null;
+  const dias=best.dias;
+  const f=s=>s.slice(8,10)+s.slice(5,7);
+  return{destino:i.k,destino_nome:i.nome,ref:(refs[i.k]||{}).texto||"",preco:pi||Math.round(i.menor||i.rt/2),cia_nome:i.cia||"",escalas:undefined,
+    par:{ida:best.ida,volta:best.volta,total:best.total,dias},classe:classeDe(1-best.total/i.normal),ida_meses:meses(ida),volta_meses:meses(volta),
+    link_compra:linkAv(i.k,best),
+    normal:i.normal,normalRt:true,d:1-best.total/i.normal,visto:quando}
+}
 
 async function ofertas(){
-  const [t5,al,cal]=await Promise.all([get("top5.json",{}),get("alerts.json",{alertas:[]}),Promise.resolve(null)]);
-  const L=[],vistos=new Set(),agora=Date.now();
-  // alertas novos (36h), reais
-  for(const a of (al.alertas||[]).slice().reverse()){
-    if(a.fraco||!a.criado||agora-new Date(a.criado)>36*3600e3||vistos.has(a.destino))continue;
-    const pares=(a.datas||[]).slice().sort((x,y)=>x.preco-y.preco).slice(0,3);if(!pares.length)continue;
-    const normal=a.preco_tipico||0;vistos.add(a.destino);
-    L.push({fonte:"alerta",k:a.destino,nome:a.destino_nome,cia:a.cia_nome||a.cia||"",direto:a.escalas===0,pares,total:pares[0].preco,normal,d:normal?1-pares[0].preco/normal:0,link:a.link_google,visto:hora(a.criado)});
+  const [t5,al,rf]=await Promise.all([get("top5.json",{}),get("alerts.json",{alertas:[]}),get("referencias.json",{})]);
+  const refs=(rf&&rf.ref)||{};const L=[],vistos=new Set(),agora=Date.now();
+  const AL=(al.alertas||[]).slice().sort((x,y)=>y.criado.localeCompare(x.criado));
+  for(const a of AL){
+    if(a.fraco||!a.criado||agora-new Date(a.criado)>24*3600e3||vistos.has(a.destino))continue;
+    let im=a.ida_meses,vm=a.volta_meses;
+    if(!im||!im.length){const ds=(a.datas||[]);im=meses(ds.map(x=>x.ida));vm=meses(ds.map(x=>x.volta))}
+    
+    const DI=(a.datas_ida||[]).filter(x=>x.dia>isoHoje()),DV=(a.datas_volta||[]).filter(x=>x.dia>isoHoje());
+    const cs=casar(DI,DV);if(!cs){continue}vistos.add(a.destino);const par=cs.par;im=meses(cs.ida);vm=meses(cs.volta);
+    L.push({...a,par,preco:par.pi,link_compra:linkAv(a.destino,par),ref:(refs[a.destino]||{}).texto||"",ida_meses:im,volta_meses:vm,classe:a.classe||classeDe(a.desconto||0),
+      normal:a.preco_tipico,d:a.desconto||0,recorde:a.recorde,visto:hora(a.criado)});
   }
-  for(const i of (t5.itens||[])){
-    if(vistos.has(i.k))continue;vistos.add(i.k);
-    L.push({fonte:"top5",k:i.k,nome:i.nome,cia:i.cia||"",direto:false,pares:[{ida:i.ida,volta:i.volta,preco:i.rt}],total:i.rt,normal:i.normal,d:i.d,visto:t5.atualizado?hora(t5.atualizado):"hoje"});
-  }
+  const quando=t5.atualizado?hora(t5.atualizado):"hoje";
+  for(const i of (t5.itens||[])){if(vistos.has(i.k))continue;const o=await deTop5(i,refs,quando);if(o&&o.d>=.15){vistos.add(i.k);L.push(o)}}
   L.sort((a,b)=>b.d-a.d);
-  $("#sub-grupo").textContent=L.length?`${L.length} oferta${L.length>1?"s":""} abaixo do preço normal${t5.atualizado?" · radar atualizado "+hora(t5.atualizado):""}. A de cima é a melhor.`:"Nenhuma oferta boa agora. O radar roda de hora em hora; volta mais tarde.";
+  $("#sub-grupo").textContent=L.length?`${L.length} oferta${L.length>1?"s":""} abaixo do preço normal${t5.atualizado?" · radar atualizado "+quando:""}. A de cima é a melhor.`:"Nenhuma oferta boa agora. O radar roda de hora em hora; volta mais tarde.";
   const box=$("#ofertas");box.innerHTML="";
-  if(t5.texto){const d=document.createElement("div");d.className="it";d.innerHTML=`<h3>🏆 Top 5 do dia <span class="tag">resumo</span></h3><div class="meta">Lista rápida pra mandar à noite.</div><details><summary>Ver texto</summary><pre>${esc(t5.texto)}</pre></details><div class="bts"><button class="bt b2 b3">📋 Copiar texto do Top 5</button></div>`;d.querySelector("button").onclick=e=>copiar(t5.texto,e.target);L.length&&setTimeout(()=>box.appendChild(d),0)}
   for(const o of L){
     const d=document.createElement("div");d.className="it";const tx=texto(o);
-    d.innerHTML=`<img class="prev" alt="">${""}<h3>${esc(o.nome)} · ${R(o.total)} <span class="tag">${Math.round(o.d*100)}% abaixo</span></h3><div class="meta">${dsem(o.pares[0].ida)} → ${dsem(o.pares[0].volta)} · ${esc(o.cia)} · visto ${o.visto}</div>
+    d.innerHTML=`<img class="prev" alt=""><h3>${esc(o.destino_nome)} · ${R(o.preco)} o trecho <span class="tag">${Math.round(o.d*100)}% abaixo</span></h3><div class="meta">${o.par?`ida e volta ${R(o.par.total)} · `:""}${esc(o.cia_nome||"")} · visto ${o.visto}</div>
     <div class="bts"><button class="bt b1">⬇️ Salvar imagem</button><button class="bt b2">📋 Copiar texto</button></div><details><summary>Ver texto</summary><pre>${esc(tx)}</pre></details>`;
     box.appendChild(d);
     card(o).then(b=>{d.querySelector("img").src=URL.createObjectURL(b);
-    const[b1,b2]=d.querySelectorAll(".bts button");b1.onclick=()=>salvar([b],"oferta-"+o.k.toLowerCase(),b1);b2.onclick=()=>copiar(tx,b2);});
+    const[b1,b2]=d.querySelectorAll(".bts button");b1.onclick=()=>salvar([b],"oferta-"+o.destino.toLowerCase(),b1);b2.onclick=()=>copiar(tx,b2);});
   }
+  if(t5.texto&&L.length){const d=document.createElement("div");d.className="it";d.innerHTML=`<h3>🏆 Top 5 do dia <span class="tag">resumo</span></h3><div class="meta">Lista rápida pra mandar à noite.</div><details><summary>Ver texto</summary><pre>${esc(t5.texto)}</pre></details><div class="bts"><button class="bt b2 b3">📋 Copiar texto do Top 5</button></div>`;d.querySelector("button").onclick=e=>copiar(t5.texto,e.target);box.appendChild(d)}
 }
 
 async function posts(){

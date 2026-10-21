@@ -78,7 +78,7 @@ MAX_VERIFICACOES = 14
 
 # Viagem: duração mínima e máxima (dias) de uma ida e volta
 DURACAO_MIN = 3
-DURACAO_MAX = 21
+DURACAO_MAX = 10
 
 # ---- Varredura no Google Voos ----
 ROTAS_POR_RODADA = 11      # rotas por rodada (rodízio: cada rota é varrida ~2x por dia)

@@ -464,14 +464,14 @@ def normal_rt(iata: str, hist: dict | None = None) -> float | None:
 
 
 def melhor_par(cal: dict) -> dict | None:
-    """Ida + volta mais barata (volta de 2 a 30 dias depois da ida), a partir do calendário da rota."""
+    """Ida + volta mais barata (volta de 3 a 10 dias depois da ida: viagem de verdade), a partir do calendário da rota."""
     hoje = agora().date().isoformat()
     ida = [d for d in cal.get("ida", []) if d["dia"] > hoje]
     volta = sorted((d for d in cal.get("volta", []) if d["dia"] > hoje), key=lambda d: d["dia"])
     best = None
     for d in ida:
         d0 = date.fromisoformat(d["dia"])
-        vs = [v for v in volta if 2 <= (date.fromisoformat(v["dia"]) - d0).days <= 30]
+        vs = [v for v in volta if 3 <= (date.fromisoformat(v["dia"]) - d0).days <= 10]
         if not vs:
             continue
         v = min(vs, key=lambda x: x["preco"])

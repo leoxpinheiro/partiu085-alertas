@@ -35,5 +35,5 @@ function pLancamento() {
 document.addEventListener("change", async e => { const t = e.target; if (!t.dataset || !t.dataset.lc || !LC.feitos) return; t.checked ? LC.feitos.add(t.dataset.lc) : LC.feitos.delete(t.dataset.lc); render();
   if (token()) { try { await salvarArquivo("docs/lancamento.json", { feitos: [...LC.feitos] }, "Lançamento: checklist"); } catch (x) { toast("Não salvou: " + x.message); } } });
 document.addEventListener("click", async e => { const b = e.target.closest('[data-act="lccopiar"]'); if (!b) return; let t = LC_TXT[b.dataset.k] || "";
-  t = t.replace("{link}", (typeof S !== "undefined" && S.ajustes && S.ajustes.link_whatsapp) || "https://bit.ly/radar085");
+  t = t.replace("{link}", (typeof S !== "undefined" && S.ajustes && S.ajustes.link_whatsapp) || "https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l");
   try { await navigator.clipboard.writeText(t); toast("Copiado!"); } catch (x) { prompt("Copie:", t); } });

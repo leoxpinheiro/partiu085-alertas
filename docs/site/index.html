@@ -132,7 +132,7 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;color:var(--ter);lin
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wa" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.1 4.9 4.3 2.4 1 2.9.8 3.4.7.5-.1 1.7-.7 2-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></symbol>
 <symbol id="igi" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3"/></symbol></svg>
 
-<nav><div class="w"><a class="mk" href="#topo"><img src="../marca/icone.png" alt=""><b>PARTIU 085</b></a><a class="btn am" href="https://bit.ly/radar085" data-grupo><svg><use href="#wa"/></svg>Entrar no grupo</a></div></nav>
+<nav><div class="w"><a class="mk" href="#topo"><img src="../marca/icone.png" alt=""><b>PARTIU 085</b></a><a class="btn am" href="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l" data-grupo><svg><use href="#wa"/></svg>Entrar no grupo</a></div></nav>
 
 <header class="hero" id="topo"><div class="w">
  <div>
@@ -140,7 +140,7 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;color:var(--ter);lin
   <h1 class="anton">O radar de passagens de <em>Fortaleza</em></h1>
   <div class="script">saindo do 085 pra onde você quiser</div>
   <p class="lead">Um robô procura passagem barata saindo de Fortaleza o dia inteiro. Quando o preço cai de verdade, o alerta chega no grupo do WhatsApp. De graça.</p>
-  <div class="ctas"><a class="btn am" href="https://bit.ly/radar085" data-grupo><svg><use href="#wa"/></svg>Quero o alerta grátis</a><a class="btn vd" href="https://www.instagram.com/partiu.085" target="_blank" rel="noopener"><svg><use href="#igi"/></svg>@partiu.085</a></div>
+  <div class="ctas"><a class="btn am" href="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l" data-grupo><svg><use href="#wa"/></svg>Participar do grupo grátis</a><a class="btn vd" href="https://www.instagram.com/partiu.085" target="_blank" rel="noopener"><svg><use href="#igi"/></svg>@partiu.085</a></div>
   <div class="mini">Sem spam: só passagem boa saindo de Fortaleza. Sai quando quiser.</div>
  </div>
  <div class="art"><div class="rings"><span></span><span></span><span></span></div><img src="../marca/mascote.png" alt="Mascote do Partiu 085"></div>
@@ -208,11 +208,11 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;color:var(--ter);lin
 <section class="final"><div class="w">
  <h2 class="anton">Bora viajar mais pagando menos?</h2>
  <p class="sub">Entra no grupo grátis e recebe a próxima promoção antes de todo mundo.</p>
- <a class="btn am" href="https://bit.ly/radar085" data-grupo><svg><use href="#wa"/></svg>Entrar no grupo grátis</a>
+ <a class="btn am" href="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l" data-grupo><svg><use href="#wa"/></svg>Entrar no grupo grátis</a>
 </div></section>
 
 <footer><div class="w">Partiu 085 · radar de passagens saindo de Fortaleza<br><a href="https://www.instagram.com/partiu.085" target="_blank" rel="noopener">@partiu.085</a> · preços sujeitos a mudança sem aviso</div></footer>
-<a class="zap" href="https://bit.ly/radar085" data-grupo aria-label="Entrar no grupo do WhatsApp"><svg><use href="#wa"/></svg></a>
+<a class="zap" href="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l" data-grupo aria-label="Entrar no grupo do WhatsApp"><svg><use href="#wa"/></svg></a>
 
 <script>
 const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR'),dm=d=>d?d.slice(8,10)+'/'+d.slice(5,7):'';
@@ -230,7 +230,7 @@ j('../vitrine.json').then(Vt=>{const box=document.getElementById('deals');
  const D=[...R.filter(x=>x.tipo==='nacional').slice(0,4),...R.filter(x=>x.tipo!=='nacional').slice(0,2)];
  if(!D.length){box.innerHTML='<div class="vazio">Nenhum achado nos últimos dias. Quando o preço cair, o alerta chega no grupo primeiro.</div>';return;}
  const tag=d=>d>=.25?'🔥 IMPERDÍVEL':d>=.12?'⭐ ÓTIMO PREÇO':'💸 MAIS BARATO';
- box.innerHTML=D.map(x=>`<a class="deal rev on" href="https://bit.ly/radar085" data-grupo><img src="../fotos/${x.k}.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="tag">${x.tipo==='nacional'?tag(x.d||0):'🌎 INTERNACIONAL'}</span><div class="in"><small>Fortaleza → ${x.k}</small><h3 class="anton">${x.nome}</h3><div class="pr">${br(x.rt)}<span>ida e volta</span></div><div class="iv">${x.d>=.1?`<b style="color:#1FA45B">${Math.round(x.d*100)}% abaixo do normal</b> · `:''}${dm(x.ida)} a ${dm(x.volta)} · visto em ${dm(x.visto)}</div></div></a>`).join('');
+ box.innerHTML=D.map(x=>`<a class="deal rev on" href="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l" data-grupo><img src="../fotos/${x.k}.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="tag">${x.tipo==='nacional'?tag(x.d||0):'🌎 INTERNACIONAL'}</span><div class="in"><small>Fortaleza → ${x.k}</small><h3 class="anton">${x.nome}</h3><div class="pr">${br(x.rt)}<span>ida e volta</span></div><div class="iv">${x.d>=.1?`<b style="color:#1FA45B">${Math.round(x.d*100)}% abaixo do normal</b> · `:''}${dm(x.ida)} a ${dm(x.volta)} · visto em ${dm(x.visto)}</div></div></a>`).join('');
  j('../grupos.json').then(g=>{const l=((g||[]).find(x=>x.id==='gratis')||{}).link;if(l)box.querySelectorAll('[data-grupo]').forEach(a=>a.href=l);});});
 j('../feriados.json').then(F=>{const el=document.getElementById('fer');const hj=new Date().toISOString().slice(0,10);const L=((F&&F.feriados)||[]).filter(f=>(f.idas||[]).some(d=>d>=hj)&&(f.destinos||[]).length).slice(0,2);if(!L.length){document.getElementById('feriado').remove();return;}
  el.innerHTML=L.map(f=>`<div class="ft rev on"><h3 class="anton">${f.nome}</h3><p>Ida ${f.idas.map(dm).join(' ou ')} · volta ${f.voltas.map(dm).join(' ou ')} · visto em ${dm(f.visto)}</p>${f.destinos.slice(0,5).map(d=>`<div class="lin"><div>${d.nome}<small>ida ${dm(d.ida.dia)}${d.ida.escalas===0?' · voo direto':''}</small></div><b>${br(d.total)}</b></div>`).join('')}</div>`).join('');});

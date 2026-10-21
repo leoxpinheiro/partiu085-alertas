@@ -154,7 +154,7 @@ function casar(I,V){let best=null;
   const volta=Vb.filter(v=>ida.some(d=>{const n=nd(d,v.dia);return n>=3&&n<=10})).map(v=>v.dia);
   return{par:best,ida:ida.slice(0,10),volta:volta.slice(0,10)}}
 // link curto do Partiu (página v/ redireciona pro link de afiliado)
-const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://leoxpinheiro.github.io/partiu085-alertas/v/?${k}${f(p.ida)}-${f(p.volta)}`};
+const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://partiu.avancepro.app.br/v/?${k}${f(p.ida)}-${f(p.volta)}`};
 // top5 sem alerta: monta no mesmo formato usando o calendário da rota
 async function deTop5(i,refs,quando){
   const cal=await get("calendario/"+i.k+".json",null);const hj=isoHoje();
@@ -225,7 +225,7 @@ async function reels(){
 }
 
 
-const SITE="https://leoxpinheiro.github.io/partiu085-alertas/site/";
+const SITE="https://partiu.avancepro.app.br/site/";
 const TX={
 bio:"✈️ Passagem barata saindo de Fortaleza\n📡 Radar ligado o dia todo · alertas grátis\n👇 Entra no grupo",
 boas:"✈️ *Bem-vindo(a) ao Partiu 085!*\n\nAqui você recebe as passagens baratas saindo de *Fortaleza* assim que o nosso radar encontra.\n\n📡 *Como funciona*\n• O radar vigia mais de 50 destinos o dia todo\n• Quando o preço cai de verdade, a gente confere e manda aqui\n• Preço de passagem muda rápido: viu, gostou, compra\n\n🔔 *Dica:* deixa as notificações do grupo ligadas (ou fixa o grupo no topo)\n\n📋 *Regras*\n• Grupo só de avisos: só os admins mandam mensagem\n• Nada de spam, venda ou corrente\n• O preço é o visto na hora do alerta e pode mudar\n\n💬 Dúvida ou pedido de destino? Chama no direct do @partiu.085\n\nBoa viagem! 🧳",

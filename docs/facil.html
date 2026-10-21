@@ -190,7 +190,7 @@ async function ofertas(){
   // dia sem promoção forte: completa com as ida e volta mais baratas de hoje
   if(L.length<4)for(const i of (t5.baratos||[])){if(L.length>=5)break;if(vistos.has(i.k))continue;const o=await deTop5(i,refs,quando);if(o){o.classe="barato";o.d=o.d||0;vistos.add(i.k);L.push(o)}}
   L.sort((a,b)=>(a.par?a.par.total:9e9)-(b.par?b.par.total:9e9));
-  $("#sub-grupo").textContent=L.length?`${L.length} oferta${L.length>1?"s":""} abaixo do preço normal${t5.atualizado?" · radar atualizado "+quando:""}. A de cima é a melhor.`:"Nenhuma oferta boa agora. O radar roda de hora em hora; volta mais tarde.";
+  $("#sub-grupo").textContent=L.length?`${L.length} oferta${L.length>1?"s":""} pra mandar hoje${t5.atualizado?" · radar atualizado "+quando:""}. A de cima é a melhor.`:"Nenhuma oferta boa agora. O radar roda de hora em hora; volta mais tarde.";
   const box=$("#ofertas");box.innerHTML="";
   for(const o of L){
     const d=document.createElement("div");d.className="it";const tx=texto(o);

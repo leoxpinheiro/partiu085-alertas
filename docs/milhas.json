@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-21T04:17-03:00",
+ "atualizado": "2026-10-21T05:11-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "itens": 10,
-   "ok": true
+   "ok": false,
+   "erro": "500 Server Error: Internal Server Error for url: https://mestredasmilhas.com/feed/"
   },
   {
    "fonte": "Melhores Cartões",
@@ -106,7 +106,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 33,
+   "itens": 34,
    "ok": true
   },
   {

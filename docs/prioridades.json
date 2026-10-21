@@ -168,7 +168,7 @@
   "SCL": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (1 de ~90 dias)"
   },
   "LIM": {
    "prioridade": "baixa",
@@ -226,9 +226,9 @@
    "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BPS": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "prioridade": "turbo",
+   "auto": "turbo",
+   "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "PMW": {
    "prioridade": "turbo",
@@ -271,30 +271,30 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-10-20T23:23-03:00",
+ "quando": "2026-10-21T00:23-03:00",
  "ultimo_lote": [
+  "MIA",
+  "FLN",
+  "SAO",
+  "IGU",
+  "LIS",
+  "RIO",
+  "REC",
+  "THE",
+  "MAO",
+  "VIX",
+  "GYN",
+  "JDO",
+  "NAT",
+  "ROM",
+  "PMW",
+  "NYC",
+  "UDI",
+  "BCN",
   "BSB",
+  "POA",
   "MAD",
-  "NVT",
-  "BHZ",
-  "PAR",
-  "OPO",
-  "AJU",
-  "SLZ",
-  "SSA",
-  "CGR",
-  "MIL",
-  "BPS",
-  "FRA",
-  "SCL",
-  "BUE",
-  "SDQ",
-  "MCZ",
-  "BEL",
-  "JPA",
-  "CGB",
-  "VCP",
-  "CWB",
-  "AMS"
+  "LON",
+  "NVT"
  ]
 }

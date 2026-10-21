@@ -1,6 +1,7 @@
 {
- "atualizado": "2026-10-21T16:53+00:00",
+ "atualizado": "2026-10-21T17:48+00:00",
  "pistas": [
+  "BEL",
   "BUE",
   "CWB",
   "IGU",
@@ -67,7 +68,7 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "REC",
@@ -87,26 +88,6 @@
    },
    "rastreada": true,
    "nome": "Recife",
-   "pista": true
-  },
-  {
-   "iata": "SAO",
-   "rt": {
-    "preco": 1035,
-    "ida": "2027-02-28",
-    "volta": "2027-03-31",
-    "paradas": 1,
-    "visto": "2026-10-17T16:54:01Z"
-   },
-   "ow": {
-    "preco": 537,
-    "ida": "2026-12-02",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-20T15:07:30Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
    "pista": true
   },
   {
@@ -149,6 +130,26 @@
    "pista": true
   },
   {
+   "iata": "SAO",
+   "rt": {
+    "preco": 1442,
+    "ida": "2026-12-08",
+    "volta": "2026-12-16",
+    "paradas": 1,
+    "visto": "2026-10-19T23:43:41Z"
+   },
+   "ow": {
+    "preco": 537,
+    "ida": "2026-12-02",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-20T15:07:30Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
+  },
+  {
    "iata": "FLN",
    "rt": {
     "preco": 1608,
@@ -160,6 +161,19 @@
    "rastreada": true,
    "nome": "Florianópolis",
    "pista": false
+  },
+  {
+   "iata": "PAR",
+   "ow": {
+    "preco": 1790,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-21T17:25:16Z"
+   },
+   "rastreada": true,
+   "nome": "Paris",
+   "pista": true
   },
   {
    "iata": "RIO",
@@ -184,7 +198,7 @@
   {
    "iata": "POA",
    "rt": {
-    "preco": 1862,
+    "preco": 1863,
     "ida": "2027-03-01",
     "volta": "2027-03-08",
     "paradas": 1,
@@ -308,7 +322,7 @@
   {
    "iata": "MAD",
    "rt": {
-    "preco": 3471,
+    "preco": 3472,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
     "paradas": 0,
@@ -365,6 +379,19 @@
    "pista": false
   },
   {
+   "iata": "SVD",
+   "ow": {
+    "preco": 4887,
+    "ida": "2027-03-30",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-21T17:35:01Z"
+   },
+   "rastreada": false,
+   "nome": "SVD",
+   "pista": false
+  },
+  {
    "iata": "TIA",
    "rt": {
     "preco": 5665,
@@ -393,7 +420,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5762,
+    "preco": 5764,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 2,

@@ -33,8 +33,13 @@ pre{white-space:pre-wrap;font-family:inherit;font-size:14px;background:#F7F8FA;b
 .tag{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:3px 9px;background:#E3F5EA;color:#137a42;margin-left:6px;vertical-align:middle}
 </style></head><body>
 <header><h1>Postar hoje</h1><p id="hoje">Salva a imagem, copia o texto, cola no WhatsApp ou no Instagram.</p></header>
-<nav class="tabs"><a href="#grupo" class="on">📲 Grupo</a><a href="#insta">📸 Instagram</a><a href="#reels">🎬 Reels</a><a href="index.html">⚙️ Painel completo</a></nav>
+<nav class="tabs"><a href="#roteiro">🚀 Roteiro</a><a href="#grupo" class="on">📲 Grupo</a><a href="#insta">📸 Instagram</a><a href="#reels">🎬 Reels</a><a href="index.html">⚙️ Painel completo</a></nav>
 <main>
+<section class="sec" id="s-roteiro">
+ <h2>Roteiro de lançamento</h2>
+ <div class="sub">Quarta, 21/10. Marca cada passo quando fizer. Os botões copiam o texto ou baixam a imagem.</div>
+ <div id="rot"></div>
+</section>
 <section class="sec on" id="s-grupo">
  <h2>Ofertas pro grupo</h2>
  <div class="sub" id="sub-grupo">Carregando o radar…</div>
@@ -85,8 +90,8 @@ function texto(a){
   if(a.recorde&&a.base&&a.base.dias)L.push(`📉 _Menor preço que já vimos nesse trecho (${a.base.dias} dias de pesquisa)_`);
   L.push("","🗓️ *IDA*",...a.ida_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
   if(a.volta_meses&&a.volta_meses.length)L.push("","🗓️ *VOLTA*",...a.volta_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
-  L.push("","⚠️ _Preço pode mudar a qualquer momento._");
-  if(a.link_compra)L.push(`🛒 Ver e comprar: ${a.link_compra}`);
+  L.push("","⏳ _Promoção assim costuma acabar ligeiro. Preço pode mudar a qualquer momento._");
+  if(a.link_compra)L.push(`🛒 Compre pelo link confiável do Partiu:`,a.link_compra);
   L.push("",RODAPE);return L.join("\n");
 }
 
@@ -148,7 +153,8 @@ function casar(I,V){let best=null;
   const ida=Ib.filter(x=>Vb.some(v=>{const n=nd(x.dia,v.dia);return n>=3&&n<=10})).map(x=>x.dia);
   const volta=Vb.filter(v=>ida.some(d=>{const n=nd(d,v.dia);return n>=3&&n<=10})).map(v=>v.dia);
   return{par:best,ida:ida.slice(0,10),volta:volta.slice(0,10)}}
-const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://www.aviasales.com/search/FOR${f(p.ida)}${k}${f(p.volta)}1?marker=677880.whatsapp&currency=brl`};
+// link curto do Partiu (página v/ redireciona pro link de afiliado)
+const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://leoxpinheiro.github.io/partiu085-alertas/v/?${k}${f(p.ida)}-${f(p.volta)}`};
 // top5 sem alerta: monta no mesmo formato usando o calendário da rota
 async function deTop5(i,refs,quando){
   const cal=await get("calendario/"+i.k+".json",null);const hj=isoHoje();
@@ -218,9 +224,58 @@ async function reels(){
     b1.onclick=async()=>{b1.textContent="⏳ Baixando…";salvar([await blobDe(u)],x.id,b1)};b2.onclick=()=>copiar(x.legenda||"",b2)}
 }
 
+
+const SITE="https://leoxpinheiro.github.io/partiu085-alertas/site/";
+const TX={
+bio:"✈️ Passagem barata saindo de Fortaleza\n📡 Radar ligado o dia todo · alertas grátis\n👇 Entra no grupo",
+boas:"✈️ *Bem-vindo(a) ao Partiu 085!*\n\nAqui você recebe as passagens baratas saindo de *Fortaleza* assim que o nosso radar encontra.\n\n📡 *Como funciona*\n• O radar vigia mais de 50 destinos o dia todo\n• Quando o preço cai de verdade, a gente confere e manda aqui\n• Preço de passagem muda rápido: viu, gostou, compra\n\n🔔 *Dica:* deixa as notificações do grupo ligadas (ou fixa o grupo no topo)\n\n📋 *Regras*\n• Grupo só de avisos: só os admins mandam mensagem\n• Nada de spam, venda ou corrente\n• O preço é o visto na hora do alerta e pode mudar\n\n💬 Dúvida ou pedido de destino? Chama no direct do @partiu.085\n\nBoa viagem! 🧳",
+abriu:"🎉 *ABRIU!*\n\nBom dia e bem-vindo(a) ao grupo do *Partiu 085*!\n\nA partir de hoje o radar manda aqui as passagens baratas saindo de Fortaleza, na hora que aparecem.\n\n1️⃣ Ativa as notificações do grupo 🔔\n2️⃣ Fixa o grupo no topo do WhatsApp\n\nDaqui a pouco chega o primeiro achado 👀✈️",
+story:"Link do sticker: https://bit.ly/radar085\nTexto do sticker: ENTRAR NO GRUPO",
+convite:"📢 Primeiro dia do grupo: obrigado a todo mundo que chegou! 🙌\n\nSabe alguém que vive dizendo que quer viajar? Manda o link pra essa pessoa 👇\nhttps://bit.ly/radar085\n\nAmanhã o radar continua trabalhando ✈️",
+desc:"✈️ Passagem barata saindo de Fortaleza. O radar vigia os preços o dia todo e avisa aqui quando cai. Só admins postam. Preço pode mudar a qualquer momento."};
+const PASSOS=[
+["Antes de abrir",[
+ ["g1","No grupo: só admins enviam mensagem, foto do Partiu e esta descrição",{copiar:"desc"}],
+ ["g2","Fixar a mensagem de boas-vindas no grupo",{copiar:"boas"}],
+ ["g3","Abrir bit.ly/radar085 no celular e conferir se cai no grupo certo",{abrir:"https://bit.ly/radar085"}],
+ ["b1","Instagram › Editar perfil › Links: colar o link do site com o título \"Entrar no grupo grátis\"",{copiarTxt:SITE}],
+ ["b2","Trocar a bio por este texto",{copiar:"bio"}]]],
+["8h · Abertura",[
+ ["a1","Grupo: mandar a mensagem ABRIU",{copiar:"abriu"}],
+ ["a2","Instagram: postar o Reel \"O grupo abriu\" (aba Reels) com a legenda dele",{ir:"#reels"}],
+ ["a3","Story: imagem \"O grupo abriu\" + sticker de link",{baixar:"stories/story-grupo-abriu.jpg",copiar:"story"}]]],
+["12h · Primeira oferta",[
+ ["o1","Grupo: mandar a 1ª oferta da aba Grupo (a de cima): salvar imagem + copiar texto",{ir:"#grupo"}],
+ ["o2","Story: a mesma arte da oferta com \"Isso chegou primeiro no grupo 👇\" e sticker de link",{ir:"#grupo"}],
+ ["o3","12h30 o piloto automático posta sozinho o carrossel da Europa. Não precisa fazer nada",{}]]],
+["17h · Reel do feriadão",[
+ ["f1","Instagram: Reel \"Feriadão 20/11\" (aba Reels) com a legenda",{ir:"#reels"}],
+ ["f2","19h o piloto automático posta sozinho a oferta do dia no feed",{}]]],
+["Noite",[
+ ["n1","19h30 · Grupo: Top 5 do dia (fim da aba Grupo)",{ir:"#grupo"}],
+ ["n2","21h · Grupo: pedir pra convidar os amigos",{copiar:"convite"}]]],
+["Próximos dias (um por dia, de manhã ou 17h)",[
+ ["d1","Qui 22 · Reel \"Por que a janela do avião é redonda?\"",{ir:"#reels"}],
+ ["d2","Qui 22 · Carrossel \"Qual o dia mais barato pra voar?\" (aba Instagram)",{ir:"#insta"}],
+ ["d3","Sex 23 · Reel \"Pra que serve o furinho na janela?\"",{ir:"#reels"}],
+ ["d4","Sáb 24 · Reel \"Por que a comida do avião parece sem gosto?\"",{ir:"#reels"}],
+ ["d5","Todo dia · 1 a 3 ofertas fresquinhas no grupo pela aba Grupo",{ir:"#grupo"}]]]];
+const FEITO=(()=>{try{return new Set(JSON.parse(localStorage.getItem("p085_rot")||"[]"))}catch(e){return new Set()}})();
+function salvaFeito(){try{localStorage.setItem("p085_rot",JSON.stringify([...FEITO]))}catch(e){}}
+function roteiro(){
+  const box=$("#rot");box.innerHTML="";
+  for(const[t,its]of PASSOS){const d=document.createElement("div");d.className="it";
+    d.innerHTML=`<h3>${esc(t)}</h3>`+its.map(([id,tx,ac])=>`<div class="ps" data-id="${id}"><label style="display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:600;margin:10px 2px"><input type="checkbox" ${FEITO.has(id)?"checked":""} style="width:22px;height:22px;flex:none;margin-top:1px"><span style="${FEITO.has(id)?"text-decoration:line-through;color:#8a96a3":""}">${esc(tx)}</span></label>
+      <div class="bts" style="margin:0 0 6px 32px">${ac.copiar?`<button class="bt b2" data-c="${ac.copiar}">📋 Copiar texto</button>`:""}${ac.copiarTxt?`<button class="bt b2" data-t="${esc(ac.copiarTxt)}">📋 Copiar link</button>`:""}${ac.baixar?`<button class="bt b1" data-b="${ac.baixar}">⬇️ Salvar imagem</button>`:""}${ac.ir?`<a class="bt b3" style="grid-column:auto" href="${ac.ir}">Abrir</a>`:""}${ac.abrir?`<a class="bt b3" style="grid-column:auto" target="_blank" href="${ac.abrir}">Testar link</a>`:""}</div></div>`).join("");
+    box.appendChild(d)}
+  box.querySelectorAll("input[type=checkbox]").forEach(c=>c.onchange=()=>{const id=c.closest(".ps").dataset.id;c.checked?FEITO.add(id):FEITO.delete(id);salvaFeito();c.nextElementSibling.style.cssText=c.checked?"text-decoration:line-through;color:#8a96a3":""});
+  box.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>copiar(TX[b.dataset.c],b));
+  box.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>copiar(b.dataset.t,b));
+  box.querySelectorAll("[data-b]").forEach(b=>b.onclick=async()=>salvar([await blobDe(b.dataset.b)],"story-grupo-abriu",b));
+}
 function aba(){const h=(location.hash||"#grupo").slice(1);document.querySelectorAll(".sec").forEach(s=>s.classList.toggle("on",s.id==="s-"+h));document.querySelectorAll(".tabs a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+h))}
 addEventListener("hashchange",aba);aba();
 $("#hoje").textContent=new Date().toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long"})+" · salva a imagem, copia o texto e cola.";
-ofertas();posts();reels();
+roteiro();ofertas();posts();reels();
 </script>
 </body></html>

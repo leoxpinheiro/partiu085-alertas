@@ -2,6 +2,10 @@
 "use strict";
 const RS = { k: "", mes: "" };
 const RESP_FIXAS = [
+  ["boasvindas", "👋 Boas-vindas do grupo (fixar)", "✈️ *Bem-vindo(a) ao Partiu 085!*\n\nAqui você recebe as passagens baratas saindo de *Fortaleza* assim que o nosso radar encontra.\n\n📡 *Como funciona*\n• O radar vigia mais de 50 destinos o dia todo\n• Quando o preço cai de verdade, a gente confere e manda aqui\n• Preço de passagem muda rápido: viu, gostou, compra\n\n🔔 *Dica:* deixa as notificações do grupo ligadas (ou fixa o grupo no topo)\n\n📋 *Regras*\n• Grupo só de avisos: só os admins mandam mensagem\n• Nada de spam, venda ou corrente\n• O preço é o visto na hora do alerta e pode mudar\n\n💬 Dúvida ou pedido de destino? Chama no direct do @partiu.085\n\nBoa viagem! 🧳"],
+  ["descgrupo", "📝 Descrição do grupo", "✈️ Passagem barata saindo de Fortaleza. O radar vigia os preços o dia todo e avisa aqui quando cai. Só admins postam. Preço pode mudar a qualquer momento."],
+  ["abriu", "🎉 Abertura do grupo", "🎉 *ABRIU!*\n\nBem-vindo(a) ao grupo do *Partiu 085*!\n\nA partir de hoje o radar manda aqui as passagens baratas saindo de Fortaleza, na hora que aparecem.\n\n1️⃣ Ativa as notificações do grupo 🔔\n2️⃣ Fixa o grupo no topo do WhatsApp\n\nDaqui a pouco chega o primeiro achado 👀✈️"],
+  ["convite", "📢 Chama os amigos", "📢 Obrigado a todo mundo que chegou! 🙌\n\nSabe alguém que vive dizendo que quer viajar? Manda o link pra essa pessoa 👇\n{link}\n\nO radar continua trabalhando ✈️"],
   ["link", "🔗 Me manda o link", "Oi! Tá aqui o grupo GRÁTIS com as passagens baratas saindo de Fortaleza 👇\n{link}\n\nAtiva as notificações do grupo pra não perder, promoção boa some em horas ✈️"],
   ["gratis", "💸 É de graça mesmo?", "É sim, 100% grátis! 😄 A gente olha os preços o dia todo e manda no grupo quando aparece promoção de verdade saindo de Fortaleza. Entra aqui: {link}"],
   ["como", "🤖 Como funciona?", "O radar pesquisa os preços saindo de Fortaleza várias vezes por dia, compara com o preço normal de cada rota (ida e volta) e, quando tá barato de verdade, avisa no grupo com as melhores datas. Você só compra direto na companhia ou no site indicado 😉\nGrupo: {link}"],

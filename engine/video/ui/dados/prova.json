@@ -1,0 +1,81 @@
+{
+ "tema": "O RADAR ACHOU",
+ "foto": "hd-asa-2.jpg",
+ "voz": "pt-BR-AntonioNeural",
+ "velocidade": "+18%",
+ "capa": {
+  "tag": "📡 O RADAR ACHOU",
+  "titulo": "Quem tava no grupo <em>viu primeiro</em>",
+  "sub": "Ida e volta saindo de Fortaleza, achados desta semana.",
+  "chips": [
+   [
+    "R$ 503",
+    "Juazeiro"
+   ],
+   [
+    "-33%",
+    "Teresina"
+   ],
+   [
+    "-30%",
+    "Salvador"
+   ]
+  ],
+  "fala": "Olha o que o radar achou essa semana saindo de Fortaleza. Quem tava no grupo viu primeiro."
+ },
+ "regras": [
+  {
+   "n": "926",
+   "nsub": "R$ ida e volta",
+   "icone": "🏖️",
+   "titulo": "Salvador, <em>30% abaixo do normal</em>",
+   "itens": [
+    [
+     "ok",
+     "14 a 17 de dezembro"
+    ],
+    [
+     "ok",
+     "Gol, voo direto"
+    ]
+   ],
+   "fala": "Salvador, novecentos e vinte e seis reais ida e volta, trinta por cento abaixo do normal."
+  },
+  {
+   "n": "1.011",
+   "nsub": "R$ ida e volta",
+   "icone": "✈️",
+   "titulo": "Teresina, <em>33% abaixo do normal</em>",
+   "itens": [
+    [
+     "ok",
+     "11 a 14 de novembro"
+    ],
+    [
+     "ok",
+     "LATAM, voo direto"
+    ]
+   ],
+   "fala": "Teresina, mil e onze, trinta e três por cento abaixo do normal."
+  },
+  {
+   "n": "503",
+   "nsub": "R$ ida e volta",
+   "icone": "🔥",
+   "titulo": "Juazeiro do Norte, <em>o mais barato</em>",
+   "itens": [
+    [
+     "ok",
+     "21 a 24 de janeiro"
+    ]
+   ],
+   "fala": "E Juazeiro do Norte por quinhentos e três reais, ida e volta."
+  }
+ ],
+ "fim": {
+  "titulo": "O próximo pode ser o seu. <em>Link na bio.</em>",
+  "cta": "Grupo grátis no WhatsApp",
+  "fonte": "Preços vistos pelo radar Partiu 085 entre 19 e 21/10/2026. Passagem muda de preço a qualquer momento.",
+  "fala": "O próximo alerta pode ser o seu. Entra no grupo grátis pelo link da bio."
+ }
+}

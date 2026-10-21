@@ -1,0 +1,77 @@
+{
+ "tema": "COMO ENTRAR",
+ "foto": "hd-janela-1.jpg",
+ "voz": "pt-BR-FranciscaNeural",
+ "velocidade": "+18%",
+ "capa": {
+  "tag": "📲 EM 10 SEGUNDOS",
+  "titulo": "Como receber <em>passagem barata</em> no WhatsApp",
+  "sub": "Saindo de Fortaleza. De graça.",
+  "chips": [
+   [
+    "3",
+    "passos"
+   ],
+   [
+    "10s",
+    "pra entrar"
+   ],
+   [
+    "R$ 0",
+    "pra sempre"
+   ]
+  ],
+  "fala": "Quer receber passagem barata saindo de Fortaleza no seu WhatsApp? Leva dez segundos."
+ },
+ "regras": [
+  {
+   "n": "1",
+   "nsub": "passo",
+   "icone": "👆",
+   "titulo": "Toca no <em>link da bio</em>",
+   "itens": [
+    [
+     "ok",
+     "No perfil @partiu.085"
+    ]
+   ],
+   "fala": "Um: toca no link da bio do Partiu zero oito cinco."
+  },
+  {
+   "n": "2",
+   "nsub": "passo",
+   "icone": "💬",
+   "titulo": "Entra no <em>grupo grátis</em>",
+   "itens": [
+    [
+     "ok",
+     "Só passagem boa, sem spam"
+    ],
+    [
+     "ok",
+     "Só os admins mandam mensagem"
+    ]
+   ],
+   "fala": "Dois: entra no grupo. É grátis, e só chega passagem boa."
+  },
+  {
+   "n": "3",
+   "nsub": "passo",
+   "icone": "🔔",
+   "titulo": "Ativa <em>as notificações</em>",
+   "itens": [
+    [
+     "in",
+     "Promoção boa some em poucas horas"
+    ]
+   ],
+   "fala": "Três: ativa as notificações, porque promoção boa some em poucas horas."
+  }
+ ],
+ "fim": {
+  "titulo": "Pronto. <em>Agora é só esperar o alerta.</em>",
+  "cta": "Manda pra quem vive dizendo que quer viajar",
+  "fonte": "Grupo grátis do Partiu 085. Link na bio.",
+  "fala": "Pronto. Agora é só esperar o alerta. E manda pra quem vive dizendo que quer viajar."
+ }
+}

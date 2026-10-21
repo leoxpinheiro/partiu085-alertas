@@ -1,0 +1,85 @@
+{
+ "tema": "CURIOSIDADE",
+ "foto": "hd-asa-2.jpg",
+ "voz": "pt-BR-ThalitaMultilingualNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "🤔 CURIOSIDADE",
+  "titulo": "Por que a comida do avião <em>parece sem gosto?</em>",
+  "sub": "A culpa não é só da cozinha. É do ar lá em cima.",
+  "chips": [
+   [
+    "até 30%",
+    "menos sal"
+   ],
+   [
+    "seco",
+    "o ar"
+   ],
+   [
+    "🍅",
+    "o suco"
+   ]
+  ],
+  "fala": "Por que a comida do avião parece sem graça? A culpa não é só de quem cozinhou."
+ },
+ "regras": [
+  {
+   "n": "30%",
+   "nsub": "menos gosto",
+   "icone": "🧂",
+   "titulo": "Lá em cima, sal e doce <em>perdem força</em>",
+   "itens": [
+    [
+     "in",
+     "Estudo da Lufthansa com o instituto Fraunhofer"
+    ],
+    [
+     "no",
+     "Sal e açúcar caem até uns 30%"
+    ]
+   ],
+   "fala": "Um estudo da Lufthansa com o instituto Fraunhofer mostrou que, lá em cima, a gente sente até uns trinta por cento menos o sal e o doce."
+  },
+  {
+   "n": "SECO",
+   "nsub": "o ar",
+   "icone": "💨",
+   "titulo": "O ar da cabine <em>é muito seco</em>",
+   "itens": [
+    [
+     "in",
+     "O nariz resseca e sente menos cheiro"
+    ],
+    [
+     "in",
+     "E metade do sabor vem do cheiro"
+    ]
+   ],
+   "fala": "O ar da cabine é muito seco. O nariz resseca, sente menos cheiro, e boa parte do sabor vem justamente do cheiro."
+  },
+  {
+   "n": "🍅",
+   "nsub": "a exceção",
+   "icone": "🥤",
+   "titulo": "Por isso o suco de tomate <em>faz sucesso no avião</em>",
+   "itens": [
+    [
+     "ok",
+     "O sabor umami quase não muda"
+    ],
+    [
+     "ok",
+     "Fica até mais gostoso lá em cima"
+    ]
+   ],
+   "fala": "E é por isso que muita gente pede suco de tomate no avião. O sabor umami quase não muda, e ele fica até mais gostoso lá em cima."
+  }
+ ],
+ "fim": {
+  "titulo": "Próximo voo, <em>pede o suco de tomate</em>.",
+  "cta": "Marca quem vai rir desse vídeo",
+  "fonte": "Fonte: estudo da Lufthansa com o Fraunhofer Institute for Building Physics (2010).",
+  "fala": "No próximo voo, testa o suco de tomate. E marca aquele amigo que sempre reclama da comida."
+ }
+}

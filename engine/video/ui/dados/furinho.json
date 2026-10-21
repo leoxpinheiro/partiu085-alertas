@@ -1,0 +1,89 @@
+{
+ "tema": "CURIOSIDADE",
+ "foto": "hd-janela-1.jpg",
+ "voz": "pt-BR-ThalitaMultilingualNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "🤔 CURIOSIDADE",
+  "titulo": "Pra que serve o <em>furinho na janela</em> do avião?",
+  "sub": "Aquele buraquinho embaixo. Ele tem uma função.",
+  "chips": [
+   [
+    "3",
+    "camadas"
+   ],
+   [
+    "1",
+    "furinho"
+   ],
+   [
+    "0",
+    "perigo"
+   ]
+  ],
+  "fala": "Sabe aquele furinho na janela do avião? Não é defeito. Ele tem uma função importante."
+ },
+ "regras": [
+  {
+   "n": "3",
+   "nsub": "camadas",
+   "icone": "🪟",
+   "titulo": "A janela tem <em>três camadas</em>",
+   "itens": [
+    [
+     "in",
+     "A de fora aguenta a pressão"
+    ],
+    [
+     "in",
+     "A do meio é a reserva"
+    ],
+    [
+     "in",
+     "A de dentro só protege contra arranhão"
+    ]
+   ],
+   "fala": "A janela do avião tem três camadas. A de fora aguenta a pressão, a do meio é uma reserva, e a de dentro só protege contra arranhão."
+  },
+  {
+   "n": "1",
+   "nsub": "furinho",
+   "icone": "🔍",
+   "titulo": "O furo fica <em>na camada do meio</em>",
+   "itens": [
+    [
+     "ok",
+     "Iguala a pressão entre as camadas"
+    ],
+    [
+     "ok",
+     "Assim só a de fora faz força"
+    ]
+   ],
+   "fala": "O furinho fica na camada do meio. Ele deixa o ar passar e iguala a pressão, pra que só a camada de fora faça a força."
+  },
+  {
+   "n": "SEM",
+   "nsub": "embaçar",
+   "icone": "❄️",
+   "titulo": "E ainda <em>evita embaçar</em>",
+   "itens": [
+    [
+     "ok",
+     "Deixa a umidade sair"
+    ],
+    [
+     "ok",
+     "Você vê a paisagem limpa"
+    ]
+   ],
+   "fala": "E ainda tem um bônus. Ele deixa a umidade sair, e a janela não embaça. Por isso você consegue ver a paisagem."
+  }
+ ],
+ "fim": {
+  "titulo": "Agora você <em>sabe mais que o vizinho de poltrona</em>.",
+  "cta": "Salva e mostra no próximo voo",
+  "fonte": "Informação geral sobre janelas de aviões comerciais pressurizados.",
+  "fala": "Salva esse vídeo e mostra pra quem sentar do seu lado no próximo voo."
+ }
+}

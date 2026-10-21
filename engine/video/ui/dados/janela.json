@@ -1,0 +1,85 @@
+{
+ "tema": "CURIOSIDADE",
+ "foto": "hd-janela-1.jpg",
+ "voz": "pt-BR-ThalitaMultilingualNeural",
+ "velocidade": "+15%",
+ "capa": {
+  "tag": "🤔 CURIOSIDADE",
+  "titulo": "Por que a janela do avião <em>é redonda?</em>",
+  "sub": "Não é estética. Já foi quadrada, e deu muito errado.",
+  "chips": [
+   [
+    "1954",
+    "o ano"
+   ],
+   [
+    "2",
+    "acidentes"
+   ],
+   [
+    "0",
+    "cantos"
+   ]
+  ],
+  "fala": "Você já reparou que a janela do avião nunca é quadrada? Tem um motivo, e ele é sério."
+ },
+ "regras": [
+  {
+   "n": "1954",
+   "nsub": "o ano",
+   "icone": "✈️",
+   "titulo": "O primeiro jato comercial <em>tinha janela quadrada</em>",
+   "itens": [
+    [
+     "in",
+     "Era o de Havilland Comet, da Inglaterra"
+    ],
+    [
+     "no",
+     "Em 1954, dois caíram em poucos meses"
+    ]
+   ],
+   "fala": "O primeiro jato de passageiros do mundo, o Comet, tinha janelas quadradas. Em mil novecentos e cinquenta e quatro, dois deles caíram em poucos meses."
+  },
+  {
+   "n": "CANTO",
+   "nsub": "o problema",
+   "icone": "🔍",
+   "titulo": "A pressão se acumula <em>nos cantos</em>",
+   "itens": [
+    [
+     "in",
+     "A cada voo a fuselagem estica e encolhe"
+    ],
+    [
+     "no",
+     "Nos cantos retos o metal cansa e racha"
+    ]
+   ],
+   "fala": "A investigação descobriu que, a cada voo, a fuselagem estica e encolhe com a pressão. E nos cantos retos o esforço se concentra, até o metal rachar."
+  },
+  {
+   "n": "0",
+   "nsub": "cantos",
+   "icone": "⭕",
+   "titulo": "Curva distribui <em>a força por igual</em>",
+   "itens": [
+    [
+     "ok",
+     "Por isso toda janela hoje é arredondada"
+    ],
+    [
+     "ok",
+     "Mais resistente e mais segura"
+    ]
+   ],
+   "fala": "Na curva, a força se espalha por igual. Por isso, desde então, toda janela de avião é arredondada."
+  }
+ ],
+ "fim": {
+  "titulo": "Agora você <em>nunca mais esquece</em>.",
+  "cta": "Manda pra quem sempre pega a janela",
+  "fonte": "Fonte: investigação dos acidentes do de Havilland Comet (1954), Reino Unido.",
+  "fala": "Agora você nunca mais esquece. Manda pra aquela pessoa que sempre briga pela janela."
+ }
+}

@@ -9,7 +9,7 @@
   "sub": "Ida e volta saindo de Fortaleza, de 19 ou 20/11 até 22 a 24/11.",
   "chips": [
    [
-    "R$ 1.057",
+    "R$ 649",
     "o mais barato"
    ],
    [
@@ -21,13 +21,34 @@
     "dias de folga"
    ]
   ],
-  "fala": "Feriadão de vinte de novembro chegando. O radar olhou todos os destinos saindo de Fortaleza, e esses são os mais baratos pra ir e voltar no feriado."
+  "fala": "Feriadão de vinte de novembro chegando. O radar olhou todos os destinos saindo de Fortaleza, e esses são os mais baratos pra ir e voltar no feriado. Tem um por menos de setecentos reais."
  },
  "regras": [
   {
-   "n": "1.057",
+   "n": "649",
    "nsub": "R$ ida e volta",
    "icone": "🏆",
+   "titulo": "Juazeiro do Norte, <em>voo direto</em>",
+   "itens": [
+    [
+     "ok",
+     "Ida quinta 19/11, volta domingo 22/11"
+    ],
+    [
+     "ok",
+     "LATAM, sem escala nas duas"
+    ],
+    [
+     "in",
+     "Cariri: Juazeiro, Crato e Barbalha"
+    ]
+   ],
+   "fala": "Em primeiro, Juazeiro do Norte. Seiscentos e quarenta e nove reais ida e volta, voo direto, de quinta a domingo."
+  },
+  {
+   "n": "1.057",
+   "nsub": "R$ ida e volta",
+   "icone": "✈️",
    "titulo": "Teresina, <em>voo direto</em>",
    "itens": [
     [
@@ -37,13 +58,9 @@
     [
      "ok",
      "LATAM, sem escala"
-    ],
-    [
-     "in",
-     "35% abaixo do preço normal da rota"
     ]
    ],
-   "fala": "Em primeiro, Teresina. Mil e cinquenta e sete reais ida e volta, voo direto, saindo na sexta vinte e voltando na terça."
+   "fala": "Teresina sai por mil e cinquenta e sete, também voo direto, de sexta a terça."
   },
   {
    "n": "1.188",
@@ -60,13 +77,13 @@
      "LATAM, com 1 parada"
     ]
    ],
-   "fala": "Em segundo, Vitória. Mil cento e oitenta e oito reais, de quinta a terça."
+   "fala": "Vitória, mil cento e oitenta e oito, de quinta a terça."
   },
   {
-   "n": "1.261",
+   "n": "1.217",
    "nsub": "R$ ida e volta",
-   "icone": "🏛️",
-   "titulo": "Brasília, <em>feriado na capital</em>",
+   "icone": "🍲",
+   "titulo": "Belém, <em>feriado com açaí raiz</em>",
    "itens": [
     [
      "ok",
@@ -77,24 +94,7 @@
      "Azul, com 1 parada"
     ]
    ],
-   "fala": "Brasília sai por mil duzentos e sessenta e um, de quinta a segunda."
-  },
-  {
-   "n": "1.377",
-   "nsub": "R$ ida e volta",
-   "icone": "🍲",
-   "titulo": "Belém, <em>volta sem escala</em>",
-   "itens": [
-    [
-     "ok",
-     "Ida quinta 19/11, volta segunda 23/11"
-    ],
-    [
-     "in",
-     "Azul, ida com 1 parada e volta direta"
-    ]
-   ],
-   "fala": "E Belém, por mil trezentos e setenta e sete, com a volta direta."
+   "fala": "E Belém, por mil duzentos e dezessete, de quinta a segunda."
   }
  ],
  "fim": {

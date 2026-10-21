@@ -67,7 +67,7 @@ const dsem=s=>SEM[new Date(s.slice(0,10)+"T12:00:00").getDay()]+" "+dt(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const get=(p,d)=>fetch(p+"?t="+Date.now()).then(r=>r.ok?r.json():d).catch(()=>d);
 const IMG={};const img=n=>IMG[n]||(IMG[n]=new Promise(ok=>{const i=new Image();i.onload=()=>ok(i);i.onerror=()=>ok(null);i.src=n}));
-const LINK="https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l";
+const LINK="https://partiu.avancepro.app.br/g";
 
 const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const ddmm=s=>s.slice(8,10)+"/"+s.slice(5,7);
@@ -75,7 +75,7 @@ function meses(lista){const g={};lista.slice().sort().forEach(d=>{const k=d.slic
 const curto=g=>{const[n,y]=g.mes.split(" ");return y?`${n}/${y.slice(2)}`:n};
 const CLS={barato:["🏆","MAIS BARATO DE HOJE"],imperdivel:["🔥","IMPERDÍVEL"],otima:["⭐","ÓTIMA OPORTUNIDADE"],boa:["✅","BOA OPORTUNIDADE"]};
 const classeDe=d=>d>=.3?"imperdivel":d>=.2?"otima":"boa";
-const RODAPE="✈️ Receba alertas no WhatsApp: "+LINK;
+const RODAPE="📲 Grupo grátis: partiu.avancepro.app.br/g";
 
 // mesmo formato do alerta do radar (O RADAR APITOU)
 function texto(a){
@@ -91,7 +91,7 @@ function texto(a){
   L.push("","🗓️ *IDA*",...a.ida_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
   if(a.volta_meses&&a.volta_meses.length)L.push("","🗓️ *VOLTA*",...a.volta_meses.map(g=>`▸ ${curto(g)}: ${g.dias.join(", ")}`));
   L.push("","⏳ _Promoção assim costuma acabar ligeiro. Preço pode mudar a qualquer momento._");
-  if(a.link_compra)L.push(`🛒 Compre pelo link confiável do Partiu:`,a.link_compra);
+  if(a.link_compra)L.push(`🛒 Comprar com segurança: ${a.link_compra}`);
   L.push("",RODAPE);return L.join("\n");
 }
 
@@ -154,7 +154,7 @@ function casar(I,V){let best=null;
   const volta=Vb.filter(v=>ida.some(d=>{const n=nd(d,v.dia);return n>=3&&n<=10})).map(v=>v.dia);
   return{par:best,ida:ida.slice(0,10),volta:volta.slice(0,10)}}
 // link curto do Partiu (página v/ redireciona pro link de afiliado)
-const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`https://partiu.avancepro.app.br/v/?${k}${f(p.ida)}-${f(p.volta)}`};
+const linkAv=(k,p)=>{const f=s=>s.slice(8,10)+s.slice(5,7);return`partiu.avancepro.app.br/v?${k}${f(p.ida)}-${f(p.volta)}`};
 // top5 sem alerta: monta no mesmo formato usando o calendário da rota
 async function deTop5(i,refs,quando){
   const cal=await get("calendario/"+i.k+".json",null);const hj=isoHoje();
@@ -240,14 +240,14 @@ const TX={
 bio:"✈️ Passagem barata saindo de Fortaleza\n📡 Radar ligado o dia todo · alertas grátis\n👇 Entra no grupo",
 boas:"✈️ *Bem-vindo(a) ao Partiu 085!*\n\nAqui você recebe as passagens baratas saindo de *Fortaleza* assim que o nosso radar encontra.\n\n📡 *Como funciona*\n• O radar vigia mais de 50 destinos o dia todo\n• Quando o preço cai de verdade, a gente confere e manda aqui\n• Preço de passagem muda rápido: viu, gostou, compra\n\n🔔 *Dica:* deixa as notificações do grupo ligadas (ou fixa o grupo no topo)\n\n📋 *Regras*\n• Grupo só de avisos: só os admins mandam mensagem\n• Nada de spam, venda ou corrente\n• O preço é o visto na hora do alerta e pode mudar\n\n💬 Dúvida ou pedido de destino? Chama no direct do @partiu.085\n\nBoa viagem! 🧳",
 abriu:"🎉 *ABRIU!*\n\nBom dia e bem-vindo(a) ao grupo do *Partiu 085*!\n\nA partir de hoje o radar manda aqui as passagens baratas saindo de Fortaleza, na hora que aparecem.\n\n1️⃣ Ativa as notificações do grupo 🔔\n2️⃣ Fixa o grupo no topo do WhatsApp\n\nDaqui a pouco chega o primeiro achado 👀✈️",
-story:"Link do sticker: https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l\nTexto do sticker: ENTRAR NO GRUPO",
-convite:"📢 Primeiro dia do grupo: obrigado a todo mundo que chegou! 🙌\n\nSabe alguém que vive dizendo que quer viajar? Manda o link pra essa pessoa 👇\nhttps://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l\n\nAmanhã o radar continua trabalhando ✈️",
+story:"Link do sticker: https://partiu.avancepro.app.br/g\nTexto do sticker: ENTRAR NO GRUPO",
+convite:"📢 Primeiro dia do grupo: obrigado a todo mundo que chegou! 🙌\n\nSabe alguém que vive dizendo que quer viajar? Manda o link pra essa pessoa 👇\nhttps://partiu.avancepro.app.br/g\n\nAmanhã o radar continua trabalhando ✈️",
 desc:"✈️ Passagem barata saindo de Fortaleza. O radar vigia os preços o dia todo e avisa aqui quando cai. Só admins postam. Preço pode mudar a qualquer momento."};
 const PASSOS=[
 ["Antes de abrir",[
  ["g1","No grupo: só admins enviam mensagem, foto do Partiu e esta descrição",{copiar:"desc"}],
  ["g2","Fixar a mensagem de boas-vindas no grupo",{copiar:"boas"}],
- ["g3","Abrir o link do grupo no celular e conferir se cai no grupo certo",{abrir:"https://chat.whatsapp.com/Ilk0rj2e1rFA4BYXeEkN9l"}],
+ ["g3","Abrir o link do grupo no celular e conferir se cai no grupo certo",{abrir:"https://partiu.avancepro.app.br/g"}],
  ["b1","Instagram › Editar perfil › Links: colar partiu.avancepro.app.br/site com o título \"Participar do grupo grátis\"",{copiarTxt:SITE}],
  ["b2","Trocar a bio por este texto",{copiar:"bio"}]]],
 ["9h30 · Abertura",[

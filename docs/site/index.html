@@ -156,7 +156,7 @@ footer{padding:30px 0 40px;text-align:center;font-size:13px;color:var(--ter);lin
 <section id="achados"><div class="w">
  <span class="kick">Os maiores achados</span>
  <h2 class="anton rev">O que o radar já pegou</h2>
- <p class="sub rev">As passagens mais abaixo do preço normal que o radar achou nos últimos 15 dias, saindo de Fortaleza. Quem está no grupo recebe na hora, com as datas e o link pra comprar.</p>
+ <p class="sub rev">As passagens mais baratas que o radar achou nos últimos 15 dias saindo de Fortaleza, ida e volta, no Brasil e fora. Quem está no grupo recebe na hora, com as datas e o link pra comprar.</p>
  <div class="grid" id="deals"><div class="vazio">Carregando os achados…</div></div>
  <p class="aviso" id="deals-aviso">Preços vistos pelo radar no dia indicado. Passagem muda de preço a qualquer momento: no grupo o alerta chega na hora.</p>
 </div></section>
@@ -224,16 +224,13 @@ j('../status.json').then(s=>{if(!s)return;const R=s.rotas||{},n=Object.keys(R).l
 j('../ig_conta.json').then(c=>{if(!c)return;if(c.seguidores)document.getElementById('n-seg').textContent=(Math.floor(c.seguidores/1000))+' mil';
  const L=(c.midias||[]).filter(m=>m.tipo!=='story'&&m.link).slice(0,6);
  document.getElementById('ig').innerHTML=L.map(m=>`<a href="${m.link}" target="_blank" rel="noopener">${m.thumb?`<img src="${m.thumb}" alt="" loading="lazy" onerror="this.remove()">`:''}<span>${(m.legenda||'').split('\n')[0].replace(/[<>]/g,'')}</span></a>`).join('');});
-j('../alerts.json').then(a=>{const box=document.getElementById('deals');const lim=Date.now()-15*864e5;
- const hj=new Date(Date.now()-3*3600e3).toISOString().slice(0,10),nd=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
- // só viagem de verdade: volta de 3 a 10 dias depois da ida
- const casa=x=>{let p=null;const I=(x.datas_ida||[]),V=(x.datas_volta||[]);for(const i of I)for(const v of V){const n=nd(i.dia,v.dia);if(n<3||n>10)continue;const t=i.preco+v.preco;if(!p||t<p.total)p={ida:i.dia,volta:v.dia,total:t,pi:i.preco}}
-  if(!p&&!I.length)for(const d of (x.datas||[])){const n=nd(d.ida,d.volta);if(n<3||n>10)continue;if(!p||d.preco<p.total)p={ida:d.ida,volta:d.volta,total:d.preco,pi:x.modo==='trecho'?x.preco:Math.round(d.preco/2),rt:1}}return p};
- const L=((a&&a.alertas)||[]).filter(x=>!x.fraco&&x.regua==='menor_normal'&&Date.parse(x.criado)>=lim).sort((x,y)=>(y.desconto||0)-(x.desconto||0));
- const vist=new Set(),D=[];for(const x of L){if(vist.has(x.destino))continue;const p=casa(x);if(!p)continue;vist.add(x.destino);D.push({...x,par:p,preco:p.rt?p.total:p.pi,_rt:p.rt,preco_volta:0});if(D.length>=6)break;}
+j('../vitrine.json').then(Vt=>{const box=document.getElementById('deals');
+ // vitrine: o menor ida e volta (3 a 10 dias) de cada rota nos últimos 15 dias; 4 nacionais mais baratos + 2 internacionais
+ const R=Object.entries((Vt&&Vt.rotas)||{}).map(([k,v])=>({k,...v})).sort((a,b)=>a.rt-b.rt);
+ const D=[...R.filter(x=>x.tipo==='nacional').slice(0,4),...R.filter(x=>x.tipo!=='nacional').slice(0,2)];
  if(!D.length){box.innerHTML='<div class="vazio">Nenhum achado nos últimos dias. Quando o preço cair, o alerta chega no grupo primeiro.</div>';return;}
- box.innerHTML=D.map(x=>{const iv=x.par?`Ida e volta ${br(x.par.total)} · ${dm(x.par.ida)} a ${dm(x.par.volta)}`:x.preco_volta?`Ida e volta a partir de ${br(x.preco+x.preco_volta)}`:'';
-  return `<a class="deal rev on" href="https://bit.ly/radar085" data-grupo><img src="../fotos/${x.destino}.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="tag">${(x.classe_txt||'Achado').replace(/[<>]/g,'')}</span><div class="in"><small>Fortaleza → ${x.destino}</small><h3 class="anton">${x.destino_nome}</h3><div class="pr">${br(x.preco)}<span>${x._rt?'ida e volta':'o trecho'}</span></div><div class="iv">${x.desconto?`<b style="color:#1FA45B">${Math.round(x.desconto*100)}% abaixo do normal</b> · `:''}${x._rt?`${dm(x.par.ida)} a ${dm(x.par.volta)}`:iv} · visto em ${dm(x.criado)}</div></div></a>`}).join('');
+ const tag=d=>d>=.25?'🔥 IMPERDÍVEL':d>=.12?'⭐ ÓTIMO PREÇO':'💸 MAIS BARATO';
+ box.innerHTML=D.map(x=>`<a class="deal rev on" href="https://bit.ly/radar085" data-grupo><img src="../fotos/${x.k}.jpg" alt="" loading="lazy" onerror="this.remove()"><span class="tag">${x.tipo==='nacional'?tag(x.d||0):'🌎 INTERNACIONAL'}</span><div class="in"><small>Fortaleza → ${x.k}</small><h3 class="anton">${x.nome}</h3><div class="pr">${br(x.rt)}<span>ida e volta</span></div><div class="iv">${x.d>=.1?`<b style="color:#1FA45B">${Math.round(x.d*100)}% abaixo do normal</b> · `:''}${dm(x.ida)} a ${dm(x.volta)} · visto em ${dm(x.visto)}</div></div></a>`).join('');
  j('../grupos.json').then(g=>{const l=((g||[]).find(x=>x.id==='gratis')||{}).link;if(l)box.querySelectorAll('[data-grupo]').forEach(a=>a.href=l);});});
 j('../feriados.json').then(F=>{const el=document.getElementById('fer');const hj=new Date().toISOString().slice(0,10);const L=((F&&F.feriados)||[]).filter(f=>(f.idas||[]).some(d=>d>=hj)&&(f.destinos||[]).length).slice(0,2);if(!L.length){document.getElementById('feriado').remove();return;}
  el.innerHTML=L.map(f=>`<div class="ft rev on"><h3 class="anton">${f.nome}</h3><p>Ida ${f.idas.map(dm).join(' ou ')} · volta ${f.voltas.map(dm).join(' ou ')} · visto em ${dm(f.visto)}</p>${f.destinos.slice(0,5).map(d=>`<div class="lin"><div>${d.nome}<small>ida ${dm(d.ida.dia)}${d.ida.escalas===0?' · voo direto':''}</small></div><b>${br(d.total)}</b></div>`).join('')}</div>`).join('');});

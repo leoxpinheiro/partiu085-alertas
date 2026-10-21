@@ -535,6 +535,29 @@ def texto_baratos(L: list[dict], aj: dict) -> str:
     return "\n".join(T)
 
 
+def salvar_vitrine(dias: int = 15) -> None:
+    """Vitrine do site: o menor ida e volta (viagem de 3 a 10 dias) que o radar achou em cada rota nos últimos 15 dias."""
+    path = DOCS / "vitrine.json"
+    V = ler_json(path, {}).get("rotas") or {}
+    agora_iso = agora().isoformat(timespec="minutes")
+    lim = (agora() - timedelta(days=dias)).isoformat()
+    nomes = {r["iata"]: (r["nome"], r["tipo"]) for r in carregar_rotas()}
+    for k, (nome, tipo) in nomes.items():
+        cal = ler_json(CAL_DIR / f"{k}.json", {})
+        par = melhor_par(cal) if cal else None
+        if not par:
+            continue
+        normal = normal_rt(k)
+        old = V.get(k)
+        if old and old.get("visto", "") >= lim and old["rt"] <= par["rt"]:
+            continue
+        V[k] = {"nome": nome, "tipo": tipo, "rt": par["rt"], "menor": par["preco"], "ida": par["ida"], "volta": par["volta"],
+                "cia": par.get("cia", ""), "normal": round(normal) if normal else None,
+                "d": round(1 - par["rt"] / normal, 3) if normal else None, "visto": agora_iso}
+    V = {k: v for k, v in V.items() if v.get("visto", "") >= lim}
+    salvar_json(path, {"atualizado": agora_iso, "rotas": V})
+
+
 def salvar_top5(aj: dict) -> None:
     """Listas do dia pro painel (aba Pra enviar), sempre atualizadas, mesmo quando não tem promoção relâmpago."""
     L = top5_do_dia(aj)
@@ -934,6 +957,10 @@ def rodada() -> None:
         salvar_top5(aj)
     except Exception as e:  # noqa: BLE001
         log(f"  ! top5 painel: {e}")
+    try:
+        salvar_vitrine()
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! vitrine: {e}")
     try:
         postar_top5(aj)
     except Exception as e:  # noqa: BLE001

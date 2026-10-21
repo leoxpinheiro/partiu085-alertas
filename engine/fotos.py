@@ -15,11 +15,11 @@ UA = {"User-Agent": "Partiu085-radar/1.0 (https://leoxpinheiro.github.io/partiu0
 PAGINA = {
     "SAO": "en:Paulista Avenue", "RIO": "pt:Pão de Açúcar (Rio de Janeiro)", "BSB": "en:Cathedral of Brasília", "BHZ": "en:Pampulha Modern Ensemble",
     "CNF": "en:Pampulha Modern Ensemble", "SSA": "pt:Elevador Lacerda", "REC": "pt:Praia de Boa Viagem", "NAT": "pt:Ponta Negra (Natal)",
-    "JPA": "pt:Praia de Tambaú", "MCZ": "pt:Maceió", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "pt:Parque Encontro dos Rios",
+    "JPA": "pt:Praia de Tambaú", "MCZ": "pt:Maceió", "AJU": "en:Aracaju", "SLZ": "en:São Luís, Maranhão", "THE": "en:Teresina",
     "BEL": "pt:Estação das Docas", "MAO": "pt:Teatro Amazonas", "POA": "en:Porto Alegre", "CWB": "pt:Jardim Botânico de Curitiba",
     "FLN": "pt:Ponte Hercílio Luz", "VIX": "pt:Terceira Ponte", "GYN": "en:Goiânia", "IGU": "pt:Cataratas do Iguaçu",
     "FEN": "pt:Baía do Sancho", "JDO": "pt:Estátua do Padre Cícero", "VCP": "en:Campinas", "CGB": "en:Cuiabá", "CGR": "en:Campo Grande",
-    "NVT": "pt:Balneário Camboriú", "BPS": "en:Porto Seguro", "PMW": "pt:Palácio Araguaia", "UDI": "en:Uberlândia",
+    "NVT": "pt:Balneário Camboriú", "BPS": "en:Porto Seguro", "PMW": "en:Palmas, Tocantins", "UDI": "en:Uberlândia",
     "LIS": "en:Belém Tower", "OPO": "en:Dom Luís I Bridge", "MAD": "en:Plaza Mayor, Madrid", "PAR": "en:Eiffel Tower", "ROM": "en:Colosseum",
     "LON": "en:Tower Bridge", "AMS": "en:Canals of Amsterdam", "MIA": "en:South Beach", "ORL": "en:Orlando, Florida", "NYC": "en:Lower Manhattan",
     "BUE": "en:Obelisco de Buenos Aires", "SCL": "en:Santiago", "LIM": "en:Miraflores District, Lima", "BOG": "en:Bogotá", "CTG": "en:Castillo San Felipe de Barajas",

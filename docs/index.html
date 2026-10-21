@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&family=Anton&family=Instrument+Serif&family=Kaushan+Script&family=Playfair+Display:wght@400;700&family=DM+Serif+Display&family=Gloock&family=Cormorant+Garamond:wght@600&family=Patrick+Hand&family=Caveat:wght@600&family=Montserrat:wght@800&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="app.css?v=139">
-<script>try{var t=localStorage.getItem("p085_tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="app.css?v=140">
+<script>var t="dark";try{t=localStorage.getItem("p085_tema")||"dark"}catch(e){}document.documentElement.dataset.theme=t</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -58,7 +58,7 @@
       <details class="more"><summary class="ibtn" aria-label="Mais páginas"><svg class="i"><use href="#i-more"/></svg></summary><div class="more-m" id="more"></div></details>
       <button class="ibtn" data-act="tema" title="Tema claro/escuro" aria-label="Tema claro/escuro"><svg class="i"><use href="#i-moon"/></svg></button>
       <button class="ibtn" data-act="recarregar" title="Atualizar o painel" aria-label="Atualizar o painel"><svg class="i"><use href="#i-refresh"/></svg></button>
-      <a class="bt lg" href="facil.html" style="background:#F5C531;color:#0B2440;font-weight:800;text-decoration:none">📲 Postar hoje</a><button class="bt pri lg run" data-act="rodar"><svg class="i"><use href="#i-play"/></svg><span>Rodar radar agora</span></button>
+      <a class="bt lg postar" href="facil.html">📲 Postar hoje</a><button class="bt pri lg run" data-act="rodar"><svg class="i"><use href="#i-play"/></svg><span>Rodar radar agora</span></button>
     </div>
   </header>
   <main class="main" id="main"><div class="carregando"><svg class="i"><use href="#i-plane"/></svg><span>Carregando o radar…</span></div></main>

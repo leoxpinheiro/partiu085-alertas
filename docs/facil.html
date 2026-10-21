@@ -73,7 +73,7 @@ const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto
 const ddmm=s=>s.slice(8,10)+"/"+s.slice(5,7);
 function meses(lista){const g={};lista.slice().sort().forEach(d=>{const k=d.slice(0,7);(g[k]=g[k]||[]).push(d.slice(8,10))});return Object.keys(g).sort().map(k=>({mes:MES[+k.slice(5,7)-1]+" "+k.slice(0,4),dias:g[k]}))}
 const curto=g=>{const[n,y]=g.mes.split(" ");return y?`${n}/${y.slice(2)}`:n};
-const CLS={imperdivel:["🔥","IMPERDÍVEL"],otima:["⭐","ÓTIMA OPORTUNIDADE"],boa:["✅","BOA OPORTUNIDADE"]};
+const CLS={barato:["🏆","MAIS BARATO DE HOJE"],imperdivel:["🔥","IMPERDÍVEL"],otima:["⭐","ÓTIMA OPORTUNIDADE"],boa:["✅","BOA OPORTUNIDADE"]};
 const classeDe=d=>d>=.3?"imperdivel":d>=.2?"otima":"boa";
 const RODAPE="✈️ Receba alertas no WhatsApp: "+LINK;
 
@@ -187,11 +187,14 @@ async function ofertas(){
   const quando=t5.atualizado?hora(t5.atualizado):"hoje";
   for(const i of (t5.itens||[])){if(vistos.has(i.k))continue;const o=await deTop5(i,refs,quando);if(o&&o.d>=.15){vistos.add(i.k);L.push(o)}}
   L.sort((a,b)=>b.d-a.d);
+  // dia sem promoção forte: completa com as ida e volta mais baratas de hoje
+  if(L.length<4)for(const i of (t5.baratos||[])){if(L.length>=5)break;if(vistos.has(i.k))continue;const o=await deTop5(i,refs,quando);if(o){o.classe="barato";o.d=o.d||0;vistos.add(i.k);L.push(o)}}
+  L.sort((a,b)=>(a.par?a.par.total:9e9)-(b.par?b.par.total:9e9));
   $("#sub-grupo").textContent=L.length?`${L.length} oferta${L.length>1?"s":""} abaixo do preço normal${t5.atualizado?" · radar atualizado "+quando:""}. A de cima é a melhor.`:"Nenhuma oferta boa agora. O radar roda de hora em hora; volta mais tarde.";
   const box=$("#ofertas");box.innerHTML="";
   for(const o of L){
     const d=document.createElement("div");d.className="it";const tx=texto(o);
-    d.innerHTML=`<img class="prev" alt=""><h3>${esc(o.destino_nome)} · ${R(o.preco)} o trecho <span class="tag">${Math.round(o.d*100)}% abaixo</span></h3><div class="meta">${o.par?`ida e volta ${R(o.par.total)} · `:""}${esc(o.cia_nome||"")} · visto ${o.visto}</div>
+    d.innerHTML=`<img class="prev" alt=""><h3>${esc(o.destino_nome)} · ${R(o.preco)} o trecho ${o.d>=.1?`<span class="tag">${Math.round(o.d*100)}% abaixo</span>`:o.classe==="barato"?`<span class="tag">mais barato hoje</span>`:""}</h3><div class="meta">${o.par?`ida e volta ${R(o.par.total)} · `:""}${esc(o.cia_nome||"")} · visto ${o.visto}</div>
     <div class="bts"><button class="bt b1">⬇️ Salvar imagem</button><button class="bt b2">📋 Copiar texto</button></div><details><summary>Ver texto</summary><pre>${esc(tx)}</pre></details>`;
     box.appendChild(d);
     card(o).then(b=>{d.querySelector("img").src=URL.createObjectURL(b);
@@ -202,6 +205,13 @@ async function ofertas(){
     ...L.filter(o=>o.par).slice(0,5).map((o,n)=>`${NUM[n]} *${o.destino_nome}* · ida e volta *${R(o.par.total)}* (${ddmm(o.par.ida)} a ${ddmm(o.par.volta)}) · ${Math.round(o.d*100)}% abaixo do normal`),
     "","👉 _Quer as datas de algum? Responde aqui o número._","","⚠️ _Preço pode mudar a qualquer momento._","",RODAPE].join("\n");
   t5.texto=t5tx;
+  // feriado mais próximo
+  const F=await get("feriados.json",{});const hj=isoHoje();
+  for(const fe of ((F&&F.feriados)||[]).filter(f=>(f.idas||[]).some(d=>d>=hj)&&(f.destinos||[]).length).slice(0,2)){const N=["1️⃣","2️⃣","3️⃣","4️⃣","5️⃣"];
+    const tx=[`🔥 *FERIADÃO: ${fe.nome.toUpperCase()}*`,`_Ida e volta saindo de Fortaleza · ida ${fe.idas.map(ddmm).join(" ou ")}, volta ${fe.voltas.map(ddmm).join(" ou ")}_`,"",
+      ...fe.destinos.slice(0,5).map((x,n)=>`${N[n]} *${x.nome}* · *${R(x.total)}*${x.ida.escalas===0&&x.volta.escalas===0?" · voo direto":""} (${ddmm(x.ida.dia)} a ${ddmm(x.volta.dia)})`),
+      "","👉 _Quer o link de algum? Responde o número._","",`⚠️ _Preço visto pelo radar ${hora(fe.visto)}. Feriado barato esgota rápido._`,"",RODAPE].join("\n");
+    const d=document.createElement("div");d.className="it";d.innerHTML=`<h3>🔥 Feriadão: ${esc(fe.nome)} <span class="tag">lista</span></h3><div class="meta">Os mais baratos pra ir e voltar no feriado.</div><details><summary>Ver texto</summary><pre>${esc(tx)}</pre></details><div class="bts"><button class="bt b2 b3">📋 Copiar texto do feriadão</button></div>`;d.querySelector("button").onclick=e=>copiar(tx,e.target);box.appendChild(d)}
   if(L.length>=2){const d=document.createElement("div");d.className="it";d.innerHTML=`<h3>🏆 Top 5 do dia <span class="tag">resumo</span></h3><div class="meta">Lista rápida pra mandar à noite.</div><details><summary>Ver texto</summary><pre>${esc(t5.texto)}</pre></details><div class="bts"><button class="bt b2 b3">📋 Copiar texto do Top 5</button></div>`;d.querySelector("button").onclick=e=>copiar(t5.texto,e.target);box.appendChild(d)}
 }
 

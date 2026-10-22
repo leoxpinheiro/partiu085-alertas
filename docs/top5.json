@@ -1,19 +1,6 @@
 {
- "atualizado": "2026-10-21T21:58-03:00",
+ "atualizado": "2026-10-21T22:52-03:00",
  "itens": [
-  {
-   "k": "THE",
-   "nome": "Teresina",
-   "menor": 622.0,
-   "rt": 1235.0,
-   "d": 0.18103448275862066,
-   "normal": 1508,
-   "ida": "2026-11-13",
-   "volta": "2026-11-16",
-   "cia": "LATAM",
-   "mes": "11",
-   "intl": false
-  },
   {
    "k": "LON",
    "nome": "Londres",
@@ -31,8 +18,8 @@
    "k": "OPO",
    "nome": "Porto",
    "menor": 1714.0,
-   "rt": 3787.0,
-   "d": 0.14611048478015787,
+   "rt": 3786.0,
+   "d": 0.14633596392333714,
    "normal": 4435,
    "ida": "2026-12-03",
    "volta": "2026-12-11",
@@ -54,11 +41,24 @@
    "intl": true
   },
   {
+   "k": "MVD",
+   "nome": "Montevidéu",
+   "menor": 1037.0,
+   "rt": 2389.0,
+   "d": 0.07024712979178827,
+   "normal": 2570,
+   "ida": "2026-12-06",
+   "volta": "2026-12-11",
+   "cia": "Gol",
+   "mes": "12",
+   "intl": true
+  },
+  {
    "k": "LIS",
    "nome": "Lisboa",
    "menor": 1724.0,
-   "rt": 3835.0,
-   "d": 0.06645569620253167,
+   "rt": 3836.0,
+   "d": 0.06621226874391428,
    "normal": 4108,
    "ida": "2026-12-04",
    "volta": "2026-12-09",
@@ -67,27 +67,17 @@
    "intl": true
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_21/10_\n\n1️⃣ *Teresina* · ida e volta *R$ 1.235* (13/11 a 16/11) · 18% abaixo do normal\n2️⃣ *Londres* · ida e volta *R$ 4.871* (04/11 a 09/11) · 17% abaixo do normal\n3️⃣ *Porto* · ida e volta *R$ 3.787* (03/12 a 11/12) · 15% abaixo do normal\n4️⃣ *Milão* · ida e volta *R$ 4.581* (25/11 a 03/12)\n5️⃣ *Lisboa* · ida e volta *R$ 3.835* (04/12 a 09/12)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_21/10_\n\n1️⃣ *Londres* · ida e volta *R$ 4.871* (04/11 a 09/11) · 17% abaixo do normal\n2️⃣ *Porto* · ida e volta *R$ 3.786* (03/12 a 11/12) · 15% abaixo do normal\n3️⃣ *Milão* · ida e volta *R$ 4.581* (25/11 a 03/12)\n4️⃣ *Montevidéu* · ida e volta *R$ 2.389* (06/12 a 11/12)\n5️⃣ *Lisboa* · ida e volta *R$ 3.836* (04/12 a 09/12)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
    "nome": "Juazeiro do Norte",
-   "rt": 791.0,
-   "menor": 405.0,
-   "ida": "2026-11-19",
-   "volta": "2026-11-29",
+   "rt": 864.0,
+   "menor": 397.0,
+   "ida": "2026-12-15",
+   "volta": "2026-12-25",
    "normal": 581,
-   "d": -0.3614457831325302
-  },
-  {
-   "k": "THE",
-   "nome": "Teresina",
-   "rt": 1235.0,
-   "menor": 622.0,
-   "ida": "2026-11-13",
-   "volta": "2026-11-16",
-   "normal": 1508,
-   "d": 0.18103448275862066
+   "d": -0.4870912220309811
   },
   {
    "k": "CWB",
@@ -100,6 +90,16 @@
    "d": -0.2937131630648331
   },
   {
+   "k": "GYN",
+   "nome": "Goiânia",
+   "rt": 1320.0,
+   "menor": 653.0,
+   "ida": "2026-12-03",
+   "volta": "2026-12-07",
+   "normal": 1195,
+   "d": -0.10460251046025104
+  },
+  {
    "k": "REC",
    "nome": "Recife",
    "rt": 1347.0,
@@ -110,16 +110,6 @@
    "d": -0.6209386281588447
   },
   {
-   "k": "GYN",
-   "nome": "Goiânia",
-   "rt": 1354.0,
-   "menor": 647.0,
-   "ida": "2026-11-20",
-   "volta": "2026-11-30",
-   "normal": 1195,
-   "d": -0.13305439330543933
-  },
-  {
    "k": "SAO",
    "nome": "São Paulo",
    "rt": 1360.0,
@@ -128,7 +118,17 @@
    "volta": "2027-01-23",
    "normal": 1214,
    "d": -0.12026359143327836
+  },
+  {
+   "k": "MCZ",
+   "nome": "Maceió",
+   "rt": 1396.0,
+   "menor": 702.0,
+   "ida": "2026-11-24",
+   "volta": "2026-12-01",
+   "normal": 1422,
+   "d": 0.01828410689170179
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_21/10_\n\n✈️ *Juazeiro do Norte* · *R$ 791* (19/11 a 29/11)\n✈️ *Teresina* · *R$ 1.235* (13/11 a 16/11)\n✈️ *Curitiba* · *R$ 1.317* (07/11 a 11/11)\n✈️ *Recife* · *R$ 1.347* (09/12 a 19/12)\n✈️ *Goiânia* · *R$ 1.354* (20/11 a 30/11)\n✈️ *São Paulo* · *R$ 1.360* (19/01 a 23/01)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_21/10_\n\n✈️ *Juazeiro do Norte* · *R$ 864* (15/12 a 25/12)\n✈️ *Curitiba* · *R$ 1.317* (07/11 a 11/11)\n✈️ *Goiânia* · *R$ 1.320* (03/12 a 07/12)\n✈️ *Recife* · *R$ 1.347* (09/12 a 19/12)\n✈️ *São Paulo* · *R$ 1.360* (19/01 a 23/01)\n✈️ *Maceió* · *R$ 1.396* (24/11 a 01/12)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

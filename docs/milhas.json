@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-22T11:02-03:00",
+ "atualizado": "2026-10-22T12:14-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -16,8 +16,8 @@
   {
    "fonte": "Pontos pra Voar",
    "url": "https://pontospravoar.com/feed/",
-   "itens": 20,
-   "ok": true
+   "ok": false,
+   "erro": "HTTPSConnectionPool(host='pontospravoar.com', port=443): Read timed out. (read timeout=25)"
   },
   {
    "fonte": "Mestre das Milhas",
@@ -76,19 +76,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 18,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 51,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 11,
+   "itens": 25,
    "ok": true
   },
   {
@@ -100,29 +88,88 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 14,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 44,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 10,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
    "itens": 12,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 56,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 15,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 45,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 9,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 13,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "compra",
+   "titulo": "Milheiro LATAM a partir de R$ 24! Transfira pontos Livelo para o LATAM Pass usando pontos + dinheiro",
+   "resumo": "Em recente pesquisa, identificamos que a Livelo está oferecendo um CPM [custo para cada mil pontos] mais atrativo nas transferências para o LATAM Pass na modalidade pontos + dinheiro. O post Milheiro LATAM a partir de R$ 24! Transfira pontos Livelo para o LATAM Pass usando pontos",
+   "link": "https://passageirodeprimeira.com/milheiro-latam-a-partir-de-r-24-transfira-pontos-livelo-para-o-latam-pass-usando-pontos-dinheiro/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-10-22T12:05-03:00",
+   "programas": [
+    "LATAM Pass",
+    "Livelo"
+   ],
+   "de": "Livelo",
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": null,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-1b842eb499",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-10-22T12:14-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar LATAM Pass\n💸 Milheiro LATAM a partir de R$ 24! Transfira pontos Livelo para o LATAM Pass usando pontos + dinheiro\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "Voos diretos Fortaleza-Lisboa a partir de R$ 1.256 ou 52 mil milhas o trecho mais taxas",
+   "resumo": "Voos diretos Fortaleza-Lisboa a partir de R$ 1.256 ou 52 mil milhas o trecho mais taxas Melhores Destinos",
+   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE9XZ3NLWXNXLW53Q1lQY3dCdVRFS1JxbjZRQWU3b0tlMGw1S05Ed04wTjBlNXR6U09UREF2ZUdMTm9PV3hYekhEdmx2bk93MzhzR0oyRHg2WkhvRk5nV0dmWlJUc1I4cXdFVEN4WGllUk8yWGNPcWc?oc=5",
+   "fonte": "Melhores Destinos",
+   "publicado": "2026-10-22T11:48-03:00",
+   "programas": [],
+   "de": null,
+   "para": null,
+   "pct": null,
+   "milhas": 52000,
+   "validade": null,
+   "fortaleza": true,
+   "id": "mi-678b56d79a",
+   "fontes": [
+    "Melhores Destinos"
+   ],
+   "encontrado": "2026-10-22T12:14-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos diretos Fortaleza-Lisboa a partir de R$ 1.256 ou 52 mil milhas o trecho mais taxas\n🎟️ A partir de *52.000 milhas*\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "clube",
    "titulo": "Ganhe até 340 mil pontos ao assinar o Clube Livelo com nosso cupom exclusivo",
@@ -2102,7 +2149,8 @@
     "Melhores Cartões",
     "Melhores Destinos",
     "Passageiro de Primeira",
-    "Pontos pra Voar"
+    "Pontos pra Voar",
+    "iG Economia"
    ],
    "encontrado": "2026-10-13T12:47-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Livelo → LATAM Pass\n🎁 Até *25% de bônus* na transferência\n⏰ Válido até 23/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",

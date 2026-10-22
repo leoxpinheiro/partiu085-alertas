@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-22T08:01-03:00",
+ "atualizado": "2026-10-22T08:45-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -16,8 +16,8 @@
   {
    "fonte": "Pontos pra Voar",
    "url": "https://pontospravoar.com/feed/",
-   "itens": 20,
-   "ok": true
+   "ok": false,
+   "erro": "HTTPSConnectionPool(host='pontospravoar.com', port=443): Read timed out. (read timeout=25)"
   },
   {
    "fonte": "Mestre das Milhas",
@@ -76,19 +76,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 26,
+   "itens": 25,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 47,
+   "itens": 46,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 11,
    "ok": true
   },
   {
@@ -106,13 +106,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 45,
+   "itens": 19,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {

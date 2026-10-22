@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-22T18:44-03:00",
+ "atualizado": "2026-10-22T19:53-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -76,13 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 24,
+   "itens": 25,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 28,
+   "itens": 56,
    "ok": true
   },
   {
@@ -94,13 +94,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 55,
+   "itens": 56,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 16,
+   "itens": 13,
    "ok": true
   },
   {
@@ -118,11 +118,35 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 16,
+   "itens": 18,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "Bahia! Voos para Ilhéus a partir de R$ 240 ou 9 mil milhas Latam Pass o trecho mais taxas",
+   "resumo": "Que tal curtir dias de sol na Bahia? Encontramos passagens aéreas para Ilhéus a partir de 9.932 milhas Latam Pass ou R$ 240,55 o trecho + taxas, para viajar em 2027. O menor preço é com origem de Curitiba, mas também há boas oportunidades saindo de Belo Horizonte e do Rio de Jane",
+   "link": "https://www.melhoresdestinos.com.br/milhas/voos-latam-ilheus-out26",
+   "fonte": "Melhores Cartões",
+   "publicado": "2026-10-22T18:17-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": 9000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-58883d188c",
+   "fontes": [
+    "Melhores Cartões"
+   ],
+   "encontrado": "2026-10-22T19:53-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Bahia! Voos para Ilhéus a partir de R$ 240 ou 9 mil milhas Latam Pass o trecho mais taxas\n🎟️ A partir de *9.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "passagem",
    "titulo": "Alerta PPV! Trechos nacionais a partir de 4.800 pontos Azul Fidelidade",
@@ -165,6 +189,7 @@
    "fortaleza": false,
    "id": "mi-d6ab1b3357",
    "fontes": [
+    "Melhores Cartões",
     "Melhores Destinos"
    ],
    "encontrado": "2026-10-22T16:31-03:00",

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-22T20:19+00:00",
+ "atualizado": "2026-10-22T21:18+00:00",
  "pistas": [
   "BEL",
   "BUE",
@@ -76,7 +76,7 @@
   {
    "iata": "SCL",
    "ow": {
-    "preco": 1294,
+    "preco": 1292,
     "ida": "2026-12-29",
     "volta": "",
     "paradas": 1,
@@ -120,9 +120,22 @@
    "pista": true
   },
   {
+   "iata": "FLN",
+   "rt": {
+    "preco": 1457,
+    "ida": "2027-09-15",
+    "volta": "2027-09-19",
+    "paradas": 1,
+    "visto": "2026-10-22T20:55:04Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
+   "pista": false
+  },
+  {
    "iata": "MVF",
    "ow": {
-    "preco": 1554,
+    "preco": 1552,
     "ida": "2026-11-06",
     "volta": "",
     "paradas": 2,
@@ -225,22 +238,9 @@
    "pista": false
   },
   {
-   "iata": "ORL",
-   "ow": {
-    "preco": 2642,
-    "ida": "2027-09-15",
-    "volta": "",
-    "paradas": 4,
-    "visto": "2026-10-20T18:56:47Z"
-   },
-   "rastreada": true,
-   "nome": "Orlando",
-   "pista": false
-  },
-  {
    "iata": "BUH",
    "ow": {
-    "preco": 2727,
+    "preco": 2724,
     "ida": "2026-11-03",
     "volta": "",
     "paradas": 1,
@@ -312,7 +312,7 @@
     "visto": "2026-10-20T01:02:57Z"
    },
    "ow": {
-    "preco": 1706,
+    "preco": 1704,
     "ida": "2026-11-26",
     "volta": "",
     "paradas": 1,
@@ -385,6 +385,26 @@
    },
    "rastreada": true,
    "nome": "Miami",
+   "pista": false
+  },
+  {
+   "iata": "ORL",
+   "rt": {
+    "preco": 7090,
+    "ida": "2027-01-16",
+    "volta": "2027-02-06",
+    "paradas": 2,
+    "visto": "2026-10-22T20:52:07Z"
+   },
+   "ow": {
+    "preco": 2642,
+    "ida": "2027-09-15",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-20T18:56:47Z"
+   },
+   "rastreada": true,
+   "nome": "Orlando",
    "pista": false
   }
  ]

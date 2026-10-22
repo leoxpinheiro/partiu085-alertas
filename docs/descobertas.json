@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-22T11:20+00:00",
+ "atualizado": "2026-10-22T12:31+00:00",
  "pistas": [
   "BEL",
   "BUE",
@@ -22,6 +22,19 @@
   }
  ],
  "destinos": [
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 438,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-19T17:50:46Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
+   "pista": true
+  },
   {
    "iata": "CWB",
    "ow": {
@@ -62,26 +75,6 @@
    "pista": true
   },
   {
-   "iata": "REC",
-   "rt": {
-    "preco": 906,
-    "ida": "2027-02-01",
-    "volta": "2027-02-28",
-    "paradas": 0,
-    "visto": "2026-10-18T11:32:56Z"
-   },
-   "ow": {
-    "preco": 438,
-    "ida": "2026-11-24",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-19T17:50:46Z"
-   },
-   "rastreada": true,
-   "nome": "Recife",
-   "pista": true
-  },
-  {
    "iata": "VAG",
    "ow": {
     "preco": 1069,
@@ -97,7 +90,7 @@
   {
    "iata": "SCL",
    "ow": {
-    "preco": 1289,
+    "preco": 1290,
     "ida": "2026-12-29",
     "volta": "",
     "paradas": 1,
@@ -320,7 +313,7 @@
     "visto": "2026-10-20T01:02:57Z"
    },
    "ow": {
-    "preco": 1700,
+    "preco": 1701,
     "ida": "2026-11-26",
     "volta": "",
     "paradas": 1,

@@ -1,14 +1,8 @@
 {
  "iata": "MIL",
  "nome": "Milão",
- "atualizado": "2026-10-21T19:38-03:00",
+ "atualizado": "2026-10-21T21:40-03:00",
  "ida": [
-  {
-   "dia": "2026-10-26",
-   "preco": 3915.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
   {
    "dia": "2026-10-27",
    "preco": 3012.0,
@@ -35,9 +29,9 @@
   },
   {
    "dia": "2026-10-31",
-   "preco": 3586.0,
+   "preco": 4185.0,
    "cia": "LATAM",
-   "escalas": 2
+   "escalas": 1
   },
   {
    "dia": "2026-11-01",
@@ -66,6 +60,12 @@
   {
    "dia": "2026-11-05",
    "preco": 2631.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-06",
+   "preco": 3012.0,
    "cia": "LATAM",
    "escalas": 1
   },
@@ -172,20 +172,8 @@
    "escalas": 1
   },
   {
-   "dia": "2026-11-27",
-   "preco": 3012.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
    "dia": "2026-11-28",
-   "preco": 3679.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-11-29",
-   "preco": 2631.0,
+   "preco": 3789.0,
    "cia": "LATAM",
    "escalas": 1
   },
@@ -244,6 +232,12 @@
    "escalas": 1
   },
   {
+   "dia": "2026-12-09",
+   "preco": 2521.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
    "dia": "2026-12-10",
    "preco": 2529.0,
    "cia": "Iberia",
@@ -263,9 +257,9 @@
   },
   {
    "dia": "2026-12-14",
-   "preco": 3789.0,
+   "preco": 3586.0,
    "cia": "LATAM",
-   "escalas": 1
+   "escalas": 2
   },
   {
    "dia": "2026-12-15",
@@ -340,6 +334,12 @@
    "escalas": 1
   },
   {
+   "dia": "2026-12-27",
+   "preco": 4615.0,
+   "cia": "Iberia",
+   "escalas": 1
+  },
+  {
    "dia": "2026-12-28",
    "preco": 4615.0,
    "cia": "Iberia",
@@ -358,6 +358,12 @@
    "escalas": 1
   },
   {
+   "dia": "2026-12-31",
+   "preco": 4615.0,
+   "cia": "Iberia",
+   "escalas": 1
+  },
+  {
    "dia": "2027-01-02",
    "preco": 8067.0,
    "cia": "LATAM",
@@ -371,15 +377,9 @@
   },
   {
    "dia": "2027-01-05",
-   "preco": 7006.0,
-   "cia": "LATAM",
-   "escalas": 2
-  },
-  {
-   "dia": "2027-01-07",
-   "preco": 6393.0,
-   "cia": "LATAM",
-   "escalas": 2
+   "preco": 7051.0,
+   "cia": "Iberia",
+   "escalas": 1
   },
   {
    "dia": "2027-01-08",
@@ -407,9 +407,15 @@
   },
   {
    "dia": "2027-01-14",
-   "preco": 4615.0,
-   "cia": "Iberia",
-   "escalas": 1
+   "preco": 4888.0,
+   "cia": "LATAM",
+   "escalas": 2
+  },
+  {
+   "dia": "2027-01-15",
+   "preco": 5116.0,
+   "cia": "LATAM",
+   "escalas": 2
   },
   {
    "dia": "2027-01-17",
@@ -449,23 +455,41 @@
   },
   {
    "dia": "2027-01-24",
-   "preco": 3728.0,
+   "preco": 3924.0,
    "cia": "Gol",
+   "escalas": 2
+  },
+  {
+   "dia": "2027-01-25",
+   "preco": 4226.0,
+   "cia": "LATAM",
    "escalas": 2
   }
  ],
  "volta": [
   {
-   "dia": "2026-10-26",
-   "preco": 5097.0,
+   "dia": "2026-10-27",
+   "preco": 5324.0,
+   "cia": "Air France",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-10-28",
+   "preco": 5069.0,
    "cia": "Air France",
    "escalas": 2
   },
   {
-   "dia": "2026-10-30",
-   "preco": 5323.0,
-   "cia": "ITA",
+   "dia": "2026-10-29",
+   "preco": 4838.0,
+   "cia": "Air France",
    "escalas": 1
+  },
+  {
+   "dia": "2026-10-30",
+   "preco": 5362.0,
+   "cia": "Tap Air Portugal",
+   "escalas": 2
   },
   {
    "dia": "2026-10-31",
@@ -475,25 +499,31 @@
   },
   {
    "dia": "2026-11-01",
-   "preco": 4732.0,
+   "preco": 4733.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
    "dia": "2026-11-02",
-   "preco": 5362.0,
+   "preco": 4788.0,
    "cia": "Tap Air Portugal",
    "escalas": 2
   },
   {
+   "dia": "2026-11-04",
+   "preco": 4568.0,
+   "cia": "Air France",
+   "escalas": 1
+  },
+  {
    "dia": "2026-11-05",
-   "preco": 4567.0,
+   "preco": 4568.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-11-06",
-   "preco": 4798.0,
+   "preco": 4799.0,
    "cia": "Tap Air Portugal",
    "escalas": 2
   },
@@ -505,25 +535,25 @@
   },
   {
    "dia": "2026-11-08",
-   "preco": 4252.0,
+   "preco": 4253.0,
    "cia": "Air France",
    "escalas": 2
   },
   {
    "dia": "2026-11-09",
-   "preco": 4444.0,
+   "preco": 4445.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
    "dia": "2026-11-10",
-   "preco": 4199.0,
+   "preco": 4200.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-11-11",
-   "preco": 4155.0,
+   "preco": 4156.0,
    "cia": "Air France",
    "escalas": 1
   },
@@ -535,15 +565,21 @@
   },
   {
    "dia": "2026-11-13",
-   "preco": 4270.0,
+   "preco": 4271.0,
    "cia": "Air France",
    "escalas": 2
   },
   {
    "dia": "2026-11-14",
-   "preco": 4252.0,
+   "preco": 4253.0,
    "cia": "Air France",
    "escalas": 2
+  },
+  {
+   "dia": "2026-11-15",
+   "preco": 3835.0,
+   "cia": "Iberia",
+   "escalas": 1
   },
   {
    "dia": "2026-11-16",
@@ -559,7 +595,7 @@
   },
   {
    "dia": "2026-11-18",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 2
   },
@@ -613,7 +649,7 @@
   },
   {
    "dia": "2026-11-28",
-   "preco": 3624.0,
+   "preco": 3625.0,
    "cia": "Air Europa",
    "escalas": 2
   },
@@ -625,37 +661,43 @@
   },
   {
    "dia": "2026-11-30",
-   "preco": 3643.0,
+   "preco": 3633.0,
    "cia": "Air France",
    "escalas": 2
   },
   {
+   "dia": "2026-12-01",
+   "preco": 3632.0,
+   "cia": "KLM",
+   "escalas": 2
+  },
+  {
    "dia": "2026-12-02",
-   "preco": 2516.0,
+   "preco": 2517.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
    "dia": "2026-12-03",
-   "preco": 2059.0,
+   "preco": 2060.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
    "dia": "2026-12-04",
-   "preco": 4242.0,
-   "cia": "Tap Air Portugal",
+   "preco": 3839.0,
+   "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-12-05",
-   "preco": 3701.0,
+   "preco": 3702.0,
    "cia": "KLM",
    "escalas": 2
   },
   {
    "dia": "2026-12-06",
-   "preco": 3701.0,
+   "preco": 3702.0,
    "cia": "KLM",
    "escalas": 2
   },
@@ -667,7 +709,7 @@
   },
   {
    "dia": "2026-12-08",
-   "preco": 3226.0,
+   "preco": 3625.0,
    "cia": "Air Europa",
    "escalas": 2
   },
@@ -679,7 +721,7 @@
   },
   {
    "dia": "2026-12-10",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
@@ -715,49 +757,49 @@
   },
   {
    "dia": "2026-12-16",
-   "preco": 4174.0,
+   "preco": 4175.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2026-12-17",
-   "preco": 4199.0,
+   "preco": 4200.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-12-18",
-   "preco": 4775.0,
+   "preco": 4776.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-12-19",
-   "preco": 5034.0,
+   "preco": 5035.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
    "dia": "2026-12-20",
-   "preco": 4694.0,
+   "preco": 4695.0,
    "cia": "KLM",
    "escalas": 2
   },
   {
    "dia": "2026-12-21",
-   "preco": 4086.0,
+   "preco": 4087.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2026-12-22",
-   "preco": 3701.0,
+   "preco": 3702.0,
    "cia": "KLM",
    "escalas": 2
   },
   {
    "dia": "2026-12-23",
-   "preco": 3701.0,
+   "preco": 3702.0,
    "cia": "KLM",
    "escalas": 2
   },
@@ -769,19 +811,25 @@
   },
   {
    "dia": "2026-12-25",
-   "preco": 3856.0,
+   "preco": 3857.0,
    "cia": "ITA",
    "escalas": 1
   },
   {
    "dia": "2026-12-26",
-   "preco": 5014.0,
+   "preco": 5015.0,
    "cia": "Iberia",
    "escalas": 1
   },
   {
+   "dia": "2026-12-27",
+   "preco": 5692.0,
+   "cia": "Air France",
+   "escalas": 2
+  },
+  {
    "dia": "2026-12-28",
-   "preco": 4487.0,
+   "preco": 4555.0,
    "cia": "Air France",
    "escalas": 1
   },
@@ -793,7 +841,7 @@
   },
   {
    "dia": "2026-12-30",
-   "preco": 3701.0,
+   "preco": 3702.0,
    "cia": "KLM",
    "escalas": 2
   },
@@ -811,13 +859,13 @@
   },
   {
    "dia": "2027-01-02",
-   "preco": 4567.0,
+   "preco": 4568.0,
    "cia": "Air France",
    "escalas": 1
   },
   {
    "dia": "2027-01-03",
-   "preco": 4470.0,
+   "preco": 4471.0,
    "cia": "Iberia",
    "escalas": 1
   },
@@ -829,13 +877,13 @@
   },
   {
    "dia": "2027-01-05",
-   "preco": 4694.0,
+   "preco": 4695.0,
    "cia": "KLM",
    "escalas": 2
   },
   {
    "dia": "2027-01-06",
-   "preco": 4625.0,
+   "preco": 4626.0,
    "cia": "Tap Air Portugal",
    "escalas": 2
   },
@@ -847,7 +895,7 @@
   },
   {
    "dia": "2027-01-08",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
@@ -865,7 +913,7 @@
   },
   {
    "dia": "2027-01-11",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
@@ -876,74 +924,74 @@
    "escalas": 1
   },
   {
-   "dia": "2027-01-13",
-   "preco": 3497.0,
-   "cia": "Tap Air Portugal",
-   "escalas": 1
-  },
-  {
    "dia": "2027-01-14",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-15",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-16",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-17",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-18",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-19",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-20",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-21",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-22",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-23",
-   "preco": 3497.0,
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   },
   {
    "dia": "2027-01-24",
-   "preco": 3497.0,
+   "preco": 3498.0,
+   "cia": "Tap Air Portugal",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-25",
+   "preco": 3498.0,
    "cia": "Tap Air Portugal",
    "escalas": 1
   }

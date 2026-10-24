@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-24T00:37+00:00",
+ "atualizado": "2026-10-24T01:48+00:00",
  "pistas": [
   "BEL",
   "IGU",
@@ -37,6 +37,19 @@
    "rastreada": true,
    "nome": "Belém",
    "pista": true
+  },
+  {
+   "iata": "BHZ",
+   "ow": {
+    "preco": 1186,
+    "ida": "2026-11-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-24T00:47:15Z"
+   },
+   "rastreada": true,
+   "nome": "Belo Horizonte",
+   "pista": false
   },
   {
    "iata": "SCL",
@@ -190,19 +203,6 @@
    "pista": false
   },
   {
-   "iata": "BUH",
-   "ow": {
-    "preco": 2728,
-    "ida": "2026-11-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-22T13:45:34Z"
-   },
-   "rastreada": false,
-   "nome": "BUH",
-   "pista": false
-  },
-  {
    "iata": "LDB",
    "rt": {
     "preco": 3076,
@@ -282,26 +282,6 @@
    "pista": false
   },
   {
-   "iata": "LIS",
-   "rt": {
-    "preco": 4242,
-    "ida": "2026-10-28",
-    "volta": "2026-11-09",
-    "paradas": 1,
-    "visto": "2026-10-20T01:02:57Z"
-   },
-   "ow": {
-    "preco": 1838,
-    "ida": "2026-11-26",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-23T16:19:56Z"
-   },
-   "rastreada": true,
-   "nome": "Lisboa",
-   "pista": true
-  },
-  {
    "iata": "SVD",
    "ow": {
     "preco": 4885,
@@ -313,6 +293,26 @@
    "rastreada": false,
    "nome": "SVD",
    "pista": false
+  },
+  {
+   "iata": "LIS",
+   "rt": {
+    "preco": 5152,
+    "ida": "2026-11-06",
+    "volta": "2026-11-07",
+    "paradas": 1,
+    "visto": "2026-10-23T14:33:33Z"
+   },
+   "ow": {
+    "preco": 1838,
+    "ida": "2026-11-26",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-23T16:19:56Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": true
   },
   {
    "iata": "TIA",
@@ -343,11 +343,11 @@
   {
    "iata": "MIA",
    "rt": {
-    "preco": 5998,
-    "ida": "2027-01-16",
-    "volta": "2027-01-30",
-    "paradas": 2,
-    "visto": "2026-10-20T16:21:57Z"
+    "preco": 5774,
+    "ida": "2027-02-06",
+    "volta": "2027-02-14",
+    "paradas": 3,
+    "visto": "2026-10-24T01:10:34Z"
    },
    "rastreada": true,
    "nome": "Miami",

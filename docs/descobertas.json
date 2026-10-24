@@ -1,10 +1,10 @@
 {
- "atualizado": "2026-10-24T03:41+00:00",
+ "atualizado": "2026-10-24T05:21+00:00",
  "pistas": [
   "AMS",
   "BEL",
-  "BSB",
   "IGU",
+  "JDO",
   "LIS",
   "MAD",
   "MVD",
@@ -14,6 +14,19 @@
  ],
  "blogs": [],
  "destinos": [
+  {
+   "iata": "JDO",
+   "ow": {
+    "preco": 494,
+    "ida": "2026-11-08",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-24T03:41:46Z"
+   },
+   "rastreada": true,
+   "nome": "Juazeiro do Norte",
+   "pista": true
+  },
   {
    "iata": "REC",
    "ow": {
@@ -38,19 +51,6 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": true
-  },
-  {
-   "iata": "BSB",
-   "ow": {
-    "preco": 841,
-    "ida": "2026-11-08",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-20T15:13:03Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
    "pista": true
   },
   {

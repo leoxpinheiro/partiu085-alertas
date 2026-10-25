@@ -1,7 +1,6 @@
 {
- "atualizado": "2026-10-24T23:44+00:00",
+ "atualizado": "2026-10-25T01:24+00:00",
  "pistas": [
-  "AMS",
   "BEL",
   "IGU",
   "JDO",
@@ -10,7 +9,9 @@
   "MVD",
   "PAR",
   "REC",
-  "SAO"
+  "SAO",
+  "SSA",
+  "THE"
  ],
  "blogs": [],
  "destinos": [
@@ -54,6 +55,32 @@
    "pista": true
   },
   {
+   "iata": "SSA",
+   "ow": {
+    "preco": 782,
+    "ida": "2027-02-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-25T00:36:21Z"
+   },
+   "rastreada": true,
+   "nome": "Salvador",
+   "pista": true
+  },
+  {
+   "iata": "THE",
+   "ow": {
+    "preco": 791,
+    "ida": "2026-11-09",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-25T00:17:07Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
+   "pista": true
+  },
+  {
    "iata": "PNZ",
    "ow": {
     "preco": 933,
@@ -82,11 +109,11 @@
   {
    "iata": "SCL",
    "ow": {
-    "preco": 1294,
+    "preco": 1298,
     "ida": "2026-12-29",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-22T00:48:34Z"
+    "visto": "2026-10-25T00:05:10Z"
    },
    "rastreada": true,
    "nome": "Santiago",
@@ -198,6 +225,19 @@
    "pista": false
   },
   {
+   "iata": "PET",
+   "rt": {
+    "preco": 2211,
+    "ida": "2026-12-16",
+    "volta": "2026-12-30",
+    "paradas": 2,
+    "visto": "2026-10-24T23:46:56Z"
+   },
+   "rastreada": false,
+   "nome": "PET",
+   "pista": false
+  },
+  {
    "iata": "MVD",
    "rt": {
     "preco": 2224,
@@ -241,7 +281,7 @@
    },
    "rastreada": true,
    "nome": "Amsterdã",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "MAD",

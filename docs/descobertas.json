@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-25T20:30+00:00",
+ "atualizado": "2026-10-25T22:10+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -58,11 +58,11 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 782,
-    "ida": "2027-02-03",
+    "preco": 633,
+    "ida": "2026-11-11",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-25T00:36:21Z"
+    "visto": "2026-10-25T21:21:52Z"
    },
    "rastreada": true,
    "nome": "Salvador",
@@ -185,19 +185,6 @@
    "rastreada": true,
    "nome": "São Paulo",
    "pista": true
-  },
-  {
-   "iata": "MVF",
-   "ow": {
-    "preco": 1554,
-    "ida": "2026-11-06",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-22T17:05:04Z"
-   },
-   "rastreada": false,
-   "nome": "MVF",
-   "pista": false
   },
   {
    "iata": "RIO",
@@ -338,6 +325,19 @@
    "pista": false
   },
   {
+   "iata": "ORL",
+   "rt": {
+    "preco": 5740,
+    "ida": "2027-01-16",
+    "volta": "2027-02-06",
+    "paradas": 1,
+    "visto": "2026-10-25T22:01:08Z"
+   },
+   "rastreada": true,
+   "nome": "Orlando",
+   "pista": false
+  },
+  {
    "iata": "MIA",
    "rt": {
     "preco": 5774,
@@ -348,19 +348,6 @@
    },
    "rastreada": true,
    "nome": "Miami",
-   "pista": false
-  },
-  {
-   "iata": "ORL",
-   "rt": {
-    "preco": 7100,
-    "ida": "2027-01-16",
-    "volta": "2027-02-06",
-    "paradas": 2,
-    "visto": "2026-10-22T20:52:07Z"
-   },
-   "rastreada": true,
-   "nome": "Orlando",
    "pista": false
   }
  ]

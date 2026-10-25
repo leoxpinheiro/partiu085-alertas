@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-10-25T15:42+00:00",
+ "atualizado": "2026-10-25T17:22+00:00",
  "pistas": [
   "AMS",
   "BEL",
+  "GYN",
   "IGU",
   "JDO",
   "LIS",
@@ -96,6 +97,26 @@
    "pista": false
   },
   {
+   "iata": "GYN",
+   "rt": {
+    "preco": 1173,
+    "ida": "2026-12-07",
+    "volta": "2026-12-10",
+    "paradas": 1,
+    "visto": "2026-10-25T17:09:03Z"
+   },
+   "ow": {
+    "preco": 460,
+    "ida": "2026-12-06",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-25T17:17:31Z"
+   },
+   "rastreada": true,
+   "nome": "Goiânia",
+   "pista": true
+  },
+  {
    "iata": "BHZ",
    "ow": {
     "preco": 1186,
@@ -119,6 +140,19 @@
    },
    "rastreada": true,
    "nome": "Santiago",
+   "pista": false
+  },
+  {
+   "iata": "FLN",
+   "rt": {
+    "preco": 1309,
+    "ida": "2027-09-15",
+    "volta": "2027-09-19",
+    "paradas": 1,
+    "visto": "2026-10-25T16:24:46Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
    "pista": false
   },
   {
@@ -153,19 +187,6 @@
    "rastreada": true,
    "nome": "São Paulo",
    "pista": true
-  },
-  {
-   "iata": "FLN",
-   "rt": {
-    "preco": 1459,
-    "ida": "2027-09-15",
-    "volta": "2027-09-19",
-    "paradas": 1,
-    "visto": "2026-10-22T20:55:04Z"
-   },
-   "rastreada": true,
-   "nome": "Florianópolis",
-   "pista": false
   },
   {
    "iata": "MVF",

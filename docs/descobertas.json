@@ -1,19 +1,18 @@
 {
- "atualizado": "2026-10-26T13:27+00:00",
+ "atualizado": "2026-10-26T22:23+00:00",
  "pistas": [
-  "AMS",
   "BEL",
   "GYN",
   "IGU",
   "JDO",
   "LIS",
+  "LON",
   "MAD",
   "MVD",
   "REC",
   "RIO",
   "SAO",
-  "SSA",
-  "THE"
+  "SSA"
  ],
  "blogs": [],
  "destinos": [
@@ -67,19 +66,6 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
-  },
-  {
-   "iata": "THE",
-   "ow": {
-    "preco": 790,
-    "ida": "2026-11-09",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-25T00:17:07Z"
-   },
-   "rastreada": true,
-   "nome": "Teresina",
    "pista": true
   },
   {
@@ -164,11 +150,11 @@
     "visto": "2026-10-25T22:54:39Z"
    },
    "ow": {
-    "preco": 478,
-    "ida": "2027-02-25",
+    "preco": 406,
+    "ida": "2027-02-22",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-10-24T14:05:35Z"
+    "visto": "2026-10-26T19:56:56Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
@@ -228,30 +214,56 @@
    "pista": true
   },
   {
+   "iata": "LON",
+   "ow": {
+    "preco": 2371,
+    "ida": "2026-11-29",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-26T22:04:08Z"
+   },
+   "rastreada": true,
+   "nome": "Londres",
+   "pista": true
+  },
+  {
+   "iata": "CWB",
+   "rt": {
+    "preco": 2570,
+    "ida": "2026-10-28",
+    "volta": "2026-10-30",
+    "paradas": 2,
+    "visto": "2026-10-26T18:39:37Z"
+   },
+   "rastreada": true,
+   "nome": "Curitiba",
+   "pista": false
+  },
+  {
+   "iata": "FLL",
+   "ow": {
+    "preco": 2811,
+    "ida": "2026-11-18",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-26T20:20:17Z"
+   },
+   "rastreada": false,
+   "nome": "FLL",
+   "pista": false
+  },
+  {
    "iata": "BSB",
    "rt": {
-    "preco": 2857,
+    "preco": 3236,
     "ida": "2027-01-02",
     "volta": "2027-01-06",
     "paradas": 1,
-    "visto": "2026-10-26T11:57:11Z"
+    "visto": "2026-10-26T13:29:09Z"
    },
    "rastreada": true,
    "nome": "Brasília",
    "pista": false
-  },
-  {
-   "iata": "AMS",
-   "ow": {
-    "preco": 3219,
-    "ida": "2026-12-21",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-22T21:30:27Z"
-   },
-   "rastreada": true,
-   "nome": "Amsterdã",
-   "pista": true
   },
   {
    "iata": "MUC",
@@ -337,6 +349,19 @@
    "rastreada": true,
    "nome": "Lisboa",
    "pista": true
+  },
+  {
+   "iata": "MOW",
+   "ow": {
+    "preco": 5301,
+    "ida": "2026-12-16",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-10-26T19:45:28Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
+   "pista": false
   },
   {
    "iata": "YTO",

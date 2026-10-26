@@ -1,19 +1,6 @@
 {
- "atualizado": "2026-10-25T22:56-03:00",
+ "atualizado": "2026-10-26T00:40-03:00",
  "itens": [
-  {
-   "k": "PAR",
-   "nome": "Paris",
-   "menor": 1996.0,
-   "rt": 4326.0,
-   "d": 0.1655092592592593,
-   "normal": 5184,
-   "ida": "2026-12-02",
-   "volta": "2026-12-07",
-   "cia": "Iberia",
-   "mes": "12",
-   "intl": true
-  },
   {
    "k": "BPS",
    "nome": "Porto Seguro",
@@ -28,12 +15,25 @@
    "intl": false
   },
   {
+   "k": "PAR",
+   "nome": "Paris",
+   "menor": 1996.0,
+   "rt": 4326.0,
+   "d": 0.16146540027137046,
+   "normal": 5159,
+   "ida": "2026-12-02",
+   "volta": "2026-12-07",
+   "cia": "Iberia",
+   "mes": "12",
+   "intl": true
+  },
+  {
    "k": "UDI",
    "nome": "Uberlândia",
    "menor": 1008.0,
    "rt": 1672.0,
-   "d": 0.13322965266977704,
-   "normal": 1929,
+   "d": 0.12506541077969646,
+   "normal": 1911,
    "ida": "2027-01-21",
    "volta": "2027-01-25",
    "cia": "LATAM",
@@ -44,11 +44,11 @@
    "k": "MIL",
    "nome": "Milão",
    "menor": 2325.0,
-   "rt": 4376.0,
-   "d": 0.1182752367519645,
-   "normal": 4963,
-   "ida": "2026-11-30",
-   "volta": "2026-12-07",
+   "rt": 4360.0,
+   "d": 0.12123349793409255,
+   "normal": 4962,
+   "ida": "2026-11-25",
+   "volta": "2026-12-03",
    "cia": "LATAM",
    "mes": "11",
    "intl": true
@@ -58,8 +58,8 @@
    "nome": "Londres",
    "menor": 2415.0,
    "rt": 5387.0,
-   "d": 0.06976342600587115,
-   "normal": 5791,
+   "d": 0.0671053770889255,
+   "normal": 5774,
    "ida": "2026-11-29",
    "volta": "2026-12-03",
    "cia": "Gol",
@@ -67,7 +67,7 @@
    "intl": true
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_25/10_\n\n1️⃣ *Paris* · ida e volta *R$ 4.326* (02/12 a 07/12) · 17% abaixo do normal\n2️⃣ *Porto Seguro* · ida e volta *R$ 1.952* (06/12 a 11/12) · 16% abaixo do normal\n3️⃣ *Uberlândia* · ida e volta *R$ 1.672* (21/01 a 25/01) · 13% abaixo do normal\n4️⃣ *Milão* · ida e volta *R$ 4.376* (30/11 a 07/12) · 12% abaixo do normal\n5️⃣ *Londres* · ida e volta *R$ 5.387* (29/11 a 03/12)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_26/10_\n\n1️⃣ *Porto Seguro* · ida e volta *R$ 1.952* (06/12 a 11/12) · 16% abaixo do normal\n2️⃣ *Paris* · ida e volta *R$ 4.326* (02/12 a 07/12) · 16% abaixo do normal\n3️⃣ *Uberlândia* · ida e volta *R$ 1.672* (21/01 a 25/01) · 13% abaixo do normal\n4️⃣ *Milão* · ida e volta *R$ 4.360* (25/11 a 03/12) · 12% abaixo do normal\n5️⃣ *Londres* · ida e volta *R$ 5.387* (29/11 a 03/12)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
@@ -76,28 +76,18 @@
    "menor": 442.0,
    "ida": "2026-11-05",
    "volta": "2026-11-08",
-   "normal": 581,
-   "d": -0.5025817555938037
+   "normal": 604,
+   "d": -0.445364238410596
   },
   {
    "k": "REC",
    "nome": "Recife",
-   "rt": 977.0,
+   "rt": 989.0,
    "menor": 488.0,
-   "ida": "2026-12-05",
-   "volta": "2026-12-08",
+   "ida": "2026-12-24",
+   "volta": "2027-01-02",
    "normal": 954,
-   "d": -0.024109014675052443
-  },
-  {
-   "k": "FLN",
-   "nome": "Florianópolis",
-   "rt": 1190.0,
-   "menor": 560.0,
-   "ida": "2026-11-10",
-   "volta": "2026-11-15",
-   "normal": 1236,
-   "d": 0.03721682847896435
+   "d": -0.0366876310272537
   },
   {
    "k": "SAO",
@@ -105,19 +95,9 @@
    "rt": 1195.0,
    "menor": 654.0,
    "ida": "2027-01-19",
-   "volta": "2027-01-27",
+   "volta": "2027-01-28",
    "normal": 1214,
    "d": 0.01565074135090605
-  },
-  {
-   "k": "VIX",
-   "nome": "Vitória",
-   "rt": 1286.0,
-   "menor": 646.0,
-   "ida": "2027-01-26",
-   "volta": "2027-01-29",
-   "normal": 1236,
-   "d": -0.040453074433656866
   },
   {
    "k": "BEL",
@@ -128,7 +108,27 @@
    "volta": "2026-12-07",
    "normal": 1179,
    "d": -0.16624257845631885
+  },
+  {
+   "k": "SLZ",
+   "nome": "São Luís",
+   "rt": 1426.0,
+   "menor": 718.0,
+   "ida": "2026-12-04",
+   "volta": "2026-12-10",
+   "normal": 1386,
+   "d": -0.029231324431613137
+  },
+  {
+   "k": "FLN",
+   "nome": "Florianópolis",
+   "rt": 1443.0,
+   "menor": 610.0,
+   "ida": "2026-12-07",
+   "volta": "2026-12-10",
+   "normal": 1236,
+   "d": -0.16747572815533984
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_25/10_\n\n✈️ *Juazeiro do Norte* · *R$ 873* (05/11 a 08/11)\n✈️ *Recife* · *R$ 977* (05/12 a 08/12)\n✈️ *Florianópolis* · *R$ 1.190* (10/11 a 15/11)\n✈️ *São Paulo* · *R$ 1.195* (19/01 a 27/01)\n✈️ *Vitória* · *R$ 1.286* (26/01 a 29/01)\n✈️ *Belém* · *R$ 1.375* (03/12 a 07/12)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_26/10_\n\n✈️ *Juazeiro do Norte* · *R$ 873* (05/11 a 08/11)\n✈️ *Recife* · *R$ 989* (24/12 a 02/01)\n✈️ *São Paulo* · *R$ 1.195* (19/01 a 28/01)\n✈️ *Belém* · *R$ 1.375* (03/12 a 07/12)\n✈️ *São Luís* · *R$ 1.426* (04/12 a 10/12)\n✈️ *Florianópolis* · *R$ 1.443* (07/12 a 10/12)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

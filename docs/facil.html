@@ -83,7 +83,7 @@ function texto(a){
   const par=a.escalas===0?"voo direto":a.escalas?`${a.escalas} parada${a.escalas>1?"s":""}`:"";const r=CLS[a.classe];
   const L=["🚨 *O RADAR APITOU!*","",`✈️ *Fortaleza ➜ ${a.destino_nome}* (${a.destino})`];
   if(a.ref)L.push(`📍 _${a.ref}_`);
-  L.push(`💰 *${R(a.preco)}* o trecho`);
+  if(!a.soRt)L.push(`💰 *${R(a.preco)}* o trecho`);
   if(a.par)L.push(`🔁 Ida e volta: *${R(a.par.total)}* (ida ${ddmm(a.par.ida)}, volta ${ddmm(a.par.volta)} · ${a.par.dias} dias)`);
   L.push(`${r[0]} *${r[1]}*`);
   if(a.cia_nome)L.push(`🛫 ${a.cia_nome}${par?" · "+par:""}`);
@@ -113,9 +113,9 @@ async function card(a){
   // preço
   c.font="700 32px system-ui,sans-serif";c.fillStyle="#cfe0f5";c.fillText("A partir de",64,510);
   c.fillStyle="#F5C531";c.font="170px Anton";const pt=R(a.preco);c.fillText(pt,60,680);const pw=c.measureText(pt).width;
-  c.font="800 38px system-ui,sans-serif";c.fillStyle="#fff";c.fillText("o trecho",84+pw,676);
+  c.font="800 38px system-ui,sans-serif";c.fillStyle="#fff";c.fillText(a.soRt?"ida e volta":"o trecho",84+pw,676);
   let y=745;
-  if(a.par){c.font="800 36px system-ui,sans-serif";c.fillStyle="#fff";c.fillText(`🔁 Ida e volta ${R(a.par.total)}  ·  ${ddmm(a.par.ida)} a ${ddmm(a.par.volta)}`,64,y);y+=30}
+  if(a.par){c.font="800 36px system-ui,sans-serif";c.fillStyle="#fff";c.fillText(a.soRt?`🔁 ${ddmm(a.par.ida)} a ${ddmm(a.par.volta)} · ${a.par.dias} dias · mesma reserva`:`🔁 Ida e volta ${R(a.par.total)}  ·  ${ddmm(a.par.ida)} a ${ddmm(a.par.volta)}`,64,y);y+=30}
   // datas
   const lin=[["IDA",a.ida_meses.slice(0,3)],["VOLTA",(a.volta_meses||[]).slice(0,3)]].filter(x=>x[1].length);
   const nl=lin.reduce((s,x)=>s+x[1].length,0),ch=50+lin.length*66+nl*60;
@@ -179,6 +179,9 @@ async function ofertas(){
     let im=a.ida_meses,vm=a.volta_meses;
     if(!im||!im.length){const ds=(a.datas||[]);im=meses(ds.map(x=>x.ida));vm=meses(ds.map(x=>x.volta))}
     
+    if(a.modo==="ida_volta"&&a.par){ // ida e volta na mesma reserva (internacional)
+      if(a.par.ida<=isoHoje())continue;vistos.add(a.destino);const P=(a.pares||[a.par]);
+      L.push({...a,soRt:true,preco:a.par.total,link_compra:linkAv(a.destino,a.par),ref:(refs[a.destino]||{}).texto||"",ida_meses:meses(P.map(x=>x.ida)),volta_meses:meses(P.map(x=>x.volta)),classe:a.classe||"otima",normal:a.preco_tipico,d:a.desconto||0,visto:hora(a.criado)});continue}
     const DI=(a.datas_ida||[]).filter(x=>x.dia>isoHoje()),DV=(a.datas_volta||[]).filter(x=>x.dia>isoHoje());
     const cs=casar(DI,DV);if(!cs){continue}vistos.add(a.destino);const par=cs.par;im=meses(cs.ida);vm=meses(cs.volta);
     L.push({...a,par,preco:par.pi,link_compra:linkAv(a.destino,par),ref:(refs[a.destino]||{}).texto||"",ida_meses:im,volta_meses:vm,classe:a.classe||classeDe(a.desconto||0),
@@ -194,7 +197,7 @@ async function ofertas(){
   const box=$("#ofertas");box.innerHTML="";
   for(const o of L){
     const d=document.createElement("div");d.className="it";const tx=texto(o);
-    d.innerHTML=`<img class="prev" alt=""><h3>${esc(o.destino_nome)} · ${R(o.preco)} o trecho ${o.d>=.1?`<span class="tag">${Math.round(o.d*100)}% abaixo</span>`:o.classe==="barato"?`<span class="tag">mais barato hoje</span>`:""}</h3><div class="meta">${o.par?`ida e volta ${R(o.par.total)} · `:""}${esc(o.cia_nome||"")} · visto ${o.visto}</div>
+    d.innerHTML=`<img class="prev" alt=""><h3>${esc(o.destino_nome)} · ${R(o.preco)} ${o.soRt?"ida e volta":"o trecho"} ${o.d>=.1?`<span class="tag">${Math.round(o.d*100)}% abaixo</span>`:o.classe==="barato"?`<span class="tag">mais barato hoje</span>`:""}</h3><div class="meta">${o.par?`ida e volta ${R(o.par.total)} · `:""}${esc(o.cia_nome||"")} · visto ${o.visto}</div>
     <div class="bts"><button class="bt b1">⬇️ Salvar imagem</button><button class="bt b2">📋 Copiar texto</button></div><details><summary>Ver texto</summary><pre>${esc(tx)}</pre></details>`;
     box.appendChild(d);
     card(o).then(b=>{d.querySelector("img").src=URL.createObjectURL(b);

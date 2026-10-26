@@ -554,6 +554,16 @@ def salvar_vitrine(dias: int = 15) -> None:
         V[k] = {"nome": nome, "tipo": tipo, "rt": par["rt"], "menor": par["preco"], "ida": par["ida"], "volta": par["volta"],
                 "cia": par.get("cia", ""), "normal": round(normal) if normal else None,
                 "d": round(1 - par["rt"] / normal, 3) if normal else None, "visto": agora_iso}
+    # internacional: o preço de ida e volta na mesma reserva (engine/ida_volta.py) costuma ser bem menor que os trechos somados
+    for k, st in (ler_json(DOCS / "ida_volta.json", {}).get("rotas") or {}).items():
+        m = st.get("melhor") or {}
+        if not m or m.get("visto", "") < lim or k not in nomes:
+            continue
+        if k not in V or m["preco"] < V[k]["rt"]:
+            normal = st.get("normal")
+            V[k] = {"nome": nomes[k][0], "tipo": nomes[k][1], "rt": m["preco"], "menor": None, "ida": m["ida"], "volta": m["volta"],
+                    "cia": m.get("cia", ""), "normal": normal, "d": round(1 - m["preco"] / normal, 3) if normal else None,
+                    "visto": m["visto"], "reserva": "ida_volta"}
     V = {k: v for k, v in V.items() if v.get("visto", "") >= lim}
     salvar_json(path, {"atualizado": agora_iso, "rotas": V})
 

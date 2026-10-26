@@ -7,11 +7,12 @@
  "rodape": "🔔 Alertas grátis no grupo do WhatsApp: link na bio",
  "auto_reels_achado": false,
  "auto_conteudo": true,
- "auto_videos": false,
+ "auto_videos": true,
  "aviso_horas": 2,
- "por_dia": 2,
+ "por_dia": 3,
  "horarios_conteudo": [
-  "12:30"
+  "11:30",
+  "17:30"
  ],
  "so_lista": true,
  "conteudo_permitido": [
@@ -27,7 +28,22 @@
   "ct-seguro-europa",
   "ct-natal-luz-2026",
   "ct-black-friday-passagem",
-  "ct-dia-aviador"
+  "ct-dia-aviador",
+  "info-atraso",
+  "info-liberado",
+  "info-janela",
+  "info-entrar",
+  "info-furinho",
+  "info-taxa",
+  "info-comida",
+  "info-extravio",
+  "info-overbooking",
+  "info-bagagem",
+  "info-cancelamento"
  ],
- "_como": "por_dia conta a oferta das 19h. so_lista=true: o piloto só usa o que está em conteudo_permitido (o resto fica pra você escolher na mão). Ids cr-… são os carrosséis prontos (🖼️ Meu carrossel)."
+ "_como": "por_dia conta a oferta das 19h. so_lista=true: o piloto só usa o que está em conteudo_permitido (o resto fica pra você escolher na mão). Ids cr-… são os carrosséis prontos (🖼️ Meu carrossel). oferta_feed_dias: dias da semana (1=seg..7=dom) em que a oferta das 19h sai no feed; nos outros só no story. Vídeos (info-…) entram se estiverem em conteudo_permitido.",
+ "oferta_feed_dias": [
+  1,
+  4
+ ]
 }

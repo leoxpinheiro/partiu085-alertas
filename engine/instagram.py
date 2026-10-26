@@ -700,6 +700,14 @@ def main():
             extra = {}
             if p.get("tipo") == "oferta_dia":
                 extra = montar_oferta(p, st)
+                # Top 5 / oferta do dia no feed só nos dias escolhidos (o feed não vira só lista); nos outros dias sai só no story
+                dias_feed = auto.get("oferta_feed_dias")
+                if dias_feed is not None and extra.get("story") and datetime.now(FUSO).isoweekday() not in dias_feed:
+                    res = publicar({"tipo": "story", "imagens": [extra["story"]]})
+                    st[p["id"]] = {"status": "publicado", **res, "formato": "story", "escolhido": extra.get("titulo"), "imagem": extra["story"]}
+                    feitos += 1
+                    print(f"oferta do dia só no story: {extra.get('titulo')}")
+                    continue
                 p = {**p, "imagens": extra["imagens"], "legenda": extra["legenda"], "tipo": "feed"}
             if p.get("tipo") == "reels" and not extra:
                 if p.get("video_pronto"):

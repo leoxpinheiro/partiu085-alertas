@@ -42,6 +42,14 @@ jobs:
           set -o pipefail
           mkdir -p data
           python engine/run.py 2>&1 | tee data/ultima_rodada.log
+      - name: Ida e volta internacional
+        continue-on-error: true
+        env:
+          TRAVELPAYOUTS_MARKER: ${{ secrets.TRAVELPAYOUTS_MARKER }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IDA_VOLTA_ROTAS: ${{ github.event.inputs.rotas }}
+        run: python engine/ida_volta.py $(echo "$IDA_VOLTA_ROTAS" | tr ',' ' ') 2>&1 | tee -a data/ultima_rodada.log
       - name: Radar de milhas
         continue-on-error: true
         env:

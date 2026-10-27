@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-26T21:59-03:00",
+ "atualizado": "2026-10-26T22:52-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "itens": 10,
-   "ok": true
+   "ok": false,
+   "erro": "403 Client Error: Forbidden for url: https://www.mestredasmilhas.com/feed/"
   },
   {
    "fonte": "Melhores Cartões",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Max retries exceeded with url: /feed/ (Caused by ConnectTimeoutError(<"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -76,7 +76,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 12,
+   "itens": 16,
    "ok": true
   },
   {
@@ -88,7 +88,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {
@@ -106,7 +106,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 21,
+   "itens": 22,
    "ok": true
   },
   {
@@ -118,7 +118,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 18,
+   "itens": 22,
    "ok": true
   }
  ],

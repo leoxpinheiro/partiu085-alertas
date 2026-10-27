@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T15:48+00:00",
+ "atualizado": "2026-10-27T16:48+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -31,7 +31,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 479,
+    "preco": 477,
     "ida": "2026-12-11",
     "volta": "",
     "paradas": 1,
@@ -68,19 +68,6 @@
    "pista": true
   },
   {
-   "iata": "MVD",
-   "ow": {
-    "preco": 1165,
-    "ida": "2026-11-21",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-24T05:30:15Z"
-   },
-   "rastreada": true,
-   "nome": "Montevidéu",
-   "pista": false
-  },
-  {
    "iata": "GYN",
    "rt": {
     "preco": 1171,
@@ -114,6 +101,39 @@
    "pista": false
   },
   {
+   "iata": "MVD",
+   "ow": {
+    "preco": 1209,
+    "ida": "2026-11-21",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-27T16:41:34Z"
+   },
+   "rastreada": true,
+   "nome": "Montevidéu",
+   "pista": false
+  },
+  {
+   "iata": "SAO",
+   "rt": {
+    "preco": 1269,
+    "ida": "2026-11-18",
+    "volta": "2026-11-25",
+    "paradas": 1,
+    "visto": "2026-10-27T16:03:39Z"
+   },
+   "ow": {
+    "preco": 407,
+    "ida": "2027-02-22",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-26T19:56:56Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
+  },
+  {
    "iata": "SCL",
    "ow": {
     "preco": 1297,
@@ -136,35 +156,15 @@
     "visto": "2026-10-25T16:24:46Z"
    },
    "ow": {
-    "preco": 2140,
-    "ida": "2026-10-27",
+    "preco": 2438,
+    "ida": "2026-10-28",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-27T15:36:44Z"
+    "visto": "2026-10-27T16:41:49Z"
    },
    "rastreada": true,
    "nome": "Florianópolis",
    "pista": false
-  },
-  {
-   "iata": "SAO",
-   "rt": {
-    "preco": 1495,
-    "ida": "2026-12-08",
-    "volta": "2026-12-16",
-    "paradas": 0,
-    "visto": "2026-10-25T22:54:39Z"
-   },
-   "ow": {
-    "preco": 407,
-    "ida": "2027-02-22",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-26T19:56:56Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
-   "pista": true
   },
   {
    "iata": "IGU",
@@ -182,7 +182,7 @@
   {
    "iata": "LIM",
    "ow": {
-    "preco": 1624,
+    "preco": 1619,
     "ida": "2026-11-10",
     "volta": "",
     "paradas": 1,
@@ -215,7 +215,7 @@
   {
    "iata": "BVB",
    "rt": {
-    "preco": 2011,
+    "preco": 2005,
     "ida": "2026-11-10",
     "volta": "2026-11-18",
     "paradas": 2,
@@ -228,7 +228,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2156,
+    "preco": 2148,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
@@ -345,7 +345,7 @@
   {
    "iata": "LIS",
    "rt": {
-    "preco": 3547,
+    "preco": 3535,
     "ida": "2027-03-13",
     "volta": "2027-03-25",
     "paradas": 0,

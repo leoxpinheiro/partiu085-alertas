@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T07:06+00:00",
+ "atualizado": "2026-10-27T08:07+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -7,6 +7,7 @@
   "LIS",
   "LON",
   "MAD",
+  "MAO",
   "REC",
   "RIO",
   "SAO",
@@ -205,6 +206,19 @@
    "pista": false
   },
   {
+   "iata": "MAO",
+   "rt": {
+    "preco": 2168,
+    "ida": "2026-11-20",
+    "volta": "2026-11-26",
+    "paradas": 1,
+    "visto": "2026-10-27T07:07:09Z"
+   },
+   "rastreada": true,
+   "nome": "Manaus",
+   "pista": true
+  },
+  {
    "iata": "PET",
    "rt": {
     "preco": 2211,
@@ -215,19 +229,6 @@
    },
    "rastreada": false,
    "nome": "PET",
-   "pista": false
-  },
-  {
-   "iata": "MAO",
-   "rt": {
-    "preco": 2225,
-    "ida": "2026-11-20",
-    "volta": "2026-11-26",
-    "paradas": 1,
-    "visto": "2026-10-27T07:03:23Z"
-   },
-   "rastreada": true,
-   "nome": "Manaus",
    "pista": false
   },
   {

@@ -1,14 +1,12 @@
 {
- "atualizado": "2026-10-27T01:24+00:00",
+ "atualizado": "2026-10-27T02:24+00:00",
  "pistas": [
   "BEL",
   "GYN",
-  "IGU",
   "JDO",
   "LIS",
   "LON",
   "MAD",
-  "MVD",
   "REC",
   "RIO",
   "SAO",
@@ -67,6 +65,19 @@
    "rastreada": true,
    "nome": "Salvador",
    "pista": true
+  },
+  {
+   "iata": "MVD",
+   "ow": {
+    "preco": 1165,
+    "ida": "2026-11-21",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-24T05:30:15Z"
+   },
+   "rastreada": true,
+   "nome": "Montevidéu",
+   "pista": false
   },
   {
    "iata": "GYN",
@@ -128,19 +139,6 @@
    "pista": false
   },
   {
-   "iata": "IGU",
-   "rt": {
-    "preco": 1369,
-    "ida": "2027-03-13",
-    "volta": "2027-03-20",
-    "paradas": 1,
-    "visto": "2026-10-23T01:52:14Z"
-   },
-   "rastreada": true,
-   "nome": "Foz do Iguaçu",
-   "pista": true
-  },
-  {
    "iata": "SAO",
    "rt": {
     "preco": 1495,
@@ -159,6 +157,19 @@
    "rastreada": true,
    "nome": "São Paulo",
    "pista": true
+  },
+  {
+   "iata": "IGU",
+   "rt": {
+    "preco": 1618,
+    "ida": "2026-11-19",
+    "volta": "2026-11-23",
+    "paradas": 1,
+    "visto": "2026-10-24T15:16:42Z"
+   },
+   "rastreada": true,
+   "nome": "Foz do Iguaçu",
+   "pista": false
   },
   {
    "iata": "RIO",
@@ -205,26 +216,6 @@
    "rastreada": false,
    "nome": "PET",
    "pista": false
-  },
-  {
-   "iata": "MVD",
-   "rt": {
-    "preco": 2224,
-    "ida": "2027-01-19",
-    "volta": "2027-01-25",
-    "paradas": 2,
-    "visto": "2026-10-23T02:19:55Z"
-   },
-   "ow": {
-    "preco": 1165,
-    "ida": "2026-11-21",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-24T05:30:15Z"
-   },
-   "rastreada": true,
-   "nome": "Montevidéu",
-   "pista": true
   },
   {
    "iata": "LON",

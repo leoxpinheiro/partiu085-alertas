@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T14:47+00:00",
+ "atualizado": "2026-10-27T15:48+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -7,6 +7,7 @@
   "LIS",
   "LON",
   "MAD",
+  "MAO",
   "REC",
   "RIO",
   "SAO",
@@ -30,7 +31,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 486,
+    "preco": 479,
     "ida": "2026-12-11",
     "volta": "",
     "paradas": 1,
@@ -134,6 +135,13 @@
     "paradas": 1,
     "visto": "2026-10-25T16:24:46Z"
    },
+   "ow": {
+    "preco": 2140,
+    "ida": "2026-10-27",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-27T15:36:44Z"
+   },
    "rastreada": true,
    "nome": "Florianópolis",
    "pista": false
@@ -174,7 +182,7 @@
   {
    "iata": "LIM",
    "ow": {
-    "preco": 1648,
+    "preco": 1624,
     "ida": "2026-11-10",
     "volta": "",
     "paradas": 1,
@@ -207,7 +215,7 @@
   {
    "iata": "BVB",
    "rt": {
-    "preco": 2040,
+    "preco": 2011,
     "ida": "2026-11-10",
     "volta": "2026-11-18",
     "paradas": 2,
@@ -220,7 +228,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2186,
+    "preco": 2156,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
@@ -228,7 +236,7 @@
    },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "PET",
@@ -337,7 +345,7 @@
   {
    "iata": "LIS",
    "rt": {
-    "preco": 3598,
+    "preco": 3547,
     "ida": "2027-03-13",
     "volta": "2027-03-25",
     "paradas": 0,

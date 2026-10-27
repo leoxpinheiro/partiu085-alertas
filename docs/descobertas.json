@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T12:46+00:00",
+ "atualizado": "2026-10-27T13:47+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -29,6 +29,19 @@
    "pista": true
   },
   {
+   "iata": "SSA",
+   "ow": {
+    "preco": 486,
+    "ida": "2026-12-11",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-27T13:31:50Z"
+   },
+   "rastreada": true,
+   "nome": "Salvador",
+   "pista": true
+  },
+  {
    "iata": "JDO",
    "ow": {
     "preco": 493,
@@ -52,19 +65,6 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": true
-  },
-  {
-   "iata": "SSA",
-   "ow": {
-    "preco": 632,
-    "ida": "2026-11-11",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-25T21:21:52Z"
-   },
-   "rastreada": true,
-   "nome": "Salvador",
    "pista": true
   },
   {
@@ -175,7 +175,7 @@
   {
    "iata": "LIM",
    "ow": {
-    "preco": 1646,
+    "preco": 1647,
     "ida": "2026-11-10",
     "volta": "",
     "paradas": 1,
@@ -208,7 +208,7 @@
   {
    "iata": "BVB",
    "rt": {
-    "preco": 2038,
+    "preco": 2040,
     "ida": "2026-11-10",
     "volta": "2026-11-18",
     "paradas": 2,
@@ -221,7 +221,7 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2185,
+    "preco": 2186,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
@@ -268,6 +268,19 @@
    },
    "rastreada": true,
    "nome": "Curitiba",
+   "pista": false
+  },
+  {
+   "iata": "CAY",
+   "ow": {
+    "preco": 2713,
+    "ida": "2026-11-20",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-26T17:33:26Z"
+   },
+   "rastreada": false,
+   "nome": "CAY",
    "pista": false
   },
   {
@@ -325,7 +338,7 @@
   {
    "iata": "LIS",
    "rt": {
-    "preco": 3595,
+    "preco": 3597,
     "ida": "2027-03-13",
     "volta": "2027-03-25",
     "paradas": 0,

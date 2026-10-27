@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T08:07+00:00",
+ "atualizado": "2026-10-27T09:07+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -173,13 +173,26 @@
    "pista": false
   },
   {
+   "iata": "LIM",
+   "ow": {
+    "preco": 1634,
+    "ida": "2026-11-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-27T00:39:14Z"
+   },
+   "rastreada": true,
+   "nome": "Lima",
+   "pista": false
+  },
+  {
    "iata": "RIO",
    "rt": {
-    "preco": 1626,
-    "ida": "2026-12-01",
-    "volta": "2026-12-29",
+    "preco": 1693,
+    "ida": "2026-12-14",
+    "volta": "2026-12-21",
     "paradas": 1,
-    "visto": "2026-10-23T19:20:10Z"
+    "visto": "2026-10-25T15:40:45Z"
    },
    "ow": {
     "preco": 747,
@@ -193,16 +206,16 @@
    "pista": true
   },
   {
-   "iata": "LIM",
-   "ow": {
-    "preco": 1634,
+   "iata": "BVB",
+   "rt": {
+    "preco": 2023,
     "ida": "2026-11-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-27T00:39:14Z"
+    "volta": "2026-11-18",
+    "paradas": 2,
+    "visto": "2026-10-27T08:36:14Z"
    },
-   "rastreada": true,
-   "nome": "Lima",
+   "rastreada": false,
+   "nome": "BVB",
    "pista": false
   },
   {
@@ -418,6 +431,19 @@
    },
    "rastreada": true,
    "nome": "Miami",
+   "pista": false
+  },
+  {
+   "iata": "BAK",
+   "rt": {
+    "preco": 7001,
+    "ida": "2027-06-01",
+    "volta": "2027-06-07",
+    "paradas": 2,
+    "visto": "2026-10-23T09:18:20Z"
+   },
+   "rastreada": false,
+   "nome": "BAK",
    "pista": false
   }
  ]

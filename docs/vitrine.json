@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-26T20:56-03:00",
+ "atualizado": "2026-10-26T21:58-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -378,26 +378,28 @@
   "BUE": {
    "nome": "Buenos Aires",
    "tipo": "internacional",
-   "rt": 3272.0,
-   "menor": 1318.0,
+   "rt": 2887.0,
+   "menor": null,
    "ida": "2026-12-04",
-   "volta": "2026-12-08",
+   "volta": "2026-12-09",
    "cia": "Gol",
-   "normal": 3288,
-   "d": 0.005,
-   "visto": "2026-10-26T05:13-03:00"
+   "normal": null,
+   "d": null,
+   "visto": "2026-10-26T20:56-03:00",
+   "reserva": "ida_volta"
   },
   "BOG": {
    "nome": "Bogotá",
    "tipo": "internacional",
-   "rt": 5488.0,
-   "menor": 2628.0,
-   "ida": "2026-11-15",
-   "volta": "2026-11-20",
-   "cia": "LATAM",
-   "normal": 5672,
-   "d": 0.032,
-   "visto": "2026-10-22T08:45-03:00"
+   "rt": 5157.0,
+   "menor": null,
+   "ida": "2026-11-08",
+   "volta": "2026-11-13",
+   "cia": "Gol",
+   "normal": null,
+   "d": null,
+   "visto": "2026-10-26T20:56-03:00",
+   "reserva": "ida_volta"
   },
   "CUN": {
    "nome": "Cancún",

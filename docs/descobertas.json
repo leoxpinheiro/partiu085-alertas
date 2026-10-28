@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-27T22:55+00:00",
+ "atualizado": "2026-10-27T23:55+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -15,19 +15,6 @@
  ],
  "blogs": [],
  "destinos": [
-  {
-   "iata": "REC",
-   "ow": {
-    "preco": 434,
-    "ida": "2026-11-24",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-25T11:42:00Z"
-   },
-   "rastreada": true,
-   "nome": "Recife",
-   "pista": true
-  },
   {
    "iata": "SSA",
    "ow": {
@@ -65,6 +52,26 @@
    },
    "rastreada": true,
    "nome": "Belém",
+   "pista": true
+  },
+  {
+   "iata": "REC",
+   "rt": {
+    "preco": 1062,
+    "ida": "2026-12-27",
+    "volta": "2027-01-03",
+    "paradas": 0,
+    "visto": "2026-10-27T23:33:59Z"
+   },
+   "ow": {
+    "preco": 434,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-25T11:42:00Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
    "pista": true
   },
   {
@@ -116,7 +123,7 @@
   {
    "iata": "SAO",
    "rt": {
-    "preco": 1275,
+    "preco": 1274,
     "ida": "2026-11-18",
     "volta": "2026-11-25",
     "paradas": 1,
@@ -156,7 +163,7 @@
     "visto": "2026-10-25T16:24:46Z"
    },
    "ow": {
-    "preco": 2450,
+    "preco": 2449,
     "ida": "2026-10-28",
     "volta": "",
     "paradas": 1,
@@ -193,13 +200,26 @@
    "pista": false
   },
   {
+   "iata": "CGR",
+   "ow": {
+    "preco": 1692,
+    "ida": "2027-01-04",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-27T23:52:29Z"
+   },
+   "rastreada": true,
+   "nome": "Campo Grande",
+   "pista": false
+  },
+  {
    "iata": "RIO",
    "rt": {
-    "preco": 1718,
-    "ida": "2027-01-09",
-    "volta": "2027-01-16",
-    "paradas": 1,
-    "visto": "2026-10-24T23:29:10Z"
+    "preco": 1737,
+    "ida": "2026-12-14",
+    "volta": "2026-12-21",
+    "paradas": 2,
+    "visto": "2026-10-27T21:01:33Z"
    },
    "ow": {
     "preco": 747,
@@ -215,7 +235,7 @@
   {
    "iata": "BVB",
    "rt": {
-    "preco": 2014,
+    "preco": 2013,
     "ida": "2026-11-10",
     "volta": "2026-11-18",
     "paradas": 2,
@@ -330,19 +350,6 @@
    "pista": false
   },
   {
-   "iata": "MAD",
-   "rt": {
-    "preco": 3480,
-    "ida": "2027-03-02",
-    "volta": "2027-03-11",
-    "paradas": 2,
-    "visto": "2026-10-24T23:17:02Z"
-   },
-   "rastreada": true,
-   "nome": "Madri",
-   "pista": true
-  },
-  {
    "iata": "LIS",
    "rt": {
     "preco": 3551,
@@ -360,6 +367,19 @@
    },
    "rastreada": true,
    "nome": "Lisboa",
+   "pista": true
+  },
+  {
+   "iata": "MAD",
+   "rt": {
+    "preco": 3818,
+    "ida": "2027-03-02",
+    "volta": "2027-03-11",
+    "paradas": 1,
+    "visto": "2026-10-27T23:12:25Z"
+   },
+   "rastreada": true,
+   "nome": "Madri",
    "pista": true
   },
   {

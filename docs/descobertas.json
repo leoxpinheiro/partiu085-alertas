@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-10-28T14:20+00:00",
+ "atualizado": "2026-10-28T15:22+00:00",
  "pistas": [
   "BEL",
   "GYN",
+  "IGU",
   "LIS",
   "LON",
   "MAD",
@@ -41,9 +42,22 @@
    "pista": true
   },
   {
+   "iata": "IGU",
+   "ow": {
+    "preco": 668,
+    "ida": "2027-03-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-28T15:00:58Z"
+   },
+   "rastreada": true,
+   "nome": "Foz do Iguaçu",
+   "pista": true
+  },
+  {
    "iata": "THE",
    "ow": {
-    "preco": 717,
+    "preco": 715,
     "ida": "2026-11-12",
     "volta": "",
     "paradas": 1,
@@ -149,7 +163,7 @@
   {
    "iata": "SCL",
    "ow": {
-    "preco": 1388,
+    "preco": 1384,
     "ida": "2026-12-29",
     "volta": "",
     "paradas": 2,
@@ -157,19 +171,6 @@
    },
    "rastreada": true,
    "nome": "Santiago",
-   "pista": false
-  },
-  {
-   "iata": "IGU",
-   "rt": {
-    "preco": 1618,
-    "ida": "2026-11-19",
-    "volta": "2026-11-23",
-    "paradas": 1,
-    "visto": "2026-10-24T15:16:42Z"
-   },
-   "rastreada": true,
-   "nome": "Foz do Iguaçu",
    "pista": false
   },
   {
@@ -221,7 +222,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 1948,
+    "preco": 1943,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,

@@ -40,7 +40,8 @@ const iso = d => d.toISOString().slice(0, 16) + '-03:00';
   const conteudos = (await pg.evaluate(() => postsConteudo().map(p => ({ id: p.id, titulo: p.titulo, valido: p.valido || '', data: p.data || '', semFoto: /CAPA SEM FOTO/.test(p.porque || ''), rev: !!(CONTEUDO.find(c => 'ct-' + c.id === p.id) || {}).revisar, n: p.telas.length })))).filter(p => !usados.has(p.id) && !p.semFoto && !p.rev && (!permitido || permitido.has(p.id)));
   // carrosséis prontos (🖼️ Meu carrossel, imagens já desenhadas) entram primeiro, se estiverem na lista
   const prontos = (ler('carrosseis.json', []) || []).filter(c => c.estado === 'aprovado' && c.telas && c.telas.length && !usados.has(c.id) && (!permitido || permitido.has(c.id)));
-  const videos = vp.filter(v => v.arq && !usados.has('vp-' + v.id) && (permitido ? permitido.has(v.id) : v.grupo === 'Dicas'));
+  const recente = v => !v.data || (Date.now() - Date.parse(v.data + 'T12:00:00-03:00')) < 10 * 864e5; // vídeo velho não volta
+  const videos = vp.filter(v => v.arq && !usados.has('vp-' + v.id) && recente(v) && (permitido ? permitido.has(v.id) : v.grupo === 'Dicas'));
   console.log(`vagas: ${vagas.join(', ')} · carrosséis livres: ${conteudos.length} · vídeos de dica livres: ${videos.length}`);
   const base = Date.now().toString(36), novos = []; let k = 0, vez = 0;
   for (const q of vagas) {

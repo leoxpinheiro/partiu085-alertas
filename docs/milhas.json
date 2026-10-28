@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-28T17:55-03:00",
+ "atualizado": "2026-10-28T18:55-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -76,25 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 19,
+   "itens": 25,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 27,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 12,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 59,
+   "itens": 41,
    "ok": true
   },
   {
@@ -106,7 +94,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 23,
+   "itens": 60,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 12,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 49,
    "ok": true
   },
   {
@@ -118,11 +118,35 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 18,
+   "itens": 26,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "Alerta PPV! LATAM Pass oferece voos para destinos colombianos a partir de 31 mil milhas",
+   "resumo": "Que tal conhecer a Colômbia usando milhas LATAM Pass? No Alerta de Passagens PPV de hoje, nossa equipe encontrou oportunidades para viajar a diferentes destinos colombianos, com emissões a partir de 31 mil milhas LATAM Pass + taxas. Seja para explorar a cultura e a gastronomia lo",
+   "link": "https://pontospravoar.com/alerta-ppv-latam-pass-oferece-voos-para-destinos-colombianos-a-partir-de-31-mil-milhas/",
+   "fonte": "Pontos pra Voar",
+   "publicado": "2026-10-28T18:00-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": 31000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-1be59d6c01",
+   "fontes": [
+    "Pontos pra Voar"
+   ],
+   "encontrado": "2026-10-28T18:55-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! LATAM Pass oferece voos para destinos colombianos a partir de 31 mil milhas\n🎟️ A partir de *31.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "compra",
    "titulo": "Últimas horas para receber até 376.000 pontos ao assinar o Clube Livelo Premium – Milheiro a partir de R$ 24,94",
@@ -241,6 +265,28 @@
    ],
    "encontrado": "2026-10-28T15:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Smiles tem passagens para Santiago a partir de 30 mil milhas\n🎟️ A partir de *30.000 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "Resgate ingressos para o GP São Paulo de Fórmula 1 com pontos Revolut",
+   "resumo": "Resgate ingressos para o GP São Paulo de Fórmula 1 com pontos Revolut Melhores Cartões",
+   "link": "https://news.google.com/rss/articles/CBMidEFVX3lxTE96ZEJwRkV6TEQwbDNXZ3JaMGNJeWVyZExnVzJ3eUhYUjJQY1pYM29PcXpXVHpwWmpGTDE4R2hZcmY4QXdKeEtnT3ktai1zZGdyVzdyQzltOTV0N0dncVRKbzNaYjlQLW9LUW1aV0E5Njdld3hk?oc=5",
+   "fonte": "Melhores Cartões",
+   "publicado": "2026-10-28T14:36-03:00",
+   "programas": [],
+   "de": null,
+   "para": null,
+   "pct": null,
+   "milhas": null,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-9b6d0df402",
+   "fontes": [
+    "Melhores Cartões"
+   ],
+   "encontrado": "2026-10-28T18:55-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Resgate ingressos para o GP São Paulo de Fórmula 1 com pontos Revolut\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -4839,79 +4885,6 @@
    ],
    "encontrado": "2026-10-07T20:18-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Azul oferece trecho para Curaçao partir de 74 mil pontos ou R$ 984 + taxas\n🎟️ A partir de *74.000 milhas* · Azul Fidelidade\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "compra",
-   "titulo": "Só hoje! Latam Pass tem passagens aéreas com milhas com até 30% de desconto",
-   "resumo": "Só hoje! Latam Pass tem passagens aéreas com milhas com até 30% de desconto Melhores Destinos",
-   "link": "https://news.google.com/rss/articles/CBMif0FVX3lxTE5SZS1CbktLa28xRm1rMXJ5aWVCT3hnSnAyRnhBOTdLbk1SUkNNYmNraTg0LWYtajVhV2RfRVBhb1d1YTZYWm9ZZ3ZqckNSNXVZTmFRWFV2Q3FBT1otOURUUmZVTmZFMTRacGdpc0RJNE9pMV9WM1hQcWVNV1RuLW8?oc=5",
-   "fonte": "Melhores Destinos",
-   "publicado": "2026-10-07T18:20-03:00",
-   "programas": [
-    "LATAM Pass"
-   ],
-   "de": null,
-   "para": "LATAM Pass",
-   "pct": 30,
-   "milhas": null,
-   "validade": "2026-10-07",
-   "fortaleza": false,
-   "id": "mi-0748ad8756",
-   "fontes": [
-    "Melhores Destinos"
-   ],
-   "encontrado": "2026-10-08T22:34-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar LATAM Pass\n💸 Só hoje! Latam Pass tem passagens aéreas com milhas com até 30% de desconto\n🔥 Até *30%* de vantagem\n⏰ Válido até 07/10\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "passagem",
-   "titulo": "Alerta PPV! LATAM Pass tem voos para Lisboa a partir de 50 mil milhas + taxas",
-   "resumo": "Lisboa por 50 mil milhas? No alerta de passagens PPV de hoje, nossa equipe encontrou oportunidades para cruzar o Atlântico utilizando o LATAM Pass, com emissões para a capital portuguesa a partir de 50 mil milhas + taxas. Confira os trechos e as datas disponíveis e aproveite para",
-   "link": "https://pontospravoar.com/alerta-ppv-latam-pass-voos-lisboa-50-mil-milhas-taxas/",
-   "fonte": "Pontos pra Voar",
-   "publicado": "2026-10-07T18:01-03:00",
-   "programas": [
-    "LATAM Pass"
-   ],
-   "de": null,
-   "para": "LATAM Pass",
-   "pct": null,
-   "milhas": 50000,
-   "validade": null,
-   "fortaleza": false,
-   "id": "mi-1a17fee2e9",
-   "fontes": [
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-07T18:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! LATAM Pass tem voos para Lisboa a partir de 50 mil milhas + taxas\n🎟️ A partir de *50.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "passagem",
-   "titulo": "Hora de viajar! Trecho para Buenos Aires a partir de 32 mil milhas Smiles + taxas",
-   "resumo": "Alerta direto dos Grupos do PP no WhatsApp! 🚨 Encontramos disponibilidade de bilhetes ida e volta entre Rio de Janeiro (GIG) e Buenos Aires (EZE). Os voos são operados pela GOL e a emissão pode ser feita a partir de 32.500 milhas Smiles + taxas o trecho. O post Hora de viajar! Tr",
-   "link": "https://passageirodeprimeira.com/trecho-para-buenos-aires-a-partir-de-32-mil-milhas-smiles-taxas/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-07T18:00-03:00",
-   "programas": [
-    "Smiles"
-   ],
-   "de": null,
-   "para": "Smiles",
-   "pct": null,
-   "milhas": 32000,
-   "validade": null,
-   "fortaleza": false,
-   "id": "mi-9727e299b4",
-   "fontes": [
-    "Melhores Destinos",
-    "Passageiro de Primeira"
-   ],
-   "encontrado": "2026-10-07T18:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Hora de viajar! Trecho para Buenos Aires a partir de 32 mil milhas Smiles + taxas\n🎟️ A partir de *32.000 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

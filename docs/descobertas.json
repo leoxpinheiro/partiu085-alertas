@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-28T00:55+00:00",
+ "atualizado": "2026-10-28T01:56+00:00",
  "pistas": [
   "BEL",
   "GYN",
@@ -11,7 +11,8 @@
   "REC",
   "RIO",
   "SAO",
-  "SSA"
+  "SSA",
+  "THE"
  ],
  "blogs": [],
  "destinos": [
@@ -52,6 +53,19 @@
    },
    "rastreada": true,
    "nome": "Belém",
+   "pista": true
+  },
+  {
+   "iata": "THE",
+   "ow": {
+    "preco": 717,
+    "ida": "2026-11-12",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-28T01:09:59Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
    "pista": true
   },
   {
@@ -128,19 +142,6 @@
    "pista": true
   },
   {
-   "iata": "SCL",
-   "ow": {
-    "preco": 1297,
-    "ida": "2026-12-29",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-25T00:05:10Z"
-   },
-   "rastreada": true,
-   "nome": "Santiago",
-   "pista": false
-  },
-  {
    "iata": "FLN",
    "rt": {
     "preco": 1307,
@@ -158,6 +159,19 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
+   "pista": false
+  },
+  {
+   "iata": "SCL",
+   "ow": {
+    "preco": 1389,
+    "ida": "2026-12-29",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-10-28T01:11:25Z"
+   },
+   "rastreada": true,
+   "nome": "Santiago",
    "pista": false
   },
   {
@@ -437,11 +451,11 @@
   {
    "iata": "MIA",
    "rt": {
-    "preco": 5774,
-    "ida": "2027-02-06",
-    "volta": "2027-02-14",
-    "paradas": 3,
-    "visto": "2026-10-24T01:10:34Z"
+    "preco": 6872,
+    "ida": "2026-12-14",
+    "volta": "2026-12-19",
+    "paradas": 2,
+    "visto": "2026-10-27T22:09:58Z"
    },
    "rastreada": true,
    "nome": "Miami",

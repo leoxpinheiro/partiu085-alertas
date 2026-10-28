@@ -453,6 +453,38 @@ def imagem_alerta(a: dict) -> bytes | None:
         return None
 
 
+def story_oferta(a: dict, aj: dict) -> bool:
+    """Oferta boa de verdade vira story no Instagram sozinha (máx. por dia em ajustes, só de 8h às 22h)."""
+    try:
+        if not aj.get("story_ofertas", True):
+            return False
+        if (a.get("desconto") or 0) < float(aj.get("story_desconto_min", 0.25)):
+            return False
+        h = agora().hour
+        if not (8 <= h < 22):
+            return False
+        fila = ler_json(DOCS / "ig_fila.json", [])
+        hoje = agora().date().isoformat()
+        if sum(1 for x in fila if x.get("origem", "").startswith("story-oferta") and x.get("quando", "").startswith(hoje)) >= int(aj.get("story_max_dia", 2)):
+            return False
+        import imagem
+        card = imagem.card_alerta(a)
+        st = imagem.story_de(card, "ACHADO DO RADAR", aj.get("story_rodape", "Siga @partiu.085 pra ver primeiro"))
+        nome = f"ig/story-{a['id'][:60]}.jpg".replace(":", "")
+        (DOCS / nome).parent.mkdir(parents=True, exist_ok=True)
+        (DOCS / nome).write_bytes(st)
+        q = agora().isoformat(timespec="minutes")
+        fila.append({"id": f"st-{int(time.time())}-{a['destino']}", "titulo": f"Story · achado {a.get('destino_nome', '')}", "tipo": "story",
+                     "imagens": [nome], "legenda": "", "quando": q, "aprovado": True, "auto_aprovado": True, "tentativa": 0,
+                     "criado": q, "origem": f"story-oferta-{a['id']}"})
+        salvar_json(DOCS / "ig_fila.json", fila)
+        log(f"  📲 story agendado: {a.get('destino_nome')}")
+        return True
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! story da oferta: {type(e).__name__}: {e}")
+        return False
+
+
 def normal_rt(iata: str, hist: dict | None = None) -> float | None:
     """Preço normal de ida e volta da rota: mediana dos menores ida+volta de cada dia já varrido."""
     h = hist if hist is not None else _HIST_TETO
@@ -929,6 +961,7 @@ def rodada() -> None:
             log(f"  ! milhas {r['iata']}: {e}")
         a["texto"] = montar_texto(a, aj)
         a["telegram"] = postar_telegram(a["texto"], aj, foto=imagem_alerta(a))
+        a["story"] = story_oferta(a, aj)
         novos.append(a)
         enviados.append({"rota": a["rota"], "preco": a["preco"], "quando": agora().isoformat()})
         log(f"  ✓ {a['rota']} {brl(a['preco'])}/trecho (-{a['desconto']:.0%}) "

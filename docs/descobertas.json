@@ -1,7 +1,8 @@
 {
- "atualizado": "2026-10-28T17:23+00:00",
+ "atualizado": "2026-10-28T18:21+00:00",
  "pistas": [
   "BEL",
+  "FLN",
   "GYN",
   "IGU",
   "LIS",
@@ -44,7 +45,7 @@
   {
    "iata": "IGU",
    "ow": {
-    "preco": 671,
+    "preco": 672,
     "ida": "2027-03-19",
     "volta": "",
     "paradas": 1,
@@ -57,7 +58,7 @@
   {
    "iata": "THE",
    "ow": {
-    "preco": 718,
+    "preco": 720,
     "ida": "2026-11-12",
     "volta": "",
     "paradas": 1,
@@ -121,6 +122,26 @@
    "pista": false
   },
   {
+   "iata": "FLN",
+   "rt": {
+    "preco": 1258,
+    "ida": "2027-09-15",
+    "volta": "2027-09-19",
+    "paradas": 1,
+    "visto": "2026-10-28T17:58:44Z"
+   },
+   "ow": {
+    "preco": 2449,
+    "ida": "2026-10-28",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-27T20:10:06Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
+   "pista": true
+  },
+  {
    "iata": "SAO",
    "rt": {
     "preco": 1274,
@@ -141,29 +162,9 @@
    "pista": true
   },
   {
-   "iata": "FLN",
-   "rt": {
-    "preco": 1307,
-    "ida": "2027-09-15",
-    "volta": "2027-09-19",
-    "paradas": 1,
-    "visto": "2026-10-25T16:24:46Z"
-   },
-   "ow": {
-    "preco": 2449,
-    "ida": "2026-10-28",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-27T20:10:06Z"
-   },
-   "rastreada": true,
-   "nome": "Florianópolis",
-   "pista": false
-  },
-  {
    "iata": "SCL",
    "ow": {
-    "preco": 1391,
+    "preco": 1394,
     "ida": "2026-12-29",
     "volta": "",
     "paradas": 2,
@@ -222,7 +223,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 1953,
+    "preco": 1956,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,

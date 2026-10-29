@@ -1,21 +1,5 @@
 [
  {
-  "quando": "2026-10-07T06:23-03:00",
-  "rotas": [
-   "MIA",
-   "ORL",
-   "NYC",
-   "BUE",
-   "SCL",
-   "LIM"
-  ],
-  "rotas_com_dados": 3,
-  "candidatos": 1,
-  "alertas": 1,
-  "manual": false,
-  "segundos": 799
- },
- {
   "quando": "2026-10-07T09:09-03:00",
   "rotas": [
    "BOG",
@@ -12394,6 +12378,36 @@
   "segundos": 1380,
   "consultas": 3094,
   "erros": 179,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-29T09:49-03:00",
+  "rotas": [
+   "AJU",
+   "SLZ",
+   "FEN",
+   "ORL",
+   "SCL",
+   "PUJ",
+   "MDE",
+   "NAT",
+   "MIL",
+   "BCN",
+   "MCZ",
+   "LIM",
+   "BOG",
+   "CTG",
+   "SDQ",
+   "PTY",
+   "CGB"
+  ],
+  "rotas_com_dados": 11,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1278,
+  "consultas": 1916,
+  "erros": 528,
   "parou_por_tempo": false
  }
 ]

@@ -1,19 +1,5 @@
 [
  {
-  "quando": "2026-10-06T16:11-03:00",
-  "rotas": [
-   "REC",
-   "NAT",
-   "PAR",
-   "ROM"
-  ],
-  "rotas_com_dados": 4,
-  "candidatos": 2,
-  "alertas": 2,
-  "manual": true,
-  "segundos": 218
- },
- {
   "quando": "2026-10-06T21:14-03:00",
   "rotas": [
    "SAO",
@@ -12343,6 +12329,36 @@
   "segundos": 1136,
   "consultas": 3094,
   "erros": 107,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-29T03:20-03:00",
+  "rotas": [
+   "BPS",
+   "THE",
+   "CWB",
+   "AMS",
+   "MIA",
+   "MAO",
+   "FLN",
+   "LIS",
+   "VIX",
+   "OPO",
+   "BSB",
+   "MAD",
+   "BHZ",
+   "ROM",
+   "NVT",
+   "BUE",
+   "VCP"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1352,
+  "consultas": 3094,
+  "erros": 269,
   "parou_por_tempo": false
  }
 ]

@@ -1,21 +1,5 @@
 [
  {
-  "quando": "2026-10-08T01:52-03:00",
-  "rotas": [
-   "CTG",
-   "PTY",
-   "CUN",
-   "MVD",
-   "SID",
-   "SAO"
-  ],
-  "rotas_com_dados": 5,
-  "candidatos": 1,
-  "alertas": 1,
-  "manual": false,
-  "segundos": 460
- },
- {
   "quando": "2026-10-08T02:19-03:00",
   "rotas": [
    "RIO",
@@ -12506,6 +12490,36 @@
   "segundos": 1565,
   "consultas": 3094,
   "erros": 397,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-29T19:09-03:00",
+  "rotas": [
+   "OPO",
+   "BSB",
+   "MAD",
+   "BHZ",
+   "ROM",
+   "NVT",
+   "PMW",
+   "PAR",
+   "SAO",
+   "RIO",
+   "SSA",
+   "REC",
+   "BEL",
+   "GYN",
+   "BUE",
+   "VCP",
+   "IGU"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1190,
+  "consultas": 3094,
+  "erros": 116,
   "parou_por_tempo": false
  }
 ]

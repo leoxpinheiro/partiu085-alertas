@@ -1,21 +1,5 @@
 [
  {
-  "quando": "2026-10-07T20:18-03:00",
-  "rotas": [
-   "MAD",
-   "PAR",
-   "ROM",
-   "LON",
-   "AMS",
-   "MIA"
-  ],
-  "rotas_com_dados": 6,
-  "candidatos": 2,
-  "alertas": 2,
-  "manual": false,
-  "segundos": 1599
- },
- {
   "quando": "2026-10-07T22:58-03:00",
   "rotas": [
    "ORL",
@@ -12478,6 +12462,36 @@
   "segundos": 1615,
   "consultas": 3094,
   "erros": 360,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-29T16:47-03:00",
+  "rotas": [
+   "FRA",
+   "BHZ",
+   "ROM",
+   "NVT",
+   "PMW",
+   "PAR",
+   "SAO",
+   "CGR",
+   "RIO",
+   "SSA",
+   "REC",
+   "BEL",
+   "GYN",
+   "LON",
+   "JPA",
+   "IGU",
+   "JDO"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1117,
+  "consultas": 3094,
+  "erros": 123,
   "parou_por_tempo": false
  }
 ]

@@ -1,13 +1,13 @@
 {
- "atualizado": "2026-10-29T14:48+00:00",
+ "atualizado": "2026-10-29T15:58+00:00",
  "pistas": [
   "AMS",
   "BEL",
+  "BHZ",
   "FLN",
   "GYN",
   "IGU",
   "LIS",
-  "LON",
   "MAD",
   "REC",
   "RIO",
@@ -41,6 +41,19 @@
    },
    "rastreada": true,
    "nome": "Teresina",
+   "pista": true
+  },
+  {
+   "iata": "BHZ",
+   "ow": {
+    "preco": 775,
+    "ida": "2026-11-28",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-29T15:25:53Z"
+   },
+   "rastreada": true,
+   "nome": "Belo Horizonte",
    "pista": true
   },
   {
@@ -261,19 +274,6 @@
    "pista": false
   },
   {
-   "iata": "LON",
-   "ow": {
-    "preco": 2374,
-    "ida": "2026-11-29",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-26T22:04:08Z"
-   },
-   "rastreada": true,
-   "nome": "Londres",
-   "pista": true
-  },
-  {
    "iata": "CAY",
    "ow": {
     "preco": 2713,
@@ -328,7 +328,7 @@
   {
    "iata": "AMS",
    "ow": {
-    "preco": 3427,
+    "preco": 3426,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 1,
@@ -370,19 +370,6 @@
    "rastreada": true,
    "nome": "Madri",
    "pista": true
-  },
-  {
-   "iata": "CPT",
-   "ow": {
-    "preco": 4660,
-    "ida": "2026-11-28",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-25T23:23:30Z"
-   },
-   "rastreada": false,
-   "nome": "CPT",
-   "pista": false
   },
   {
    "iata": "MOW",

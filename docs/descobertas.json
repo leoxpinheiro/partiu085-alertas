@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-29T13:38+00:00",
+ "atualizado": "2026-10-29T14:48+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -9,7 +9,6 @@
   "LIS",
   "LON",
   "MAD",
-  "MAO",
   "REC",
   "RIO",
   "SAO",
@@ -32,19 +31,6 @@
    "pista": true
   },
   {
-   "iata": "BEL",
-   "ow": {
-    "preco": 669,
-    "ida": "2027-02-14",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-25T14:36:37Z"
-   },
-   "rastreada": true,
-   "nome": "Belém",
-   "pista": true
-  },
-  {
    "iata": "THE",
    "ow": {
     "preco": 717,
@@ -55,6 +41,19 @@
    },
    "rastreada": true,
    "nome": "Teresina",
+   "pista": true
+  },
+  {
+   "iata": "BEL",
+   "ow": {
+    "preco": 809,
+    "ida": "2027-01-25",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-10-28T18:18:39Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
    "pista": true
   },
   {
@@ -159,7 +158,7 @@
   {
    "iata": "IGU",
    "rt": {
-    "preco": 1422,
+    "preco": 1423,
     "ida": "2027-03-13",
     "volta": "2027-03-20",
     "paradas": 1,
@@ -259,7 +258,7 @@
    },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "LON",
@@ -329,7 +328,7 @@
   {
    "iata": "AMS",
    "ow": {
-    "preco": 3426,
+    "preco": 3427,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 1,
@@ -401,7 +400,7 @@
   {
    "iata": "ORL",
    "rt": {
-    "preco": 6507,
+    "preco": 6509,
     "ida": "2027-01-16",
     "volta": "2027-02-06",
     "paradas": 3,

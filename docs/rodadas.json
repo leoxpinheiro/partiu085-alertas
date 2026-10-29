@@ -1,21 +1,5 @@
 [
  {
-  "quando": "2026-10-07T10:20-03:00",
-  "rotas": [
-   "SAO",
-   "RIO",
-   "BSB",
-   "BHZ",
-   "SSA",
-   "REC"
-  ],
-  "rotas_com_dados": 6,
-  "candidatos": 2,
-  "alertas": 2,
-  "manual": false,
-  "segundos": 1641
- },
- {
   "quando": "2026-10-07T13:06-03:00",
   "rotas": [
    "NAT",
@@ -12422,6 +12406,36 @@
   "segundos": 1704,
   "consultas": 3094,
   "erros": 461,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-29T12:17-03:00",
+  "rotas": [
+   "NVT",
+   "PMW",
+   "PAR",
+   "SAO",
+   "RIO",
+   "SSA",
+   "REC",
+   "BEL",
+   "GYN",
+   "IGU",
+   "JDO",
+   "AJU",
+   "POA",
+   "SLZ",
+   "FRA",
+   "NAT",
+   "CGB"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1719,
+  "consultas": 3094,
+  "erros": 288,
   "parou_por_tempo": false
  }
 ]

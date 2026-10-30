@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-30T15:50+00:00",
+ "atualizado": "2026-10-30T17:00+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -10,6 +10,7 @@
   "LIS",
   "MAD",
   "MAO",
+  "MIA",
   "REC",
   "SAO",
   "SSA",
@@ -19,7 +20,7 @@
   {
    "iata": "SAO",
    "fonte": "Google Notícias",
-   "titulo": "🇪🇺 Europa 2x1! Passagens aéreas para 2 destinos na Europa a partir de R$ 4.546 saindo de Fortaleza, São Paulo e mais cidades! - Melhores Destinos"
+   "titulo": "Europa de Executiva 🥂 Passagens aéreas a partir de R$ 9.212 ida e volta, saindo de Fortaleza, São Paulo e mais cidades! - Melhores Destinos"
   }
  ],
  "destinos": [
@@ -39,7 +40,7 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 627,
+    "preco": 626,
     "ida": "2026-11-25",
     "volta": "",
     "paradas": 1,
@@ -124,7 +125,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1248,
+    "preco": 1246,
     "ida": "2026-12-12",
     "volta": "2026-12-15",
     "paradas": 2,
@@ -262,14 +263,14 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2320,
+    "preco": 2316,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
     "visto": "2026-10-30T09:21:57Z"
    },
    "ow": {
-    "preco": 815,
+    "preco": 813,
     "ida": "2027-01-21",
     "volta": "",
     "paradas": 1,
@@ -393,7 +394,7 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4193,
+    "preco": 4185,
     "ida": "2027-01-20",
     "volta": "",
     "paradas": 3,
@@ -404,9 +405,22 @@
    "pista": false
   },
   {
+   "iata": "MIA",
+   "rt": {
+    "preco": 4683,
+    "ida": "2026-11-10",
+    "volta": "2026-11-17",
+    "paradas": 2,
+    "visto": "2026-10-30T16:54:34Z"
+   },
+   "rastreada": true,
+   "nome": "Miami",
+   "pista": true
+  },
+  {
    "iata": "VIE",
    "ow": {
-    "preco": 4693,
+    "preco": 4684,
     "ida": "2026-12-20",
     "volta": "",
     "paradas": 2,
@@ -427,19 +441,6 @@
    },
    "rastreada": true,
    "nome": "Orlando",
-   "pista": false
-  },
-  {
-   "iata": "MIA",
-   "rt": {
-    "preco": 6872,
-    "ida": "2026-12-14",
-    "volta": "2026-12-19",
-    "paradas": 2,
-    "visto": "2026-10-27T22:09:58Z"
-   },
-   "rastreada": true,
-   "nome": "Miami",
    "pista": false
   }
  ]

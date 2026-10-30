@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-30T10:38+00:00",
+ "atualizado": "2026-10-30T11:49+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -7,6 +7,7 @@
   "IGU",
   "LIS",
   "MAD",
+  "MAO",
   "REC",
   "SAO",
   "SSA",
@@ -246,15 +247,22 @@
   {
    "iata": "MAO",
    "rt": {
-    "preco": 2300,
+    "preco": 2301,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
     "visto": "2026-10-30T09:21:57Z"
    },
+   "ow": {
+    "preco": 808,
+    "ida": "2027-01-21",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-30T11:17:43Z"
+   },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "PTY",
@@ -383,11 +391,11 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4045,
-    "ida": "2027-01-21",
+    "preco": 4157,
+    "ida": "2027-01-20",
     "volta": "",
     "paradas": 3,
-    "visto": "2026-10-30T00:46:20Z"
+    "visto": "2026-10-30T00:45:20Z"
    },
    "rastreada": false,
    "nome": "MOW",
@@ -396,7 +404,7 @@
   {
    "iata": "VIE",
    "ow": {
-    "preco": 4652,
+    "preco": 4653,
     "ida": "2026-12-20",
     "volta": "",
     "paradas": 2,

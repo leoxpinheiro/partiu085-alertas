@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-30T22:05+00:00",
+ "atualizado": "2026-10-30T23:11+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -40,7 +40,7 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 629,
+    "preco": 628,
     "ida": "2026-11-25",
     "volta": "",
     "paradas": 1,
@@ -65,6 +65,13 @@
   },
   {
    "iata": "BEL",
+   "rt": {
+    "preco": 745,
+    "ida": "2026-12-04",
+    "volta": "2026-12-07",
+    "paradas": 0,
+    "visto": "2026-10-30T22:28:46Z"
+   },
    "ow": {
     "preco": 809,
     "ida": "2027-01-25",
@@ -125,7 +132,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1252,
+    "preco": 1250,
     "ida": "2026-12-12",
     "volta": "2026-12-15",
     "paradas": 2,
@@ -171,7 +178,7 @@
   {
    "iata": "ATM",
    "ow": {
-    "preco": 1340,
+    "preco": 1337,
     "ida": "2027-08-13",
     "volta": "",
     "paradas": 1,
@@ -237,7 +244,7 @@
     "visto": "2026-10-27T21:01:33Z"
    },
    "ow": {
-    "preco": 934,
+    "preco": 932,
     "ida": "2026-12-02",
     "volta": "",
     "paradas": 1,
@@ -274,16 +281,29 @@
    "pista": false
   },
   {
+   "iata": "VIX",
+   "rt": {
+    "preco": 2160,
+    "ida": "2026-12-23",
+    "volta": "2027-01-03",
+    "paradas": 1,
+    "visto": "2026-10-30T23:03:01Z"
+   },
+   "rastreada": true,
+   "nome": "Vitória",
+   "pista": false
+  },
+  {
    "iata": "MAO",
    "rt": {
-    "preco": 2327,
+    "preco": 2323,
     "ida": "2026-11-20",
     "volta": "2026-11-26",
     "paradas": 1,
     "visto": "2026-10-30T09:21:57Z"
    },
    "ow": {
-    "preco": 818,
+    "preco": 816,
     "ida": "2027-01-21",
     "volta": "",
     "paradas": 1,
@@ -355,11 +375,11 @@
     "visto": "2026-10-27T12:46:14Z"
    },
    "ow": {
-    "preco": 2839,
-    "ida": "2027-05-21",
+    "preco": 1924,
+    "ida": "2026-11-02",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-27T01:43:31Z"
+    "visto": "2026-10-30T22:28:02Z"
    },
    "rastreada": true,
    "nome": "Lisboa",
@@ -381,7 +401,7 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4205,
+    "preco": 4197,
     "ida": "2027-01-20",
     "volta": "",
     "paradas": 3,
@@ -394,7 +414,7 @@
   {
    "iata": "MIA",
    "rt": {
-    "preco": 4706,
+    "preco": 4696,
     "ida": "2026-11-10",
     "volta": "2026-11-17",
     "paradas": 2,
@@ -407,7 +427,7 @@
   {
    "iata": "VIE",
    "ow": {
-    "preco": 4707,
+    "preco": 4697,
     "ida": "2026-12-20",
     "volta": "",
     "paradas": 2,
@@ -415,19 +435,6 @@
    },
    "rastreada": false,
    "nome": "VIE",
-   "pista": false
-  },
-  {
-   "iata": "CAN",
-   "ow": {
-    "preco": 5212,
-    "ida": "2026-11-02",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-10-29T16:33:31Z"
-   },
-   "rastreada": false,
-   "nome": "CAN",
    "pista": false
   },
   {

@@ -1,16 +1,5 @@
 [
  {
-  "quando": "2026-10-09T11:08-03:00",
-  "rotas": [
-   "REC"
-  ],
-  "rotas_com_dados": 1,
-  "candidatos": 0,
-  "alertas": 0,
-  "manual": true,
-  "segundos": 344
- },
- {
   "quando": "2026-10-09T12:37-03:00",
   "rotas": [
    "SAO",
@@ -12659,6 +12648,36 @@
   "segundos": 1279,
   "consultas": 3094,
   "erros": 256,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-30T08:04-03:00",
+  "rotas": [
+   "FRA",
+   "LON",
+   "JPA",
+   "BEL",
+   "GYN",
+   "IGU",
+   "JDO",
+   "CGR",
+   "AJU",
+   "SLZ",
+   "NAT",
+   "CGB",
+   "BPS",
+   "THE",
+   "CWB",
+   "AMS",
+   "MAO"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1518,
+  "consultas": 3094,
+  "erros": 313,
   "parou_por_tempo": false
  }
 ]

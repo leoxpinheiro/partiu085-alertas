@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-30T06:50-03:00",
+ "atualizado": "2026-10-30T08:06-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Read timed out. (read timeout=25)"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -76,31 +76,31 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
+   "itens": 16,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 26,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 20,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 31,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
    "itens": 21,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 27,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 18,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 60,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 17,
    "ok": true
   },
   {
@@ -112,13 +112,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 24,
+   "itens": 19,
    "ok": true
   }
  ],
@@ -509,7 +509,8 @@
    "fontes": [
     "Melhores Cartões",
     "Mobills",
-    "Passageiro de Primeira"
+    "Passageiro de Primeira",
+    "Pontos pra Voar"
    ],
    "encontrado": "2026-10-29T21:06-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Smiles\n🎁 Até *70% de bônus* na transferência\n⏰ Válido até 29/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",

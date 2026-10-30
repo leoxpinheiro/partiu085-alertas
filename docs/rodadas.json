@@ -1,24 +1,5 @@
 [
  {
-  "quando": "2026-10-09T18:10-03:00",
-  "rotas": [
-   "OPO",
-   "VCP",
-   "AMS",
-   "ROM",
-   "LON",
-   "CGR",
-   "NVT",
-   "BCN",
-   "MIL"
-  ],
-  "rotas_com_dados": 9,
-  "candidatos": 1,
-  "alertas": 1,
-  "manual": false,
-  "segundos": 1935
- },
- {
   "quando": "2026-10-09T19:56-03:00",
   "rotas": [
    "REC",
@@ -12711,6 +12692,36 @@
   "segundos": 2200,
   "consultas": 3094,
   "erros": 588,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-30T12:00-03:00",
+  "rotas": [
+   "ROM",
+   "NVT",
+   "PMW",
+   "PAR",
+   "SAO",
+   "RIO",
+   "SSA",
+   "REC",
+   "BEL",
+   "GYN",
+   "IGU",
+   "JDO",
+   "AJU",
+   "NAT",
+   "SLZ",
+   "MIL",
+   "BCN"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1181,
+  "consultas": 3094,
+  "erros": 84,
   "parou_por_tempo": false
  }
 ]

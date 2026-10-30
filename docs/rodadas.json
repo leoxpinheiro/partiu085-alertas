@@ -1,24 +1,5 @@
 [
  {
-  "quando": "2026-10-08T22:34-03:00",
-  "rotas": [
-   "CWB",
-   "MCZ",
-   "AJU",
-   "LIS",
-   "GYN",
-   "JDO",
-   "VIX",
-   "FLN",
-   "MIA"
-  ],
-  "rotas_com_dados": 9,
-  "candidatos": 0,
-  "alertas": 0,
-  "manual": false,
-  "segundos": 1953
- },
- {
   "quando": "2026-10-09T00:30-03:00",
   "rotas": [
    "PAR",
@@ -12637,6 +12618,36 @@
   "segundos": 1516,
   "consultas": 3094,
   "erros": 234,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-30T05:40-03:00",
+  "rotas": [
+   "BCN",
+   "BEL",
+   "GYN",
+   "MCZ",
+   "IGU",
+   "JDO",
+   "AJU",
+   "SLZ",
+   "NAT",
+   "CGB",
+   "BPS",
+   "THE",
+   "CWB",
+   "AMS",
+   "BUE",
+   "MAO",
+   "VCP"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1328,
+  "consultas": 3094,
+  "erros": 202,
   "parou_por_tempo": false
  }
 ]

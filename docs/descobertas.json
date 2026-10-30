@@ -1,10 +1,12 @@
 {
- "atualizado": "2026-10-30T12:19+00:00",
+ "atualizado": "2026-10-30T13:30+00:00",
  "pistas": [
   "AMS",
   "BEL",
+  "BSB",
   "FLN",
   "IGU",
+  "JDO",
   "LIS",
   "MAD",
   "MAO",
@@ -32,6 +34,19 @@
    },
    "rastreada": true,
    "nome": "Salvador",
+   "pista": true
+  },
+  {
+   "iata": "JDO",
+   "ow": {
+    "preco": 621,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-30T13:05:00Z"
+   },
+   "rastreada": true,
+   "nome": "Juazeiro do Norte",
    "pista": true
   },
   {
@@ -105,6 +120,19 @@
    "rastreada": true,
    "nome": "Montevidéu",
    "pista": false
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 1237,
+    "ida": "2026-12-12",
+    "volta": "2026-12-15",
+    "paradas": 2,
+    "visto": "2026-10-30T13:06:27Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
+   "pista": true
   },
   {
    "iata": "FLN",
@@ -304,19 +332,6 @@
    "pista": false
   },
   {
-   "iata": "BSB",
-   "rt": {
-    "preco": 3240,
-    "ida": "2027-01-02",
-    "volta": "2027-01-06",
-    "paradas": 1,
-    "visto": "2026-10-26T13:29:09Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
-   "pista": false
-  },
-  {
    "iata": "SJO",
    "ow": {
     "preco": 3323,
@@ -378,7 +393,7 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4152,
+    "preco": 4153,
     "ida": "2027-01-20",
     "volta": "",
     "paradas": 3,

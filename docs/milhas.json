@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T09:13-03:00",
+ "atualizado": "2026-10-31T11:03-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "ok": false,
-   "erro": "403 Client Error: Forbidden for url: https://www.mestredasmilhas.com/feed/"
+   "itens": 10,
+   "ok": true
   },
   {
    "fonte": "Melhores Cartões",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "mismatched tag: line 93, column 2"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -75,54 +75,78 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 15,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=milhas"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 28,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=Livelo"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 17,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=b%C3%B"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 30,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=promo%"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 16,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=compra"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 51,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=milhas"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 10,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=%22sai"
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 22,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "503 Server Error: Service Unavailable for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=Smiles"
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "5 sugestões de voos partir de 12.900 milhas Smiles",
+   "resumo": "Pensando em viajar mas ainda não conseguiu decidir um destino? Nesta matéria, sugerimos 5 opções de resgates de voos a partir de 12.900 milhas Smiles por trecho. O post 5 sugestões de voos partir de 12.900 milhas Smiles apareceu primeiro em Passageiro de Primeira .",
+   "link": "https://passageirodeprimeira.com/5-sugestoes-de-voos-partir-de-12-900-milhas-smiles/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-10-31T10:30-03:00",
+   "programas": [
+    "Smiles"
+   ],
+   "de": null,
+   "para": "Smiles",
+   "pct": null,
+   "milhas": 12900,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-e3faa5e43f",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-10-31T11:03-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ 5 sugestões de voos partir de 12.900 milhas Smiles\n🎟️ A partir de *12.900 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "bonus",
    "titulo": "Último dia! Livelo oferece 20% de bônus nas transferências de pontos para Flying Blue",

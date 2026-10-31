@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-30T23:11+00:00",
+ "atualizado": "2026-10-31T00:21+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -10,7 +10,6 @@
   "LIS",
   "MAD",
   "MAO",
-  "MIA",
   "REC",
   "SAO",
   "SSA",
@@ -294,6 +293,19 @@
    "pista": false
   },
   {
+   "iata": "MCZ",
+   "rt": {
+    "preco": 2317,
+    "ida": "2026-11-10",
+    "volta": "2026-11-17",
+    "paradas": 1,
+    "visto": "2026-10-30T23:57:02Z"
+   },
+   "rastreada": true,
+   "nome": "Maceió",
+   "pista": false
+  },
+  {
    "iata": "MAO",
    "rt": {
     "preco": 2323,
@@ -412,19 +424,6 @@
    "pista": false
   },
   {
-   "iata": "MIA",
-   "rt": {
-    "preco": 4696,
-    "ida": "2026-11-10",
-    "volta": "2026-11-17",
-    "paradas": 2,
-    "visto": "2026-10-30T16:54:34Z"
-   },
-   "rastreada": true,
-   "nome": "Miami",
-   "pista": true
-  },
-  {
    "iata": "VIE",
    "ow": {
     "preco": 4697,
@@ -448,6 +447,19 @@
    },
    "rastreada": true,
    "nome": "Orlando",
+   "pista": false
+  },
+  {
+   "iata": "MIA",
+   "rt": {
+    "preco": 6872,
+    "ida": "2026-12-14",
+    "volta": "2026-12-19",
+    "paradas": 2,
+    "visto": "2026-10-27T22:09:58Z"
+   },
+   "rastreada": true,
+   "nome": "Miami",
    "pista": false
   }
  ]

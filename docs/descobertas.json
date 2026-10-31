@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T17:13+00:00",
+ "atualizado": "2026-10-31T18:37+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -11,6 +11,7 @@
   "MAD",
   "MAO",
   "MVD",
+  "NVT",
   "PTY",
   "REC",
   "SAO",
@@ -69,6 +70,19 @@
    },
    "rastreada": true,
    "nome": "Belém",
+   "pista": true
+  },
+  {
+   "iata": "NVT",
+   "ow": {
+    "preco": 752,
+    "ida": "2027-03-06",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T17:27:22Z"
+   },
+   "rastreada": true,
+   "nome": "Navegantes",
    "pista": true
   },
   {
@@ -145,6 +159,13 @@
     "volta": "2026-12-15",
     "paradas": 2,
     "visto": "2026-10-30T13:06:27Z"
+   },
+   "ow": {
+    "preco": 946,
+    "ida": "2026-11-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T17:20:58Z"
    },
    "rastreada": true,
    "nome": "Brasília",
@@ -276,19 +297,6 @@
    "pista": false
   },
   {
-   "iata": "PTO",
-   "ow": {
-    "preco": 2001,
-    "ida": "2026-11-10",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-31T11:19:34Z"
-   },
-   "rastreada": false,
-   "nome": "PTO",
-   "pista": false
-  },
-  {
    "iata": "VIX",
    "rt": {
     "preco": 2160,
@@ -296,13 +304,6 @@
     "volta": "2027-01-03",
     "paradas": 1,
     "visto": "2026-10-30T23:03:01Z"
-   },
-   "ow": {
-    "preco": 2387,
-    "ida": "2026-10-31",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-31T01:42:54Z"
    },
    "rastreada": true,
    "nome": "Vitória",

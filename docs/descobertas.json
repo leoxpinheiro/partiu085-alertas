@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T01:31+00:00",
+ "atualizado": "2026-10-31T02:41+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -183,6 +183,19 @@
    "pista": true
   },
   {
+   "iata": "SCL",
+   "ow": {
+    "preco": 1321,
+    "ida": "2026-12-29",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T02:21:16Z"
+   },
+   "rastreada": true,
+   "nome": "Santiago",
+   "pista": false
+  },
+  {
    "iata": "ATM",
    "ow": {
     "preco": 1337,
@@ -193,19 +206,6 @@
    },
    "rastreada": false,
    "nome": "ATM",
-   "pista": false
-  },
-  {
-   "iata": "SCL",
-   "ow": {
-    "preco": 1389,
-    "ida": "2026-12-29",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-28T01:11:25Z"
-   },
-   "rastreada": true,
-   "nome": "Santiago",
    "pista": false
   },
   {
@@ -284,11 +284,11 @@
     "visto": "2026-10-30T23:03:01Z"
    },
    "ow": {
-    "preco": 2088,
+    "preco": 2066,
     "ida": "2026-10-31",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-31T00:54:00Z"
+    "visto": "2026-10-31T01:42:54Z"
    },
    "rastreada": true,
    "nome": "Vitória",
@@ -414,6 +414,13 @@
   },
   {
    "iata": "VIE",
+   "rt": {
+    "preco": 5318,
+    "ida": "2027-04-17",
+    "volta": "2027-05-06",
+    "paradas": 1,
+    "visto": "2026-10-31T02:22:09Z"
+   },
    "ow": {
     "preco": 4697,
     "ida": "2026-12-20",

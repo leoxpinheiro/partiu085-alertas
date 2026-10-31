@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T08:37-03:00",
+ "atualizado": "2026-10-31T09:13-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "itens": 10,
-   "ok": true
+   "ok": false,
+   "erro": "403 Client Error: Forbidden for url: https://www.mestredasmilhas.com/feed/"
   },
   {
    "fonte": "Melhores Cartões",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -76,13 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 18,
+   "itens": 15,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 27,
+   "itens": 28,
    "ok": true
   },
   {
@@ -94,7 +94,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 59,
+   "itens": 30,
    "ok": true
   },
   {
@@ -123,6 +123,52 @@
   }
  ],
  "ofertas": [
+  {
+   "tipo": "bonus",
+   "titulo": "Último dia! Livelo oferece 20% de bônus nas transferências de pontos para Flying Blue",
+   "resumo": "A Livelo está oferecendo 20% de bônus para quem transferir pontos para o Flying Blue, programa de fidelidade do Grupo Air France-KLM. A campanha é válida somente até hoje (31). O post Último dia! Livelo oferece 20% de bônus nas transferências de pontos para Flying Blue apareceu p",
+   "link": "https://passageirodeprimeira.com/ultimo-dia-livelo-oferece-20-de-bonus-nas-transferencias-de-pontos-para-flying-blue/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-10-31T09:00-03:00",
+   "programas": [
+    "Livelo"
+   ],
+   "de": "Livelo",
+   "para": null,
+   "pct": 20,
+   "milhas": null,
+   "validade": "2026-10-31",
+   "fortaleza": false,
+   "id": "mi-e313b11f57",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-10-31T09:13-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Livelo\n🎁 Até *20% de bônus* na transferência\n⏰ Válido até 31/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "Alerta PPV! Passagens nacionais a partir de 3.250 pontos + taxas",
+   "resumo": "Quer viajar, mas seu saldo de pontos e milhas está no vermelho? Na edição do alerta de passagens PPV deste sábado, nossa equipe reuniu diversas opções de trechos nacionais a partir de 3.250 pontos + taxas. Abaixo, veja as disponibilidades e aproveite. Passagens nacionais com pont",
+   "link": "https://pontospravoar.com/alerta-ppv-passagens-nacionais-3250-pontos-taxas/",
+   "fonte": "Pontos pra Voar",
+   "publicado": "2026-10-31T09:00-03:00",
+   "programas": [],
+   "de": null,
+   "para": null,
+   "pct": null,
+   "milhas": 3250,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-f451e94286",
+   "fontes": [
+    "Pontos pra Voar"
+   ],
+   "encontrado": "2026-10-31T09:13-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Passagens nacionais a partir de 3.250 pontos + taxas\n🎟️ A partir de *3.250 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "passagem",
    "titulo": "Alerta PPV! Confira passagens para o Peru a partir de 30 mil milhas LATAM Pass",

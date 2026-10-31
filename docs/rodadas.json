@@ -1,28 +1,5 @@
 [
  {
-  "quando": "2026-10-10T13:11-03:00",
-  "rotas": [
-   "SSA",
-   "JPA",
-   "REC",
-   "SAO",
-   "RIO",
-   "OPO",
-   "BSB",
-   "UDI",
-   "NYC",
-   "THE",
-   "BEL",
-   "ORL",
-   "MAD"
-  ],
-  "rotas_com_dados": 12,
-  "candidatos": 1,
-  "alertas": 1,
-  "manual": false,
-  "segundos": 2789
- },
- {
   "quando": "2026-10-10T15:45-03:00",
   "rotas": [
    "CWB",
@@ -12803,6 +12780,36 @@
   "segundos": 1423,
   "consultas": 3094,
   "erros": 211,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-10-31T01:57-03:00",
+  "rotas": [
+   "AJU",
+   "SLZ",
+   "CGB",
+   "MCZ",
+   "BUE",
+   "VCP",
+   "POA",
+   "BOG",
+   "CUN",
+   "THE",
+   "BPS",
+   "CWB",
+   "MAO",
+   "AMS",
+   "MIA",
+   "FLN",
+   "VIX"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1501,
+  "consultas": 3015,
+  "erros": 501,
   "parou_por_tempo": false
  }
 ]

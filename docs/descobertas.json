@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T18:37+00:00",
+ "atualizado": "2026-10-31T20:18+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -12,7 +12,6 @@
   "MAO",
   "MVD",
   "NVT",
-  "PTY",
   "REC",
   "SAO",
   "SSA",
@@ -26,19 +25,6 @@
   }
  ],
  "destinos": [
-  {
-   "iata": "SSA",
-   "ow": {
-    "preco": 681,
-    "ida": "2027-02-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-31T02:46:06Z"
-   },
-   "rastreada": true,
-   "nome": "Salvador",
-   "pista": true
-  },
   {
    "iata": "THE",
    "ow": {
@@ -297,6 +283,26 @@
    "pista": false
   },
   {
+   "iata": "SSA",
+   "rt": {
+    "preco": 2008,
+    "ida": "2026-12-30",
+    "volta": "2027-01-07",
+    "paradas": 1,
+    "visto": "2026-10-31T18:43:14Z"
+   },
+   "ow": {
+    "preco": 681,
+    "ida": "2027-02-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T02:46:06Z"
+   },
+   "rastreada": true,
+   "nome": "Salvador",
+   "pista": true
+  },
+  {
    "iata": "VIX",
    "rt": {
     "preco": 2160,
@@ -340,7 +346,7 @@
    },
    "rastreada": true,
    "nome": "Cidade do Panamá",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BOG",

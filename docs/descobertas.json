@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T00:21+00:00",
+ "atualizado": "2026-10-31T01:31+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -10,6 +10,7 @@
   "LIS",
   "MAD",
   "MAO",
+  "PTY",
   "REC",
   "SAO",
   "SSA",
@@ -34,19 +35,6 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
-  },
-  {
-   "iata": "JDO",
-   "ow": {
-    "preco": 628,
-    "ida": "2026-11-25",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-30T13:05:00Z"
-   },
-   "rastreada": true,
-   "nome": "Juazeiro do Norte",
    "pista": true
   },
   {
@@ -113,6 +101,26 @@
    },
    "rastreada": true,
    "nome": "Recife",
+   "pista": true
+  },
+  {
+   "iata": "JDO",
+   "rt": {
+    "preco": 1104,
+    "ida": "2026-11-10",
+    "volta": "2026-11-17",
+    "paradas": 1,
+    "visto": "2026-10-31T01:27:38Z"
+   },
+   "ow": {
+    "preco": 628,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-30T13:05:00Z"
+   },
+   "rastreada": true,
+   "nome": "Juazeiro do Norte",
    "pista": true
   },
   {
@@ -221,19 +229,6 @@
    "pista": true
   },
   {
-   "iata": "LIM",
-   "ow": {
-    "preco": 1626,
-    "ida": "2026-11-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-27T00:39:14Z"
-   },
-   "rastreada": true,
-   "nome": "Lima",
-   "pista": false
-  },
-  {
    "iata": "RIO",
    "rt": {
     "preco": 1737,
@@ -288,21 +283,15 @@
     "paradas": 1,
     "visto": "2026-10-30T23:03:01Z"
    },
-   "rastreada": true,
-   "nome": "Vitória",
-   "pista": false
-  },
-  {
-   "iata": "MCZ",
-   "rt": {
-    "preco": 2317,
-    "ida": "2026-11-10",
-    "volta": "2026-11-17",
+   "ow": {
+    "preco": 2088,
+    "ida": "2026-10-31",
+    "volta": "",
     "paradas": 1,
-    "visto": "2026-10-30T23:57:02Z"
+    "visto": "2026-10-31T00:54:00Z"
    },
    "rastreada": true,
-   "nome": "Maceió",
+   "nome": "Vitória",
    "pista": false
   },
   {
@@ -336,7 +325,7 @@
    },
    "rastreada": true,
    "nome": "Cidade do Panamá",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "BOG",

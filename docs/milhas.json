@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-10-31T00:07-03:00",
+ "atualizado": "2026-10-31T01:17-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Read timed out. (read timeout=25)"
   },
   {
    "fonte": "Aeroflap",
@@ -76,25 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 16,
+   "itens": 15,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 48,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 16,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 29,
+   "itens": 27,
    "ok": true
   },
   {
@@ -106,7 +94,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 24,
+   "itens": 61,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 20,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 51,
    "ok": true
   },
   {
@@ -118,7 +118,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 18,
+   "itens": 23,
    "ok": true
   }
  ],

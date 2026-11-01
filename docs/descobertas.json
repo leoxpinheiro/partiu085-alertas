@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-01T00:29+00:00",
+ "atualizado": "2026-11-01T02:09+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -13,8 +13,7 @@
   "MVD",
   "NVT",
   "SAO",
-  "SSA",
-  "THE"
+  "SSA"
  ],
  "blogs": [
   {
@@ -24,19 +23,6 @@
   }
  ],
  "destinos": [
-  {
-   "iata": "THE",
-   "ow": {
-    "preco": 717,
-    "ida": "2026-11-12",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-28T01:09:59Z"
-   },
-   "rastreada": true,
-   "nome": "Teresina",
-   "pista": true
-  },
   {
    "iata": "BEL",
    "rt": {
@@ -183,26 +169,6 @@
    "pista": false
   },
   {
-   "iata": "SAO",
-   "rt": {
-    "preco": 1385,
-    "ida": "2026-12-08",
-    "volta": "2026-12-16",
-    "paradas": 0,
-    "visto": "2026-10-29T00:00:23Z"
-   },
-   "ow": {
-    "preco": 495,
-    "ida": "2026-12-13",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-29T14:13:36Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
-   "pista": true
-  },
-  {
    "iata": "IGU",
    "rt": {
     "preco": 1431,
@@ -223,26 +189,33 @@
    "pista": true
   },
   {
-   "iata": "LIS",
+   "iata": "SAO",
+   "rt": {
+    "preco": 1474,
+    "ida": "2026-12-11",
+    "volta": "2027-01-06",
+    "paradas": 1,
+    "visto": "2026-10-30T00:03:06Z"
+   },
    "ow": {
-    "preco": 1924,
-    "ida": "2026-11-02",
+    "preco": 495,
+    "ida": "2026-12-13",
     "volta": "",
     "paradas": 1,
-    "visto": "2026-10-30T22:28:02Z"
+    "visto": "2026-10-29T14:13:36Z"
    },
    "rastreada": true,
-   "nome": "Lisboa",
+   "nome": "São Paulo",
    "pista": true
   },
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1932,
-    "ida": "2026-12-01",
-    "volta": "2026-12-29",
-    "paradas": 1,
-    "visto": "2026-10-30T11:18:18Z"
+    "preco": 1818,
+    "ida": "2026-12-14",
+    "volta": "2026-12-21",
+    "paradas": 2,
+    "visto": "2026-11-01T00:33:17Z"
    },
    "ow": {
     "preco": 932,
@@ -256,17 +229,17 @@
    "pista": false
   },
   {
-   "iata": "PET",
-   "rt": {
-    "preco": 1950,
-    "ida": "2026-12-16",
-    "volta": "2026-12-30",
-    "paradas": 2,
-    "visto": "2026-10-28T00:49:04Z"
+   "iata": "LIS",
+   "ow": {
+    "preco": 1924,
+    "ida": "2026-11-02",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-30T22:28:02Z"
    },
-   "rastreada": false,
-   "nome": "PET",
-   "pista": false
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": true
   },
   {
    "iata": "SSA",

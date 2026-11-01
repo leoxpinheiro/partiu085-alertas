@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-01T17:50+00:00",
+ "atualizado": "2026-11-01T19:31+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -25,6 +25,19 @@
  ],
  "destinos": [
   {
+   "iata": "FLN",
+   "ow": {
+    "preco": 501,
+    "ida": "2026-12-09",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T21:20:46Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
+   "pista": true
+  },
+  {
    "iata": "BEL",
    "rt": {
     "preco": 745,
@@ -32,13 +45,6 @@
     "volta": "2026-12-07",
     "paradas": 0,
     "visto": "2026-10-30T22:28:46Z"
-   },
-   "ow": {
-    "preco": 809,
-    "ida": "2027-01-25",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-10-28T18:18:39Z"
    },
    "rastreada": true,
    "nome": "Belém",
@@ -73,11 +79,11 @@
   {
    "iata": "MVD",
    "ow": {
-    "preco": 963,
-    "ida": "2027-05-10",
+    "preco": 912,
+    "ida": "2026-11-10",
     "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-31T09:39:57Z"
+    "paradas": 2,
+    "visto": "2026-11-01T18:10:37Z"
    },
    "rastreada": true,
    "nome": "Montevidéu",
@@ -93,11 +99,11 @@
     "visto": "2026-10-31T01:27:38Z"
    },
    "ow": {
-    "preco": 402,
-    "ida": "2026-11-17",
+    "preco": 408,
+    "ida": "2026-11-15",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-01T17:35:09Z"
+    "visto": "2026-11-01T16:16:22Z"
    },
    "rastreada": true,
    "nome": "Juazeiro do Norte",
@@ -112,35 +118,8 @@
     "paradas": 2,
     "visto": "2026-10-30T13:06:27Z"
    },
-   "ow": {
-    "preco": 946,
-    "ida": "2026-11-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-31T17:20:58Z"
-   },
    "rastreada": true,
    "nome": "Brasília",
-   "pista": true
-  },
-  {
-   "iata": "FLN",
-   "rt": {
-    "preco": 1254,
-    "ida": "2027-09-15",
-    "volta": "2027-09-19",
-    "paradas": 1,
-    "visto": "2026-10-28T17:58:44Z"
-   },
-   "ow": {
-    "preco": 501,
-    "ida": "2026-12-09",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-31T21:20:46Z"
-   },
-   "rastreada": true,
-   "nome": "Florianópolis",
    "pista": true
   },
   {
@@ -420,13 +399,6 @@
     "volta": "2027-05-06",
     "paradas": 1,
     "visto": "2026-10-31T02:22:09Z"
-   },
-   "ow": {
-    "preco": 4697,
-    "ida": "2026-12-20",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-30T00:54:00Z"
    },
    "rastreada": false,
    "nome": "VIE",

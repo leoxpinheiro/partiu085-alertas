@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-01T12:50+00:00",
+ "atualizado": "2026-11-01T14:30+00:00",
  "pistas": [
   "BEL",
   "BSB",
+  "BUE",
   "FLN",
   "IGU",
   "JDO",
@@ -263,11 +264,11 @@
   {
    "iata": "VIX",
    "rt": {
-    "preco": 2160,
+    "preco": 2149,
     "ida": "2026-12-23",
     "volta": "2027-01-03",
     "paradas": 1,
-    "visto": "2026-10-30T23:03:01Z"
+    "visto": "2026-11-01T12:58:25Z"
    },
    "rastreada": true,
    "nome": "Vitória",
@@ -333,6 +334,19 @@
    "pista": false
   },
   {
+   "iata": "BUE",
+   "rt": {
+    "preco": 3268,
+    "ida": "2026-12-14",
+    "volta": "2026-12-20",
+    "paradas": 2,
+    "visto": "2026-11-01T13:26:17Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
+  },
+  {
    "iata": "SJO",
    "ow": {
     "preco": 3323,
@@ -382,6 +396,19 @@
    },
    "rastreada": false,
    "nome": "MOW",
+   "pista": false
+  },
+  {
+   "iata": "NBO",
+   "ow": {
+    "preco": 4689,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-31T17:13:39Z"
+   },
+   "rastreada": false,
+   "nome": "NBO",
    "pista": false
   },
   {

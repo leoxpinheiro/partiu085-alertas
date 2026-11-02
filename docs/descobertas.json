@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-02T16:06+00:00",
+ "atualizado": "2026-11-02T17:01+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -11,7 +11,6 @@
   "MAD",
   "MAO",
   "NVT",
-  "PTY",
   "SAO",
   "SSA"
  ],
@@ -248,19 +247,6 @@
    "pista": false
   },
   {
-   "iata": "PTY",
-   "ow": {
-    "preco": 2461,
-    "ida": "2027-01-15",
-    "volta": "",
-    "paradas": 4,
-    "visto": "2026-10-29T16:51:25Z"
-   },
-   "rastreada": true,
-   "nome": "Cidade do Panamá",
-   "pista": true
-  },
-  {
    "iata": "LON",
    "ow": {
     "preco": 2470,
@@ -292,19 +278,6 @@
    "rastreada": true,
    "nome": "Manaus",
    "pista": true
-  },
-  {
-   "iata": "BOG",
-   "ow": {
-    "preco": 2720,
-    "ida": "2027-01-16",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-29T16:52:09Z"
-   },
-   "rastreada": true,
-   "nome": "Bogotá",
-   "pista": false
   },
   {
    "iata": "BWI",
@@ -346,19 +319,6 @@
    "pista": true
   },
   {
-   "iata": "SJO",
-   "ow": {
-    "preco": 3323,
-    "ida": "2027-01-13",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-10-29T16:50:37Z"
-   },
-   "rastreada": false,
-   "nome": "SJO",
-   "pista": false
-  },
-  {
    "iata": "LIS",
    "rt": {
     "preco": 3572,
@@ -377,6 +337,19 @@
    "rastreada": true,
    "nome": "Lisboa",
    "pista": true
+  },
+  {
+   "iata": "LIM",
+   "rt": {
+    "preco": 3648,
+    "ida": "2027-04-18",
+    "volta": "2027-04-28",
+    "paradas": 3,
+    "visto": "2026-11-02T16:33:55Z"
+   },
+   "rastreada": true,
+   "nome": "Lima",
+   "pista": false
   },
   {
    "iata": "MAD",

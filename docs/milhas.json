@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-02T11:49-03:00",
+ "atualizado": "2026-11-02T12:23-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "itens": 10,
-   "ok": true
+   "ok": false,
+   "erro": "403 Client Error: Forbidden for url: https://www.mestredasmilhas.com/feed/"
   },
   {
    "fonte": "Melhores Cartões",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -76,13 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 9,
+   "itens": 10,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 20,
+   "itens": 19,
    "ok": true
   },
   {
@@ -94,7 +94,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 32,
+   "itens": 61,
    "ok": true
   },
   {
@@ -112,17 +112,41 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 9,
+   "itens": 10,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 15,
+   "itens": 21,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "clube",
+   "titulo": "Últimas horas! Assine o Clube Smiles 1.000 e acumule 21 mil milhas",
+   "resumo": "Essas são as últimas horas para participar da atual oferta do clube Smiles 1.000, em que é possível receber 21 mil milhas ao longo de 12 meses de assinatura. A seguir, veja os principais detalhes. Adesão ao Clube 1.000 Smiles O bônus será creditado na hora na adesão do clube, sen",
+   "link": "https://pontospravoar.com/ultimas-horas-assine-clube-smiles-1000-acumule-21-mil-milhas/",
+   "fonte": "Pontos pra Voar",
+   "publicado": "2026-11-02T12:00-03:00",
+   "programas": [
+    "Smiles"
+   ],
+   "de": null,
+   "para": "Smiles",
+   "pct": null,
+   "milhas": null,
+   "validade": "2026-11-02",
+   "fortaleza": false,
+   "id": "mi-9d23a94526",
+   "fontes": [
+    "Pontos pra Voar"
+   ],
+   "encontrado": "2026-11-02T12:23-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n⭐ Últimas horas! Assine o Clube Smiles 1.000 e acumule 21 mil milhas\n⏰ Válido até 02/11\n\n💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "passagem",
    "titulo": "Madri com a Iberia! Voos diretos saindo de São Paulo a partir de 20 mil pontos o trecho",

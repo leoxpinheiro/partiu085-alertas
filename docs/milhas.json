@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-02T13:04-03:00",
+ "atualizado": "2026-11-02T13:42-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "ok": false,
-   "erro": "HTTPSConnectionPool(host='www.mestredasmilhas.com', port=443): Read timed out. (read timeout=25)"
+   "itens": 10,
+   "ok": true
   },
   {
    "fonte": "Melhores Cartões",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "mismatched tag: line 93, column 2"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -106,7 +106,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 27,
+   "itens": 46,
    "ok": true
   },
   {
@@ -118,7 +118,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 21,
+   "itens": 15,
    "ok": true
   }
  ],

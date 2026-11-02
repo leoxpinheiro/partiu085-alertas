@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-02T14:56+00:00",
+ "atualizado": "2026-11-02T15:25+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -23,19 +23,6 @@
   }
  ],
  "destinos": [
-  {
-   "iata": "FLN",
-   "ow": {
-    "preco": 501,
-    "ida": "2026-12-09",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-10-31T21:20:46Z"
-   },
-   "rastreada": true,
-   "nome": "Florianópolis",
-   "pista": true
-  },
   {
    "iata": "BEL",
    "rt": {
@@ -139,6 +126,26 @@
    },
    "rastreada": true,
    "nome": "Brasília",
+   "pista": true
+  },
+  {
+   "iata": "FLN",
+   "rt": {
+    "preco": 1296,
+    "ida": "2027-09-15",
+    "volta": "2027-09-19",
+    "paradas": 1,
+    "visto": "2026-11-02T15:06:07Z"
+   },
+   "ow": {
+    "preco": 501,
+    "ida": "2026-12-09",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-10-31T21:20:46Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
    "pista": true
   },
   {
@@ -385,19 +392,6 @@
    "pista": true
   },
   {
-   "iata": "MOW",
-   "ow": {
-    "preco": 4197,
-    "ida": "2027-01-20",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-10-30T00:45:20Z"
-   },
-   "rastreada": false,
-   "nome": "MOW",
-   "pista": false
-  },
-  {
    "iata": "NBO",
    "ow": {
     "preco": 4689,
@@ -447,6 +441,26 @@
    },
    "rastreada": false,
    "nome": "BAK",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "rt": {
+    "preco": 10747,
+    "ida": "2027-01-19",
+    "volta": "2027-01-31",
+    "paradas": 3,
+    "visto": "2026-11-02T15:06:18Z"
+   },
+   "ow": {
+    "preco": 4197,
+    "ida": "2027-01-20",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-10-30T00:45:20Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
    "pista": false
   }
  ]

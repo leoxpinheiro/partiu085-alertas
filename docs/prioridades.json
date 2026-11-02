@@ -196,9 +196,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "MVD": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (11 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "SID": {
    "prioridade": "baixa",
@@ -271,8 +271,21 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-11-02T16:02-03:00",
+ "quando": "2026-11-02T18:03-03:00",
  "ultimo_lote": [
+  "VIX",
+  "BSB",
+  "LIS",
+  "OPO",
+  "MAD",
+  "BHZ",
+  "ROM",
+  "NVT",
+  "PMW",
+  "PAR",
+  "SAO",
+  "RIO",
+  "SSA",
   "REC",
   "BEL",
   "GYN",
@@ -282,19 +295,6 @@
   "AJU",
   "SLZ",
   "THE",
-  "BUE",
-  "VCP",
-  "POA",
-  "FRA",
-  "JPA",
-  "LON",
-  "CGB",
-  "BPS",
-  "MAO",
-  "MVD",
-  "CWB",
-  "AMS",
-  "MIA",
-  "FLN"
+  "CGB"
  ]
 }

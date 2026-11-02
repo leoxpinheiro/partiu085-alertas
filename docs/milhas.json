@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-01T22:41-03:00",
+ "atualizado": "2026-11-02T00:09-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -94,7 +94,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 29,
+   "itens": 62,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 12,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 50,
    "ok": true
   },
   {
@@ -106,19 +118,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 27,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 10,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 20,
+   "itens": 14,
    "ok": true
   }
  ],
@@ -917,7 +917,7 @@
    ],
    "encontrado": "2026-10-28T18:55-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! LATAM Pass oferece voos para destinos colombianos a partir de 31 mil milhas\n🎟️ A partir de *31.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "compra",
@@ -965,7 +965,7 @@
    ],
    "encontrado": "2026-10-28T16:51-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos do Recife para Fernando de Noronha a partir de R$ 125 ou 9 mil pontos Azul o trecho mais taxas\n🎟️ A partir de *9.000 milhas* · Azul Fidelidade\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "bonus",
@@ -1013,7 +1013,7 @@
    ],
    "encontrado": "2026-10-28T15:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n⭐ O que é possível resgatar com os pontos acumulados em 12 meses do Clube Livelo?\n\n💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1037,7 +1037,7 @@
    ],
    "encontrado": "2026-10-28T15:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Smiles tem passagens para Santiago a partir de 30 mil milhas\n🎟️ A partir de *30.000 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1059,7 +1059,7 @@
    ],
    "encontrado": "2026-10-28T18:55-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Resgate ingressos para o GP São Paulo de Fórmula 1 com pontos Revolut\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "compra",
@@ -1085,7 +1085,7 @@
    ],
    "encontrado": "2026-10-29T16:48-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Livelo\n💸 Livelo oferece desconto de 56% na compra de pontos para assinantes do Clube – milheiro a partir de R$ 29,87\n🔥 Até *56%* de vantagem\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "compra",
@@ -1109,7 +1109,7 @@
    ],
    "encontrado": "2026-10-28T12:58-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Inter Loop\n💸 Inter oferece 55% de desconto na compra de pontos Loop\n🔥 Até *55%* de vantagem\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1131,7 +1131,7 @@
    ],
    "encontrado": "2026-10-28T12:58-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Muito bom! Resgate ingressos para o GP São Paulo 2026 com pontos na Revolut\n🎟️ A partir de *28.000 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1155,7 +1155,7 @@
    ],
    "encontrado": "2026-10-28T12:58-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Confira 15 trechos pelo Brasil a partir de 3 mil pontos Azul Fidelidade\n🎟️ A partir de *3.000 milhas* · Azul Fidelidade\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "clube",
@@ -1179,7 +1179,7 @@
    ],
    "encontrado": "2026-10-28T11:59-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n⭐ Ganhe milhas suficientes para emitir um voo para Balneário Camboriú assinando o Clube Smiles 2.000\n\n💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "bonus",
@@ -1281,7 +1281,7 @@
    ],
    "encontrado": "2026-10-28T08:18-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Passagens com milhas sem horas de pesquisa: receba Alertas grátis do PP\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "id": "tg-b8d3f1daad",

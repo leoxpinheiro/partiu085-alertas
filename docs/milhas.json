@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-03T14:18-03:00",
+ "atualizado": "2026-11-03T15:20-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -22,8 +22,8 @@
   {
    "fonte": "Mestre das Milhas",
    "url": "https://www.mestredasmilhas.com/feed/",
-   "itens": 10,
-   "ok": true
+   "ok": false,
+   "erro": "undefined entity: line 7, column 18"
   },
   {
    "fonte": "Melhores Cartões",
@@ -76,19 +76,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 8,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 23,
+   "itens": 22,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {
@@ -100,7 +100,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {
@@ -118,11 +118,35 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 16,
+   "itens": 17,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "5 sugestões de voos internacionais a partir de 54 mil milhas Smiles + taxas",
+   "resumo": "Pensando em viajar para o exterior mas ainda não tem certeza do seu destino? 🛫 Nesta matéria, sugerimos 5 opções de resgates de voos internacionais a partir de 54.000 milhas Smiles por trecho, partindo de diferentes aeroportos brasileiros e para diferentes destinos. O post 5 suge",
+   "link": "https://passageirodeprimeira.com/5-sugestoes-de-voos-internacionais-a-partir-de-54-mil-milhas-smiles-taxas/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-11-03T14:40-03:00",
+   "programas": [
+    "Smiles"
+   ],
+   "de": null,
+   "para": "Smiles",
+   "pct": null,
+   "milhas": 54000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-60b5023244",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-11-03T15:20-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ 5 sugestões de voos internacionais a partir de 54 mil milhas Smiles + taxas\n🎟️ A partir de *54.000 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "clube",
    "titulo": "Só hoje! Assine o Clube Livelo Premium anual e garanta 385.000 pontos",
@@ -5013,30 +5037,6 @@
    ],
    "encontrado": "2026-10-13T19:55-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ LATAM oferece trechos para diversos destinos a partir de R$ 130 ou 3.331 milhas + taxas\n🎟️ A partir de *3.331 milhas* · LATAM Pass\n⏰ Válido até 13/10\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "passagem",
-   "titulo": "Partiu Europa? Trecho para Paris a partir de 54 mil milhas LATAM Pass + taxas",
-   "resumo": "Alerta direto dos Grupos do PP no WhatsApp! 🚨 Encontramos disponibilidade de bilhetes de ida e volta entre Rio de Janeiro (GIG) e Paris (CDG). Os voos são operados pela LATAM e a emissão pode ser feita a partir de 54.916 milhas LATAM Pass + taxas. Confira! O post Partiu Europa? T",
-   "link": "https://passageirodeprimeira.com/partiu-europa-trecho-paris-a-partir-54-mil-milhas-latam-pass-taxas/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-13T14:30-03:00",
-   "programas": [
-    "LATAM Pass"
-   ],
-   "de": null,
-   "para": "LATAM Pass",
-   "pct": null,
-   "milhas": 54000,
-   "validade": null,
-   "fortaleza": false,
-   "id": "mi-f1772c5e9b",
-   "fontes": [
-    "Passageiro de Primeira"
-   ],
-   "encontrado": "2026-10-13T15:30-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Partiu Europa? Trecho para Paris a partir de 54 mil milhas LATAM Pass + taxas\n🎟️ A partir de *54.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

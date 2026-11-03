@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-03T09:21-03:00",
+ "atualizado": "2026-11-03T10:17-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Read timed out. (read timeout=25)"
   },
   {
    "fonte": "Aeroflap",
@@ -76,13 +76,13 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 9,
+   "itens": 8,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 14,
+   "itens": 16,
    "ok": true
   },
   {
@@ -100,7 +100,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 8,
+   "itens": 9,
    "ok": true
   },
   {
@@ -123,6 +123,34 @@
   }
  ],
  "ofertas": [
+  {
+   "tipo": "bonus",
+   "titulo": "Azul Fidelidade oferece até 130% de bônus nas transferências da Livelo",
+   "resumo": "Livelo e Azul Fidelidade oferecem até 100% de bônus na transferência de pontos + até 30% por tempo de Clube Azul. O post Azul Fidelidade oferece até 130% de bônus nas transferências da Livelo apareceu primeiro em Passageiro de Primeira .",
+   "link": "https://passageirodeprimeira.com/azul-fidelidade-oferece-ate-130-de-bonus-nas-transferencias-da-livelo/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-11-03T09:25-03:00",
+   "programas": [
+    "Azul Fidelidade",
+    "Livelo"
+   ],
+   "de": "Livelo",
+   "para": "Azul Fidelidade",
+   "pct": 130,
+   "milhas": null,
+   "validade": "2026-11-06",
+   "fortaleza": false,
+   "id": "mi-981c3ad83b",
+   "fontes": [
+    "Melhores Cartões",
+    "Melhores Destinos",
+    "Passageiro de Primeira",
+    "Pontos pra Voar"
+   ],
+   "encontrado": "2026-11-03T10:17-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Livelo → Azul Fidelidade\n🎁 Até *130% de bônus* na transferência\n⏰ Válido até 06/11\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "clube",
    "titulo": "Últimas horas! Assine o Clube Smiles 1.000 e acumule 21 mil milhas",
@@ -5009,32 +5037,6 @@
    ],
    "encontrado": "2026-10-13T12:47-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Entenda como é possível acumular milhas e garantir desconto em passagens aéreas\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "bonus",
-   "titulo": "ALL Accor oferece até 20% de bônus nas transferências de milhas do LATAM Pass",
-   "resumo": "O ALL Accor está oferecendo até 20% de bônus nas transferências de milhas do LATAM Pass até sexta-feira (16). Quem transferir suas milhas ganha 10% de pontos Reward bônus, e os assinantes do ALL Signature recebem mais 10%. Aproveite essa chance de potencializar seus pontos sem pr",
-   "link": "https://passageirodeprimeira.com/all-accor-oferece-ate-20-de-bonus-nas-transferencias-de-milhas-do-latam-pass-3/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-13T10:13-03:00",
-   "programas": [
-    "LATAM Pass"
-   ],
-   "de": null,
-   "para": "LATAM Pass",
-   "pct": 20,
-   "milhas": null,
-   "validade": "2026-10-16",
-   "fortaleza": false,
-   "id": "mi-ef93468f16",
-   "fontes": [
-    "Melhores Cartões",
-    "Passageiro de Primeira",
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-13T10:46-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 LATAM Pass\n🎁 Até *20% de bônus* na transferência\n⏰ Válido até 16/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

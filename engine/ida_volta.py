@@ -163,6 +163,7 @@ def main(args: list[str]) -> None:
         st["alertado"] = {"preco": b["preco"], "quando": agora_iso}
         novos += 1
         R.log(f"  🚨 ALERTA ida e volta {r['nome']}: {R.brl(b['preco'])}")
+        R.fila_whatsapp({**a, "desconto": max(a.get("desconto") or 0, 0.25)}, aj)
         if (a.get("desconto") or 0) >= float(aj.get("story_desconto_min", 0.25)) or b["preco"] <= alvo * 0.85:
             R.story_oferta({**a, "desconto": max(a.get("desconto") or 0, 0.3)}, aj)
         try:

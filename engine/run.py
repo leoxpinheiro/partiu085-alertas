@@ -453,6 +453,32 @@ def imagem_alerta(a: dict) -> bytes | None:
         return None
 
 
+def fila_whatsapp(a: dict, aj: dict) -> bool:
+    """Oferta boa vai pra fila do robô do WhatsApp (roda no Mac do Leo e manda no grupo, com limites)."""
+    try:
+        if not aj.get("wpp_auto", True) or (a.get("desconto") or 0) < float(aj.get("wpp_desconto_min", 0.20)):
+            return False
+        import imagem
+        nome = f"ig/wpp-{a['id'][:60]}.jpg".replace(":", "")
+        (DOCS / nome).parent.mkdir(parents=True, exist_ok=True)
+        (DOCS / nome).write_bytes(imagem.card_alerta(a))
+        txt = a.get("texto") or ""
+        ida, volta = (a.get("par") or {}).get("ida") or a.get("ida"), (a.get("par") or {}).get("volta") or a.get("volta")
+        if ida and volta:  # link curto do Partiu no lugar do link enorme
+            curto = f"partiu.avancepro.app.br/v?{a['destino']}{ida[8:10]}{ida[5:7]}-{volta[8:10]}{volta[5:7]}"
+            txt = re.sub(r"🛒 Ver e comprar: \S+", f"🛒 Comprar com segurança: {curto}", txt)
+        F = ler_json(DOCS / "wpp_fila.json", {"pausado": False, "itens": []})
+        F.setdefault("itens", []).append({"id": a["id"], "criado": agora().isoformat(timespec="minutes"),
+                                          "titulo": f"{a.get('destino_nome', '')} {brl(a.get('preco', 0))}", "texto": txt, "imagem": nome})
+        F["itens"] = F["itens"][-50:]
+        salvar_json(DOCS / "wpp_fila.json", F)
+        log(f"  💬 na fila do WhatsApp: {a.get('destino_nome')}")
+        return True
+    except Exception as e:  # noqa: BLE001
+        log(f"  ! fila WhatsApp: {type(e).__name__}: {e}")
+        return False
+
+
 def story_oferta(a: dict, aj: dict) -> bool:
     """Oferta boa de verdade vira story no Instagram sozinha (máx. por dia em ajustes, só de 8h às 22h)."""
     try:
@@ -962,6 +988,7 @@ def rodada() -> None:
         a["texto"] = montar_texto(a, aj)
         a["telegram"] = postar_telegram(a["texto"], aj, foto=imagem_alerta(a))
         a["story"] = story_oferta(a, aj)
+        a["wpp"] = fila_whatsapp(a, aj)
         novos.append(a)
         enviados.append({"rota": a["rota"], "preco": a["preco"], "quando": agora().isoformat()})
         log(f"  ✓ {a['rota']} {brl(a['preco'])}/trecho (-{a['desconto']:.0%}) "

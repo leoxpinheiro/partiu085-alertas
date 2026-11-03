@@ -1,8 +1,7 @@
 {
- "atualizado": "2026-11-03T15:49+00:00",
+ "atualizado": "2026-11-03T16:49+00:00",
  "pistas": [
   "BEL",
-  "BSB",
   "BUE",
   "FLN",
   "JDO",
@@ -128,19 +127,6 @@
    "pista": false
   },
   {
-   "iata": "BSB",
-   "rt": {
-    "preco": 1392,
-    "ida": "2026-12-31",
-    "volta": "2027-01-05",
-    "paradas": 2,
-    "visto": "2026-10-30T16:45:54Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
-   "pista": true
-  },
-  {
    "iata": "RIO",
    "rt": {
     "preco": 1818,
@@ -183,7 +169,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 1991,
+    "preco": 1990,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -203,11 +189,11 @@
     "visto": "2026-10-31T18:43:14Z"
    },
    "ow": {
-    "preco": 676,
-    "ida": "2026-11-13",
+    "preco": 739,
+    "ida": "2027-02-03",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-03T03:02:56Z"
+    "paradas": 1,
+    "visto": "2026-11-03T11:57:39Z"
    },
    "rastreada": true,
    "nome": "Salvador",
@@ -242,7 +228,7 @@
   {
    "iata": "BOG",
    "ow": {
-    "preco": 2833,
+    "preco": 2832,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 2,
@@ -263,6 +249,19 @@
    },
    "rastreada": false,
    "nome": "BWI",
+   "pista": false
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 3040,
+    "ida": "2027-01-04",
+    "volta": "2027-01-07",
+    "paradas": 1,
+    "visto": "2026-11-01T02:38:43Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
    "pista": false
   },
   {

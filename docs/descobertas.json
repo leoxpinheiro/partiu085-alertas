@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-04T01:00+00:00",
+ "atualizado": "2026-11-04T02:00+00:00",
  "pistas": [
   "BUE",
   "FLN",
@@ -15,6 +15,19 @@
  ],
  "blogs": [],
  "destinos": [
+  {
+   "iata": "JDO",
+   "ow": {
+    "preco": 408,
+    "ida": "2026-11-15",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-01T16:16:22Z"
+   },
+   "rastreada": true,
+   "nome": "Juazeiro do Norte",
+   "pista": true
+  },
   {
    "iata": "REC",
    "ow": {
@@ -85,26 +98,6 @@
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": true
-  },
-  {
-   "iata": "JDO",
-   "rt": {
-    "preco": 1104,
-    "ida": "2026-11-10",
-    "volta": "2026-11-17",
-    "paradas": 1,
-    "visto": "2026-10-31T01:27:38Z"
-   },
-   "ow": {
-    "preco": 408,
-    "ida": "2026-11-15",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-01T16:16:22Z"
-   },
-   "rastreada": true,
-   "nome": "Juazeiro do Norte",
    "pista": true
   },
   {
@@ -336,6 +329,19 @@
    "rastreada": true,
    "nome": "Madri",
    "pista": true
+  },
+  {
+   "iata": "DEL",
+   "ow": {
+    "preco": 4582,
+    "ida": "2026-11-19",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-11-04T01:35:33Z"
+   },
+   "rastreada": false,
+   "nome": "DEL",
+   "pista": false
   },
   {
    "iata": "NBO",

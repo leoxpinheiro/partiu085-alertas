@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-04T17:57+00:00",
+ "atualizado": "2026-11-04T18:58+00:00",
  "pistas": [
   "BHZ",
   "BUE",
@@ -9,10 +9,10 @@
   "MAD",
   "MIA",
   "MVD",
-  "NVT",
   "REC",
   "SAO",
-  "SSA"
+  "SSA",
+  "THE"
  ],
  "blogs": [],
  "destinos": [
@@ -43,6 +43,19 @@
    "pista": true
   },
   {
+   "iata": "SSA",
+   "ow": {
+    "preco": 740,
+    "ida": "2027-02-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-03T11:57:39Z"
+   },
+   "rastreada": true,
+   "nome": "Salvador",
+   "pista": true
+  },
+  {
    "iata": "CPV",
    "ow": {
     "preco": 758,
@@ -66,7 +79,7 @@
    },
    "rastreada": true,
    "nome": "Navegantes",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "MVD",
@@ -122,6 +135,19 @@
    "pista": true
   },
   {
+   "iata": "THE",
+   "rt": {
+    "preco": 1330,
+    "ida": "2026-12-10",
+    "volta": "2026-12-13",
+    "paradas": 0,
+    "visto": "2026-11-04T18:00:16Z"
+   },
+   "rastreada": true,
+   "nome": "Teresina",
+   "pista": true
+  },
+  {
    "iata": "IGU",
    "rt": {
     "preco": 1622,
@@ -144,14 +170,14 @@
   {
    "iata": "BHZ",
    "rt": {
-    "preco": 1628,
+    "preco": 1631,
     "ida": "2026-12-04",
     "volta": "2026-12-06",
     "paradas": 2,
     "visto": "2026-11-04T02:15:58Z"
    },
    "ow": {
-    "preco": 537,
+    "preco": 538,
     "ida": "2026-12-24",
     "volta": "",
     "paradas": 1,
@@ -171,7 +197,7 @@
     "visto": "2026-11-01T00:33:17Z"
    },
    "ow": {
-    "preco": 891,
+    "preco": 892,
     "ida": "2027-07-10",
     "volta": "",
     "paradas": 1,
@@ -193,26 +219,6 @@
    "rastreada": false,
    "nome": "PET",
    "pista": false
-  },
-  {
-   "iata": "SSA",
-   "rt": {
-    "preco": 2008,
-    "ida": "2026-12-30",
-    "volta": "2027-01-07",
-    "paradas": 1,
-    "visto": "2026-10-31T18:43:14Z"
-   },
-   "ow": {
-    "preco": 740,
-    "ida": "2027-02-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-03T11:57:39Z"
-   },
-   "rastreada": true,
-   "nome": "Salvador",
-   "pista": true
   },
   {
    "iata": "VIX",
@@ -354,7 +360,7 @@
   {
    "iata": "DEL",
    "ow": {
-    "preco": 4433,
+    "preco": 4439,
     "ida": "2026-11-19",
     "volta": "",
     "paradas": 4,

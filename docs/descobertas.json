@@ -1,11 +1,12 @@
 {
- "atualizado": "2026-11-03T23:19+00:00",
+ "atualizado": "2026-11-03T23:59+00:00",
  "pistas": [
   "BUE",
   "FLN",
   "JDO",
   "LIS",
   "MAD",
+  "MIA",
   "MVD",
   "NVT",
   "SAO",
@@ -29,7 +30,7 @@
   {
    "iata": "CPV",
    "ow": {
-    "preco": 757,
+    "preco": 758,
     "ida": "2026-11-18",
     "volta": "",
     "paradas": 1,
@@ -175,7 +176,7 @@
     "visto": "2026-10-31T18:43:14Z"
    },
    "ow": {
-    "preco": 739,
+    "preco": 740,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -295,6 +296,19 @@
    "rastreada": true,
    "nome": "Lima",
    "pista": false
+  },
+  {
+   "iata": "MIA",
+   "rt": {
+    "preco": 3820,
+    "ida": "2026-11-20",
+    "volta": "2026-11-30",
+    "paradas": 2,
+    "visto": "2026-11-03T23:57:06Z"
+   },
+   "rastreada": true,
+   "nome": "Miami",
+   "pista": true
   },
   {
    "iata": "MAD",

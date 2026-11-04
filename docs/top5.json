@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-04T14:36-03:00",
+ "atualizado": "2026-11-04T15:27-03:00",
  "itens": [
   {
    "k": "PTY",
@@ -17,27 +17,14 @@
   {
    "k": "BHZ",
    "nome": "Belo Horizonte",
-   "menor": 742.0,
-   "rt": 1323.0,
-   "d": 0.13131976362442543,
+   "menor": 666.0,
+   "rt": 1308.0,
+   "d": 0.14116874589625739,
    "normal": 1523,
-   "ida": "2027-01-26",
-   "volta": "2027-02-02",
+   "ida": "2027-02-03",
+   "volta": "2027-02-07",
    "cia": "LATAM",
-   "mes": "01",
-   "intl": false
-  },
-  {
-   "k": "CGR",
-   "nome": "Campo Grande",
-   "menor": 912.0,
-   "rt": 1617.0,
-   "d": 0.11687602403058439,
-   "normal": 1831,
-   "ida": "2027-01-23",
-   "volta": "2027-01-26",
-   "cia": "LATAM",
-   "mes": "01",
+   "mes": "02",
    "intl": false
   },
   {
@@ -49,6 +36,19 @@
    "normal": 1995,
    "ida": "2027-01-19",
    "volta": "2027-01-27",
+   "cia": "LATAM",
+   "mes": "01",
+   "intl": false
+  },
+  {
+   "k": "CGR",
+   "nome": "Campo Grande",
+   "menor": 946.0,
+   "rt": 1651.0,
+   "d": 0.09830693610049157,
+   "normal": 1831,
+   "ida": "2027-01-16",
+   "volta": "2027-01-26",
    "cia": "LATAM",
    "mes": "01",
    "intl": false
@@ -67,7 +67,7 @@
    "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_04/11_\n\n1️⃣ *Cidade do Panamá* · ida e volta *R$ 7.814* (11/11 a 15/11) · 25% abaixo do normal\n2️⃣ *Belo Horizonte* · ida e volta *R$ 1.323* (26/01 a 02/02) · 13% abaixo do normal\n3️⃣ *Campo Grande* · ida e volta *R$ 1.617* (23/01 a 26/01) · 12% abaixo do normal\n4️⃣ *Porto Seguro* · ida e volta *R$ 1.786* (19/01 a 27/01) · 10% abaixo do normal\n5️⃣ *Uberlândia* · ida e volta *R$ 1.621* (23/01 a 02/02)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_04/11_\n\n1️⃣ *Cidade do Panamá* · ida e volta *R$ 7.814* (11/11 a 15/11) · 25% abaixo do normal\n2️⃣ *Belo Horizonte* · ida e volta *R$ 1.308* (03/02 a 07/02) · 14% abaixo do normal\n3️⃣ *Porto Seguro* · ida e volta *R$ 1.786* (19/01 a 27/01) · 10% abaixo do normal\n4️⃣ *Campo Grande* · ida e volta *R$ 1.651* (16/01 a 26/01)\n5️⃣ *Uberlândia* · ida e volta *R$ 1.621* (23/01 a 02/02)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
@@ -80,24 +80,44 @@
    "d": -0.17543859649122817
   },
   {
+   "k": "REC",
+   "nome": "Recife",
+   "rt": 1019.0,
+   "menor": 509.0,
+   "ida": "2026-12-05",
+   "volta": "2026-12-10",
+   "normal": 970,
+   "d": -0.050515463917525816
+  },
+  {
    "k": "SAO",
    "nome": "São Paulo",
    "rt": 1123.0,
    "menor": 455.0,
-   "ida": "2026-12-01",
-   "volta": "2026-12-10",
+   "ida": "2026-12-06",
+   "volta": "2026-12-09",
    "normal": 1172,
    "d": 0.04180887372013653
   },
   {
-   "k": "REC",
-   "nome": "Recife",
-   "rt": 1160.0,
-   "menor": 613.0,
-   "ida": "2026-12-05",
-   "volta": "2026-12-10",
-   "normal": 970,
-   "d": -0.19587628865979378
+   "k": "BEL",
+   "nome": "Belém",
+   "rt": 1147.0,
+   "menor": 406.0,
+   "ida": "2027-02-03",
+   "volta": "2027-02-07",
+   "normal": 1217,
+   "d": 0.05751848808545601
+  },
+  {
+   "k": "FLN",
+   "nome": "Florianópolis",
+   "rt": 1218.0,
+   "menor": 614.0,
+   "ida": "2027-01-26",
+   "volta": "2027-01-30",
+   "normal": 1214,
+   "d": -0.0032948929159801743
   },
   {
    "k": "RIO",
@@ -108,27 +128,7 @@
    "volta": "2026-12-05",
    "normal": 1367,
    "d": 0.04316020482809069
-  },
-  {
-   "k": "BHZ",
-   "nome": "Belo Horizonte",
-   "rt": 1323.0,
-   "menor": 742.0,
-   "ida": "2027-01-26",
-   "volta": "2027-02-02",
-   "normal": 1523,
-   "d": 0.13131976362442543
-  },
-  {
-   "k": "FLN",
-   "nome": "Florianópolis",
-   "rt": 1338.0,
-   "menor": 734.0,
-   "ida": "2027-01-26",
-   "volta": "2027-01-30",
-   "normal": 1214,
-   "d": -0.10214168039538718
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_04/11_\n\n✈️ *Juazeiro do Norte* · *R$ 737* (15/12 a 25/12)\n✈️ *São Paulo* · *R$ 1.123* (01/12 a 10/12)\n✈️ *Recife* · *R$ 1.160* (05/12 a 10/12)\n✈️ *Rio de Janeiro* · *R$ 1.308* (02/12 a 05/12)\n✈️ *Belo Horizonte* · *R$ 1.323* (26/01 a 02/02)\n✈️ *Florianópolis* · *R$ 1.338* (26/01 a 30/01)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_04/11_\n\n✈️ *Juazeiro do Norte* · *R$ 737* (15/12 a 25/12)\n✈️ *Recife* · *R$ 1.019* (05/12 a 10/12)\n✈️ *São Paulo* · *R$ 1.123* (06/12 a 09/12)\n✈️ *Belém* · *R$ 1.147* (03/02 a 07/02)\n✈️ *Florianópolis* · *R$ 1.218* (26/01 a 30/01)\n✈️ *Rio de Janeiro* · *R$ 1.308* (02/12 a 05/12)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

@@ -178,7 +178,7 @@
   "BOG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (21 de ~90 dias)"
+   "motivo": "poucos voos (18 de ~90 dias)"
   },
   "CTG": {
    "prioridade": "baixa",
@@ -196,9 +196,9 @@
    "motivo": "poucos voos (9 de ~90 dias)"
   },
   "MVD": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (28 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "SID": {
    "prioridade": "baixa",
@@ -271,30 +271,30 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-11-04T01:01-03:00",
+ "quando": "2026-11-04T02:00-03:00",
  "ultimo_lote": [
+  "ROM",
+  "NVT",
+  "PMW",
+  "SAO",
+  "PAR",
+  "RIO",
+  "SSA",
+  "REC",
+  "BEL",
+  "GYN",
+  "NAT",
+  "IGU",
+  "JDO",
+  "AJU",
+  "SLZ",
+  "THE",
+  "CGB",
+  "MAO",
+  "CUN",
   "BPS",
   "CWB",
   "AMS",
-  "MIA",
-  "FLN",
-  "BSB",
-  "LON",
-  "MIL",
-  "VIX",
-  "LIS",
-  "BHZ",
-  "UDI",
-  "FRA",
-  "BCN",
-  "MCZ",
-  "BUE",
-  "VCP",
-  "OPO",
-  "POA",
-  "JPA",
-  "MAD",
-  "MVD",
-  "BOG"
+  "MIA"
  ]
 }

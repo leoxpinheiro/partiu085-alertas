@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-05T17:43+00:00",
+ "atualizado": "2026-11-05T18:53+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -8,7 +8,6 @@
   "LON",
   "MAD",
   "MIA",
-  "MVD",
   "PAR",
   "REC",
   "RIO",
@@ -21,11 +20,11 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 408,
-    "ida": "2026-11-17",
+    "preco": 429,
+    "ida": "2026-11-12",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-01T17:59:51Z"
+    "visto": "2026-11-02T22:59:04Z"
    },
    "rastreada": true,
    "nome": "Juazeiro do Norte",
@@ -47,7 +46,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 671,
+    "preco": 673,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -84,19 +83,6 @@
    "pista": false
   },
   {
-   "iata": "MVD",
-   "ow": {
-    "preco": 912,
-    "ida": "2026-11-10",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-01T18:10:37Z"
-   },
-   "rastreada": true,
-   "nome": "Montevidéu",
-   "pista": true
-  },
-  {
    "iata": "SAO",
    "rt": {
     "preco": 943,
@@ -106,7 +92,7 @@
     "visto": "2026-11-04T23:59:25Z"
    },
    "ow": {
-    "preco": 392,
+    "preco": 394,
     "ida": "2026-12-12",
     "volta": "",
     "paradas": 0,
@@ -119,14 +105,14 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1250,
+    "preco": 1253,
     "ida": "2027-03-19",
     "volta": "2027-03-24",
     "paradas": 1,
     "visto": "2026-11-05T01:19:13Z"
    },
    "ow": {
-    "preco": 474,
+    "preco": 475,
     "ida": "2027-04-10",
     "volta": "",
     "paradas": 0,
@@ -152,7 +138,7 @@
   {
    "iata": "CAY",
    "ow": {
-    "preco": 1392,
+    "preco": 1396,
     "ida": "2027-03-25",
     "volta": "",
     "paradas": 0,
@@ -160,19 +146,6 @@
    },
    "rastreada": false,
    "nome": "CAY",
-   "pista": false
-  },
-  {
-   "iata": "FLN",
-   "rt": {
-    "preco": 1407,
-    "ida": "2027-09-15",
-    "volta": "2027-09-19",
-    "paradas": 1,
-    "visto": "2026-11-05T15:24:58Z"
-   },
-   "rastreada": true,
-   "nome": "Florianópolis",
    "pista": false
   },
   {
@@ -186,6 +159,19 @@
    },
    "rastreada": true,
    "nome": "Brasília",
+   "pista": false
+  },
+  {
+   "iata": "FLN",
+   "rt": {
+    "preco": 1411,
+    "ida": "2027-09-15",
+    "volta": "2027-09-19",
+    "paradas": 1,
+    "visto": "2026-11-05T15:24:58Z"
+   },
+   "rastreada": true,
+   "nome": "Florianópolis",
    "pista": false
   },
   {
@@ -244,7 +230,7 @@
   {
    "iata": "LON",
    "ow": {
-    "preco": 2291,
+    "preco": 2298,
     "ida": "2026-11-29",
     "volta": "",
     "paradas": 2,
@@ -303,7 +289,7 @@
     "visto": "2026-11-03T02:11:02Z"
    },
    "ow": {
-    "preco": 2933,
+    "preco": 2942,
     "ida": "2026-12-19",
     "volta": "",
     "paradas": 0,
@@ -362,11 +348,11 @@
     "visto": "2026-11-02T21:17:37Z"
    },
    "ow": {
-    "preco": 3233,
-    "ida": "2026-12-30",
+    "preco": 2397,
+    "ida": "2026-11-24",
     "volta": "",
-    "paradas": 3,
-    "visto": "2026-11-02T02:06:30Z"
+    "paradas": 2,
+    "visto": "2026-11-05T18:16:43Z"
    },
    "rastreada": true,
    "nome": "Paris",
@@ -388,14 +374,14 @@
   {
    "iata": "IST",
    "rt": {
-    "preco": 9426,
+    "preco": 9455,
     "ida": "2027-01-04",
     "volta": "2027-01-14",
     "paradas": 2,
     "visto": "2026-11-05T00:18:24Z"
    },
    "ow": {
-    "preco": 3153,
+    "preco": 3163,
     "ida": "2027-01-24",
     "volta": "",
     "paradas": 2,
@@ -434,7 +420,7 @@
   {
    "iata": "MEL",
    "rt": {
-    "preco": 10962,
+    "preco": 10995,
     "ida": "2027-04-18",
     "volta": "2027-05-01",
     "paradas": 2,

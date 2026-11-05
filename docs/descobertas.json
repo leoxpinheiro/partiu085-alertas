@@ -1,10 +1,11 @@
 {
- "atualizado": "2026-11-05T16:33+00:00",
+ "atualizado": "2026-11-05T17:43+00:00",
  "pistas": [
   "BEL",
   "BHZ",
   "JDO",
   "LIS",
+  "LON",
   "MAD",
   "MIA",
   "MVD",
@@ -46,7 +47,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 666,
+    "preco": 671,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -105,7 +106,7 @@
     "visto": "2026-11-04T23:59:25Z"
    },
    "ow": {
-    "preco": 390,
+    "preco": 392,
     "ida": "2026-12-12",
     "volta": "",
     "paradas": 0,
@@ -118,14 +119,14 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1241,
+    "preco": 1250,
     "ida": "2027-03-19",
     "volta": "2027-03-24",
     "paradas": 1,
     "visto": "2026-11-05T01:19:13Z"
    },
    "ow": {
-    "preco": 471,
+    "preco": 474,
     "ida": "2027-04-10",
     "volta": "",
     "paradas": 0,
@@ -151,7 +152,7 @@
   {
    "iata": "CAY",
    "ow": {
-    "preco": 1383,
+    "preco": 1392,
     "ida": "2027-03-25",
     "volta": "",
     "paradas": 0,
@@ -164,7 +165,7 @@
   {
    "iata": "FLN",
    "rt": {
-    "preco": 1398,
+    "preco": 1407,
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
@@ -241,6 +242,19 @@
    "pista": false
   },
   {
+   "iata": "LON",
+   "ow": {
+    "preco": 2291,
+    "ida": "2026-11-29",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-05T02:11:49Z"
+   },
+   "rastreada": true,
+   "nome": "Londres",
+   "pista": true
+  },
+  {
    "iata": "MAO",
    "rt": {
     "preco": 2702,
@@ -289,7 +303,7 @@
     "visto": "2026-11-03T02:11:02Z"
    },
    "ow": {
-    "preco": 2914,
+    "preco": 2933,
     "ida": "2026-12-19",
     "volta": "",
     "paradas": 0,
@@ -372,29 +386,16 @@
    "pista": false
   },
   {
-   "iata": "BAK",
-   "rt": {
-    "preco": 7925,
-    "ida": "2027-04-06",
-    "volta": "2027-04-09",
-    "paradas": 2,
-    "visto": "2026-11-01T17:29:06Z"
-   },
-   "rastreada": false,
-   "nome": "BAK",
-   "pista": false
-  },
-  {
    "iata": "IST",
    "rt": {
-    "preco": 9364,
+    "preco": 9426,
     "ida": "2027-01-04",
     "volta": "2027-01-14",
     "paradas": 2,
     "visto": "2026-11-05T00:18:24Z"
    },
    "ow": {
-    "preco": 3133,
+    "preco": 3153,
     "ida": "2027-01-24",
     "volta": "",
     "paradas": 2,
@@ -433,7 +434,7 @@
   {
    "iata": "MEL",
    "rt": {
-    "preco": 10890,
+    "preco": 10962,
     "ida": "2027-04-18",
     "volta": "2027-05-01",
     "paradas": 2,

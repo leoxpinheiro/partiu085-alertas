@@ -1,35 +1,5 @@
 [
  {
-  "quando": "2026-10-18T00:24-03:00",
-  "rotas": [
-   "NAT",
-   "MCZ",
-   "SSA",
-   "JPA",
-   "BEL",
-   "SLZ",
-   "CGB",
-   "CWB",
-   "FLN",
-   "IGU",
-   "LIS",
-   "SAO",
-   "RIO",
-   "BCN",
-   "VCP",
-   "NVT",
-   "POA"
-  ],
-  "rotas_com_dados": 17,
-  "candidatos": 1,
-  "alertas": 1,
-  "manual": false,
-  "segundos": 1626,
-  "consultas": 3094,
-  "erros": 310,
-  "parou_por_tempo": false
- },
- {
   "quando": "2026-10-18T01:05-03:00",
   "rotas": [
    "LON",
@@ -13202,6 +13172,36 @@
   "segundos": 1641,
   "consultas": 3094,
   "erros": 372,
+  "parou_por_tempo": false
+ },
+ {
+  "quando": "2026-11-06T18:26-03:00",
+  "rotas": [
+   "VIX",
+   "UDI",
+   "SAO",
+   "RIO",
+   "SSA",
+   "REC",
+   "BEL",
+   "LIS",
+   "MAD",
+   "PAR",
+   "OPO",
+   "ROM",
+   "CWB",
+   "NAT",
+   "LON",
+   "CUN",
+   "MVD"
+  ],
+  "rotas_com_dados": 17,
+  "candidatos": 0,
+  "alertas": 0,
+  "manual": false,
+  "segundos": 1853,
+  "consultas": 3094,
+  "erros": 532,
   "parou_por_tempo": false
  }
 ]

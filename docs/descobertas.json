@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-06T18:35+00:00",
+ "atualizado": "2026-11-06T19:45+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -13,6 +13,7 @@
   "REC",
   "RIO",
   "SAO",
+  "SLZ",
   "SSA",
   "THE"
  ],
@@ -172,7 +173,7 @@
     "visto": "2026-11-04T21:54:17Z"
    },
    "ow": {
-    "preco": 2137,
+    "preco": 2136,
     "ida": "2027-01-03",
     "volta": "",
     "paradas": 2,
@@ -181,6 +182,19 @@
    "rastreada": true,
    "nome": "Brasília",
    "pista": false
+  },
+  {
+   "iata": "SLZ",
+   "rt": {
+    "preco": 1426,
+    "ida": "2026-12-21",
+    "volta": "2026-12-27",
+    "paradas": 0,
+    "visto": "2026-11-06T18:42:04Z"
+   },
+   "rastreada": true,
+   "nome": "São Luís",
+   "pista": true
   },
   {
    "iata": "PET",
@@ -238,7 +252,7 @@
   {
    "iata": "CGB",
    "ow": {
-    "preco": 2148,
+    "preco": 2147,
     "ida": "2026-11-06",
     "volta": "",
     "paradas": 1,
@@ -264,7 +278,7 @@
   {
    "iata": "CUZ",
    "ow": {
-    "preco": 2494,
+    "preco": 2493,
     "ida": "2026-11-16",
     "volta": "",
     "paradas": 2,
@@ -290,7 +304,7 @@
   {
    "iata": "BUE",
    "rt": {
-    "preco": 2954,
+    "preco": 2953,
     "ida": "2026-12-14",
     "volta": "2026-12-20",
     "paradas": 0,
@@ -362,7 +376,7 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4876,
+    "preco": 4875,
     "ida": "2027-05-03",
     "volta": "",
     "paradas": 4,
@@ -423,19 +437,6 @@
    },
    "rastreada": false,
    "nome": "IST",
-   "pista": false
-  },
-  {
-   "iata": "ROM",
-   "rt": {
-    "preco": 9601,
-    "ida": "2027-01-02",
-    "volta": "2027-02-06",
-    "paradas": 1,
-    "visto": "2026-11-02T19:31:12Z"
-   },
-   "rastreada": true,
-   "nome": "Roma",
    "pista": false
   },
   {

@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-05T22:24+00:00",
+ "atualizado": "2026-11-06T05:33+00:00",
  "pistas": [
   "BEL",
   "BHZ",
+  "BUE",
   "JDO",
   "LIS",
   "LON",
@@ -46,7 +47,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 673,
+    "preco": 674,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -105,7 +106,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1254,
+    "preco": 1256,
     "ida": "2027-03-19",
     "volta": "2027-03-24",
     "paradas": 1,
@@ -125,28 +126,15 @@
   {
    "iata": "THE",
    "rt": {
-    "preco": 1375,
+    "preco": 1348,
     "ida": "2026-12-10",
     "volta": "2026-12-13",
-    "paradas": 1,
-    "visto": "2026-11-05T21:12:25Z"
+    "paradas": 0,
+    "visto": "2026-11-06T02:30:09Z"
    },
    "rastreada": true,
    "nome": "Teresina",
    "pista": true
-  },
-  {
-   "iata": "CAY",
-   "ow": {
-    "preco": 1397,
-    "ida": "2027-03-25",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-05T02:29:13Z"
-   },
-   "rastreada": false,
-   "nome": "CAY",
-   "pista": false
   },
   {
    "iata": "FLN",
@@ -155,10 +143,23 @@
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
-    "visto": "2026-11-05T21:16:40Z"
+    "visto": "2026-11-06T00:05:54Z"
    },
    "rastreada": true,
    "nome": "Florianópolis",
+   "pista": false
+  },
+  {
+   "iata": "CAY",
+   "ow": {
+    "preco": 1399,
+    "ida": "2027-03-25",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-05T02:29:13Z"
+   },
+   "rastreada": false,
+   "nome": "CAY",
    "pista": false
   },
   {
@@ -230,7 +231,7 @@
   {
    "iata": "LON",
    "ow": {
-    "preco": 2300,
+    "preco": 2302,
     "ida": "2026-11-29",
     "volta": "",
     "paradas": 2,
@@ -239,6 +240,19 @@
    "rastreada": true,
    "nome": "Londres",
    "pista": true
+  },
+  {
+   "iata": "CUZ",
+   "ow": {
+    "preco": 2498,
+    "ida": "2026-11-16",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-06T03:34:25Z"
+   },
+   "rastreada": false,
+   "nome": "CUZ",
+   "pista": false
   },
   {
    "iata": "MAO",
@@ -267,6 +281,19 @@
    "pista": false
   },
   {
+   "iata": "BUE",
+   "rt": {
+    "preco": 2960,
+    "ida": "2026-12-14",
+    "volta": "2026-12-20",
+    "paradas": 0,
+    "visto": "2026-11-06T02:44:10Z"
+   },
+   "rastreada": true,
+   "nome": "Buenos Aires",
+   "pista": true
+  },
+  {
    "iata": "LIM",
    "rt": {
     "preco": 3648,
@@ -289,11 +316,11 @@
     "visto": "2026-11-03T02:11:02Z"
    },
    "ow": {
-    "preco": 2944,
-    "ida": "2026-12-19",
+    "preco": 2572,
+    "ida": "2027-03-16",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-05T02:01:03Z"
+    "visto": "2026-11-06T02:10:09Z"
    },
    "rastreada": true,
    "nome": "Lisboa",
@@ -315,11 +342,11 @@
   {
    "iata": "MAD",
    "rt": {
-    "preco": 3866,
+    "preco": 3895,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
     "paradas": 1,
-    "visto": "2026-11-02T23:23:08Z"
+    "visto": "2026-11-05T23:18:50Z"
    },
    "rastreada": true,
    "nome": "Madri",
@@ -348,7 +375,7 @@
     "visto": "2026-11-02T21:17:37Z"
    },
    "ow": {
-    "preco": 2399,
+    "preco": 2401,
     "ida": "2026-11-24",
     "volta": "",
     "paradas": 2,
@@ -374,14 +401,14 @@
   {
    "iata": "IST",
    "rt": {
-    "preco": 9462,
+    "preco": 9472,
     "ida": "2027-01-04",
     "volta": "2027-01-14",
     "paradas": 2,
     "visto": "2026-11-05T00:18:24Z"
    },
    "ow": {
-    "preco": 3165,
+    "preco": 3169,
     "ida": "2027-01-24",
     "volta": "",
     "paradas": 2,
@@ -413,6 +440,13 @@
     "paradas": 3,
     "visto": "2026-11-02T15:06:18Z"
    },
+   "ow": {
+    "preco": 4885,
+    "ida": "2027-05-03",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-11-06T01:56:16Z"
+   },
    "rastreada": false,
    "nome": "MOW",
    "pista": false
@@ -420,7 +454,7 @@
   {
    "iata": "MEL",
    "rt": {
-    "preco": 11004,
+    "preco": 11015,
     "ida": "2027-04-18",
     "volta": "2027-05-01",
     "paradas": 2,

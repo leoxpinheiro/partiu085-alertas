@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-06T20:55+00:00",
+ "atualizado": "2026-11-06T22:05+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -127,7 +127,7 @@
   {
    "iata": "THE",
    "rt": {
-    "preco": 1347,
+    "preco": 1350,
     "ida": "2026-12-10",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -140,7 +140,7 @@
   {
    "iata": "CAY",
    "ow": {
-    "preco": 1391,
+    "preco": 1395,
     "ida": "2027-03-25",
     "volta": "",
     "paradas": 0,
@@ -153,7 +153,7 @@
   {
    "iata": "FLN",
    "rt": {
-    "preco": 1396,
+    "preco": 1400,
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
@@ -173,7 +173,7 @@
     "visto": "2026-11-04T21:54:17Z"
    },
    "ow": {
-    "preco": 2138,
+    "preco": 2143,
     "ida": "2027-01-03",
     "volta": "",
     "paradas": 2,
@@ -186,7 +186,7 @@
   {
    "iata": "SLZ",
    "rt": {
-    "preco": 1428,
+    "preco": 1431,
     "ida": "2026-12-21",
     "volta": "2026-12-27",
     "paradas": 0,
@@ -199,7 +199,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 1584,
+    "preco": 1588,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -243,19 +243,6 @@
    "pista": false
   },
   {
-   "iata": "CGB",
-   "ow": {
-    "preco": 2149,
-    "ida": "2026-11-06",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-06T08:04:28Z"
-   },
-   "rastreada": true,
-   "nome": "Cuiabá",
-   "pista": false
-  },
-  {
    "iata": "LON",
    "ow": {
     "preco": 2302,
@@ -269,9 +256,35 @@
    "pista": true
   },
   {
+   "iata": "PAR",
+   "ow": {
+    "preco": 2396,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-05T18:15:38Z"
+   },
+   "rastreada": true,
+   "nome": "Paris",
+   "pista": true
+  },
+  {
+   "iata": "CGB",
+   "ow": {
+    "preco": 2405,
+    "ida": "2026-11-06",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-06T08:04:28Z"
+   },
+   "rastreada": true,
+   "nome": "Cuiabá",
+   "pista": false
+  },
+  {
    "iata": "CUZ",
    "ow": {
-    "preco": 2495,
+    "preco": 2501,
     "ida": "2026-11-16",
     "volta": "",
     "paradas": 2,
@@ -297,7 +310,7 @@
   {
    "iata": "BUE",
    "rt": {
-    "preco": 2956,
+    "preco": 2963,
     "ida": "2026-12-14",
     "volta": "2026-12-20",
     "paradas": 0,
@@ -369,7 +382,7 @@
   {
    "iata": "MOW",
    "ow": {
-    "preco": 4880,
+    "preco": 4891,
     "ida": "2027-05-03",
     "volta": "",
     "paradas": 4,
@@ -382,7 +395,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5585,
+    "preco": 5598,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -391,26 +404,6 @@
    "rastreada": false,
    "nome": "YTO",
    "pista": false
-  },
-  {
-   "iata": "PAR",
-   "rt": {
-    "preco": 6068,
-    "ida": "2026-12-24",
-    "volta": "2027-01-01",
-    "paradas": 0,
-    "visto": "2026-11-02T21:17:37Z"
-   },
-   "ow": {
-    "preco": 2396,
-    "ida": "2026-11-25",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-05T18:15:38Z"
-   },
-   "rastreada": true,
-   "nome": "Paris",
-   "pista": true
   },
   {
    "iata": "IST",

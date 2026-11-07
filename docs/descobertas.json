@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-07T03:29+00:00",
+ "atualizado": "2026-11-07T05:01+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -9,6 +9,7 @@
   "MAD",
   "MIA",
   "PAR",
+  "PTY",
   "REC",
   "RIO",
   "SAO",
@@ -68,6 +69,19 @@
    },
    "rastreada": false,
    "nome": "CPV",
+   "pista": false
+  },
+  {
+   "iata": "POA",
+   "ow": {
+    "preco": 841,
+    "ida": "2027-08-07",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-07T03:55:31Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
    "pista": false
   },
   {
@@ -255,6 +269,19 @@
    "pista": true
   },
   {
+   "iata": "PTY",
+   "ow": {
+    "preco": 2342,
+    "ida": "2026-12-23",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-07T04:06:27Z"
+   },
+   "rastreada": true,
+   "nome": "Cidade do Panamá",
+   "pista": true
+  },
+  {
    "iata": "PAR",
    "ow": {
     "preco": 2396,
@@ -350,6 +377,19 @@
    },
    "rastreada": false,
    "nome": "MOW",
+   "pista": false
+  },
+  {
+   "iata": "VIE",
+   "rt": {
+    "preco": 5442,
+    "ida": "2027-02-19",
+    "volta": "2027-03-12",
+    "paradas": 1,
+    "visto": "2026-11-07T04:44:39Z"
+   },
+   "rastreada": false,
+   "nome": "VIE",
    "pista": false
   },
   {

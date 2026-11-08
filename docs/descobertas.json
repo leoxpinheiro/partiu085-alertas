@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-08T00:53+00:00",
+ "atualizado": "2026-11-08T02:34+00:00",
  "pistas": [
   "BEL",
   "BHZ",
@@ -39,6 +39,19 @@
    },
    "rastreada": true,
    "nome": "Recife",
+   "pista": true
+  },
+  {
+   "iata": "BHZ",
+   "ow": {
+    "preco": 535,
+    "ida": "2026-12-24",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-04T02:52:37Z"
+   },
+   "rastreada": true,
+   "nome": "Belo Horizonte",
    "pista": true
   },
   {
@@ -232,39 +245,6 @@
    "pista": false
   },
   {
-   "iata": "BHZ",
-   "rt": {
-    "preco": 1621,
-    "ida": "2026-12-04",
-    "volta": "2026-12-06",
-    "paradas": 2,
-    "visto": "2026-11-04T02:15:58Z"
-   },
-   "ow": {
-    "preco": 535,
-    "ida": "2026-12-24",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-04T02:52:37Z"
-   },
-   "rastreada": true,
-   "nome": "Belo Horizonte",
-   "pista": true
-  },
-  {
-   "iata": "LON",
-   "ow": {
-    "preco": 2302,
-    "ida": "2026-11-29",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-05T02:11:49Z"
-   },
-   "rastreada": true,
-   "nome": "Londres",
-   "pista": true
-  },
-  {
    "iata": "PTY",
    "ow": {
     "preco": 2342,
@@ -276,6 +256,19 @@
    "rastreada": true,
    "nome": "Cidade do Panamá",
    "pista": false
+  },
+  {
+   "iata": "LON",
+   "ow": {
+    "preco": 2372,
+    "ida": "2026-11-29",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-08T01:15:08Z"
+   },
+   "rastreada": true,
+   "nome": "Londres",
+   "pista": true
   },
   {
    "iata": "BUE",

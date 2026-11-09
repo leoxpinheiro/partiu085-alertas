@@ -1,14 +1,14 @@
 {
- "atualizado": "2026-11-09T14:06+00:00",
+ "atualizado": "2026-11-09T15:06+00:00",
  "pistas": [
   "BEL",
   "BSB",
   "BUE",
+  "FLN",
   "LIS",
   "LON",
   "MAD",
   "NYC",
-  "PTY",
   "SAO",
   "SLZ",
   "SSA",
@@ -150,7 +150,7 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "CAY",
@@ -261,7 +261,7 @@
    },
    "rastreada": true,
    "nome": "Cidade do Panamá",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "LON",
@@ -349,6 +349,19 @@
    "pista": true
   },
   {
+   "iata": "TPE",
+   "ow": {
+    "preco": 4551,
+    "ida": "2026-12-05",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-11-09T14:54:15Z"
+   },
+   "rastreada": false,
+   "nome": "TPE",
+   "pista": false
+  },
+  {
    "iata": "MOW",
    "ow": {
     "preco": 4891,
@@ -390,7 +403,7 @@
   {
    "iata": "NYC",
    "rt": {
-    "preco": 6265,
+    "preco": 6260,
     "ida": "2027-08-17",
     "volta": "2027-08-20",
     "paradas": 3,
@@ -403,7 +416,7 @@
   {
    "iata": "TYO",
    "rt": {
-    "preco": 12106,
+    "preco": 12096,
     "ida": "2027-01-14",
     "volta": "2027-02-04",
     "paradas": 2,

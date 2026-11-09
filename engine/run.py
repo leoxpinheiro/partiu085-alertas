@@ -468,6 +468,9 @@ def fila_whatsapp(a: dict, aj: dict) -> bool:
             curto = f"partiu.avancepro.app.br/v?{a['destino']}{ida[8:10]}{ida[5:7]}-{volta[8:10]}{volta[5:7]}"
             txt = re.sub(r"🛒 Ver e comprar: \S+", f"🛒 Comprar com segurança: {curto}", txt)
         F = ler_json(DOCS / "wpp_fila.json", {"pausado": False, "itens": []})
+        corte = (agora() - timedelta(days=3)).isoformat()
+        if any(x.get("id", "").startswith(f"FOR-{a['destino']}-") and x.get("criado", "") >= corte for x in F.get("itens", [])):
+            return False
         F.setdefault("itens", []).append({"id": a["id"], "criado": agora().isoformat(timespec="minutes"),
                                           "titulo": f"{a.get('destino_nome', '')} {brl(a.get('preco', 0))}", "texto": txt, "imagem": nome})
         F["itens"] = F["itens"][-50:]
@@ -491,6 +494,10 @@ def story_oferta(a: dict, aj: dict) -> bool:
             return False
         fila = ler_json(DOCS / "ig_fila.json", [])
         hoje = agora().date().isoformat()
+        # mesmo destino não vira story de novo por 4 dias (antes saía Belém todo dia)
+        corte = (agora() - timedelta(days=4)).isoformat()
+        if any(x.get("origem", "").startswith(f"story-oferta-FOR-{a['destino']}-") and x.get("quando", "") >= corte for x in fila):
+            return False
         if sum(1 for x in fila if x.get("origem", "").startswith("story-oferta") and x.get("quando", "").startswith(hoje)) >= int(aj.get("story_max_dia", 2)):
             return False
         import imagem

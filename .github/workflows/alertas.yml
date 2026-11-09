@@ -50,6 +50,9 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           IDA_VOLTA_ROTAS: ${{ github.event.inputs.rotas }}
         run: python engine/ida_volta.py $(echo "$IDA_VOLTA_ROTAS" | tr ',' ' ') 2>&1 | tee -a data/ultima_rodada.log
+      - name: Conteúdo automático (achados da semana)
+        continue-on-error: true
+        run: python engine/conteudo_auto.py
       - name: Radar de milhas
         continue-on-error: true
         env:

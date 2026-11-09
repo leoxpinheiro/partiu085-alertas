@@ -1,6 +1,165 @@
 {
- "atualizado": "2026-11-09T18:03-03:00",
+ "atualizado": "2026-11-09T19:13-03:00",
  "alertas": [
+  {
+   "id": "FOR-REC-2026-12-03-1794262387",
+   "criado": "2026-11-09T19:13-03:00",
+   "rota": "FOR-REC",
+   "destino": "REC",
+   "destino_nome": "Recife",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 409,
+   "preco_volta": 448,
+   "preco_tipico": 488,
+   "desconto": 0.162,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2026-12-03",
+   "volta": "2027-01-14",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": false,
+   "datas_ida": [
+    {
+     "dia": "2026-12-03",
+     "preco": 409
+    },
+    {
+     "dia": "2026-12-09",
+     "preco": 447
+    },
+    {
+     "dia": "2026-12-14",
+     "preco": 447
+    },
+    {
+     "dia": "2026-12-15",
+     "preco": 447
+    },
+    {
+     "dia": "2026-12-16",
+     "preco": 447
+    },
+    {
+     "dia": "2026-12-18",
+     "preco": 447
+    },
+    {
+     "dia": "2027-01-16",
+     "preco": 447
+    },
+    {
+     "dia": "2027-01-23",
+     "preco": 447
+    },
+    {
+     "dia": "2027-01-27",
+     "preco": 447
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-14",
+     "preco": 448
+    },
+    {
+     "dia": "2027-01-15",
+     "preco": 472
+    },
+    {
+     "dia": "2027-01-22",
+     "preco": 448
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 448
+    },
+    {
+     "dia": "2027-01-29",
+     "preco": 448
+    },
+    {
+     "dia": "2027-01-30",
+     "preco": 448
+    },
+    {
+     "dia": "2027-02-01",
+     "preco": 448
+    },
+    {
+     "dia": "2027-02-02",
+     "preco": 448
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "03",
+      "09",
+      "14",
+      "15",
+      "16",
+      "18"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "16",
+      "23",
+      "27"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "14",
+      "15",
+      "22",
+      "28",
+      "29",
+      "30"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "01",
+      "02"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMDNqBRIDRk9ScgUSA1JFQ0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2301REC30011?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-23",
+    "volta": "2027-01-30",
+    "total": 895,
+    "dias": 7
+   },
+   "base": {
+    "dias": 34,
+    "menor_visto": 323
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Recife* (REC)\n💰 *R$ 409* o trecho\n🔁 Ida e volta: *R$ 895* (ida 23/01, volta 30/01 · 7 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Dezembro/26: 03, 09, 14, 15, 16, 18\n▸ Janeiro/27: 16, 23, 27\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 14, 15, 22, 28, 29, 30\n▸ Fevereiro/27: 01, 02\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2301REC30011?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-CGR-2026-12-08-1794241782",
    "criado": "2026-11-09T13:29-03:00",
@@ -160,7 +319,7 @@
    "story": false,
    "wpp": true,
    "conferido": {
-    "quando": "2026-11-09T14:11-03:00",
+    "quando": "2026-11-09T19:13-03:00",
     "preco": 714,
     "status": "valendo"
    }

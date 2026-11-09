@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-09T16:31+00:00",
+ "atualizado": "2026-11-09T17:29+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -9,6 +9,7 @@
   "LON",
   "MAD",
   "NYC",
+  "RIO",
   "SAO",
   "SLZ",
   "SSA",
@@ -133,6 +134,26 @@
    "pista": false
   },
   {
+   "iata": "RIO",
+   "rt": {
+    "preco": 1299,
+    "ida": "2026-12-09",
+    "volta": "2026-12-12",
+    "paradas": 2,
+    "visto": "2026-11-09T16:33:27Z"
+   },
+   "ow": {
+    "preco": 866,
+    "ida": "2026-11-17",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-08T12:29:39Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
    "iata": "THE",
    "rt": {
     "preco": 1350,
@@ -190,26 +211,6 @@
    "rastreada": true,
    "nome": "São Luís",
    "pista": true
-  },
-  {
-   "iata": "RIO",
-   "rt": {
-    "preco": 1481,
-    "ida": "2026-12-01",
-    "volta": "2026-12-04",
-    "paradas": 1,
-    "visto": "2026-11-06T16:44:40Z"
-   },
-   "ow": {
-    "preco": 866,
-    "ida": "2026-11-17",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-08T12:29:39Z"
-   },
-   "rastreada": true,
-   "nome": "Rio de Janeiro",
-   "pista": false
   },
   {
    "iata": "MAO",
@@ -403,7 +404,7 @@
   {
    "iata": "NYC",
    "rt": {
-    "preco": 6276,
+    "preco": 6277,
     "ida": "2027-08-17",
     "volta": "2027-08-20",
     "paradas": 3,
@@ -416,7 +417,7 @@
   {
    "iata": "TYO",
    "rt": {
-    "preco": 12127,
+    "preco": 12129,
     "ida": "2027-01-14",
     "volta": "2027-02-04",
     "paradas": 2,

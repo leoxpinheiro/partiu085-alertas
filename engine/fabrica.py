@@ -8,7 +8,7 @@ Cada dia da semana tem um formato (e uma cor da marca), pra o perfil não ficar 
   sex  destino da semana (o mais abaixo do preço normal)      · verde
   sáb  internacional: ida e volta mais baratas                · azul-marinho
   (dom fica com o "Achados da semana", do conteudo_auto.py)
-Desenha em HTML (fontes e ícones da marca), tira foto com o Chromium e agenda no Instagram às 11:30.
+Desenha em HTML (fontes e ícones da marca), tira foto com o Chromium e agenda no Instagram às 9:30.
 Uso: python engine/fabrica.py [seg|ter|qua|qui|sex|sab] [--sem-agendar]
 """
 from __future__ import annotations
@@ -25,7 +25,7 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 DOCS = RAIZ / "docs"
 FUSO = timezone(timedelta(hours=-3))
-HORA = "11:30"
+HORA = "09:30"
 NV, AZ, AM, CR, VD = "#0B2440", "#1F5FBF", "#F5C531", "#F7F4EE", "#1E7A45"
 MES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 SEM = ["seg", "ter", "qua", "qui", "sex", "sáb", "dom"]
@@ -337,7 +337,7 @@ def main(args):
         return
     agora = datetime.now(FUSO)
     q = f"{hoje().isoformat()}T{HORA}-03:00"
-    if agora.strftime("%H:%M") > "10:00":
+    if agora.strftime("%H:%M") > "08:30":
         q = f"{(hoje() + timedelta(days=1)).isoformat()}T{HORA}-03:00"
     fila = ler("ig_fila.json", [])
     fila.append({"id": tag_, "titulo": f"Fábrica: {dia} ({hoje().strftime('%d/%m')})", "tipo": "carrossel", "imagens": imgs, "legenda": leg,

@@ -1,0 +1,43 @@
+name: Fábrica de conteúdo
+
+on:
+  schedule:
+    - cron: "40 8 * * *"   # 05:40 em Fortaleza: monta o carrossel do dia (sai às 11:30)
+  workflow_dispatch:
+    inputs:
+      dia:
+        description: "Formato (seg, ter, qua, qui, sex, sab). Vazio = o do dia"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: conteudo
+  cancel-in-progress: false
+
+jobs:
+  fabrica:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install playwright==1.47.0 && python -m playwright install --with-deps chromium
+      - run: python engine/fabrica.py ${{ github.event.inputs.dia }}
+      - name: Salvar
+        run: |
+          git config user.name "partiu085-bot"
+          git config user.email "partiu085-bot@users.noreply.github.com"
+          git add docs
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Conteúdo do dia $(TZ=America/Fortaleza date '+%d/%m')"
+          for i in 1 2 3 4 5 6; do
+            git pull --rebase -X theirs -q && git push -q && exit 0
+            git rebase --abort 2>/dev/null || true
+            sleep $((RANDOM % 15 + 5))
+          done
+          exit 1

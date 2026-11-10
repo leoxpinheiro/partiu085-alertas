@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-10T21:30+00:00",
+ "atualizado": "2026-11-10T22:31+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -9,7 +9,6 @@
   "LON",
   "MAD",
   "NYC",
-  "PTY",
   "RIO",
   "SAO"
  ],
@@ -44,7 +43,7 @@
   {
    "iata": "SAO",
    "rt": {
-    "preco": 857,
+    "preco": 856,
     "ida": "2027-03-23",
     "volta": "2027-03-27",
     "paradas": 0,
@@ -77,7 +76,7 @@
   {
    "iata": "BEL",
    "rt": {
-    "preco": 1005,
+    "preco": 1004,
     "ida": "2026-11-27",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -174,6 +173,19 @@
    "pista": false
   },
   {
+   "iata": "UDI",
+   "ow": {
+    "preco": 1514,
+    "ida": "2026-11-11",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-10T21:57:38Z"
+   },
+   "rastreada": true,
+   "nome": "Uberlândia",
+   "pista": false
+  },
+  {
    "iata": "MVD",
    "ow": {
     "preco": 1569,
@@ -236,7 +248,7 @@
    },
    "rastreada": true,
    "nome": "Cidade do Panamá",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "LON",
@@ -254,7 +266,7 @@
   {
    "iata": "AMS",
    "ow": {
-    "preco": 2924,
+    "preco": 2923,
     "ida": "2026-12-21",
     "volta": "",
     "paradas": 1,
@@ -267,7 +279,7 @@
   {
    "iata": "MGF",
    "rt": {
-    "preco": 3188,
+    "preco": 3187,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
@@ -352,7 +364,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5569,
+    "preco": 5567,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -391,7 +403,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 6655,
+    "preco": 6653,
     "ida": "2027-01-18",
     "volta": "",
     "paradas": 3,
@@ -404,14 +416,14 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 11296,
+    "preco": 11292,
     "ida": "2027-10-12",
     "volta": "2027-10-30",
     "paradas": 3,
     "visto": "2026-11-10T17:06:58Z"
    },
    "ow": {
-    "preco": 7293,
+    "preco": 7290,
     "ida": "2027-03-07",
     "volta": "",
     "paradas": 2,

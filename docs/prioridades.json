@@ -188,7 +188,7 @@
   "PTY": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (1 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "CUN": {
    "prioridade": "baixa",
@@ -231,9 +231,9 @@
    "motivo": "9 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "PMW": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "UDI": {
    "prioridade": "alta",
@@ -271,30 +271,30 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   }
  },
- "quando": "2026-11-10T18:31-03:00",
+ "quando": "2026-11-10T19:31-03:00",
  "ultimo_lote": [
+  "VIX",
+  "SSA",
+  "AJU",
+  "SLZ",
+  "THE",
+  "FLN",
+  "FRA",
   "MIA",
+  "UDI",
   "BEL",
   "LIS",
+  "BSB",
+  "MIL",
   "REC",
+  "CUN",
+  "PUJ",
+  "BUE",
+  "MCZ",
   "OPO",
+  "GYN",
+  "NVT",
   "MAD",
-  "PAR",
-  "CGB",
-  "RIO",
-  "CGR",
-  "POA",
-  "IGU",
-  "JPA",
-  "SAO",
-  "NAT",
-  "AMS",
-  "CWB",
-  "ROM",
-  "PMW",
-  "MAO",
-  "BPS",
-  "BHZ",
-  "PTY"
+  "PAR"
  ]
 }

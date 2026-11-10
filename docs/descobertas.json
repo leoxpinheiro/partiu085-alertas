@@ -1,18 +1,17 @@
 {
- "atualizado": "2026-11-10T18:30+00:00",
+ "atualizado": "2026-11-10T19:30+00:00",
  "pistas": [
   "AMS",
   "BEL",
   "BSB",
+  "FLN",
   "LIS",
   "LON",
   "MAD",
   "NYC",
   "PTY",
   "RIO",
-  "SAO",
-  "SLZ",
-  "SSA"
+  "SAO"
  ],
  "blogs": [
   {
@@ -38,7 +37,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "POA",
@@ -157,7 +156,7 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "CAY",
@@ -171,19 +170,6 @@
    "rastreada": false,
    "nome": "CAY",
    "pista": false
-  },
-  {
-   "iata": "SLZ",
-   "rt": {
-    "preco": 1431,
-    "ida": "2026-12-21",
-    "volta": "2026-12-27",
-    "paradas": 0,
-    "visto": "2026-11-06T18:42:04Z"
-   },
-   "rastreada": true,
-   "nome": "São Luís",
-   "pista": true
   },
   {
    "iata": "MAO",
@@ -209,6 +195,19 @@
    },
    "rastreada": true,
    "nome": "Montevidéu",
+   "pista": false
+  },
+  {
+   "iata": "BPS",
+   "ow": {
+    "preco": 1574,
+    "ida": "2026-11-18",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-08T07:23:05Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Seguro",
    "pista": false
   },
   {
@@ -279,7 +278,7 @@
   {
    "iata": "MGF",
    "rt": {
-    "preco": 3197,
+    "preco": 3196,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
@@ -364,7 +363,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5585,
+    "preco": 5583,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -403,7 +402,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 6674,
+    "preco": 6671,
     "ida": "2027-01-18",
     "volta": "",
     "paradas": 3,
@@ -416,7 +415,7 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 11328,
+    "preco": 11323,
     "ida": "2027-10-12",
     "volta": "2027-10-30",
     "paradas": 3,

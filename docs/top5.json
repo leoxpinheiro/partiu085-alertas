@@ -1,15 +1,28 @@
 {
- "atualizado": "2026-11-10T18:07-03:00",
+ "atualizado": "2026-11-10T19:15-03:00",
  "itens": [
   {
    "k": "BEL",
    "nome": "Belém",
-   "menor": 375.0,
-   "rt": 758.0,
-   "d": 0.3570822731128075,
+   "menor": 337.0,
+   "rt": 695.0,
+   "d": 0.41051738761662426,
    "normal": 1179,
-   "ida": "2027-01-30",
-   "volta": "2027-02-09",
+   "ida": "2027-02-04",
+   "volta": "2027-02-10",
+   "cia": "LATAM",
+   "mes": "02",
+   "intl": false
+  },
+  {
+   "k": "REC",
+   "nome": "Recife",
+   "menor": 360.0,
+   "rt": 721.0,
+   "d": 0.24895833333333328,
+   "normal": 960,
+   "ida": "2027-01-12",
+   "volta": "2027-01-15",
    "cia": "Azul",
    "mes": "01",
    "intl": false
@@ -17,14 +30,27 @@
   {
    "k": "BHZ",
    "nome": "Belo Horizonte",
-   "menor": 666.0,
-   "rt": 1247.0,
-   "d": 0.1528532608695652,
+   "menor": 606.0,
+   "rt": 1187.0,
+   "d": 0.1936141304347826,
    "normal": 1472,
    "ida": "2027-02-08",
    "volta": "2027-02-12",
    "cia": "LATAM",
    "mes": "02",
+   "intl": false
+  },
+  {
+   "k": "CGR",
+   "nome": "Campo Grande",
+   "menor": 835.0,
+   "rt": 1528.0,
+   "d": 0.14445688689809633,
+   "normal": 1786,
+   "ida": "2027-01-24",
+   "volta": "2027-01-27",
+   "cia": "LATAM",
+   "mes": "01",
    "intl": false
   },
   {
@@ -39,35 +65,9 @@
    "cia": "LATAM",
    "mes": "01",
    "intl": false
-  },
-  {
-   "k": "CGR",
-   "nome": "Campo Grande",
-   "menor": 897.0,
-   "rt": 1599.0,
-   "d": 0.10470324748040316,
-   "normal": 1786,
-   "ida": "2027-01-27",
-   "volta": "2027-01-30",
-   "cia": "LATAM",
-   "mes": "01",
-   "intl": false
-  },
-  {
-   "k": "SSA",
-   "nome": "Salvador",
-   "menor": 721.0,
-   "rt": 1225.0,
-   "d": 0.09727339719970518,
-   "normal": 1357,
-   "ida": "2027-01-15",
-   "volta": "2027-01-25",
-   "cia": "Azul",
-   "mes": "01",
-   "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_10/11_\n\n1️⃣ *Belém* · ida e volta *R$ 758* (30/01 a 09/02) · 36% abaixo do normal\n2️⃣ *Belo Horizonte* · ida e volta *R$ 1.247* (08/02 a 12/02) · 15% abaixo do normal\n3️⃣ *Uberlândia* · ida e volta *R$ 1.499* (25/01 a 28/01) · 12% abaixo do normal\n4️⃣ *Campo Grande* · ida e volta *R$ 1.599* (27/01 a 30/01) · 10% abaixo do normal\n5️⃣ *Salvador* · ida e volta *R$ 1.225* (15/01 a 25/01)\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_10/11_\n\n1️⃣ *Belém* · ida e volta *R$ 695* (04/02 a 10/02) · 41% abaixo do normal\n2️⃣ *Recife* · ida e volta *R$ 721* (12/01 a 15/01) · 25% abaixo do normal\n3️⃣ *Belo Horizonte* · ida e volta *R$ 1.187* (08/02 a 12/02) · 19% abaixo do normal\n4️⃣ *Campo Grande* · ida e volta *R$ 1.528* (24/01 a 27/01) · 14% abaixo do normal\n5️⃣ *Uberlândia* · ida e volta *R$ 1.499* (25/01 a 28/01) · 12% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
@@ -82,32 +82,42 @@
   {
    "k": "BEL",
    "nome": "Belém",
-   "rt": 758.0,
-   "menor": 375.0,
-   "ida": "2027-01-30",
-   "volta": "2027-02-09",
+   "rt": 695.0,
+   "menor": 337.0,
+   "ida": "2027-02-04",
+   "volta": "2027-02-10",
    "normal": 1179,
-   "d": 0.3570822731128075
+   "d": 0.41051738761662426
   },
   {
    "k": "REC",
    "nome": "Recife",
-   "rt": 876.0,
-   "menor": 428.0,
-   "ida": "2026-12-05",
-   "volta": "2026-12-10",
+   "rt": 721.0,
+   "menor": 360.0,
+   "ida": "2027-01-12",
+   "volta": "2027-01-15",
    "normal": 960,
-   "d": 0.08750000000000002
+   "d": 0.24895833333333328
   },
   {
    "k": "SAO",
    "nome": "São Paulo",
-   "rt": 1144.0,
+   "rt": 1155.0,
    "menor": 692.0,
-   "ida": "2027-01-27",
-   "volta": "2027-01-30",
+   "ida": "2027-02-01",
+   "volta": "2027-02-11",
    "normal": 1129,
-   "d": -0.013286093888396744
+   "d": -0.023029229406554386
+  },
+  {
+   "k": "BHZ",
+   "nome": "Belo Horizonte",
+   "rt": 1187.0,
+   "menor": 606.0,
+   "ida": "2027-02-08",
+   "volta": "2027-02-12",
+   "normal": 1472,
+   "d": 0.1936141304347826
   },
   {
    "k": "SSA",
@@ -118,17 +128,7 @@
    "volta": "2027-01-25",
    "normal": 1357,
    "d": 0.09727339719970518
-  },
-  {
-   "k": "BHZ",
-   "nome": "Belo Horizonte",
-   "rt": 1247.0,
-   "menor": 666.0,
-   "ida": "2027-02-08",
-   "volta": "2027-02-12",
-   "normal": 1472,
-   "d": 0.1528532608695652
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_10/11_\n\n✈️ *Juazeiro do Norte* · *R$ 599* (07/02 a 12/02)\n✈️ *Belém* · *R$ 758* (30/01 a 09/02)\n✈️ *Recife* · *R$ 876* (05/12 a 10/12)\n✈️ *São Paulo* · *R$ 1.144* (27/01 a 30/01)\n✈️ *Salvador* · *R$ 1.225* (15/01 a 25/01)\n✈️ *Belo Horizonte* · *R$ 1.247* (08/02 a 12/02)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_10/11_\n\n✈️ *Juazeiro do Norte* · *R$ 599* (07/02 a 12/02)\n✈️ *Belém* · *R$ 695* (04/02 a 10/02)\n✈️ *Recife* · *R$ 721* (12/01 a 15/01)\n✈️ *São Paulo* · *R$ 1.155* (01/02 a 11/02)\n✈️ *Belo Horizonte* · *R$ 1.187* (08/02 a 12/02)\n✈️ *Salvador* · *R$ 1.225* (15/01 a 25/01)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

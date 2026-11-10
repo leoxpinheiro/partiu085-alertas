@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-10T13:18+00:00",
+ "atualizado": "2026-11-10T14:18+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -8,10 +8,10 @@
   "LON",
   "MAD",
   "NYC",
+  "PTY",
   "RIO",
   "SAO",
-  "SLZ",
-  "SSA"
+  "SLZ"
  ],
  "blogs": [
   {
@@ -27,19 +27,6 @@
  ],
  "destinos": [
   {
-   "iata": "BEL",
-   "ow": {
-    "preco": 460,
-    "ida": "2027-09-29",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-08T11:42:00Z"
-   },
-   "rastreada": true,
-   "nome": "Belém",
-   "pista": true
-  },
-  {
    "iata": "SSA",
    "ow": {
     "preco": 690,
@@ -50,7 +37,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "POA",
@@ -75,11 +62,11 @@
     "visto": "2026-11-10T03:54:53Z"
    },
    "ow": {
-    "preco": 500,
-    "ida": "2026-12-25",
+    "preco": 409,
+    "ida": "2026-12-17",
     "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-07T23:44:49Z"
+    "paradas": 0,
+    "visto": "2026-11-10T14:05:37Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
@@ -96,6 +83,26 @@
    },
    "rastreada": true,
    "nome": "Brasília",
+   "pista": true
+  },
+  {
+   "iata": "BEL",
+   "rt": {
+    "preco": 990,
+    "ida": "2026-11-27",
+    "volta": "2026-12-13",
+    "paradas": 0,
+    "visto": "2026-11-10T13:42:23Z"
+   },
+   "ow": {
+    "preco": 460,
+    "ida": "2027-09-29",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-08T11:42:00Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
    "pista": true
   },
   {
@@ -204,6 +211,19 @@
    "pista": false
   },
   {
+   "iata": "AGP",
+   "ow": {
+    "preco": 2048,
+    "ida": "2026-11-19",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-08T15:19:32Z"
+   },
+   "rastreada": false,
+   "nome": "AGP",
+   "pista": false
+  },
+  {
    "iata": "PET",
    "rt": {
     "preco": 2169,
@@ -227,7 +247,7 @@
    },
    "rastreada": true,
    "nome": "Cidade do Panamá",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "LON",
@@ -243,26 +263,6 @@
    "pista": true
   },
   {
-   "iata": "MGF",
-   "rt": {
-    "preco": 2950,
-    "ida": "2026-11-17",
-    "volta": "2026-11-17",
-    "paradas": 1,
-    "visto": "2026-11-10T00:09:22Z"
-   },
-   "ow": {
-    "preco": 1752,
-    "ida": "2026-11-19",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-10T00:00:10Z"
-   },
-   "rastreada": false,
-   "nome": "MGF",
-   "pista": false
-  },
-  {
    "iata": "AMS",
    "ow": {
     "preco": 3074,
@@ -274,6 +274,19 @@
    "rastreada": true,
    "nome": "Amsterdã",
    "pista": true
+  },
+  {
+   "iata": "MGF",
+   "rt": {
+    "preco": 3131,
+    "ida": "2026-11-17",
+    "volta": "2026-11-17",
+    "paradas": 1,
+    "visto": "2026-11-10T13:30:14Z"
+   },
+   "rastreada": false,
+   "nome": "MGF",
+   "pista": false
   },
   {
    "iata": "TBS",
@@ -350,7 +363,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5494,
+    "preco": 5491,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -402,7 +415,7 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 13734,
+    "preco": 13727,
     "ida": "2027-01-18",
     "volta": "2027-02-12",
     "paradas": 2,

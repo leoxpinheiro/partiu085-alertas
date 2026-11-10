@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-10T16:43+00:00",
+ "atualizado": "2026-11-10T17:30+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -8,7 +8,6 @@
   "LON",
   "MAD",
   "NYC",
-  "POA",
   "PTY",
   "RIO",
   "SAO",
@@ -30,7 +29,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 697,
+    "preco": 699,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -51,19 +50,19 @@
    },
    "rastreada": true,
    "nome": "Porto Alegre",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "SAO",
    "rt": {
-    "preco": 853,
+    "preco": 856,
     "ida": "2027-03-23",
     "volta": "2027-03-27",
     "paradas": 0,
     "visto": "2026-11-10T03:54:53Z"
    },
    "ow": {
-    "preco": 413,
+    "preco": 414,
     "ida": "2026-12-17",
     "volta": "",
     "paradas": 0,
@@ -89,7 +88,7 @@
   {
    "iata": "BEL",
    "rt": {
-    "preco": 1001,
+    "preco": 1004,
     "ida": "2026-11-27",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -142,7 +141,7 @@
   {
    "iata": "FLN",
    "rt": {
-    "preco": 1401,
+    "preco": 1405,
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
@@ -279,7 +278,7 @@
   {
    "iata": "MGF",
    "rt": {
-    "preco": 3176,
+    "preco": 3185,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
@@ -364,7 +363,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5548,
+    "preco": 5565,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -403,7 +402,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 6630,
+    "preco": 6649,
     "ida": "2027-01-18",
     "volta": "",
     "paradas": 3,
@@ -411,6 +410,19 @@
    },
    "rastreada": false,
    "nome": "LED",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "rt": {
+    "preco": 11286,
+    "ida": "2027-10-12",
+    "volta": "2027-10-30",
+    "paradas": 3,
+    "visto": "2026-11-10T17:06:58Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
    "pista": false
   },
   {
@@ -424,19 +436,6 @@
    },
    "rastreada": false,
    "nome": "TYO",
-   "pista": false
-  },
-  {
-   "iata": "MOW",
-   "rt": {
-    "preco": 13869,
-    "ida": "2027-01-18",
-    "volta": "2027-02-12",
-    "paradas": 2,
-    "visto": "2026-11-10T00:00:26Z"
-   },
-   "rastreada": false,
-   "nome": "MOW",
    "pista": false
   }
  ]

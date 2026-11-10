@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-09T23:31+00:00",
+ "atualizado": "2026-11-10T00:31+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -9,6 +9,7 @@
   "LON",
   "MAD",
   "NYC",
+  "POA",
   "RIO",
   "SAO",
   "SLZ",
@@ -65,7 +66,7 @@
    },
    "rastreada": true,
    "nome": "Porto Alegre",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "BSB",
@@ -75,13 +76,6 @@
     "volta": "2027-01-15",
     "paradas": 0,
     "visto": "2026-11-08T19:41:14Z"
-   },
-   "ow": {
-    "preco": 2143,
-    "ida": "2027-01-03",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-06T00:19:18Z"
    },
    "rastreada": true,
    "nome": "Brasília",
@@ -278,6 +272,26 @@
    "pista": true
   },
   {
+   "iata": "MGF",
+   "rt": {
+    "preco": 2949,
+    "ida": "2026-11-17",
+    "volta": "2026-11-17",
+    "paradas": 1,
+    "visto": "2026-11-10T00:09:22Z"
+   },
+   "ow": {
+    "preco": 1751,
+    "ida": "2026-11-19",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-10T00:00:10Z"
+   },
+   "rastreada": false,
+   "nome": "MGF",
+   "pista": false
+  },
+  {
    "iata": "BUE",
    "rt": {
     "preco": 2963,
@@ -289,26 +303,6 @@
    "rastreada": true,
    "nome": "Buenos Aires",
    "pista": true
-  },
-  {
-   "iata": "MGF",
-   "rt": {
-    "preco": 3183,
-    "ida": "2026-11-17",
-    "volta": "2026-11-17",
-    "paradas": 1,
-    "visto": "2026-11-09T17:49:40Z"
-   },
-   "ow": {
-    "preco": 1596,
-    "ida": "2026-11-19",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-09T20:47:26Z"
-   },
-   "rastreada": false,
-   "nome": "MGF",
-   "pista": false
   },
   {
    "iata": "TBS",
@@ -385,11 +379,11 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5598,
+    "preco": 5491,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
-    "visto": "2026-11-06T00:31:58Z"
+    "visto": "2026-11-10T00:11:40Z"
    },
    "rastreada": false,
    "nome": "YTO",
@@ -437,11 +431,11 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 13429,
+    "preco": 13728,
     "ida": "2027-01-18",
     "volta": "2027-02-12",
     "paradas": 2,
-    "visto": "2026-11-09T23:18:27Z"
+    "visto": "2026-11-10T00:00:26Z"
    },
    "ow": {
     "preco": 4891,

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-09T22:30+00:00",
+ "atualizado": "2026-11-09T23:31+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -123,7 +123,7 @@
   {
    "iata": "SCL",
    "ow": {
-    "preco": 1278,
+    "preco": 1280,
     "ida": "2026-12-15",
     "volta": "",
     "paradas": 1,
@@ -136,7 +136,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1297,
+    "preco": 1299,
     "ida": "2026-12-09",
     "volta": "2026-12-12",
     "paradas": 2,
@@ -176,7 +176,7 @@
     "visto": "2026-11-08T09:58:58Z"
    },
    "ow": {
-    "preco": 822,
+    "preco": 823,
     "ida": "2026-11-30",
     "volta": "",
     "paradas": 2,
@@ -241,7 +241,7 @@
   {
    "iata": "PET",
    "rt": {
-    "preco": 2166,
+    "preco": 2169,
     "ida": "2026-12-16",
     "volta": "2026-12-30",
     "paradas": 2,
@@ -293,14 +293,14 @@
   {
    "iata": "MGF",
    "rt": {
-    "preco": 3178,
+    "preco": 3183,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
     "visto": "2026-11-09T17:49:40Z"
    },
    "ow": {
-    "preco": 1594,
+    "preco": 1596,
     "ida": "2026-11-19",
     "volta": "",
     "paradas": 2,
@@ -346,11 +346,11 @@
   {
    "iata": "MAD",
    "rt": {
-    "preco": 3798,
+    "preco": 3898,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
-    "paradas": 2,
-    "visto": "2026-11-08T23:43:08Z"
+    "paradas": 1,
+    "visto": "2026-11-09T23:20:05Z"
    },
    "rastreada": true,
    "nome": "Madri",
@@ -359,7 +359,7 @@
   {
    "iata": "TPE",
    "ow": {
-    "preco": 4556,
+    "preco": 4562,
     "ida": "2026-12-05",
     "volta": "",
     "paradas": 3,
@@ -367,19 +367,6 @@
    },
    "rastreada": false,
    "nome": "TPE",
-   "pista": false
-  },
-  {
-   "iata": "MOW",
-   "ow": {
-    "preco": 4891,
-    "ida": "2027-05-03",
-    "volta": "",
-    "paradas": 4,
-    "visto": "2026-11-06T01:56:16Z"
-   },
-   "rastreada": false,
-   "nome": "MOW",
    "pista": false
   },
   {
@@ -411,7 +398,7 @@
   {
    "iata": "ROM",
    "rt": {
-    "preco": 5733,
+    "preco": 5741,
     "ida": "2026-12-01",
     "volta": "2026-12-16",
     "paradas": 1,
@@ -424,7 +411,7 @@
   {
    "iata": "NYC",
    "rt": {
-    "preco": 6267,
+    "preco": 6276,
     "ida": "2027-08-17",
     "volta": "2027-08-20",
     "paradas": 3,
@@ -437,7 +424,7 @@
   {
    "iata": "TYO",
    "rt": {
-    "preco": 12109,
+    "preco": 12125,
     "ida": "2027-01-14",
     "volta": "2027-02-04",
     "paradas": 2,
@@ -445,6 +432,26 @@
    },
    "rastreada": false,
    "nome": "TYO",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "rt": {
+    "preco": 13429,
+    "ida": "2027-01-18",
+    "volta": "2027-02-12",
+    "paradas": 2,
+    "visto": "2026-11-09T23:18:27Z"
+   },
+   "ow": {
+    "preco": 4891,
+    "ida": "2027-05-03",
+    "volta": "",
+    "paradas": 4,
+    "visto": "2026-11-06T01:56:16Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
    "pista": false
   }
  ]

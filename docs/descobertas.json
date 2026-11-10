@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-10T17:30+00:00",
+ "atualizado": "2026-11-10T18:30+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -11,7 +11,8 @@
   "PTY",
   "RIO",
   "SAO",
-  "SLZ"
+  "SLZ",
+  "SSA"
  ],
  "blogs": [
   {
@@ -29,7 +30,7 @@
   {
    "iata": "SSA",
    "ow": {
-    "preco": 699,
+    "preco": 702,
     "ida": "2027-02-03",
     "volta": "",
     "paradas": 1,
@@ -37,7 +38,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "POA",
@@ -55,14 +56,14 @@
   {
    "iata": "SAO",
    "rt": {
-    "preco": 856,
+    "preco": 859,
     "ida": "2027-03-23",
     "volta": "2027-03-27",
     "paradas": 0,
     "visto": "2026-11-10T03:54:53Z"
    },
    "ow": {
-    "preco": 414,
+    "preco": 416,
     "ida": "2026-12-17",
     "volta": "",
     "paradas": 0,
@@ -88,7 +89,7 @@
   {
    "iata": "BEL",
    "rt": {
-    "preco": 1004,
+    "preco": 1007,
     "ida": "2026-11-27",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -128,11 +129,11 @@
     "visto": "2026-11-09T16:33:27Z"
    },
    "ow": {
-    "preco": 866,
-    "ida": "2026-11-17",
+    "preco": 569,
+    "ida": "2027-03-05",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-08T12:29:39Z"
+    "paradas": 1,
+    "visto": "2026-11-10T18:04:35Z"
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
@@ -141,7 +142,7 @@
   {
    "iata": "FLN",
    "rt": {
-    "preco": 1405,
+    "preco": 1410,
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
@@ -278,7 +279,7 @@
   {
    "iata": "MGF",
    "rt": {
-    "preco": 3185,
+    "preco": 3197,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
@@ -363,7 +364,7 @@
   {
    "iata": "YTO",
    "ow": {
-    "preco": 5565,
+    "preco": 5585,
     "ida": "2027-01-05",
     "volta": "",
     "paradas": 3,
@@ -402,7 +403,7 @@
   {
    "iata": "LED",
    "ow": {
-    "preco": 6649,
+    "preco": 6674,
     "ida": "2027-01-18",
     "volta": "",
     "paradas": 3,
@@ -415,7 +416,7 @@
   {
    "iata": "MOW",
    "rt": {
-    "preco": 11286,
+    "preco": 11328,
     "ida": "2027-10-12",
     "volta": "2027-10-30",
     "paradas": 3,

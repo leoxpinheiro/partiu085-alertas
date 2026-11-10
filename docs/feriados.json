@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-09T20:01-03:00",
+ "atualizado": "2026-11-10T17:30-03:00",
  "feriados": [
   {
    "id": "consciencia-2026",
@@ -12,109 +12,75 @@
     "2026-11-22",
     "2026-11-23"
    ],
-   "visto": "2026-11-09T20:01-03:00",
+   "visto": "2026-11-10T17:30-03:00",
    "destinos": [
     {
-     "code": "REC",
-     "nome": "Recife",
+     "code": "JDO",
+     "nome": "Juazeiro do Norte",
      "ida": {
-      "dia": "2026-11-20",
-      "preco": 471.0,
+      "dia": "2026-11-19",
+      "preco": 1129.0,
       "cia": "LATAM",
       "escalas": 0
      },
      "volta": {
-      "dia": "2026-11-23",
-      "preco": 1434.0,
-      "cia": "Azul",
+      "dia": "2026-11-22",
+      "preco": 445.0,
+      "cia": "LATAM",
       "escalas": 0
      },
-     "total": 1905
-    },
-    {
-     "code": "SSA",
-     "nome": "Salvador",
-     "ida": {
-      "dia": "2026-11-20",
-      "preco": 878.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 1181.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "total": 2059
+     "total": 1574
     },
     {
      "code": "BEL",
      "nome": "Belém",
      "ida": {
+      "dia": "2026-11-19",
+      "preco": 1019.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 1373.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 2392
+    },
+    {
+     "code": "BHZ",
+     "nome": "Belo Horizonte",
+     "ida": {
       "dia": "2026-11-20",
-      "preco": 1563.0,
+      "preco": 1175.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-11-23",
-      "preco": 776.0,
-      "cia": "LATAM",
+      "dia": "2026-11-22",
+      "preco": 1485.0,
+      "cia": "Azul",
       "escalas": 0
      },
-     "total": 2339
+     "total": 2660
     },
     {
      "code": "CWB",
      "nome": "Curitiba",
      "ida": {
       "dia": "2026-11-20",
-      "preco": 1159.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-22",
-      "preco": 1197.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 2356
-    },
-    {
-     "code": "BHZ",
-     "nome": "Belo Horizonte",
-     "ida": {
-      "dia": "2026-11-19",
-      "preco": 1535.0,
+      "preco": 1351.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 1141.0,
+      "preco": 1314.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2676
-    },
-    {
-     "code": "RIO",
-     "nome": "Rio de Janeiro",
-     "ida": {
-      "dia": "2026-11-20",
-      "preco": 1486.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 1224.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "total": 2710
+     "total": 2665
     },
     {
      "code": "IGU",
@@ -127,137 +93,154 @@
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 1372.0,
-      "cia": "Gol",
+      "preco": 1307.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2754
+     "total": 2689
     },
     {
-     "code": "JDO",
-     "nome": "Juazeiro do Norte",
+     "code": "THE",
+     "nome": "Teresina",
      "ida": {
       "dia": "2026-11-20",
-      "preco": 2529.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-22",
-      "preco": 445.0,
+      "preco": 1514.0,
       "cia": "LATAM",
       "escalas": 0
      },
-     "total": 2974
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 1241.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 2755
     },
     {
-     "code": "BSB",
-     "nome": "Brasília",
+     "code": "REC",
+     "nome": "Recife",
      "ida": {
-      "dia": "2026-11-19",
-      "preco": 1632.0,
+      "dia": "2026-11-20",
+      "preco": 1105.0,
       "cia": "Azul",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2026-11-22",
+      "preco": 1720.0,
+      "cia": "Azul",
+      "escalas": 0
+     },
+     "total": 2825
+    },
+    {
+     "code": "SSA",
+     "nome": "Salvador",
+     "ida": {
+      "dia": "2026-11-20",
+      "preco": 1323.0,
+      "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 1345.0,
-      "cia": "Azul",
+      "preco": 1526.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 2977
+     "total": 2849
     },
     {
      "code": "SAO",
      "nome": "São Paulo",
      "ida": {
-      "dia": "2026-11-19",
-      "preco": 1738.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 1434.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "total": 3172
-    },
-    {
-     "code": "FLN",
-     "nome": "Florianópolis",
-     "ida": {
       "dia": "2026-11-20",
-      "preco": 1797.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 1507.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 3304
-    },
-    {
-     "code": "SLZ",
-     "nome": "São Luís",
-     "ida": {
-      "dia": "2026-11-20",
-      "preco": 1327.0,
+      "preco": 1153.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 2014.0,
-      "cia": "Gol",
+      "preco": 1708.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 3341
+     "total": 2861
     },
     {
      "code": "POA",
      "nome": "Porto Alegre",
      "ida": {
       "dia": "2026-11-20",
-      "preco": 1872.0,
+      "preco": 1583.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-11-23",
-      "preco": 1567.0,
-      "cia": "Azul",
+      "dia": "2026-11-22",
+      "preco": 1720.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 3439
+     "total": 3303
     },
     {
-     "code": "CXJ",
-     "nome": "Gramado (Caxias do Sul)",
+     "code": "FLN",
+     "nome": "Florianópolis",
      "ida": {
       "dia": "2026-11-20",
-      "preco": 1704.0,
+      "preco": 1814.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 2029.0,
+      "preco": 1538.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 3733
+     "total": 3352
+    },
+    {
+     "code": "BSB",
+     "nome": "Brasília",
+     "ida": {
+      "dia": "2026-11-20",
+      "preco": 1674.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-11-22",
+      "preco": 1706.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "total": 3380
+    },
+    {
+     "code": "JPA",
+     "nome": "João Pessoa",
+     "ida": {
+      "dia": "2026-11-20",
+      "preco": 1361.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-11-22",
+      "preco": 2174.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 3535
     },
     {
      "code": "MCZ",
      "nome": "Maceió",
      "ida": {
-      "dia": "2026-11-19",
-      "preco": 1519.0,
+      "dia": "2026-11-20",
+      "preco": 1443.0,
       "cia": "LATAM",
       "escalas": 1
      },
@@ -267,7 +250,41 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3825
+     "total": 3749
+    },
+    {
+     "code": "RIO",
+     "nome": "Rio de Janeiro",
+     "ida": {
+      "dia": "2026-11-19",
+      "preco": 2258.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 1640.0,
+      "cia": "Azul",
+      "escalas": 1
+     },
+     "total": 3898
+    },
+    {
+     "code": "SLZ",
+     "nome": "São Luís",
+     "ida": {
+      "dia": "2026-11-20",
+      "preco": 2024.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 2014.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 4038
     },
     {
      "code": "NAT",
@@ -280,113 +297,79 @@
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 1750.0,
+      "preco": 1982.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 4354
+     "total": 4586
+    },
+    {
+     "code": "CXJ",
+     "nome": "Gramado (Caxias do Sul)",
+     "ida": {
+      "dia": "2026-11-20",
+      "preco": 2016.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 2725.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 4741
     },
     {
      "code": "BUE",
      "nome": "Buenos Aires",
      "ida": {
-      "dia": "2026-11-19",
-      "preco": 2231.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 2845.0,
-      "cia": "Turkish Airlines",
-      "escalas": 1
-     },
-     "total": 5076
-    },
-    {
-     "code": "THE",
-     "nome": "Teresina",
-     "ida": {
-      "dia": "2026-11-19",
-      "preco": 3859.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 1241.0,
+      "dia": "2026-11-20",
+      "preco": 2385.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 5100
+     "volta": {
+      "dia": "2026-11-23",
+      "preco": 2576.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 4961
     },
     {
      "code": "LIS",
      "nome": "Lisboa",
      "ida": {
       "dia": "2026-11-20",
-      "preco": 1873.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-23",
-      "preco": 3426.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "total": 5299
-    },
-    {
-     "code": "JPA",
-     "nome": "João Pessoa",
-     "ida": {
-      "dia": "2026-11-20",
-      "preco": 1540.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-11-22",
-      "preco": 3855.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 5395
-    },
-    {
-     "code": "AJU",
-     "nome": "Aracaju",
-     "ida": {
-      "dia": "2026-11-20",
-      "preco": 3860.0,
+      "preco": 2456.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-11-23",
-      "preco": 2050.0,
-      "cia": "LATAM",
+      "preco": 3755.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 5910
+     "total": 6211
     },
     {
      "code": "FEN",
      "nome": "Fernando de Noronha",
      "ida": {
-      "dia": "2026-11-19",
-      "preco": 3860.0,
-      "cia": "LATAM",
+      "dia": "2026-11-20",
+      "preco": 2969.0,
+      "cia": "Gol",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-11-23",
-      "preco": 3857.0,
-      "cia": "LATAM",
+      "dia": "2026-11-22",
+      "preco": 3376.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 7717
+     "total": 6345
     }
    ]
   },
@@ -401,14 +384,31 @@
     "2026-12-27",
     "2026-12-28"
    ],
-   "visto": "2026-11-09T20:01-03:00",
+   "visto": "2026-11-10T17:30-03:00",
    "destinos": [
+    {
+     "code": "SAO",
+     "nome": "São Paulo",
+     "ida": {
+      "dia": "2026-12-24",
+      "preco": 476.0,
+      "cia": "Gol",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2026-12-28",
+      "preco": 1494.0,
+      "cia": "Azul",
+      "escalas": 1
+     },
+     "total": 1970
+    },
     {
      "code": "IGU",
      "nome": "Foz do Iguaçu",
      "ida": {
-      "dia": "2026-12-23",
-      "preco": 702.0,
+      "dia": "2026-12-24",
+      "preco": 738.0,
       "cia": "LATAM",
       "escalas": 1
      },
@@ -418,92 +418,75 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2074
-    },
-    {
-     "code": "SAO",
-     "nome": "São Paulo",
-     "ida": {
-      "dia": "2026-12-24",
-      "preco": 536.0,
-      "cia": "LATAM",
-      "escalas": 0
-     },
-     "volta": {
-      "dia": "2026-12-28",
-      "preco": 1564.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "total": 2100
+     "total": 2110
     },
     {
      "code": "SSA",
      "nome": "Salvador",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 932.0,
+      "preco": 906.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-12-27",
-      "preco": 1287.0,
-      "cia": "Azul",
+      "dia": "2026-12-28",
+      "preco": 1374.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 2219
+     "total": 2280
     },
     {
      "code": "BEL",
      "nome": "Belém",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 603.0,
+      "preco": 701.0,
       "cia": "LATAM",
       "escalas": 0
      },
      "volta": {
       "dia": "2026-12-27",
-      "preco": 1616.0,
-      "cia": "Azul",
-      "escalas": 0
-     },
-     "total": 2219
-    },
-    {
-     "code": "BSB",
-     "nome": "Brasília",
-     "ida": {
-      "dia": "2026-12-24",
-      "preco": 571.0,
-      "cia": "Gol",
-      "escalas": 0
-     },
-     "volta": {
-      "dia": "2026-12-28",
-      "preco": 1692.0,
-      "cia": "Azul",
+      "preco": 1689.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2263
+     "total": 2390
     },
     {
-     "code": "REC",
-     "nome": "Recife",
+     "code": "FLN",
+     "nome": "Florianópolis",
      "ida": {
-      "dia": "2026-12-23",
-      "preco": 698.0,
+      "dia": "2026-12-24",
+      "preco": 761.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-12-28",
+      "preco": 1649.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 2410
+    },
+    {
+     "code": "BHZ",
+     "nome": "Belo Horizonte",
+     "ida": {
+      "dia": "2026-12-24",
+      "preco": 776.0,
       "cia": "Azul",
       "escalas": 0
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1614.0,
-      "cia": "Azul",
-      "escalas": 0
+      "preco": 1646.0,
+      "cia": "LATAM",
+      "escalas": 1
      },
-     "total": 2312
+     "total": 2422
     },
     {
      "code": "RIO",
@@ -516,62 +499,45 @@
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1612.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 2339
-    },
-    {
-     "code": "BHZ",
-     "nome": "Belo Horizonte",
-     "ida": {
-      "dia": "2026-12-23",
-      "preco": 822.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-12-28",
-      "preco": 1642.0,
+      "preco": 1761.0,
       "cia": "Azul",
       "escalas": 1
      },
-     "total": 2464
+     "total": 2488
     },
     {
-     "code": "CXJ",
-     "nome": "Gramado (Caxias do Sul)",
+     "code": "BSB",
+     "nome": "Brasília",
      "ida": {
       "dia": "2026-12-24",
-      "preco": 878.0,
+      "preco": 840.0,
       "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-12-27",
-      "preco": 1735.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 2613
-    },
-    {
-     "code": "JPA",
-     "nome": "João Pessoa",
-     "ida": {
-      "dia": "2026-12-24",
-      "preco": 1361.0,
-      "cia": "Gol",
-      "escalas": 1
+      "escalas": 0
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1355.0,
+      "preco": 1811.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2716
+     "total": 2651
+    },
+    {
+     "code": "REC",
+     "nome": "Recife",
+     "ida": {
+      "dia": "2026-12-23",
+      "preco": 1028.0,
+      "cia": "Azul",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2026-12-28",
+      "preco": 1723.0,
+      "cia": "Azul",
+      "escalas": 0
+     },
+     "total": 2751
     },
     {
      "code": "CWB",
@@ -584,45 +550,79 @@
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 2015.0,
+      "preco": 2003.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2812
+     "total": 2800
     },
     {
-     "code": "FLN",
-     "nome": "Florianópolis",
+     "code": "MCZ",
+     "nome": "Maceió",
      "ida": {
-      "dia": "2026-12-23",
-      "preco": 893.0,
-      "cia": "Azul",
+      "dia": "2026-12-24",
+      "preco": 1335.0,
+      "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 2013.0,
-      "cia": "LATAM",
+      "preco": 1470.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 2906
+     "total": 2805
     },
     {
      "code": "POA",
      "nome": "Porto Alegre",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 1165.0,
+      "preco": 1105.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1843.0,
-      "cia": "LATAM",
+      "preco": 1844.0,
+      "cia": "Azul",
       "escalas": 1
      },
-     "total": 3008
+     "total": 2949
+    },
+    {
+     "code": "SLZ",
+     "nome": "São Luís",
+     "ida": {
+      "dia": "2026-12-23",
+      "preco": 1503.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-12-28",
+      "preco": 1493.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 2996
+    },
+    {
+     "code": "NAT",
+     "nome": "Natal",
+     "ida": {
+      "dia": "2026-12-23",
+      "preco": 1279.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2026-12-28",
+      "preco": 1750.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 3029
     },
     {
      "code": "JDO",
@@ -642,89 +642,72 @@
      "total": 3122
     },
     {
-     "code": "SLZ",
-     "nome": "São Luís",
-     "ida": {
-      "dia": "2026-12-23",
-      "preco": 1503.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2026-12-28",
-      "preco": 1697.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "total": 3200
-    },
-    {
-     "code": "MCZ",
-     "nome": "Maceió",
+     "code": "CXJ",
+     "nome": "Gramado (Caxias do Sul)",
      "ida": {
       "dia": "2026-12-24",
-      "preco": 1517.0,
+      "preco": 1161.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-12-27",
-      "preco": 1776.0,
+      "dia": "2026-12-28",
+      "preco": 2140.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3293
+     "total": 3301
     },
     {
-     "code": "NAT",
-     "nome": "Natal",
+     "code": "JPA",
+     "nome": "João Pessoa",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 1761.0,
+      "preco": 1819.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1750.0,
+      "preco": 1813.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3511
+     "total": 3632
     },
     {
      "code": "AJU",
      "nome": "Aracaju",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 1887.0,
-      "cia": "Gol",
+      "preco": 2070.0,
+      "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 1779.0,
-      "cia": "LATAM",
+      "preco": 2256.0,
+      "cia": "Gol",
       "escalas": 1
      },
-     "total": 3666
+     "total": 4326
     },
     {
      "code": "BUE",
      "nome": "Buenos Aires",
      "ida": {
       "dia": "2026-12-23",
-      "preco": 1438.0,
+      "preco": 1442.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
-      "dia": "2026-12-28",
-      "preco": 2845.0,
-      "cia": "Turkish Airlines",
+      "dia": "2026-12-27",
+      "preco": 3759.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 4283
+     "total": 5201
     },
     {
      "code": "THE",
@@ -764,18 +747,18 @@
      "code": "LIS",
      "nome": "Lisboa",
      "ida": {
-      "dia": "2026-12-23",
-      "preco": 4558.0,
+      "dia": "2026-12-24",
+      "preco": 4812.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2026-12-28",
-      "preco": 4079.0,
+      "preco": 4474.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 8637
+     "total": 9286
     }
    ]
   },
@@ -790,92 +773,58 @@
     "2027-01-03",
     "2027-01-04"
    ],
-   "visto": "2026-11-09T20:01-03:00",
+   "visto": "2026-11-10T17:30-03:00",
    "destinos": [
     {
      "code": "BEL",
      "nome": "Belém",
      "ida": {
       "dia": "2026-12-29",
-      "preco": 413.0,
+      "preco": 375.0,
       "cia": "Azul",
       "escalas": 0
      },
      "volta": {
-      "dia": "2027-01-03",
-      "preco": 761.0,
+      "dia": "2027-01-04",
+      "preco": 552.0,
       "cia": "LATAM",
       "escalas": 0
      },
-     "total": 1174
+     "total": 927
     },
     {
      "code": "SSA",
      "nome": "Salvador",
      "ida": {
-      "dia": "2026-12-30",
+      "dia": "2026-12-29",
       "preco": 721.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
-      "dia": "2027-01-04",
-      "preco": 1374.0,
-      "cia": "Gol",
+      "dia": "2027-01-03",
+      "preco": 1429.0,
+      "cia": "Azul",
       "escalas": 1
      },
-     "total": 2095
+     "total": 2150
     },
     {
      "code": "SAO",
      "nome": "São Paulo",
      "ida": {
-      "dia": "2026-12-29",
+      "dia": "2026-12-30",
       "preco": 692.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 1478.0,
-      "cia": "LATAM",
-      "escalas": 0
-     },
-     "total": 2170
-    },
-    {
-     "code": "REC",
-     "nome": "Recife",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 1128.0,
+      "preco": 1506.0,
       "cia": "Azul",
-      "escalas": 0
-     },
-     "volta": {
-      "dia": "2027-01-04",
-      "preco": 1172.0,
-      "cia": "Azul",
-      "escalas": 0
-     },
-     "total": 2300
-    },
-    {
-     "code": "BHZ",
-     "nome": "Belo Horizonte",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 822.0,
-      "cia": "LATAM",
       "escalas": 1
      },
-     "volta": {
-      "dia": "2027-01-03",
-      "preco": 1478.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 2300
+     "total": 2198
     },
     {
      "code": "IGU",
@@ -887,12 +836,63 @@
       "escalas": 1
      },
      "volta": {
-      "dia": "2027-01-03",
-      "preco": 1372.0,
+      "dia": "2027-01-04",
+      "preco": 1199.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2396
+     "total": 2223
+    },
+    {
+     "code": "JDO",
+     "nome": "Juazeiro do Norte",
+     "ida": {
+      "dia": "2026-12-29",
+      "preco": 1942.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 363.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "total": 2305
+    },
+    {
+     "code": "REC",
+     "nome": "Recife",
+     "ida": {
+      "dia": "2026-12-29",
+      "preco": 1018.0,
+      "cia": "Azul",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 1300.0,
+      "cia": "Azul",
+      "escalas": 0
+     },
+     "total": 2318
+    },
+    {
+     "code": "BSB",
+     "nome": "Brasília",
+     "ida": {
+      "dia": "2026-12-29",
+      "preco": 966.0,
+      "cia": "Gol",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 1365.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "total": 2331
     },
     {
      "code": "CWB",
@@ -905,138 +905,138 @@
      },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 1613.0,
+      "preco": 1595.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2410
+     "total": 2392
+    },
+    {
+     "code": "BHZ",
+     "nome": "Belo Horizonte",
+     "ida": {
+      "dia": "2026-12-29",
+      "preco": 822.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 1646.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 2468
+    },
+    {
+     "code": "THE",
+     "nome": "Teresina",
+     "ida": {
+      "dia": "2026-12-30",
+      "preco": 1667.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 898.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "total": 2565
     },
     {
      "code": "RIO",
      "nome": "Rio de Janeiro",
      "ida": {
-      "dia": "2026-12-29",
-      "preco": 1000.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-01-04",
-      "preco": 1513.0,
+      "dia": "2026-12-30",
+      "preco": 1054.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2513
-    },
-    {
-     "code": "BSB",
-     "nome": "Brasília",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 1153.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 1365.0,
+      "preco": 1517.0,
       "cia": "LATAM",
-      "escalas": 0
-     },
-     "total": 2518
-    },
-    {
-     "code": "JDO",
-     "nome": "Juazeiro do Norte",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 2212.0,
-      "cia": "Gol",
       "escalas": 1
      },
-     "volta": {
-      "dia": "2027-01-04",
-      "preco": 363.0,
-      "cia": "LATAM",
-      "escalas": 0
-     },
-     "total": 2575
-    },
-    {
-     "code": "JPA",
-     "nome": "João Pessoa",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 1361.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-01-04",
-      "preco": 1355.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "total": 2716
+     "total": 2571
     },
     {
      "code": "SLZ",
      "nome": "São Luís",
      "ida": {
       "dia": "2026-12-29",
-      "preco": 1327.0,
+      "preco": 929.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
-      "dia": "2027-01-04",
-      "preco": 1493.0,
+      "dia": "2027-01-03",
+      "preco": 1697.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2820
+     "total": 2626
     },
     {
      "code": "POA",
      "nome": "Porto Alegre",
      "ida": {
       "dia": "2026-12-30",
-      "preco": 1106.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-01-04",
-      "preco": 1772.0,
+      "preco": 993.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 2878
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 1990.0,
+      "cia": "Azul",
+      "escalas": 1
+     },
+     "total": 2983
     },
     {
-     "code": "AJU",
-     "nome": "Aracaju",
+     "code": "JPA",
+     "nome": "João Pessoa",
      "ida": {
-      "dia": "2026-12-29",
-      "preco": 1479.0,
+      "dia": "2026-12-30",
+      "preco": 1540.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 1879.0,
+      "preco": 1813.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3358
+     "total": 3353
+    },
+    {
+     "code": "CXJ",
+     "nome": "Gramado (Caxias do Sul)",
+     "ida": {
+      "dia": "2026-12-29",
+      "preco": 1430.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-01-04",
+      "preco": 2044.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 3474
     },
     {
      "code": "FLN",
      "nome": "Florianópolis",
      "ida": {
       "dia": "2026-12-30",
-      "preco": 1234.0,
-      "cia": "LATAM",
+      "preco": 1427.0,
+      "cia": "Azul",
       "escalas": 1
      },
      "volta": {
@@ -1045,31 +1045,31 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3498
+     "total": 3691
     },
     {
      "code": "MCZ",
      "nome": "Maceió",
      "ida": {
       "dia": "2026-12-30",
-      "preco": 1630.0,
+      "preco": 1478.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 1929.0,
+      "preco": 2306.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3559
+     "total": 3784
     },
     {
      "code": "NAT",
      "nome": "Natal",
      "ida": {
-      "dia": "2026-12-29",
-      "preco": 1496.0,
+      "dia": "2026-12-30",
+      "preco": 1993.0,
       "cia": "Gol",
       "escalas": 1
      },
@@ -1079,58 +1079,41 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3659
+     "total": 4156
     },
     {
-     "code": "CXJ",
-     "nome": "Gramado (Caxias do Sul)",
+     "code": "AJU",
+     "nome": "Aracaju",
      "ida": {
-      "dia": "2026-12-29",
-      "preco": 1081.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-01-03",
-      "preco": 3058.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 4139
-    },
-    {
-     "code": "THE",
-     "nome": "Teresina",
-     "ida": {
-      "dia": "2026-12-29",
-      "preco": 1963.0,
+      "dia": "2026-12-30",
+      "preco": 1370.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
-      "dia": "2027-01-03",
-      "preco": 2277.0,
-      "cia": "Gol",
+      "dia": "2027-01-04",
+      "preco": 3362.0,
+      "cia": "LATAM",
       "escalas": 1
      },
-     "total": 4240
+     "total": 4732
     },
     {
      "code": "BUE",
      "nome": "Buenos Aires",
      "ida": {
       "dia": "2026-12-29",
-      "preco": 1433.0,
+      "preco": 1437.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-01-04",
-      "preco": 5252.0,
+      "preco": 5298.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 6685
+     "total": 6735
     },
     {
      "code": "FEN",
@@ -1143,28 +1126,28 @@
      },
      "volta": {
       "dia": "2027-01-03",
-      "preco": 3833.0,
+      "preco": 3832.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 7693
+     "total": 7692
     },
     {
      "code": "LIS",
      "nome": "Lisboa",
      "ida": {
       "dia": "2026-12-29",
-      "preco": 4690.0,
+      "preco": 4701.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-01-03",
-      "preco": 4311.0,
+      "preco": 4349.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 9001
+     "total": 9050
     }
    ]
   },
@@ -1179,24 +1162,24 @@
     "2027-02-09",
     "2027-02-10"
    ],
-   "visto": "2026-11-09T20:01-03:00",
+   "visto": "2026-11-10T17:30-03:00",
    "destinos": [
     {
-     "code": "THE",
-     "nome": "Teresina",
+     "code": "BEL",
+     "nome": "Belém",
      "ida": {
-      "dia": "2027-02-05",
-      "preco": 508.0,
-      "cia": "LATAM",
+      "dia": "2027-02-06",
+      "preco": 404.0,
+      "cia": "Azul",
       "escalas": 0
      },
      "volta": {
       "dia": "2027-02-10",
-      "preco": 416.0,
+      "preco": 358.0,
       "cia": "LATAM",
       "escalas": 0
      },
-     "total": 924
+     "total": 762
     },
     {
      "code": "SAO",
@@ -1209,11 +1192,11 @@
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 668.0,
-      "cia": "Azul",
-      "escalas": 1
+      "preco": 669.0,
+      "cia": "LATAM",
+      "escalas": 0
      },
-     "total": 1360
+     "total": 1361
     },
     {
      "code": "BHZ",
@@ -1233,72 +1216,72 @@
      "total": 1384
     },
     {
+     "code": "RIO",
+     "nome": "Rio de Janeiro",
+     "ida": {
+      "dia": "2027-02-06",
+      "preco": 827.0,
+      "cia": "Azul",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-02-09",
+      "preco": 837.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 1664
+    },
+    {
      "code": "BSB",
      "nome": "Brasília",
      "ida": {
       "dia": "2027-02-06",
-      "preco": 743.0,
+      "preco": 941.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 718.0,
-      "cia": "Azul",
-      "escalas": 1
-     },
-     "total": 1461
-    },
-    {
-     "code": "BEL",
-     "nome": "Belém",
-     "ida": {
-      "dia": "2027-02-05",
-      "preco": 1163.0,
+      "preco": 746.0,
       "cia": "LATAM",
       "escalas": 0
      },
-     "volta": {
-      "dia": "2027-02-09",
-      "preco": 424.0,
-      "cia": "Azul",
-      "escalas": 0
-     },
-     "total": 1587
+     "total": 1687
     },
     {
      "code": "CWB",
      "nome": "Curitiba",
      "ida": {
       "dia": "2027-02-06",
-      "preco": 893.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-02-09",
-      "preco": 875.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 1768
-    },
-    {
-     "code": "RIO",
-     "nome": "Rio de Janeiro",
-     "ida": {
-      "dia": "2027-02-06",
-      "preco": 1000.0,
+      "preco": 1043.0,
       "cia": "Azul",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 793.0,
+      "preco": 756.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 1793
+     "total": 1799
+    },
+    {
+     "code": "REC",
+     "nome": "Recife",
+     "ida": {
+      "dia": "2027-02-06",
+      "preco": 946.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "volta": {
+      "dia": "2027-02-09",
+      "preco": 947.0,
+      "cia": "LATAM",
+      "escalas": 0
+     },
+     "total": 1893
     },
     {
      "code": "IGU",
@@ -1311,18 +1294,35 @@
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 764.0,
+      "preco": 832.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 1858
+     "total": 1926
+    },
+    {
+     "code": "AJU",
+     "nome": "Aracaju",
+     "ida": {
+      "dia": "2027-02-06",
+      "preco": 820.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-02-10",
+      "preco": 1230.0,
+      "cia": "Gol",
+      "escalas": 1
+     },
+     "total": 2050
     },
     {
      "code": "POA",
      "nome": "Porto Alegre",
      "ida": {
       "dia": "2027-02-06",
-      "preco": 1039.0,
+      "preco": 1092.0,
       "cia": "LATAM",
       "escalas": 1
      },
@@ -1332,31 +1332,31 @@
       "cia": "Azul",
       "escalas": 1
      },
-     "total": 2013
+     "total": 2066
     },
     {
-     "code": "REC",
-     "nome": "Recife",
+     "code": "THE",
+     "nome": "Teresina",
      "ida": {
-      "dia": "2027-02-06",
-      "preco": 1083.0,
-      "cia": "LATAM",
-      "escalas": 0
+      "dia": "2027-02-05",
+      "preco": 1667.0,
+      "cia": "Gol",
+      "escalas": 1
      },
      "volta": {
-      "dia": "2027-02-09",
-      "preco": 947.0,
+      "dia": "2027-02-10",
+      "preco": 416.0,
       "cia": "LATAM",
       "escalas": 0
      },
-     "total": 2030
+     "total": 2083
     },
     {
      "code": "SSA",
      "nome": "Salvador",
      "ida": {
-      "dia": "2027-02-05",
-      "preco": 867.0,
+      "dia": "2027-02-06",
+      "preco": 847.0,
       "cia": "Azul",
       "escalas": 1
      },
@@ -1366,67 +1366,67 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2393
+     "total": 2373
+    },
+    {
+     "code": "CXJ",
+     "nome": "Gramado (Caxias do Sul)",
+     "ida": {
+      "dia": "2027-02-06",
+      "preco": 1424.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "volta": {
+      "dia": "2027-02-10",
+      "preco": 1272.0,
+      "cia": "LATAM",
+      "escalas": 1
+     },
+     "total": 2696
     },
     {
      "code": "JPA",
      "nome": "João Pessoa",
      "ida": {
-      "dia": "2027-02-05",
-      "preco": 1540.0,
+      "dia": "2027-02-06",
+      "preco": 1361.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 1124.0,
+      "preco": 1355.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 2664
+     "total": 2716
     },
     {
      "code": "MCZ",
      "nome": "Maceió",
      "ida": {
       "dia": "2027-02-05",
-      "preco": 1784.0,
-      "cia": "Gol",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-02-10",
-      "preco": 1431.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 3215
-    },
-    {
-     "code": "AJU",
-     "nome": "Aracaju",
-     "ida": {
-      "dia": "2027-02-05",
-      "preco": 1934.0,
+      "preco": 1263.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 1471.0,
+      "preco": 1470.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3405
+     "total": 2733
     },
     {
      "code": "SLZ",
      "nome": "São Luís",
      "ida": {
       "dia": "2027-02-05",
-      "preco": 2024.0,
-      "cia": "Gol",
-      "escalas": 1
+      "preco": 1390.0,
+      "cia": "LATAM",
+      "escalas": 0
      },
      "volta": {
       "dia": "2027-02-09",
@@ -1434,41 +1434,41 @@
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3721
+     "total": 3087
     },
     {
      "code": "NAT",
      "nome": "Natal",
      "ida": {
-      "dia": "2027-02-06",
-      "preco": 1993.0,
+      "dia": "2027-02-05",
+      "preco": 2604.0,
       "cia": "Gol",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 1750.0,
+      "preco": 1485.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 3743
+     "total": 4089
     },
     {
      "code": "BUE",
      "nome": "Buenos Aires",
      "ida": {
       "dia": "2027-02-06",
-      "preco": 1835.0,
+      "preco": 1960.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-09",
-      "preco": 2870.0,
+      "preco": 2910.0,
       "cia": "LATAM",
       "escalas": 1
      },
-     "total": 4705
+     "total": 4870
     },
     {
      "code": "JDO",
@@ -1492,34 +1492,17 @@
      "nome": "Lisboa",
      "ida": {
       "dia": "2027-02-06",
-      "preco": 3952.0,
+      "preco": 3961.0,
       "cia": "LATAM",
       "escalas": 1
      },
      "volta": {
       "dia": "2027-02-10",
-      "preco": 3428.0,
+      "preco": 3458.0,
       "cia": "Gol",
       "escalas": 1
      },
-     "total": 7380
-    },
-    {
-     "code": "FEN",
-     "nome": "Fernando de Noronha",
-     "ida": {
-      "dia": "2027-02-05",
-      "preco": 3860.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "volta": {
-      "dia": "2027-02-10",
-      "preco": 3857.0,
-      "cia": "LATAM",
-      "escalas": 1
-     },
-     "total": 7717
+     "total": 7419
     }
    ]
   }

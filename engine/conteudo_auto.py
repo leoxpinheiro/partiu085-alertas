@@ -73,6 +73,8 @@ import criterio
 
 def main(agora_mesmo: bool = False) -> None:
     agora = datetime.now(FUSO)
+    if ler("ig_auto.json", {}).get("achados_semana") is False:
+        return  # desligado: a redação nova cuida do conteúdo
     if not agora_mesmo and agora.isoweekday() not in DIAS:
         return
     fila = ler("ig_fila.json", [])

@@ -1,9 +1,11 @@
 {
- "atualizado": "2026-11-11T12:07+00:00",
+ "atualizado": "2026-11-11T13:08+00:00",
  "pistas": [
   "AMS",
   "BEL",
+  "BPS",
   "BSB",
+  "FLN",
   "LIS",
   "LON",
   "MAD",
@@ -16,8 +18,8 @@
  "blogs": [
   {
    "iata": "REC",
-   "fonte": "Google Notícias",
-   "titulo": "Nordeste no 11.11! Passagens para Fortaleza ou Recife a partir de R$ 406 ida e volta - Melhores Destinos"
+   "fonte": "Melhores Destinos",
+   "titulo": "Nordeste no 11.11! Passagens para Fortaleza ou Recife a partir de R$ 406 ida e volta"
   }
  ],
  "destinos": [
@@ -164,7 +166,7 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "CAY",
@@ -203,7 +205,7 @@
    },
    "rastreada": true,
    "nome": "Porto Seguro",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "AGP",
@@ -366,6 +368,19 @@
    },
    "rastreada": false,
    "nome": "LED",
+   "pista": false
+  },
+  {
+   "iata": "IST",
+   "rt": {
+    "preco": 7468,
+    "ida": "2027-03-27",
+    "volta": "2027-04-03",
+    "paradas": 3,
+    "visto": "2026-11-11T12:51:00Z"
+   },
+   "rastreada": false,
+   "nome": "IST",
    "pista": false
   },
   {

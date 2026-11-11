@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-11T00:57+00:00",
+ "atualizado": "2026-11-11T01:57+00:00",
  "pistas": [
   "AMS",
   "BEL",
@@ -11,7 +11,8 @@
   "NYC",
   "REC",
   "RIO",
-  "SAO"
+  "SAO",
+  "SSA"
  ],
  "blogs": [],
  "destinos": [
@@ -39,6 +40,19 @@
    },
    "rastreada": true,
    "nome": "Salvador",
+   "pista": true
+  },
+  {
+   "iata": "CWB",
+   "ow": {
+    "preco": 785,
+    "ida": "2026-12-18",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-11T01:01:17Z"
+   },
+   "rastreada": true,
+   "nome": "Curitiba",
    "pista": false
   },
   {
@@ -263,6 +277,19 @@
    "rastreada": true,
    "nome": "Amsterdã",
    "pista": true
+  },
+  {
+   "iata": "OPO",
+   "ow": {
+    "preco": 3121,
+    "ida": "2026-11-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-08T11:22:52Z"
+   },
+   "rastreada": true,
+   "nome": "Porto",
+   "pista": false
   },
   {
    "iata": "MGF",

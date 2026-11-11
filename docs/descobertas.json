@@ -1,19 +1,33 @@
 {
- "atualizado": "2026-11-10T23:23+00:00",
+ "atualizado": "2026-11-11T00:02+00:00",
  "pistas": [
   "AMS",
   "BEL",
   "BSB",
-  "FLN",
   "LIS",
   "LON",
   "MAD",
   "NYC",
+  "REC",
   "RIO",
-  "SAO"
+  "SAO",
+  "SSA"
  ],
  "blogs": [],
  "destinos": [
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 428,
+    "ida": "2026-11-21",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-10T23:34:02Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
+   "pista": true
+  },
   {
    "iata": "SSA",
    "ow": {
@@ -25,7 +39,7 @@
    },
    "rastreada": true,
    "nome": "Salvador",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "POA",
@@ -50,11 +64,11 @@
     "visto": "2026-11-10T03:54:53Z"
    },
    "ow": {
-    "preco": 415,
-    "ida": "2026-12-17",
+    "preco": 380,
+    "ida": "2026-12-10",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-10T14:05:37Z"
+    "visto": "2026-11-10T23:56:44Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
@@ -144,7 +158,7 @@
    },
    "rastreada": true,
    "nome": "Florianópolis",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "CAY",
@@ -170,32 +184,6 @@
    },
    "rastreada": true,
    "nome": "Uberlândia",
-   "pista": false
-  },
-  {
-   "iata": "UDI",
-   "ow": {
-    "preco": 1514,
-    "ida": "2026-11-11",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-10T21:57:38Z"
-   },
-   "rastreada": true,
-   "nome": "Uberlândia",
-   "pista": false
-  },
-  {
-   "iata": "MVD",
-   "ow": {
-    "preco": 1569,
-    "ida": "2026-11-21",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-07T16:00:35Z"
-   },
-   "rastreada": true,
-   "nome": "Montevidéu",
    "pista": false
   },
   {

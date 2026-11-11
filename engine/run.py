@@ -458,6 +458,9 @@ def fila_whatsapp(a: dict, aj: dict) -> bool:
     try:
         if not aj.get("wpp_auto", True) or (a.get("desconto") or 0) < float(aj.get("wpp_desconto_min", 0.20)):
             return False
+        import criterio
+        if not criterio.barato_de_verdade(a, aj):
+            return False
         import imagem
         nome = f"ig/wpp-{a['id'][:60]}.jpg".replace(":", "")
         (DOCS / nome).parent.mkdir(parents=True, exist_ok=True)
@@ -488,6 +491,10 @@ def story_oferta(a: dict, aj: dict) -> bool:
         if not aj.get("story_ofertas", True):
             return False
         if (a.get("desconto") or 0) < float(aj.get("story_desconto_min", 0.25)):
+            return False
+        import criterio
+        if not criterio.barato_de_verdade(a, aj):
+            print("story: não é achado de verdade ->", criterio.motivo(a, aj))
             return False
         h = agora().hour
         if not (8 <= h < 22):

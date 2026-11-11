@@ -68,6 +68,9 @@ def chamada() -> bytes:
     return I.png(img)
 
 
+import criterio
+
+
 def main(agora_mesmo: bool = False) -> None:
     agora = datetime.now(FUSO)
     if not agora_mesmo and agora.isoweekday() not in DIAS:
@@ -78,7 +81,8 @@ def main(agora_mesmo: bool = False) -> None:
         return
     desde = (agora - timedelta(days=7)).isoformat()
     al = [a for a in ler("alerts.json", {}).get("alertas", []) if a.get("criado", "") >= desde and not a.get("fraco")
-          and a.get("regua") in ("menor_normal", "ida_volta") and (a.get("desconto") or 0) >= 0.15]
+          and a.get("regua") in ("menor_normal", "ida_volta") and (a.get("desconto") or 0) >= 0.15
+          and criterio.barato_de_verdade(a)]
     melhor = {}
     for a in al:
         k = a["destino"]

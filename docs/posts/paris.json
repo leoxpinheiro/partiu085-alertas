@@ -1,0 +1,68 @@
+{
+ "estilo": "revista",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/midia/capa-par-torre-2.jpg",
+   "kicker": "Partiu 085 · Notícia de Fortaleza",
+   "titulo": "Paris, *todo dia*,\nsaindo daqui.",
+   "sub": "A Air France vai voar direto de Fortaleza todos os dias de 14/12 a 17/01. Vale a pena? O radar comparou."
+  },
+  {
+   "tipo": "texto",
+   "label": "O que muda",
+   "titulo": "De 4 voos por semana\npara *7*.",
+   "lado": true,
+   "dy": 250,
+   "foto": "docs/midia/capa-par-rua-2.jpg",
+   "legenda": "Café em Paris. Foto: Pixabay",
+   "blocos": [
+    {
+     "t": "Air France · Paris",
+     "x": "Voo direto <b>todo dia de 14/12/2026 a 17/01/2027</b>, com Airbus A350. Fora desse período, volta a ter de 4 a 5 voos por semana."
+    },
+    {
+     "t": "Iberia · Madri",
+     "x": "A partir de dezembro, até <b>10 voos por semana</b>: um segundo voo às segundas, quintas e sábados, até fevereiro."
+    }
+   ],
+   "fonte": "Fontes: O Povo (30/10/2026) e Passageiro de Primeira."
+  },
+  {
+   "tipo": "precos",
+   "label": "O que o radar viu",
+   "titulo": "Direto é mais rápido.\n*Com escala, mais barato.*",
+   "tam": 128,
+   "linhas": [
+    {
+     "rotulo": "Direto · Air France · 14 a 18/12",
+     "preco": "R$ 8.733",
+     "nota": "ida e volta, a partir de (pesquisa do O Povo em 30/10)"
+    },
+    {
+     "rotulo": "1 escala · TAP · 03 a 11/02",
+     "preco": "R$ 5.314",
+     "nota": "ida e volta, visto pelo radar em 11/11. Pode mudar a qualquer momento.",
+     "destaque": true
+    }
+   ]
+  },
+  {
+   "tipo": "numero",
+   "label": "A diferença",
+   "titulo": "Quanto fica no seu bolso",
+   "numero": "R$ 3.419",
+   "texto": "a menos indo com uma escala.<br><span style='opacity:.7;font-size:28px'>Em troca, a viagem fica mais longa. As datas são diferentes, então use como referência.</span>",
+   "foto": "docs/midia/capa-par-rua-1.jpg",
+   "pos": "50% 30%",
+   "tam_txt": 44
+  },
+  {
+   "tipo": "cta",
+   "foto": "docs/midia/capa-par-torre-1.jpg",
+   "pos": "50% 35%",
+   "titulo": "O radar avisa\nquando *Paris cair*.",
+   "texto": "A gente olha Paris, Madri e Lisboa todo dia saindo de Fortaleza e manda no grupo quando aparece preço bom de verdade."
+  }
+ ]
+}

@@ -11,7 +11,7 @@ REGIAO = {
     "sudeste": "SAO RIO BHZ VIX VCP UDI".split(),
     "sul": "POA CWB FLN NVT IGU".split(),
     "america_sul": "BUE MVD SCL LIM BOG MDE CTG".split(),
-    "caribe": "PTY CUN PUJ SDQ".split(),
+    "caribe": "PTY CUN PUJ SDQ CAY".split(),
     "eua": "MIA ORL NYC".split(),
     "europa_africa": "LIS OPO MAD PAR ROM LON AMS BCN MIL FRA SID".split(),
 }

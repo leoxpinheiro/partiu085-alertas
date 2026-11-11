@@ -1,0 +1,148 @@
+{
+ "estilo": "dado",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/marca/fotos-extra/hd-decolagem-1.jpg",
+   "kicker": "Black Friday 2026",
+   "numero": "27/11",
+   "tam_num": 250,
+   "titulo": "O *preço justo*\nsaindo de\nFortaleza",
+   "tam": 96,
+   "sub": "A tabela pra saber se a promoção é de verdade. Salva antes da Black Friday."
+  },
+  {
+   "tipo": "texto",
+   "label": "Já começou",
+   "titulo": "A LATAM já está\nem *esquenta*",
+   "blocos": [
+    {
+     "t": "Até 25/11",
+     "x": "O Esquenta Black Friday da LATAM tem desconto em <b>pacotes com voo e hotel (até 45%)</b> e em hotéis pagos com milhas (até 70%)."
+    },
+    {
+     "t": "E a passagem?",
+     "x": "Os preços aparecem no site e no app da companhia. Antes de comprar, compare com a tabela das próximas telas."
+    }
+   ],
+   "fonte": "Fonte: AEROIN, \"LATAM Brasil lança ofertas de Black Friday 2026\".",
+   "tam_txt": 40,
+   "tam": 130
+  },
+  {
+   "tipo": "tabela",
+   "label": "Nacional · ida e volta",
+   "titulo": "Abaixo disso,\n*é promoção*",
+   "cols": [
+    "normal",
+    "promoção"
+   ],
+   "linhas": [
+    {
+     "nome": "São Paulo",
+     "a": "R$ 1.700",
+     "b": "R$ 1.000"
+    },
+    {
+     "nome": "Rio de Janeiro",
+     "a": "R$ 1.900",
+     "b": "R$ 1.000"
+    },
+    {
+     "nome": "Brasília",
+     "a": "R$ 2.400",
+     "b": "R$ 1.100"
+    },
+    {
+     "nome": "Salvador",
+     "a": "R$ 2.000",
+     "b": "R$ 900"
+    },
+    {
+     "nome": "Recife",
+     "a": "R$ 2.500",
+     "b": "R$ 900"
+    },
+    {
+     "nome": "Porto Alegre",
+     "a": "R$ 2.100",
+     "b": "R$ 1.300"
+    }
+   ],
+   "rodape": "Normal: preço típico visto pelo radar em out e nov/2026, ida e volta somadas. Promoção: nossa régua pra chamar de achado."
+  },
+  {
+   "tipo": "tabela",
+   "label": "Internacional · ida e volta",
+   "titulo": "E pra fora\n*do Brasil*",
+   "cols": [
+    "normal",
+    "promoção"
+   ],
+   "linhas": [
+    {
+     "nome": "Buenos Aires",
+     "a": "R$ 3.100",
+     "b": "R$ 1.800"
+    },
+    {
+     "nome": "Santiago",
+     "a": "R$ 3.400",
+     "b": "R$ 1.800"
+    },
+    {
+     "nome": "Lisboa",
+     "a": "R$ 3.750",
+     "b": "R$ 3.100"
+    },
+    {
+     "nome": "Madri",
+     "a": "R$ 4.200",
+     "b": "R$ 3.500"
+    },
+    {
+     "nome": "Miami",
+     "a": "R$ 4.900",
+     "b": "R$ 3.600"
+    },
+    {
+     "nome": "Paris",
+     "a": "R$ 5.150",
+     "b": "R$ 3.600"
+    }
+   ],
+   "rodape": "Normal: preço típico de ida e volta na mesma reserva visto pelo radar em out e nov/2026. Valores arredondados.",
+   "pad": 15
+  },
+  {
+   "tipo": "lista",
+   "label": "Antes de comprar",
+   "titulo": "3 regras pra não\ncair em *falsa promoção*",
+   "itens": [
+    {
+     "n": "01",
+     "t": "Compare com a tabela",
+     "x": "Desconto de 40% em cima de preço inflado continua caro."
+    },
+    {
+     "n": "02",
+     "t": "Internacional: ida e volta na mesma reserva",
+     "x": "No teste do radar, Lisboa saiu R$ 3.397 junto e R$ 3.980 comprando separado."
+    },
+    {
+     "n": "03",
+     "t": "Olhe a bagagem",
+     "x": "A tarifa mais barata costuma não incluir mala despachada. Some antes de comparar."
+    }
+   ],
+   "tam_txt": 37,
+   "pad": 46,
+   "tam_tit": 110
+  },
+  {
+   "tipo": "cta",
+   "titulo": "Na Black Friday,\no radar *fica de olho*.",
+   "texto": "Se aparecer preço abaixo da tabela saindo de Fortaleza, a gente avisa no grupo na hora."
+  }
+ ]
+}

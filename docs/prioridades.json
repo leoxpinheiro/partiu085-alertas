@@ -51,9 +51,9 @@
    "motivo": "7 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "SLZ": {
-   "prioridade": "turbo",
-   "auto": "turbo",
-   "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
   },
   "THE": {
    "prioridade": "turbo",
@@ -103,7 +103,7 @@
   "FEN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (21 de ~90 dias)"
+   "motivo": "poucos voos (15 de ~90 dias)"
   },
   "JDO": {
    "prioridade": "baixa",
@@ -111,9 +111,9 @@
    "motivo": "poucos voos (31 de ~90 dias)"
   },
   "LIS": {
-   "prioridade": "turbo",
-   "auto": "turbo",
-   "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "2 alertas em 30 dias"
   },
   "OPO": {
    "prioridade": "turbo",
@@ -156,9 +156,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "NYC": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "BUE": {
    "prioridade": "alta",
@@ -173,12 +173,12 @@
   "LIM": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (2 de ~90 dias)"
   },
   "BOG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (16 de ~90 dias)"
+   "motivo": "poucos voos (19 de ~90 dias)"
   },
   "CTG": {
    "prioridade": "baixa",
@@ -276,30 +276,24 @@
    "motivo": "poucos voos (7 de ~90 dias)"
   }
  },
- "quando": "2026-11-11T23:11-03:00",
+ "quando": "2026-11-12T00:11-03:00",
  "ultimo_lote": [
-  "SLZ",
-  "THE",
-  "MIA",
-  "UDI",
-  "BEL",
-  "LIS",
-  "REC",
-  "OPO",
-  "MAD",
-  "PAR",
-  "ROM",
-  "MAO",
-  "BPS",
-  "BHZ",
-  "SSA",
-  "VIX",
-  "AJU",
-  "BOG",
-  "FEN",
-  "ORL",
-  "SCL",
-  "LIM",
-  "NYC"
+  "BUE",
+  "MCZ",
+  "GYN",
+  "POA",
+  "RIO",
+  "IGU",
+  "CGR",
+  "JPA",
+  "SAO",
+  "NAT",
+  "AMS",
+  "CWB",
+  "JDO",
+  "FLN",
+  "FRA",
+  "BSB",
+  "MIL"
  ]
 }

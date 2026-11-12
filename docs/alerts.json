@@ -1,6 +1,171 @@
 {
- "atualizado": "2026-11-12T10:03-03:00",
+ "atualizado": "2026-11-12T11:07-03:00",
  "alertas": [
+  {
+   "id": "FOR-UDI-2027-01-26-1794492433",
+   "criado": "2026-11-12T11:07-03:00",
+   "rota": "FOR-UDI",
+   "destino": "UDI",
+   "destino_nome": "Uberlândia",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 764,
+   "preco_volta": 621,
+   "preco_tipico": 914,
+   "desconto": 0.164,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2027-01-26",
+   "volta": "2027-01-27",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-11",
+     "preco": 814
+    },
+    {
+     "dia": "2026-12-12",
+     "preco": 788
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 788
+    },
+    {
+     "dia": "2026-12-22",
+     "preco": 775
+    },
+    {
+     "dia": "2027-01-19",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-22",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-24",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-26",
+     "preco": 764
+    },
+    {
+     "dia": "2027-01-27",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-31",
+     "preco": 814
+    },
+    {
+     "dia": "2027-02-09",
+     "preco": 794
+    },
+    {
+     "dia": "2027-02-12",
+     "preco": 788
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-27",
+     "preco": 621
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 621
+    },
+    {
+     "dia": "2027-01-29",
+     "preco": 621
+    },
+    {
+     "dia": "2027-02-08",
+     "preco": 621
+    },
+    {
+     "dia": "2027-02-15",
+     "preco": 659
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "11",
+      "12",
+      "13",
+      "22"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "19",
+      "22",
+      "24",
+      "26",
+      "27",
+      "31"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "09",
+      "12"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "27",
+      "28",
+      "29"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "08",
+      "15"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDEtMjZqBRIDRk9ScgUSA1VESUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2601UDI29011?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-26",
+    "volta": "2027-01-29",
+    "total": 1385,
+    "dias": 3
+   },
+   "base": {
+    "dias": 35,
+    "menor_visto": 733
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Uberlândia* (UDI)\n📍 _Triângulo Mineiro (MG)_\n💰 *R$ 764* o trecho\n🔁 Ida e volta: *R$ 1.385* (ida 26/01, volta 29/01 · 3 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 11, 12, 13, 22\n▸ Janeiro/27: 19, 22, 24, 26, 27, 31\n▸ Fevereiro/27: 09, 12\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 27, 28, 29\n▸ Fevereiro/27: 08, 15\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2601UDI29011?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-AJU-2027-01-24-1794479952",
    "criado": "2026-11-12T07:39-03:00",
@@ -448,9 +613,9 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-12T06:35-03:00",
-    "preco": 383,
-    "status": "valendo"
+    "quando": "2026-11-12T11:07-03:00",
+    "preco": 1290,
+    "status": "subiu"
    }
   },
   {

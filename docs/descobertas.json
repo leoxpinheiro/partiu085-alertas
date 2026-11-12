@@ -1,7 +1,6 @@
 {
- "atualizado": "2026-11-11T19:45+00:00",
+ "atualizado": "2026-11-12T00:10+00:00",
  "pistas": [
-  "AMS",
   "BEL",
   "BSB",
   "FLN",
@@ -25,7 +24,7 @@
   {
    "iata": "REC",
    "ow": {
-    "preco": 474,
+    "preco": 475,
     "ida": "2026-11-21",
     "volta": "",
     "paradas": 0,
@@ -71,7 +70,7 @@
     "visto": "2026-11-10T03:54:53Z"
    },
    "ow": {
-    "preco": 378,
+    "preco": 379,
     "ida": "2026-12-10",
     "volta": "",
     "paradas": 0,
@@ -115,6 +114,19 @@
    "pista": true
   },
   {
+   "iata": "NVT",
+   "ow": {
+    "preco": 1089,
+    "ida": "2027-01-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-11T21:41:11Z"
+   },
+   "rastreada": true,
+   "nome": "Navegantes",
+   "pista": false
+  },
+  {
    "iata": "RIO",
    "rt": {
     "preco": 1230,
@@ -148,22 +160,9 @@
    "pista": false
   },
   {
-   "iata": "CAY",
-   "ow": {
-    "preco": 1425,
-    "ida": "2027-03-25",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-08T23:31:51Z"
-   },
-   "rastreada": false,
-   "nome": "CAY",
-   "pista": false
-  },
-  {
    "iata": "FLN",
    "rt": {
-    "preco": 1432,
+    "preco": 1433,
     "ida": "2027-09-15",
     "volta": "2027-09-19",
     "paradas": 1,
@@ -179,6 +178,19 @@
    "rastreada": true,
    "nome": "Florianópolis",
    "pista": true
+  },
+  {
+   "iata": "CAY",
+   "ow": {
+    "preco": 1438,
+    "ida": "2027-03-25",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-11T23:13:13Z"
+   },
+   "rastreada": true,
+   "nome": "Caiena",
+   "pista": false
   },
   {
    "iata": "UDI",
@@ -246,22 +258,9 @@
    "pista": true
   },
   {
-   "iata": "AMS",
-   "ow": {
-    "preco": 2923,
-    "ida": "2026-12-21",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-10T20:10:58Z"
-   },
-   "rastreada": true,
-   "nome": "Amsterdã",
-   "pista": true
-  },
-  {
    "iata": "NAT",
    "rt": {
-    "preco": 2945,
+    "preco": 2946,
     "ida": "2026-11-17",
     "volta": "2026-11-17",
     "paradas": 1,
@@ -272,13 +271,33 @@
    "pista": false
   },
   {
+   "iata": "MAO",
+   "rt": {
+    "preco": 3211,
+    "ida": "2026-11-20",
+    "volta": "2026-11-26",
+    "paradas": 1,
+    "visto": "2026-11-11T21:17:47Z"
+   },
+   "rastreada": true,
+   "nome": "Manaus",
+   "pista": false
+  },
+  {
    "iata": "MAD",
    "rt": {
-    "preco": 3909,
+    "preco": 3912,
     "ida": "2027-03-02",
     "volta": "2027-03-11",
     "paradas": 1,
-    "visto": "2026-11-10T23:12:19Z"
+    "visto": "2026-11-11T23:25:20Z"
+   },
+   "ow": {
+    "preco": 1873,
+    "ida": "2026-12-03",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-11T22:02:16Z"
    },
    "rastreada": true,
    "nome": "Madri",
@@ -366,7 +385,7 @@
     "visto": "2026-11-08T20:20:17Z"
    },
    "ow": {
-    "preco": 2731,
+    "preco": 2732,
     "ida": "2026-12-19",
     "volta": "",
     "paradas": 0,
@@ -379,7 +398,7 @@
   {
    "iata": "IST",
    "rt": {
-    "preco": 7438,
+    "preco": 7442,
     "ida": "2027-03-27",
     "volta": "2027-04-03",
     "paradas": 3,

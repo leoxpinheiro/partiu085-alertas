@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-11T17:21-03:00",
+ "atualizado": "2026-11-11T21:55-03:00",
  "itens": [
   {
    "k": "BEL",
@@ -10,19 +10,6 @@
    "normal": 1179,
    "ida": "2027-02-04",
    "volta": "2027-02-14",
-   "cia": "LATAM",
-   "mes": "02",
-   "intl": false
-  },
-  {
-   "k": "THE",
-   "nome": "Teresina",
-   "menor": 508.0,
-   "rt": 924.0,
-   "d": 0.441016333938294,
-   "normal": 1653,
-   "ida": "2027-02-05",
-   "volta": "2027-02-10",
    "cia": "LATAM",
    "mes": "02",
    "intl": false
@@ -41,16 +28,16 @@
    "intl": false
   },
   {
-   "k": "REC",
-   "nome": "Recife",
-   "menor": 360.0,
-   "rt": 721.0,
-   "d": 0.24660397074190177,
-   "normal": 957,
-   "ida": "2027-01-12",
-   "volta": "2027-01-22",
-   "cia": "Azul",
-   "mes": "01",
+   "k": "AJU",
+   "nome": "Aracaju",
+   "menor": 722.0,
+   "rt": 1436.0,
+   "d": 0.20837927232635056,
+   "normal": 1814,
+   "ida": "2027-02-09",
+   "volta": "2027-02-15",
+   "cia": "LATAM",
+   "mes": "02",
    "intl": false
   },
   {
@@ -65,9 +52,22 @@
    "cia": "LATAM",
    "mes": "02",
    "intl": false
+  },
+  {
+   "k": "BHZ",
+   "nome": "Belo Horizonte",
+   "menor": 666.0,
+   "rt": 1247.0,
+   "d": 0.15256540944614339,
+   "normal": 1472,
+   "ida": "2027-02-09",
+   "volta": "2027-02-12",
+   "cia": "LATAM",
+   "mes": "02",
+   "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_11/11_\n\n1️⃣ *Belém* · ida e volta *R$ 649* (04/02 a 14/02) · 45% abaixo do normal\n2️⃣ *Teresina* · ida e volta *R$ 924* (05/02 a 10/02) · 44% abaixo do normal\n3️⃣ *Juazeiro do Norte* · ida e volta *R$ 401* (11/02 a 14/02) · 31% abaixo do normal\n4️⃣ *Recife* · ida e volta *R$ 721* (12/01 a 22/01) · 25% abaixo do normal\n5️⃣ *Campo Grande* · ida e volta *R$ 1.443* (03/02 a 08/02) · 19% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_11/11_\n\n1️⃣ *Belém* · ida e volta *R$ 649* (04/02 a 14/02) · 45% abaixo do normal\n2️⃣ *Juazeiro do Norte* · ida e volta *R$ 401* (11/02 a 14/02) · 31% abaixo do normal\n3️⃣ *Aracaju* · ida e volta *R$ 1.436* (09/02 a 15/02) · 21% abaixo do normal\n4️⃣ *Campo Grande* · ida e volta *R$ 1.443* (03/02 a 08/02) · 19% abaixo do normal\n5️⃣ *Belo Horizonte* · ida e volta *R$ 1.247* (09/02 a 12/02) · 15% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
@@ -90,26 +90,6 @@
    "d": 0.4495335029686175
   },
   {
-   "k": "REC",
-   "nome": "Recife",
-   "rt": 721.0,
-   "menor": 360.0,
-   "ida": "2027-01-12",
-   "volta": "2027-01-22",
-   "normal": 957,
-   "d": 0.24660397074190177
-  },
-  {
-   "k": "THE",
-   "nome": "Teresina",
-   "rt": 924.0,
-   "menor": 508.0,
-   "ida": "2027-02-05",
-   "volta": "2027-02-10",
-   "normal": 1653,
-   "d": 0.441016333938294
-  },
-  {
    "k": "SAO",
    "nome": "São Paulo",
    "rt": 1109.0,
@@ -120,15 +100,35 @@
    "d": 0.017714791851195733
   },
   {
+   "k": "REC",
+   "nome": "Recife",
+   "rt": 1166.0,
+   "menor": 665.0,
+   "ida": "2027-01-29",
+   "volta": "2027-02-08",
+   "normal": 957,
+   "d": -0.21839080459770122
+  },
+  {
    "k": "SSA",
    "nome": "Salvador",
-   "rt": 1223.0,
+   "rt": 1176.0,
    "menor": 721.0,
    "ida": "2027-01-16",
    "volta": "2027-01-25",
    "normal": 1350,
-   "d": 0.09373842163764357
+   "d": 0.1285661356057799
+  },
+  {
+   "k": "BHZ",
+   "nome": "Belo Horizonte",
+   "rt": 1247.0,
+   "menor": 666.0,
+   "ida": "2027-02-09",
+   "volta": "2027-02-12",
+   "normal": 1472,
+   "d": 0.15256540944614339
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_11/11_\n\n✈️ *Juazeiro do Norte* · *R$ 401* (11/02 a 14/02)\n✈️ *Belém* · *R$ 649* (04/02 a 14/02)\n✈️ *Recife* · *R$ 721* (12/01 a 22/01)\n✈️ *Teresina* · *R$ 924* (05/02 a 10/02)\n✈️ *São Paulo* · *R$ 1.109* (05/12 a 10/12)\n✈️ *Salvador* · *R$ 1.223* (16/01 a 25/01)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_11/11_\n\n✈️ *Juazeiro do Norte* · *R$ 401* (11/02 a 14/02)\n✈️ *Belém* · *R$ 649* (04/02 a 14/02)\n✈️ *São Paulo* · *R$ 1.109* (05/12 a 10/12)\n✈️ *Recife* · *R$ 1.166* (29/01 a 08/02)\n✈️ *Salvador* · *R$ 1.176* (16/01 a 25/01)\n✈️ *Belo Horizonte* · *R$ 1.247* (09/02 a 12/02)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

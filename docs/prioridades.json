@@ -48,7 +48,7 @@
   "AJU": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "7 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "SLZ": {
    "prioridade": "turbo",
@@ -188,7 +188,7 @@
   "PTY": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (2 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "CUN": {
    "prioridade": "baixa",
@@ -211,9 +211,9 @@
    "motivo": "padrão"
   },
   "CGB": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "2 alertas em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "CGR": {
    "prioridade": "alta",
@@ -269,10 +269,20 @@
    "prioridade": "baixa",
    "auto": "baixa",
    "motivo": "poucos voos (0 de ~90 dias)"
+  },
+  "CAY": {
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   }
  },
- "quando": "2026-11-11T16:45-03:00",
+ "quando": "2026-11-11T21:10-03:00",
  "ultimo_lote": [
+  "CAY",
+  "SLZ",
+  "THE",
+  "MIA",
+  "UDI",
   "BEL",
   "LIS",
   "REC",
@@ -280,21 +290,16 @@
   "MAD",
   "PAR",
   "ROM",
-  "JPA",
-  "SAO",
-  "NAT",
-  "AMS",
-  "CWB",
-  "FLN",
   "MAO",
-  "FRA",
   "BPS",
   "BHZ",
   "SSA",
-  "BSB",
   "VIX",
-  "MIL",
   "AJU",
-  "PTY"
+  "BUE",
+  "MCZ",
+  "GYN",
+  "NVT",
+  "POA"
  ]
 }

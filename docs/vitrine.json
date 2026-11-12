@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-11T17:21-03:00",
+ "atualizado": "2026-11-11T21:55-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -52,14 +52,14 @@
   "SSA": {
    "nome": "Salvador",
    "tipo": "nacional",
-   "rt": 1223.0,
+   "rt": 1176.0,
    "menor": 721.0,
    "ida": "2027-01-16",
    "volta": "2027-01-25",
    "cia": "Azul",
-   "normal": 1357,
-   "d": 0.099,
-   "visto": "2026-11-10T13:41-03:00"
+   "normal": 1350,
+   "d": 0.129,
+   "visto": "2026-11-11T21:55-03:00"
   },
   "REC": {
    "nome": "Recife",
@@ -112,14 +112,14 @@
   "AJU": {
    "nome": "Aracaju",
    "tipo": "nacional",
-   "rt": 1561.0,
-   "menor": 749.0,
-   "ida": "2027-01-27",
-   "volta": "2027-02-01",
-   "cia": "Gol",
+   "rt": 1436.0,
+   "menor": 722.0,
+   "ida": "2027-02-09",
+   "volta": "2027-02-15",
+   "cia": "LATAM",
    "normal": 1814,
-   "d": 0.139,
-   "visto": "2026-11-11T17:21-03:00"
+   "d": 0.208,
+   "visto": "2026-11-11T21:55-03:00"
   },
   "SLZ": {
    "nome": "São Luís",
@@ -642,6 +642,18 @@
    "d": 0.341,
    "visto": "2026-11-09T23:01-03:00",
    "reserva": "ida_volta"
+  },
+  "CAY": {
+   "nome": "Caiena",
+   "tipo": "internacional",
+   "rt": 5336.0,
+   "menor": 2446.0,
+   "ida": "2026-11-26",
+   "volta": "2026-12-02",
+   "cia": "Air France",
+   "normal": null,
+   "d": null,
+   "visto": "2026-11-11T21:55-03:00"
   }
  }
 }

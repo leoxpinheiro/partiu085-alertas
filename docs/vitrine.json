@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-12T19:17-03:00",
+ "atualizado": "2026-11-12T20:25-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -40,14 +40,14 @@
   "BHZ": {
    "nome": "Belo Horizonte",
    "tipo": "nacional",
-   "rt": 1187.0,
-   "menor": 606.0,
-   "ida": "2027-02-08",
-   "volta": "2027-02-11",
+   "rt": 1104.0,
+   "menor": 674.0,
+   "ida": "2027-01-21",
+   "volta": "2027-01-26",
    "cia": "LATAM",
-   "normal": 1481,
-   "d": 0.199,
-   "visto": "2026-11-07T23:55-03:00"
+   "normal": 1471,
+   "d": 0.249,
+   "visto": "2026-11-12T20:25-03:00"
   },
   "SSA": {
    "nome": "Salvador",
@@ -384,15 +384,14 @@
   "BUE": {
    "nome": "Buenos Aires",
    "tipo": "internacional",
-   "rt": 2855.0,
-   "menor": null,
-   "ida": "2026-12-06",
-   "volta": "2026-12-11",
-   "cia": "Gol",
-   "normal": null,
-   "d": null,
-   "visto": "2026-10-28T19:53-03:00",
-   "reserva": "ida_volta"
+   "rt": 3638.0,
+   "menor": 1381.0,
+   "ida": "2026-12-02",
+   "volta": "2026-12-08",
+   "cia": "LATAM",
+   "normal": 3309,
+   "d": -0.099,
+   "visto": "2026-11-12T20:25-03:00"
   },
   "BOG": {
    "nome": "Bogotá",
@@ -496,14 +495,14 @@
   "BPS": {
    "nome": "Porto Seguro",
    "tipo": "nacional",
-   "rt": 1938.0,
+   "rt": 1871.0,
    "menor": 977.0,
    "ida": "2027-01-22",
-   "volta": "2027-01-29",
+   "volta": "2027-01-27",
    "cia": "LATAM",
    "normal": 1943,
-   "d": 0.003,
-   "visto": "2026-11-12T13:32-03:00"
+   "d": 0.037,
+   "visto": "2026-11-12T20:25-03:00"
   },
   "PMW": {
    "nome": "Palmas",
@@ -621,14 +620,14 @@
   "CAY": {
    "nome": "Caiena",
    "tipo": "internacional",
-   "rt": 2839.0,
+   "rt": 2837.0,
    "menor": null,
    "ida": "2026-12-03",
    "volta": "2026-12-09",
    "cia": "Air France",
    "normal": null,
    "d": null,
-   "visto": "2026-11-11T21:55-03:00",
+   "visto": "2026-11-12T19:17-03:00",
    "reserva": "ida_volta"
   }
  }

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-11T21:55-03:00",
+ "atualizado": "2026-11-11T22:45-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "HTTPSConnectionPool(host='aeroin.net', port=443): Max retries exceeded with url: /feed/ (Caused by ConnectTimeoutError(<"
   },
   {
    "fonte": "Aeroflap",
@@ -82,7 +82,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 30,
+   "itens": 29,
    "ok": true
   },
   {
@@ -94,7 +94,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 32,
+   "itens": 33,
    "ok": true
   },
   {
@@ -146,7 +146,7 @@
    "fortaleza": true,
    "iata": "PHB",
    "destino": "Parnaíba",
-   "texto": "💎 *ALERTA DE MILHAS!*\n\n✈️ *Fortaleza ➜ Parnaíba* (PHB)\n🎟️ *5.341 milhas* LATAM Pass o trecho\n🗓️ 14 de janeiro\n\n⚡ Milhas em promoção acabam rápido. Confira antes de emitir.\n🛒 https://www.latamairlines.com/br/pt/oferta-voos?origin=FOR&amp;destination=PHB&amp;adt=1&amp;chd=0&amp;inf=0&amp;trip=OW&amp;cabin=Economy&amp;redemption=true&amp;outbound=2027-01-14T00%3A00%3A00.000Z&amp;inbound=null&amp;sort=PRICE%2Casc&amp;exp_id=b0ba46b5-065a-4bfb-8b61-9377d3f4c82c&amp;utm_source=pontos-para-voar&amp;utm_medium=affiliate&amp;utm_campaign=br_ltm_pontos-para-voar_affiliate_tkt_mega-promo_conv_lower&amp;utm_content=aberta_articulo_20260529_geral",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Parnaíba por 5.341 milhas LATAM Pass\n🎟️ A partir de *5.341 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -172,7 +172,7 @@
    "fortaleza": true,
    "iata": "PHB",
    "destino": "Parnaíba",
-   "texto": "💎 *ALERTA DE MILHAS!*\n\n✈️ *Fortaleza ➜ Parnaíba* (PHB)\n🎟️ *4.100 milhas* LATAM Pass o trecho\n🗓️ 4 de março\n\n⚡ Milhas em promoção acabam rápido. Confira antes de emitir.\n🛒 https://www.latamairlines.com/br/pt/oferta-voos?origin=FOR&amp;destination=PHB&amp;adt=1&amp;chd=0&amp;inf=0&amp;trip=OW&amp;cabin=Economy&amp;redemption=true&amp;outbound=2027-03-04T00%3A00%3A00.000Z&amp;inbound=null&amp;sort=PRICE%2Casc&amp;exp_id=b0ba46b5-065a-4bfb-8b61-9377d3f4c82c&amp;utm_source=pontos-para-voar&amp;utm_medium=affiliate&amp;utm_campaign=br_ltm_pontos-para-voar_affiliate_tkt_mega-promo_conv_lower&amp;utm_content=aberta_articulo_20260529_geral",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Parnaíba por 4.100 milhas LATAM Pass\n🎟️ A partir de *4.100 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -557,6 +557,31 @@
    ],
    "encontrado": "2026-11-10T19:15-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Latam Pass oferece passagens com até 40% de desconto – trechos a partir de 3.503 milhas\n🎟️ A partir de *3.503 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "LATAM oferece trechos para diversos destinos a partir de R$ 149 ou 3 mil milhas + taxas",
+   "resumo": "[Oferta] A LATAM está com passagens aéreas a partir de R$ 149,53 ou 3.503 milhas + taxas por trecho, com até 40% de desconto. As ofertas são válidas por tempo limitado e incluem destinos nacionais e internacionais. Não perca essa oportunidade de viajar pagando menos! O post LATAM",
+   "link": "https://passageirodeprimeira.com/latam-oferece-trechos-para-diversos-destinos-a-partir-de-r-149-ou-3-mil-milhas-taxas/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-11-10T18:20-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": 3000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-67bfe6d6fd",
+   "fontes": [
+    "Passageiro de Primeira",
+    "Pontos pra Voar"
+   ],
+   "encontrado": "2026-11-11T22:45-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ LATAM oferece trechos para diversos destinos a partir de R$ 149 ou 3 mil milhas + taxas\n🎟️ A partir de *3.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {

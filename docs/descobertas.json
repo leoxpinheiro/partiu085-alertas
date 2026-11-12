@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-12T00:10+00:00",
+ "atualizado": "2026-11-12T01:11+00:00",
  "pistas": [
   "BEL",
   "BSB",
+  "CAY",
   "FLN",
   "LIS",
   "LON",
@@ -190,20 +191,7 @@
    },
    "rastreada": true,
    "nome": "Caiena",
-   "pista": false
-  },
-  {
-   "iata": "UDI",
-   "ow": {
-    "preco": 1514,
-    "ida": "2026-11-11",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-10T21:57:38Z"
-   },
-   "rastreada": true,
-   "nome": "Uberlândia",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "BPS",
@@ -363,19 +351,6 @@
    "pista": true
   },
   {
-   "iata": "LED",
-   "ow": {
-    "preco": 6652,
-    "ida": "2027-01-18",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-11-10T16:13:08Z"
-   },
-   "rastreada": false,
-   "nome": "LED",
-   "pista": false
-  },
-  {
    "iata": "LIS",
    "rt": {
     "preco": 7401,
@@ -439,6 +414,26 @@
    },
    "rastreada": false,
    "nome": "TYO",
+   "pista": false
+  },
+  {
+   "iata": "LED",
+   "rt": {
+    "preco": 16882,
+    "ida": "2027-01-04",
+    "volta": "2027-01-14",
+    "paradas": 2,
+    "visto": "2026-11-11T23:14:39Z"
+   },
+   "ow": {
+    "preco": 6652,
+    "ida": "2027-01-18",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-11-10T16:13:08Z"
+   },
+   "rastreada": false,
+   "nome": "LED",
    "pista": false
   }
  ]

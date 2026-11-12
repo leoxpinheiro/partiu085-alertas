@@ -1,6 +1,250 @@
 {
- "atualizado": "2026-11-12T16:53-03:00",
+ "atualizado": "2026-11-12T18:05-03:00",
  "alertas": [
+  {
+   "id": "FOR-BEL-2027-02-04-1794517548",
+   "criado": "2026-11-12T18:05-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 349,
+   "preco_volta": 284,
+   "preco_tipico": 573,
+   "desconto": 0.391,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2027-02-04",
+   "volta": "2027-02-14",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-16",
+     "preco": 383
+    },
+    {
+     "dia": "2026-12-17",
+     "preco": 383
+    },
+    {
+     "dia": "2026-12-28",
+     "preco": 383
+    },
+    {
+     "dia": "2026-12-29",
+     "preco": 383
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 383
+    },
+    {
+     "dia": "2027-02-04",
+     "preco": 349
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-14",
+     "preco": 284
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "16",
+      "17",
+      "28",
+      "29"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "03",
+      "04"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMDRqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0402BEL14021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-04",
+    "volta": "2027-02-14",
+    "total": 633,
+    "dias": 10
+   },
+   "base": {
+    "dias": 37,
+    "menor_visto": 307
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 349* o trecho\n🔁 Ida e volta: *R$ 633* (ida 04/02, volta 14/02 · 10 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Dezembro/26: 16, 17, 28, 29\n▸ Fevereiro/27: 03, 04\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0402BEL14021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": true
+  },
+  {
+   "id": "FOR-UDI-2026-12-15-1794517550",
+   "criado": "2026-11-12T18:05-03:00",
+   "rota": "FOR-UDI",
+   "destino": "UDI",
+   "destino_nome": "Uberlândia",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 775,
+   "preco_volta": 621,
+   "preco_tipico": 914,
+   "desconto": 0.152,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2026-12-15",
+   "volta": "2027-01-28",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-11",
+     "preco": 814
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 808
+    },
+    {
+     "dia": "2026-12-15",
+     "preco": 775
+    },
+    {
+     "dia": "2026-12-22",
+     "preco": 775
+    },
+    {
+     "dia": "2027-01-19",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-24",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-27",
+     "preco": 814
+    },
+    {
+     "dia": "2027-01-31",
+     "preco": 814
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 814
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-28",
+     "preco": 621
+    },
+    {
+     "dia": "2027-01-29",
+     "preco": 621
+    },
+    {
+     "dia": "2027-02-08",
+     "preco": 621
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "11",
+      "13",
+      "15",
+      "22"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "19",
+      "24",
+      "27",
+      "31"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "03"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "28",
+      "29"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "08"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMTVqBRIDRk9ScgUSA1VESUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR3101UDI08021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-31",
+    "volta": "2027-02-08",
+    "total": 1435,
+    "dias": 8
+   },
+   "base": {
+    "dias": 35,
+    "menor_visto": 733
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Uberlândia* (UDI)\n📍 _Triângulo Mineiro (MG)_\n💰 *R$ 775* o trecho\n🔁 Ida e volta: *R$ 1.435* (ida 31/01, volta 08/02 · 8 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 11, 13, 15, 22\n▸ Janeiro/27: 19, 24, 27, 31\n▸ Fevereiro/27: 03\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 28, 29\n▸ Fevereiro/27: 08\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR3101UDI08021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-AJU-2027-01-26-1794505039",
    "criado": "2026-11-12T14:37-03:00",

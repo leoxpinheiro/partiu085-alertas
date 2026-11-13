@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-13T17:15-03:00",
+ "atualizado": "2026-11-13T18:49-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -28,14 +28,14 @@
   "BSB": {
    "nome": "Brasília",
    "tipo": "nacional",
-   "rt": 1148.0,
-   "menor": 692.0,
-   "ida": "2027-02-08",
+   "rt": 1136.0,
+   "menor": 680.0,
+   "ida": "2027-02-09",
    "volta": "2027-02-15",
    "cia": "Azul",
    "normal": 1252,
-   "d": 0.083,
-   "visto": "2026-11-13T12:49-03:00"
+   "d": 0.093,
+   "visto": "2026-11-13T18:49-03:00"
   },
   "BHZ": {
    "nome": "Belo Horizonte",
@@ -383,14 +383,15 @@
   "BUE": {
    "nome": "Buenos Aires",
    "tipo": "internacional",
-   "rt": 3638.0,
-   "menor": 1381.0,
-   "ida": "2026-12-02",
-   "volta": "2026-12-08",
-   "cia": "LATAM",
-   "normal": 3309,
-   "d": -0.099,
-   "visto": "2026-11-12T20:58-03:00"
+   "rt": 3202.0,
+   "menor": null,
+   "ida": "2026-12-04",
+   "volta": "2026-12-09",
+   "cia": "Gol",
+   "normal": 3110,
+   "d": -0.03,
+   "visto": "2026-11-13T17:15-03:00",
+   "reserva": "ida_volta"
   },
   "BOG": {
    "nome": "Bogotá",

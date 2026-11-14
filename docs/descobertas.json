@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-14T12:04+00:00",
+ "atualizado": "2026-11-14T13:07+00:00",
  "pistas": [
   "BEL",
   "CAY",
+  "CTG",
   "LIS",
   "LON",
   "MAD",
@@ -219,16 +220,16 @@
    "pista": false
   },
   {
-   "iata": "BSB",
+   "iata": "IPN",
    "rt": {
-    "preco": 2419,
-    "ida": "2026-11-23",
-    "volta": "2026-11-26",
-    "paradas": 1,
-    "visto": "2026-11-13T19:57:54Z"
+    "preco": 2348,
+    "ida": "2027-04-12",
+    "volta": "2027-04-27",
+    "paradas": 2,
+    "visto": "2026-11-14T12:54:35Z"
    },
-   "rastreada": true,
-   "nome": "Brasília",
+   "rastreada": false,
+   "nome": "IPN",
    "pista": false
   },
   {
@@ -271,6 +272,19 @@
    "pista": false
   },
   {
+   "iata": "BSB",
+   "rt": {
+    "preco": 2984,
+    "ida": "2026-11-23",
+    "volta": "2026-11-25",
+    "paradas": 1,
+    "visto": "2026-11-13T00:52:18Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
+   "pista": false
+  },
+  {
    "iata": "CTG",
    "ow": {
     "preco": 3007,
@@ -281,7 +295,7 @@
    },
    "rastreada": true,
    "nome": "Cartagena",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "PAR",

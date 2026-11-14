@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-14T19:48+00:00",
+ "atualizado": "2026-11-14T21:28+00:00",
  "pistas": [
   "BEL",
   "CAY",
@@ -8,6 +8,7 @@
   "LON",
   "MAD",
   "MAO",
+  "NAT",
   "PAR",
   "REC",
   "RIO",
@@ -161,6 +162,19 @@
    "pista": false
   },
   {
+   "iata": "NAT",
+   "rt": {
+    "preco": 1328,
+    "ida": "2026-12-11",
+    "volta": "2026-12-14",
+    "paradas": 0,
+    "visto": "2026-11-14T20:31:43Z"
+   },
+   "rastreada": true,
+   "nome": "Natal",
+   "pista": true
+  },
+  {
    "iata": "FLN",
    "rt": {
     "preco": 1434,
@@ -250,19 +264,6 @@
    "rastreada": true,
    "nome": "Lisboa",
    "pista": true
-  },
-  {
-   "iata": "NAT",
-   "rt": {
-    "preco": 2946,
-    "ida": "2026-11-17",
-    "volta": "2026-11-17",
-    "paradas": 1,
-    "visto": "2026-11-11T13:28:25Z"
-   },
-   "rastreada": true,
-   "nome": "Natal",
-   "pista": false
   },
   {
    "iata": "BSB",

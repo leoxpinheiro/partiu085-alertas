@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-14T14:47+00:00",
+ "atualizado": "2026-11-14T16:27+00:00",
  "pistas": [
   "BEL",
   "CAY",
@@ -102,6 +102,19 @@
    "pista": true
   },
   {
+   "iata": "BHZ",
+   "ow": {
+    "preco": 986,
+    "ida": "2026-11-28",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-14T15:35:58Z"
+   },
+   "rastreada": true,
+   "nome": "Belo Horizonte",
+   "pista": false
+  },
+  {
    "iata": "NVT",
    "ow": {
     "preco": 1089,
@@ -133,19 +146,6 @@
    "rastreada": true,
    "nome": "Rio de Janeiro",
    "pista": true
-  },
-  {
-   "iata": "MVF",
-   "ow": {
-    "preco": 1258,
-    "ida": "2026-11-28",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-13T09:30:14Z"
-   },
-   "rastreada": false,
-   "nome": "MVF",
-   "pista": false
   },
   {
    "iata": "SCL",
@@ -185,19 +185,6 @@
    "rastreada": true,
    "nome": "Caiena",
    "pista": true
-  },
-  {
-   "iata": "BHZ",
-   "ow": {
-    "preco": 1944,
-    "ida": "2026-11-15",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-13T11:33:04Z"
-   },
-   "rastreada": true,
-   "nome": "Belo Horizonte",
-   "pista": false
   },
   {
    "iata": "PET",
@@ -357,19 +344,6 @@
    "pista": true
   },
   {
-   "iata": "MGF",
-   "rt": {
-    "preco": 3923,
-    "ida": "2026-11-18",
-    "volta": "2026-11-18",
-    "paradas": 2,
-    "visto": "2026-11-10T15:10:06Z"
-   },
-   "rastreada": false,
-   "nome": "MGF",
-   "pista": false
-  },
-  {
    "iata": "YTO",
    "ow": {
     "preco": 5209,
@@ -418,11 +392,11 @@
     "visto": "2026-11-10T17:06:58Z"
    },
    "ow": {
-    "preco": 7290,
-    "ida": "2027-03-07",
+    "preco": 6009,
+    "ida": "2026-12-20",
     "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-10T21:25:56Z"
+    "paradas": 4,
+    "visto": "2026-11-14T14:52:50Z"
    },
    "rastreada": false,
    "nome": "MOW",
@@ -436,13 +410,6 @@
     "volta": "2027-01-14",
     "paradas": 2,
     "visto": "2026-11-11T23:14:39Z"
-   },
-   "ow": {
-    "preco": 6652,
-    "ida": "2027-01-18",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-11-10T16:13:08Z"
    },
    "rastreada": false,
    "nome": "LED",

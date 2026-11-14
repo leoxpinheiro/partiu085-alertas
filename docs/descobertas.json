@@ -1,8 +1,7 @@
 {
- "atualizado": "2026-11-14T02:52+00:00",
+ "atualizado": "2026-11-14T04:02+00:00",
  "pistas": [
   "BEL",
-  "BSB",
   "CAY",
   "LIS",
   "LON",
@@ -60,26 +59,6 @@
    "pista": false
   },
   {
-   "iata": "SAO",
-   "rt": {
-    "preco": 856,
-    "ida": "2027-03-23",
-    "volta": "2027-03-27",
-    "paradas": 0,
-    "visto": "2026-11-10T03:54:53Z"
-   },
-   "ow": {
-    "preco": 374,
-    "ida": "2026-12-12",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-12T18:02:45Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
-   "pista": true
-  },
-  {
    "iata": "CPV",
    "ow": {
     "preco": 856,
@@ -91,6 +70,26 @@
    "rastreada": false,
    "nome": "CPV",
    "pista": false
+  },
+  {
+   "iata": "SAO",
+   "rt": {
+    "preco": 981,
+    "ida": "2027-01-22",
+    "volta": "2027-01-24",
+    "paradas": 0,
+    "visto": "2026-11-12T16:30:59Z"
+   },
+   "ow": {
+    "preco": 374,
+    "ida": "2026-12-12",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-12T18:02:45Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
   },
   {
    "iata": "BEL",
@@ -136,19 +135,6 @@
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
-   "pista": true
-  },
-  {
-   "iata": "BSB",
-   "rt": {
-    "preco": 1106,
-    "ida": "2027-03-25",
-    "volta": "2027-03-29",
-    "paradas": 0,
-    "visto": "2026-11-10T03:58:01Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
    "pista": true
   },
   {
@@ -227,6 +213,19 @@
    },
    "rastreada": false,
    "nome": "PET",
+   "pista": false
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 2419,
+    "ida": "2026-11-23",
+    "volta": "2026-11-26",
+    "paradas": 1,
+    "visto": "2026-11-13T19:57:54Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
    "pista": false
   },
   {
@@ -358,6 +357,19 @@
    },
    "rastreada": false,
    "nome": "YTO",
+   "pista": false
+  },
+  {
+   "iata": "VIE",
+   "rt": {
+    "preco": 5649,
+    "ida": "2027-02-19",
+    "volta": "2027-03-12",
+    "paradas": 1,
+    "visto": "2026-11-14T03:57:48Z"
+   },
+   "rastreada": false,
+   "nome": "VIE",
    "pista": false
   },
   {

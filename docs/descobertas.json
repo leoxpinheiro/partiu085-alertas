@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-15T13:37+00:00",
+ "atualizado": "2026-11-15T15:17+00:00",
  "pistas": [
   "BEL",
   "CAY",
+  "CTG",
   "IGU",
   "LIS",
   "LON",
@@ -162,6 +163,19 @@
    "pista": false
   },
   {
+   "iata": "JPA",
+   "ow": {
+    "preco": 1280,
+    "ida": "2026-11-24",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-15T14:24:20Z"
+   },
+   "rastreada": true,
+   "nome": "João Pessoa",
+   "pista": false
+  },
+  {
    "iata": "NAT",
    "rt": {
     "preco": 1328,
@@ -315,7 +329,7 @@
    },
    "rastreada": true,
    "nome": "Cartagena",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "PAR",

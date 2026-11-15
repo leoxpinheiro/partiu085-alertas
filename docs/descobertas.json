@@ -1,8 +1,9 @@
 {
- "atualizado": "2026-11-14T23:44+00:00",
+ "atualizado": "2026-11-15T01:24+00:00",
  "pistas": [
   "BEL",
   "CAY",
+  "IGU",
   "LIS",
   "LON",
   "MAD",
@@ -56,17 +57,17 @@
    "pista": true
   },
   {
-   "iata": "CWB",
+   "iata": "IGU",
    "ow": {
-    "preco": 782,
-    "ida": "2026-12-18",
+    "preco": 725,
+    "ida": "2027-02-07",
     "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-11T01:01:17Z"
+    "paradas": 2,
+    "visto": "2026-11-15T01:03:01Z"
    },
    "rastreada": true,
-   "nome": "Curitiba",
-   "pista": false
+   "nome": "Foz do Iguaçu",
+   "pista": true
   },
   {
    "iata": "CPV",
@@ -148,16 +149,16 @@
    "pista": true
   },
   {
-   "iata": "SCL",
+   "iata": "CWB",
    "ow": {
-    "preco": 1307,
-    "ida": "2026-11-23",
+    "preco": 1231,
+    "ida": "2026-11-26",
     "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-13T18:16:50Z"
+    "paradas": 2,
+    "visto": "2026-11-15T01:19:59Z"
    },
    "rastreada": true,
-   "nome": "Santiago",
+   "nome": "Curitiba",
    "pista": false
   },
   {
@@ -172,6 +173,19 @@
    "rastreada": true,
    "nome": "Natal",
    "pista": true
+  },
+  {
+   "iata": "MCZ",
+   "ow": {
+    "preco": 1381,
+    "ida": "2026-11-23",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-13T21:24:07Z"
+   },
+   "rastreada": true,
+   "nome": "Maceió",
+   "pista": false
   },
   {
    "iata": "FLN",

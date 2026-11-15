@@ -1,56 +1,58 @@
 {
- "estilo": "revista",
+ "estilo": "noticia",
  "telas": [
   {
    "tipo": "capa",
-   "foto": "docs/fotos/JDO.jpg",
-   "pos": "50% 20%",
-   "kicker": "Roteiro · Ceará",
-   "titulo": "Cariri a partir de\n*R$ 173*",
-   "tam": 118,
-   "sub": "Voo direto de Fortaleza pra Juazeiro do Norte, só ida, visto pelo radar em 13/11. É 1h20 de voo contra umas 11 horas de ônibus."
+   "foto": "docs/midia/JDO.jpg",
+   "pos": "50% 30%",
+   "credito": "Padre Cícero · Allan Patrick / Wikimedia (CC BY-SA 2.0)",
+   "kicker": "Roteiro Ceará",
+   "data": "Voo direto Fortaleza → Juazeiro do Norte",
+   "titulo": "Cariri ida e volta por *R$ 368*",
+   "tam": 82,
+   "sub": "Voo direto de 1h20 contra umas 11 horas de ônibus. E dá pra conhecer o primeiro geoparque das Américas."
   },
   {
    "tipo": "precos",
-   "label": "O que o radar viu · voo direto LATAM",
-   "titulo": "Dá pra ir e voltar\npor *menos de R$ 500*",
-   "tam": 120,
+   "label": "O que o radar viu",
+   "titulo": "Voo *direto* LATAM",
+   "sub": "Visto pelo radar em 15/11",
    "linhas": [
     {
-     "rotulo": "Só ida · 13/02/2027",
-     "preco": "R$ 173",
-     "nota": "o menor preço do calendário. Também tem 11/02 por R$ 174.",
+     "rotulo": "Ida e volta · 07 a 14/02/2027",
+     "nota": "somando os dois trechos (R$ 206 + R$ 162)",
+     "preco": "R$ 368",
      "destaque": true
     },
     {
-     "rotulo": "Natal e Réveillon no Cariri · 24/12 a 04/01",
-     "preco": "R$ 465",
-     "nota": "ida e volta, somando dois trechos de só ida (R$ 238 + R$ 227)."
+     "rotulo": "Só ida · 07/02 ou 09/02",
+     "nota": "LATAM, sem escala",
+     "preco": "R$ 206"
     }
    ],
-   "nota": "Visto em 13/11. Pode mudar a qualquer momento. Passa na nossa régua: abaixo de R$ 450 por trecho no Nordeste."
+   "nota": "Passa na nossa régua de achado: abaixo de R$ 450 por trecho no Nordeste.",
+   "rodape": "Preço muda a qualquer momento."
   },
   {
    "tipo": "numero",
    "label": "Por que ir",
-   "titulo": "O primeiro geoparque\n*das Américas*",
+   "titulo": "O primeiro geoparque *das Américas*",
    "numero": "2006",
-   "tam": 300,
-   "texto": "foi o ano em que a Unesco reconheceu o Geopark Araripe. São <b>9 geossítios</b> em 6 cidades: Barbalha, Crato, Juazeiro, Missão Velha, Nova Olinda e Santana do Cariri.<br><span style='opacity:.7;font-size:27px'>O selo foi renovado em 2023.</span>",
-   "tam_txt": 42,
-   "rodape": "Fonte: O Povo (12/09/2023). Fotos da estátua do Padre Cícero: Allan Patrick / Wikimedia Commons (CC BY-SA 2.0)."
+   "texto": "foi o ano em que a Unesco reconheceu o Geopark Araripe: <b>9 geossítios</b> em Barbalha, Crato, Juazeiro, Missão Velha, Nova Olinda e Santana do Cariri.",
+   "rodape": "Fonte: O Povo (12/09/2023).",
+   "tam_txt": 44
   },
   {
    "tipo": "lista",
    "label": "Roteiro de 3 dias",
-   "titulo": "Fé, chapada\ne *fóssil*",
-   "tam_txt": 34,
+   "titulo": "Fé, chapada *e fóssil*",
+   "tam_txt": 33,
    "pad": 36,
    "itens": [
     {
      "n": "Dia 1",
      "t": "Juazeiro do Norte",
-     "x": "Estátua do Padre Cícero no Horto (27 metros, de 1969), Mercado Central e Centro de Cultura Popular Mestre Noza."
+     "x": "Estátua do Padre Cícero no Horto, Mercado Central e Centro de Cultura Popular Mestre Noza."
     },
     {
      "n": "Dia 2",
@@ -60,43 +62,37 @@
     {
      "n": "Dia 3",
      "t": "Nova Olinda e Santana",
-     "x": "Fundação Casa Grande, oficina do Mestre Espedito Seleiro, Ponte de Pedra e o Museu de Paleontologia de Santana do Cariri."
+     "x": "Fundação Casa Grande, oficina do Mestre Espedito Seleiro, Ponte de Pedra e Museu de Paleontologia."
     }
    ],
-   "fonte": "Fontes: Diário do Nordeste (19/10/2024 e 13/11/2025).",
-   "tam_tit": 96
+   "fonte": "Fontes: Diário do Nordeste (19/10/2024 e 13/11/2025)."
   },
   {
    "tipo": "texto",
-   "label": "Quando e como",
-   "titulo": "Antes de\n*fazer a mala*",
-   "tam_txt": 32,
+   "label": "Antes de ir",
+   "titulo": "Quando e *como*",
+   "tam_txt": 35,
    "blocos": [
     {
      "t": "Janeiro a abril",
-     "x": "É a safra do <b>pequi</b> nas matas da Chapada do Araripe."
+     "x": "É a safra do <b>pequi</b> na Chapada do Araripe."
     },
     {
      "t": "Calendário de festa",
-     "x": "Romaria de Nossa Senhora das Candeias em <b>fevereiro</b>, Pau da Bandeira em Barbalha em <b>junho</b> e Expocrato em <b>julho</b>. Nessas datas a região enche."
+     "x": "Romaria das Candeias em fevereiro, Pau da Bandeira em Barbalha em junho e Expocrato em julho. Nessas datas a região enche."
     },
     {
      "t": "Avião ou estrada?",
-     "x": "Juazeiro fica a uns <b>508 km</b> de Fortaleza: 7 a 8 horas de carro ou cerca de 11 de ônibus. O voo direto leva por volta de <b>1h20</b>."
-    },
-    {
-     "t": "Documento",
-     "x": "Voo nacional: basta documento oficial com foto. O aeroporto fica em Juazeiro; Crato e Barbalha são vizinhas."
+     "x": "Juazeiro fica a uns <b>508 km</b> de Fortaleza: 7 a 8 horas de carro. O voo direto leva cerca de <b>1h20</b>."
     }
    ],
-   "fonte": "Fontes: Diário do Nordeste (2019 e 19/10/2024).",
-   "tam": 96
+   "fonte": "Fontes: Diário do Nordeste (2019 e 19/10/2024)."
   },
   {
    "tipo": "cta",
-   "foto": "docs/fotos/JDO.jpg",
-   "pos": "50% 35%",
-   "titulo": "O Ceará também\n*é destino*",
+   "foto": "docs/midia/JDO.jpg",
+   "pos": "50% 20%",
+   "titulo": "O Ceará também\né *destino*",
    "texto": "O radar olha Fortaleza → Juazeiro do Norte todo dia. Quando aparecer preço assim de novo, o aviso sai primeiro no grupo."
   }
  ]

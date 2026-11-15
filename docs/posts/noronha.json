@@ -1,0 +1,94 @@
+{
+ "estilo": "noticia",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/midia/FEN.jpg",
+   "pos": "50% 50%",
+   "credito": "Baía dos Porcos · Eduardo Muruci / Wikimedia (CC BY-SA 3.0)",
+   "kicker": "Quanto custa",
+   "data": "Fernando de Noronha · valores de 2026",
+   "titulo": "Noronha saindo de Fortaleza: *a conta de verdade*",
+   "tam": 76,
+   "sub": "Passagem, taxa por dia e ingresso do parque. O radar fez a conta pra você."
+  },
+  {
+   "tipo": "precos",
+   "label": "A passagem",
+   "titulo": "Quanto tá *agora*",
+   "sub": "Visto pelo radar em 15/11",
+   "linhas": [
+    {
+     "rotulo": "Ida e volta · Gol · 1 escala",
+     "nota": "07 a 12/12 (segunda a sábado), somando ida + volta",
+     "preco": "R$ 3.634",
+     "destaque": true
+    },
+    {
+     "rotulo": "Só ida · fevereiro",
+     "nota": "15/02/2027 · Gol · 1 escala",
+     "preco": "R$ 1.482"
+    }
+   ],
+   "nota": "Não tem voo direto: todas as opções do radar fazem escala.",
+   "rodape": "Preço muda a qualquer momento."
+  },
+  {
+   "tipo": "cartoes",
+   "label": "As taxas",
+   "titulo": "O que você *paga lá*",
+   "tam": 78,
+   "alt": 420,
+   "cartoes": [
+    {
+     "rotulo": "TPA · por pessoa",
+     "numero": "R$ 105,79",
+     "texto": "por dia de estadia. Reajuste de 4,4% em 2026."
+    },
+    {
+     "rotulo": "Parque Nacional",
+     "numero": "R$ 192",
+     "texto": "brasileiro, pago uma vez, vale 10 dias seguidos."
+    }
+   ],
+   "fonte": "Fontes: Panrotas (jan/2026), Esse Mundo é Nosso (09/02/2026) e Um Viajante."
+  },
+  {
+   "tipo": "numero",
+   "label": "Faz a conta",
+   "titulo": "10 dias de taxa",
+   "numero": "≈ R$ 901",
+   "texto": "é a TPA de 10 dias por pessoa. Quanto mais dias (até 10), menor o valor por dia.<br><span style='opacity:.7;font-size:28px'>Brasileiro com menos de 12 ou mais de 60 anos não paga o ingresso do parque.</span>",
+   "foto": "docs/midia/FEN.jpg",
+   "pos": "50% 70%"
+  },
+  {
+   "tipo": "texto",
+   "label": "Dica",
+   "titulo": "Pra não ter *surpresa*",
+   "tam_txt": 37,
+   "blocos": [
+    {
+     "t": "Pague a TPA antes",
+     "x": "Dá pra pagar pelo site oficial com cartão e levar o comprovante."
+    },
+    {
+     "t": "Sem ingresso, sem praia famosa",
+     "x": "O ingresso do parque é o que libera Baía do Sancho, Baía dos Porcos e Sueste."
+    },
+    {
+     "t": "Confira antes de embarcar",
+     "x": "Os valores mudam todo ano. Veja no site do governo de Pernambuco e do ICMBio."
+    }
+   ],
+   "fonte": "Fontes: Panrotas, Um Viajante e Esse Mundo é Nosso."
+  },
+  {
+   "tipo": "cta",
+   "foto": "docs/midia/FEN.jpg",
+   "pos": "50% 30%",
+   "titulo": "Quando Noronha\n*cair*, você sabe primeiro",
+   "texto": "O radar olha Fortaleza → Noronha todo dia e avisa no grupo quando o preço despencar."
+  }
+ ]
+}

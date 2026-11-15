@@ -1,0 +1,104 @@
+{
+ "estilo": "noticia",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/midia/BUE.jpg",
+   "pos": "50% 50%",
+   "credito": "Buenos Aires · Rodrigo Paredes / Wikimedia (CC BY 2.0)",
+   "kicker": "Guia",
+   "data": "Documentos de viagem",
+   "titulo": "9 países pra ir *só com o RG*, sem passaporte",
+   "tam": 76,
+   "sub": "Pra quem sai de Fortaleza, a América do Sul inteira fica mais perto. Mas tem regra pro RG."
+  },
+  {
+   "tipo": "cartoes",
+   "label": "Quais são",
+   "titulo": "Os *9 países*",
+   "tam": 64,
+   "alt": 300,
+   "cartoes": [
+    {
+     "rotulo": "Mercosul",
+     "numero": "Argentina · Uruguai · Paraguai",
+     "texto": ""
+    },
+    {
+     "rotulo": "Mercosul",
+     "numero": "Bolívia · Venezuela",
+     "texto": ""
+    },
+    {
+     "rotulo": "Associados",
+     "numero": "Chile · Peru",
+     "texto": ""
+    },
+    {
+     "rotulo": "Associados",
+     "numero": "Colômbia · Equador",
+     "texto": ""
+    }
+   ],
+   "fonte": "Fontes: 360meridianos (atualizado em 30/04/2025) e blog Esfera/Santander (25/03/2026). Confira no consulado antes de viajar."
+  },
+  {
+   "tipo": "texto",
+   "label": "Antes de ir",
+   "titulo": "O RG *precisa* estar assim",
+   "tam_txt": 37,
+   "blocos": [
+    {
+     "t": "Até 10 anos de emissão",
+     "x": "É a recomendação do Itamaraty citada nos guias. RG muito antigo pode ser barrado."
+    },
+    {
+     "t": "Em bom estado",
+     "x": "Sem rasura, sem rasgo e com foto que dê pra te reconhecer."
+    },
+    {
+     "t": "CNH não vale",
+     "x": "Carteira de motorista não serve pra entrar nesses países."
+    },
+    {
+     "t": "Confira o resto",
+     "x": "A Venezuela pede seguro viagem e alguns países pedem vacina de febre amarela."
+    }
+   ],
+   "fonte": "Fontes: 360meridianos e blog Esfera/Santander."
+  },
+  {
+   "tipo": "precos",
+   "label": "Quanto tá agora",
+   "titulo": "Saindo de *Fortaleza*",
+   "sub": "Ida e volta na mesma reserva, visto pelo radar em 14 e 15/11",
+   "linhas": [
+    {
+     "rotulo": "Santiago · LATAM · 1 escala",
+     "nota": "05 a 10/12",
+     "preco": "R$ 2.895",
+     "destaque": true
+    },
+    {
+     "rotulo": "Buenos Aires · Gol · 2 escalas",
+     "nota": "30/11 a 09/12",
+     "preco": "R$ 3.332"
+    },
+    {
+     "rotulo": "Montevidéu · LATAM · 1 escala",
+     "nota": "12 a 18/12",
+     "preco": "R$ 3.559"
+    }
+   ],
+   "nota": "Esses preços ainda não são achado. Quando cair de verdade, o radar avisa no grupo.",
+   "rodape": "Preço muda a qualquer momento."
+  },
+  {
+   "tipo": "cta",
+   "foto": "docs/midia/SCL.jpg",
+   "pos": "50% 50%",
+   "titulo": "Salva e manda pra quem\nvai *viajar contigo*",
+   "texto": "O radar olha Buenos Aires, Santiago, Montevidéu, Lima e Bogotá todo dia saindo de Fortaleza."
+  }
+ ]
+}

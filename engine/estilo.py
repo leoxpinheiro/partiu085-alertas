@@ -128,7 +128,7 @@ def capa(t, est, cores, n, tot):
 {marca(CR)}<div class="pg" style="color:{CR}">ARRASTA →</div></section>'''
     if est == "noticia":
         return f'''<section class="s" style="background:#fff;color:{NV}"><div class="bar"><span>{NOME_TOPO}</span><span class="ed">{e(t.get("kicker","NOTÍCIA")).upper()}</span></div>
-<img class="a ph" src="{e(f)}" style="left:72px;top:136px;width:936px;height:620px;object-position:{pos}">
+<img class="a ph" src="{e(f)}" style="left:72px;top:136px;width:936px;height:620px;object-position:{pos}">{f'<div class="a" style="right:80px;top:722px;background:rgba(11,36,64,.75);color:#fff;font-size:16px;font-weight:600;padding:5px 10px">{e(t.get("credito"))}</div>' if t.get("credito") else ""}
 <div class="a" style="left:72px;right:72px;top:790px"><div class="meta">{e(t.get("data",""))}</div>
 <div class="T" style="font-size:{t.get("tam",80)}px;margin-top:14px">{destaque(t["titulo"],est)}</div>
 <div style="font-size:30px;font-weight:600;line-height:1.35;margin-top:22px;color:#33475E">{e(t.get("sub"))}</div></div>
@@ -265,7 +265,7 @@ def cta(t, est, cores, n, tot):
               f'<div class="a" style="left:0;top:420px;width:1080px;height:230px;background:linear-gradient(transparent,{NV})"></div>') if foto else ""
     y = 680 if foto else 330
     return f'''<section class="s" style="background:{NV};color:#fff;--ac:{AM}">{topo_f}
-<div class="a" style="left:72px;right:72px;top:{y}px"><div class="T" style="font-size:{t.get("tam", 100 if est != "dado" else 140)}px">{destaque(t["titulo"], est)}</div>
+<div class="a" style="left:72px;right:72px;bottom:130px"><div class="T" style="font-size:{t.get("tam", 96 if est != "dado" else 140)}px">{destaque(t["titulo"], est)}</div>
 <div style="font-size:31px;font-weight:600;line-height:1.38;margin-top:28px;opacity:.9">{e(t.get("texto"))}</div>
 <div style="margin-top:44px;background:{AM};color:{NV};padding:22px 30px;font-weight:800;font-size:31px;display:inline-block">Grupo grátis: partiu.avancepro.app.br/g</div>
 <div style="font-weight:700;font-size:27px;margin-top:22px">Salva e manda pra quem vai contigo</div></div>{marca("#fff")}</section>'''
@@ -293,8 +293,40 @@ def tabela(t, est, cores, n, tot):
     return f'''<section class="s" style="background:{bg};color:{fg};--ac:{ac}">{tp}
 <div class="a" style="left:72px;right:72px;top:{y}px">{tit}{cab}{rows}</div>{rod}{marca(fg)}</section>'''
 
+def calendario(t, est, cores, n, tot):
+    """{titulo, ano, marcas:{"2027-01-01":"nac"|"est"|"mun"|"pf"}, legenda?}"""
+    import calendar as C
+    bg, fg, ac = ("#fff", NV, AZ)
+    ano = int(t["ano"])
+    cor = {"nac": AZ, "est": VD, "mun": VD, "pf": AM}
+    meses = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+    cal = C.Calendar(firstweekday=6)
+    blocos = ""
+    for m in range(1, 13):
+        cel = "".join(f'<div style="font-size:15px;font-weight:800;color:{MU}">{d}</div>' for d in "DSTQQSS")
+        for w in cal.monthdayscalendar(ano, m):
+            for i, d in enumerate(w):
+                if not d:
+                    cel += "<div></div>"; continue
+                k = f"{ano}-{m:02d}-{d:02d}"; tp = t["marcas"].get(k)
+                if tp:
+                    fgc = NV if tp == "pf" else "#fff"
+                    cel += f'<div style="background:{cor[tp]};color:{fgc};border-radius:50%;width:26px;height:26px;line-height:26px;margin:auto;font-weight:900">{d}</div>'
+                else:
+                    cel += f'<div style="color:{"#C0392B00" if False else (AZ if i in (0,6) else NV)};opacity:{.55 if i in (0,6) else 1}">{d}</div>'
+        blocos += f'''<div style="background:{CR};border-radius:14px;padding:10px 10px 8px">
+<div style="background:{NV};color:#fff;border-radius:8px;font-weight:900;font-size:19px;text-align:center;padding:3px 0;margin-bottom:4px">{meses[m-1]}</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);row-gap:1px;text-align:center;font-size:17px;font-weight:600;line-height:26px">{cel}</div></div>'''
+    leg = "".join(f'<span style="display:inline-flex;align-items:center;gap:8px;margin-right:26px"><span style="width:20px;height:20px;border-radius:50%;background:{cor[k]};display:inline-block"></span>{e(v)}</span>' for k, v in t.get("legenda", {}).items())
+    return f'''<section class="s" style="background:{bg};color:{fg}"><div class="bar"><span>{NOME_TOPO}</span><span class="ed">{e(t.get("label","SALVA ESSA")).upper()}</span></div>
+<div class="a" style="left:48px;right:48px;top:120px"><div class="T" style="font-size:{t.get("tam",62)}px">{destaque(t["titulo"], est)}</div>
+<div style="font-size:22px;font-weight:700;margin-top:10px">{leg}</div></div>
+<div class="a" style="left:40px;right:40px;top:{t.get("y",250)}px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px">{blocos}</div>
+<div class="a" style="left:48px;right:48px;bottom:14px;font-size:15px;font-weight:600;line-height:1.3;color:{MU}">{e(t.get("fonte",""))}</div>
+<div class="a" style="right:48px;top:140px;font-weight:800;font-size:22px">@partiu.085</div></section>'''
 
-TIPOS = {"tabela": tabela, "capa": capa, "texto": texto, "precos": precos, "numero": numero, "cartoes": cartoes, "lista": lista, "cta": cta}
+
+TIPOS = {"calendario": calendario, "tabela": tabela, "capa": capa, "texto": texto, "precos": precos, "numero": numero, "cartoes": cartoes, "lista": lista, "cta": cta}
 
 
 def montar(post):

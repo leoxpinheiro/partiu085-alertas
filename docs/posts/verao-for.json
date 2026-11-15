@@ -1,0 +1,150 @@
+{
+ "estilo": "noticia",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/midia/aeroporto-1.jpg",
+   "pos": "50% 50%",
+   "kicker": "Notícia",
+   "data": "Verão 2026/27 · voos de Fortaleza · atualizado em 13/11",
+   "titulo": "O que *chega* e o que *sai* do aeroporto de Fortaleza",
+   "tam": 76,
+   "sub": "Goiânia ganha voo direto em dezembro. E a Gol vai tirar rotas daqui a partir de fevereiro de 2027."
+  },
+  {
+   "tipo": "texto",
+   "label": "Chega",
+   "titulo": "Goiânia *direto*,\nduas companhias",
+   "tam_txt": 31,
+   "blocos": [
+    {
+     "t": "LATAM · 5 voos por semana",
+     "x": "De <b>15/12 a 09/02</b>, Fortaleza → Goiânia sai à 0h50 e chega às 3h35. A volta foi pensada pra conectar com o voo da LATAM pra Lisboa."
+    },
+    {
+     "t": "Azul · todo sábado",
+     "x": "A partir de <b>12/12</b>, sai de Fortaleza às 19h45 e chega em Goiânia às 22h35, com Embraer E2."
+    }
+   ],
+   "foto": "docs/fotos/GYN.jpg",
+   "pos": "50% 60%",
+   "legenda": "Goiânia. Foto: Boaventuravinicius / Wikimedia Commons (CC BY-SA 4.0)",
+   "fonte": "Fontes: AEROIN e Movimento Econômico (29/08/2026)."
+  },
+  {
+   "tipo": "cartoes",
+   "label": "Mais voos",
+   "titulo": "Azul reforça\n*BH e Campinas*",
+   "cartoes": [
+    {
+     "rotulo": "Fortaleza ⇄ BH",
+     "numero": "+130",
+     "texto": "voos extras, ida e volta, em Confins."
+    },
+    {
+     "rotulo": "Fortaleza ⇄ Campinas",
+     "numero": "+126",
+     "texto": "voos extras, ida e volta, em Viracopos."
+    }
+   ],
+   "alt": 360,
+   "fonte": "Período: 5/12/2026 a 14/02/2027. Fonte: Movimento Econômico (03/10/2026). Mais oferta no verão costuma ajudar a segurar preço.",
+   "foto": "docs/midia/aeroporto-3.jpg",
+   "alt_foto": 330,
+   "pos": "50% 75%",
+   "legenda": ""
+  },
+  {
+   "tipo": "lista",
+   "label": "Sai",
+   "titulo": "A Gol vai *suspender*\nestas rotas",
+   "tam_txt": 33,
+   "pad": 26,
+   "itens": [
+    {
+     "n": "1",
+     "t": "Fortaleza → Foz do Iguaçu",
+     "x": "Doméstica. Suspensão a partir de fevereiro de 2027."
+    },
+    {
+     "n": "2",
+     "t": "Fortaleza → Montevidéu",
+     "x": "Internacional, a partir de fevereiro de 2027."
+    },
+    {
+     "n": "3",
+     "t": "Fortaleza → Orlando",
+     "x": "Internacional, a partir de fevereiro de 2027."
+    },
+    {
+     "n": "4",
+     "t": "Manaus → Fortaleza",
+     "x": "Citada pelo Diário do Nordeste na lista de cortes."
+    },
+    {
+     "n": "!",
+     "t": "Por quê?",
+     "x": "Segundo a Gol, o querosene de aviação dobrou de preço e já é cerca de 40% do custo."
+    }
+   ],
+   "fonte": "Fontes: Diário do Nordeste (16/10/2026), Movimento Econômico (14/10/2026) e Pontos pra Voar (14/10/2026). Sem data de volta."
+  },
+  {
+   "tipo": "texto",
+   "label": "Seus direitos",
+   "titulo": "Já comprou pra\numa *dessas rotas*?",
+   "tam_txt": 33,
+   "blocos": [
+    {
+     "t": "A regra da ANAC",
+     "x": "A companhia tem que avisar mudança com <b>72 horas</b> de antecedência. Se o voo for cancelado, ou o horário mudar mais de <b>30 min</b> (nacional) ou <b>1 hora</b> (internacional), quem escolhe é você."
+    },
+    {
+     "t": "Suas opções",
+     "x": "<b>Reacomodação</b> em outro voo, da mesma companhia ou de outra, ou <b>reembolso integral</b>."
+    },
+    {
+     "t": "Não mudou em outubro",
+     "x": "A atualização da Resolução 400, que vale desde 26/10/2026, mexeu em informação e assistência, não nessas opções."
+    }
+   ],
+   "fonte": "Fontes: Estado de Minas (jan/2026), Agência Gov e Melhores Destinos (set/2026). Confirme com a companhia."
+  },
+  {
+   "tipo": "precos",
+   "label": "Quanto tá agora",
+   "titulo": "O radar *olhou*\nessas rotas",
+   "sub": "Só ida, menor preço visto em 13/11. Pode mudar a qualquer momento.",
+   "linhas": [
+    {
+     "rotulo": "Goiânia",
+     "nota": "16/12 · Azul · 1 escala",
+     "preco": "R$ 798"
+    },
+    {
+     "rotulo": "Foz do Iguaçu",
+     "nota": "14/12 · LATAM · 1 escala",
+     "preco": "R$ 703"
+    },
+    {
+     "rotulo": "Belo Horizonte",
+     "nota": "07/02 · Azul · voo direto",
+     "preco": "R$ 672"
+    },
+    {
+     "rotulo": "Campinas",
+     "nota": "14/12 · LATAM · 1 escala",
+     "preco": "R$ 707"
+    }
+   ],
+   "nota": "Nenhum desses passa ainda na nossa régua de achado. Quando cair de verdade, a gente avisa no grupo."
+  },
+  {
+   "tipo": "cta",
+   "foto": "docs/marca/fotos-extra/hd-decolagem-1.jpg",
+   "pos": "50% 60%",
+   "titulo": "Fortaleza *muda*\nno verão",
+   "texto": "O radar já olha Goiânia, BH, Campinas e Foz todo dia. Se o preço despencar, o aviso sai primeiro no grupo."
+  }
+ ]
+}

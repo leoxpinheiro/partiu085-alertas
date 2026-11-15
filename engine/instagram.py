@@ -102,12 +102,23 @@ def escolher_oferta(st: dict):
     tetos = ler(DOCS / "status.json", {}).get("tetos_iv") or {}
     agora = datetime.now(FUSO)
     lim = (agora - timedelta(hours=30)).isoformat(timespec="minutes")
-    lim_rep = (agora - timedelta(days=3)).isoformat(timespec="minutes")
+    lim_rep = (agora - timedelta(days=7)).isoformat(timespec="minutes")  # o Leo não quer o mesmo destino repetido (Belém todo dia)
     usados = {x.get("destino") for x in st.values() if isinstance(x, dict) and x.get("destino") and x.get("publicado_em", "") >= lim_rep}
+    for x in ler(DOCS / "ig_fila.json", []):
+        o = x.get("origem", "")
+        if o.startswith("story-oferta-FOR-") and x.get("quando", "") >= lim_rep:
+            usados.add(o.split("-")[3])
     boas = []
     for a in alertas:
         if a.get("criado", "") < lim or a.get("destino") in usados:
             continue
+        try:
+            sys.path.insert(0, str(RAIZ / "engine"))
+            import criterio  # noqa: PLC0415
+            if not criterio.barato_de_verdade(a):
+                continue
+        except ImportError:
+            pass
         cf = a.get("conferido") or {}
         if cf.get("status") == "subiu":
             continue

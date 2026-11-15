@@ -502,7 +502,7 @@ def story_oferta(a: dict, aj: dict) -> bool:
         fila = ler_json(DOCS / "ig_fila.json", [])
         hoje = agora().date().isoformat()
         # mesmo destino não vira story de novo por 4 dias (antes saía Belém todo dia)
-        corte = (agora() - timedelta(days=4)).isoformat()
+        corte = (agora() - timedelta(days=7)).isoformat()
         if any(x.get("origem", "").startswith(f"story-oferta-FOR-{a['destino']}-") and x.get("quando", "") >= corte for x in fila):
             return False
         if sum(1 for x in fila if x.get("origem", "").startswith("story-oferta") and x.get("quando", "").startswith(hoje)) >= int(aj.get("story_max_dia", 2)):

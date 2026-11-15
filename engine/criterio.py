@@ -6,7 +6,7 @@ em DUAS réguas: desconto e um teto absoluto por região, contado por trecho
 (ida e volta = preço / 2).
 """
 REGIAO = {
-    "nordeste": "REC NAT JPA MCZ AJU SLZ THE SSA JDO BPS FEN".split(),
+    "nordeste": "REC NAT JPA MCZ AJU SLZ THE SSA JDO BPS FEN PHB".split(),
     "norte_centro": "BEL MAO BSB GYN PMW CGB CGR".split(),
     "sudeste": "SAO RIO BHZ VIX VCP UDI".split(),
     "sul": "POA CWB FLN NVT IGU".split(),

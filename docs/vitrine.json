@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-15T00:41-03:00",
+ "atualizado": "2026-11-15T02:16-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -346,14 +346,14 @@
   "AMS": {
    "nome": "Amsterdã",
    "tipo": "internacional",
-   "rt": 5619.0,
+   "rt": 5048.0,
    "menor": null,
    "ida": "2026-12-08",
-   "volta": "2026-12-16",
-   "cia": "Iberia",
-   "normal": 5158,
-   "d": -0.089,
-   "visto": "2026-11-14T04:36-03:00",
+   "volta": "2026-12-14",
+   "cia": "Tap Air Portugal",
+   "normal": 5165,
+   "d": 0.023,
+   "visto": "2026-11-15T00:41-03:00",
    "reserva": "ida_volta"
   },
   "MIA": {
@@ -571,15 +571,14 @@
   "MDE": {
    "nome": "Medellín",
    "tipo": "internacional",
-   "rt": 4871.0,
-   "menor": null,
-   "ida": "2026-11-07",
-   "volta": "2026-11-12",
+   "rt": 9750.0,
+   "menor": 4465.0,
+   "ida": "2026-11-18",
+   "volta": "2026-11-21",
    "cia": "Gol",
-   "normal": null,
-   "d": null,
-   "visto": "2026-10-31T01:57-03:00",
-   "reserva": "ida_volta"
+   "normal": 6840,
+   "d": -0.425,
+   "visto": "2026-11-15T02:16-03:00"
   },
   "PTY": {
    "nome": "Cidade do Panamá",
@@ -630,6 +629,18 @@
    "d": null,
    "visto": "2026-11-12T19:17-03:00",
    "reserva": "ida_volta"
+  },
+  "PUJ": {
+   "nome": "Punta Cana",
+   "tipo": "internacional",
+   "rt": 8722.0,
+   "menor": 4220.0,
+   "ida": "2026-11-24",
+   "volta": "2026-12-02",
+   "cia": "LATAM",
+   "normal": 6751,
+   "d": -0.292,
+   "visto": "2026-11-15T02:16-03:00"
   }
  }
 }

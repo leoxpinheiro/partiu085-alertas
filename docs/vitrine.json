@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-15T06:09-03:00",
+ "atualizado": "2026-11-15T07:51-03:00",
  "rotas": {
   "SAO": {
    "nome": "São Paulo",
@@ -372,14 +372,15 @@
   "NYC": {
    "nome": "Nova York",
    "tipo": "internacional",
-   "rt": 6881.0,
-   "menor": 3641.0,
-   "ida": "2027-02-10",
-   "volta": "2027-02-15",
+   "rt": 6190.0,
+   "menor": null,
+   "ida": "2027-02-08",
+   "volta": "2027-02-18",
    "cia": "Gol",
-   "normal": 6620,
-   "d": -0.039,
-   "visto": "2026-11-14T10:35-03:00"
+   "normal": 6723,
+   "d": 0.079,
+   "visto": "2026-11-15T06:09-03:00",
+   "reserva": "ida_volta"
   },
   "BUE": {
    "nome": "Buenos Aires",
@@ -558,15 +559,14 @@
   "FRA": {
    "nome": "Frankfurt",
    "tipo": "internacional",
-   "rt": 4308.0,
-   "menor": null,
-   "ida": "2027-01-26",
-   "volta": "2027-02-02",
+   "rt": 7291.0,
+   "menor": 2314.0,
+   "ida": "2026-12-05",
+   "volta": "2026-12-08",
    "cia": "Iberia",
-   "normal": 5526,
-   "d": 0.22,
-   "visto": "2026-10-31T06:54-03:00",
-   "reserva": "ida_volta"
+   "normal": 5382,
+   "d": -0.355,
+   "visto": "2026-11-15T07:51-03:00"
   },
   "MDE": {
    "nome": "Medellín",

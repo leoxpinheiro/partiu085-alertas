@@ -1,8 +1,7 @@
 {
- "atualizado": "2026-11-16T00:15+00:00",
+ "atualizado": "2026-11-16T01:55+00:00",
  "pistas": [
   "BEL",
-  "CAY",
   "IGU",
   "LIS",
   "LON",
@@ -237,7 +236,20 @@
    },
    "rastreada": true,
    "nome": "Caiena",
-   "pista": true
+   "pista": false
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 1502,
+    "ida": "2026-12-10",
+    "volta": "2027-01-11",
+    "paradas": 0,
+    "visto": "2026-11-16T01:02:53Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
+   "pista": false
   },
   {
    "iata": "PMW",
@@ -331,16 +343,16 @@
    "pista": true
   },
   {
-   "iata": "BSB",
-   "rt": {
-    "preco": 2984,
-    "ida": "2026-11-23",
-    "volta": "2026-11-25",
-    "paradas": 1,
-    "visto": "2026-11-13T00:52:18Z"
+   "iata": "GYN",
+   "ow": {
+    "preco": 2889,
+    "ida": "2026-11-15",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-15T10:48:23Z"
    },
    "rastreada": true,
-   "nome": "Brasília",
+   "nome": "Goiânia",
    "pista": false
   },
   {
@@ -419,6 +431,19 @@
    },
    "rastreada": false,
    "nome": "CPT",
+   "pista": false
+  },
+  {
+   "iata": "BLQ",
+   "ow": {
+    "preco": 4980,
+    "ida": "2027-09-01",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-16T01:22:40Z"
+   },
+   "rastreada": false,
+   "nome": "BLQ",
    "pista": false
   },
   {

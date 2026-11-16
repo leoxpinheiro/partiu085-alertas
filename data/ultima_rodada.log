@@ -1,75 +1,77 @@
-Pistas da Travelpayouts: CAY
-Lote: CAY(b), POA(a), RIO(a), JPA(a), SAO(a), NAT(a), LIS(a), BUE(a), FRA(n), CWB(a), CGB(n), VCP(n), SDQ(b), FLN(b), SID(b), BOG(b), PMW(b)
-Lote: CAY, POA, RIO, JPA, SAO, NAT, LIS, BUE, FRA, CWB, CGB, VCP, SDQ, FLN, SID, BOG, PMW
-  ! FOR-CAY: o Google não respondeu nas primeiras datas, pulando
-  FOR-CAY: 0 datas com preço · 12 sem resposta (TypeError 5, FlightsNotFound 7)
-FOR-CAY: sem dados suficientes (ida 0, volta 0)
-  FOR-POA: 51 datas com preço · 40 sem resposta (FlightsNotFound 31, IndexError 9)
-  POA-FOR: 59 datas com preço · 32 sem resposta (FlightsNotFound 32)
-FOR-POA: 51+59 dias · menor ida R$ 720 · menor normal R$ 814 · 11%
-  FOR-RIO: 67 datas com preço · 24 sem resposta (FlightsNotFound 24)
-  RIO-FOR: 77 datas com preço · 14 sem resposta (FlightsNotFound 14)
-FOR-RIO: 67+77 dias · menor ida R$ 539 · menor normal R$ 666 · 19%
-  FOR-JPA: 67 datas com preço · 24 sem resposta (FlightsNotFound 24)
-  JPA-FOR: 62 datas com preço · 29 sem resposta (FlightsNotFound 23, IndexError 6)
-FOR-JPA: 65+59 dias · menor ida R$ 917 · menor normal R$ 911 · -1%
-  FOR-SAO: 46 datas com preço · 45 sem resposta (FlightsNotFound 45)
-  SAO-FOR: 57 datas com preço · 34 sem resposta (FlightsNotFound 34)
-FOR-SAO: 46+57 dias · menor ida R$ 392 · menor normal R$ 562 · 30%
-  só 5 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
-  FOR-NAT: 78 datas com preço · 13 sem resposta (FlightsNotFound 13)
-  NAT-FOR: 79 datas com preço · 12 sem resposta (FlightsNotFound 12)
-FOR-NAT: 72+76 dias · menor ida R$ 1.099 · menor normal R$ 1.099 · 0%
-  FOR-LIS: 78 datas com preço · 13 sem resposta (FlightsNotFound 13)
-  LIS-FOR: 81 datas com preço · 10 sem resposta (FlightsNotFound 10)
-FOR-LIS: 78+81 dias · menor ida R$ 1.926 · menor normal R$ 1.735 · -11%
-  FOR-BUE: 77 datas com preço · 14 sem resposta (FlightsNotFound 11, IndexError 3)
-  BUE-FOR: 64 datas com preço · 27 sem resposta (FlightsNotFound 27)
-FOR-BUE: 77+64 dias · menor ida R$ 1.464 · menor normal R$ 1.312 · -12%
-  FOR-FRA: 50 datas com preço · 41 sem resposta (FlightsNotFound 26, IndexError 15)
-  FRA-FOR: 62 datas com preço · 29 sem resposta (IndexError 13, FlightsNotFound 16)
-FOR-FRA: 50+62 dias · menor ida R$ 2.314 · menor normal R$ 2.314 · 0%
-  FOR-CWB: 66 datas com preço · 25 sem resposta (FlightsNotFound 10, IndexError 15)
-  CWB-FOR: 61 datas com preço · 30 sem resposta (FlightsNotFound 22, IndexError 8)
-FOR-CWB: 66+61 dias · menor ida R$ 641 · menor normal R$ 687 · 7%
-  FOR-CGB: 70 datas com preço · 21 sem resposta (FlightsNotFound 19, IndexError 2)
-  CGB-FOR: 54 datas com preço · 37 sem resposta (FlightsNotFound 35, IndexError 2)
-FOR-CGB: 70+54 dias · menor ida R$ 641 · menor normal R$ 677 · 5%
-  FOR-VCP: 54 datas com preço · 37 sem resposta (FlightsNotFound 37)
-  VCP-FOR: 53 datas com preço · 38 sem resposta (FlightsNotFound 38)
-FOR-VCP: 54+53 dias · menor ida R$ 614 · menor normal R$ 756 · 19%
-  ! FOR-SDQ: o Google não respondeu nas primeiras datas, pulando
-  FOR-SDQ: 0 datas com preço · 12 sem resposta (FlightsNotFound 7, IndexError 5)
-FOR-SDQ: sem dados suficientes (ida 0, volta 0)
-  FOR-FLN: 21 datas com preço · 70 sem resposta (FlightsNotFound 45, IndexError 25)
-  FLN-FOR: 33 datas com preço · 58 sem resposta (FlightsNotFound 32, IndexError 26)
-FOR-FLN: 21+33 dias · menor ida R$ 665 · menor normal R$ 610 · -9%
-  FOR-SID: 7 datas com preço · 84 sem resposta (TypeError 57, FlightsNotFound 27)
-  SID-FOR: 4 datas com preço · 87 sem resposta (TypeError 35, FlightsNotFound 52)
-FOR-SID: 7+4 dias · menor ida R$ 5.767 · menor normal R$ 5.474 · -5%
-  FOR-BOG: 17 datas com preço · 74 sem resposta (FlightsNotFound 30, IndexError 44)
-  ! BOG-FOR: o Google não respondeu nas primeiras datas, pulando
-  BOG-FOR: 0 datas com preço · 12 sem resposta (IndexError 7, FlightsNotFound 5)
-FOR-BOG: sem dados suficientes (ida 17, volta 0)
-  FOR-PMW: 75 datas com preço · 15 sem resposta (FlightsNotFound 13, IndexError 2)
-  PMW-FOR: 75 datas com preço · 16 sem resposta (FlightsNotFound 16)
-FOR-PMW: 74+75 dias · menor ida R$ 801 · menor normal R$ 874 · 8%
-  conferido SSA 2027-02-14: R$ 421 (valendo)
-  conferido AJU 2027-02-16: R$ 722 (valendo)
-  conferido PHB 2027-01-14: R$ 250 (valendo)
-  conferido JDO 2027-02-07: R$ 206 (valendo)
+Pistas da Travelpayouts: LON
+Lote: LON(b), MAO(t), CGR(t), BPS(t), SSA(t), VIX(t), AJU(t), THE(t), MIA(t), BEL(t), REC(t), UDI(t), SLZ(a), ROM(n), GYN(a), FEN(b), BHZ(a)
+Lote: LON, MAO, CGR, BPS, SSA, VIX, AJU, THE, MIA, BEL, REC, UDI, SLZ, ROM, GYN, FEN, BHZ
+  FOR-LON: 65 datas com preço · 26 sem resposta (FlightsNotFound 26)
+  LON-FOR: 74 datas com preço · 17 sem resposta (FlightsNotFound 17)
+FOR-LON: 65+74 dias · menor ida R$ 3.051 · menor normal R$ 1.759 · -73%
+  FOR-MAO: 82 datas com preço · 9 sem resposta (FlightsNotFound 9)
+  MAO-FOR: 85 datas com preço · 6 sem resposta (FlightsNotFound 6)
+FOR-MAO: 82+85 dias · menor ida R$ 832 · menor normal R$ 946 · 12%
+  FOR-CGR: 78 datas com preço · 13 sem resposta (FlightsNotFound 12, IndexError 1)
+  CGR-FOR: 50 datas com preço · 41 sem resposta (IndexError 13, FlightsNotFound 28)
+FOR-CGR: 76+50 dias · menor ida R$ 677 · menor normal R$ 872 · 22%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-BPS: 60 datas com preço · 31 sem resposta (IndexError 19, FlightsNotFound 12)
+  BPS-FOR: 63 datas com preço · 27 sem resposta (FlightsNotFound 8, IndexError 19)
+FOR-BPS: 57+63 dias · menor ida R$ 878 · menor normal R$ 982 · 11%
+  FOR-SSA: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+FOR-SSA: 90+91 dias · menor ida R$ 421 · menor normal R$ 632 · 33%
+  FOR-VIX: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+h2 connection driver error: connection reset
+  VIX-FOR: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+FOR-VIX: 90+90 dias · menor ida R$ 648 · menor normal R$ 634 · -2%
+  FOR-AJU: 73 datas com preço · 15 sem resposta (IndexError 12, FlightsNotFound 3)
+  AJU-FOR: 70 datas com preço · 21 sem resposta (FlightsNotFound 1, IndexError 20)
+FOR-AJU: 71+63 dias · menor ida R$ 722 · menor normal R$ 890 · 19%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-THE: 90 datas com preço · 1 sem resposta (FlightsNotFound 1)
+FOR-THE: 72+89 dias · menor ida R$ 765 · menor normal R$ 1.038 · 26%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-MIA: 72 datas com preço · 19 sem resposta (IndexError 15, FlightsNotFound 4)
+FOR-MIA: 72+91 dias · menor ida R$ 3.063 · menor normal R$ 2.585 · -18%
+  FOR-BEL: 87 datas com preço · 4 sem resposta (FlightsNotFound 4)
+  BEL-FOR: 85 datas com preço · 6 sem resposta (FlightsNotFound 6)
+FOR-BEL: 87+85 dias · menor ida R$ 349 · menor normal R$ 573 · 39%
+  só 8 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-REC: 78 datas com preço · 13 sem resposta (FlightsNotFound 13)
+  REC-FOR: 86 datas com preço · 5 sem resposta (FlightsNotFound 5)
+FOR-REC: 78+86 dias · menor ida R$ 412 · menor normal R$ 482 · 14%
+  FOR-UDI: 70 datas com preço · 21 sem resposta (FlightsNotFound 10, IndexError 11)
+  UDI-FOR: 75 datas com preço · 16 sem resposta (IndexError 10, FlightsNotFound 6)
+FOR-UDI: 68+75 dias · menor ida R$ 614 · menor normal R$ 898 · 32%
+  só 1 data(s) de ida ou sem ida+volta de 3 a 21 dias — sem alerta (pouco prático)
+  FOR-SLZ: 84 datas com preço · 7 sem resposta (FlightsNotFound 7)
+  SLZ-FOR: 89 datas com preço · 2 sem resposta (FlightsNotFound 2)
+FOR-SLZ: 78+78 dias · menor ida R$ 670 · menor normal R$ 773 · 13%
+  FOR-ROM: 78 datas com preço · 13 sem resposta (FlightsNotFound 6, IndexError 7)
+  ROM-FOR: 79 datas com preço · 12 sem resposta (FlightsNotFound 12)
+FOR-ROM: 78+79 dias · menor ida R$ 2.548 · menor normal R$ 2.092 · -22%
+  FOR-GYN: 67 datas com preço · 24 sem resposta (FlightsNotFound 24)
+  GYN-FOR: 62 datas com preço · 29 sem resposta (FlightsNotFound 29)
+FOR-GYN: 67+62 dias · menor ida R$ 638 · menor normal R$ 716 · 11%
+  FOR-FEN: 48 datas com preço · 37 sem resposta (FlightsNotFound 23, IndexError 14)
+  FEN-FOR: 65 datas com preço · 22 sem resposta (FlightsNotFound 20, IndexError 2)
+FOR-FEN: 16+32 dias · menor ida R$ 1.624 · menor normal R$ 1.624 · 0%
+  FOR-BHZ: 77 datas com preço · 14 sem resposta (FlightsNotFound 14)
+  BHZ-FOR: 67 datas com preço · 24 sem resposta (FlightsNotFound 24)
+FOR-BHZ: 77+67 dias · menor ida R$ 606 · menor normal R$ 696 · 13%
   ! reconferir RIO: FlightsNotFound
 
-Rodada: 17 rotas · 0 candidatos · 0 alertas · 2315s
+Rodada: 17 rotas · 0 candidatos · 0 alertas · 1923s
 FOR-LIM ida e volta: sem datas no calendário
 FOR-ORL ida e volta: sem datas no calendário
 FOR-SDQ ida e volta: sem datas no calendário
 FOR-MDE ida e volta: sem datas no calendário
 FOR-PTY ida e volta: sem datas no calendário
-  ! CUN 2026-12-03/2026-12-08: IndexError
-FOR-CUN ida e volta: R$ 8.515 (23/11-03/12, Gol) · 2 pares · normal R$ 7.670 · trechos somados R$ 7.974
-  ! MIA 2026-11-25/2026-12-01: FlightsNotFound
-FOR-MIA ida e volta: R$ 6.950 (27/01-06/02, LATAM) · 6 pares · normal R$ 4.952 · trechos somados R$ 5.732
-  ! OPO 2026-12-05/2026-12-11: IndexError
-FOR-OPO ida e volta: R$ 4.472 (23/11-30/11, LATAM) · 7 pares · normal R$ 4.368 · trechos somados R$ 4.671
-Ida e volta internacional: 8 rotas · 0 alerta(s) · 15 consultas, 9 erros
+  ! BCN 2026-12-01/2026-12-09: FlightsNotFound
+  ! BCN 2026-12-03/2026-12-12: FlightsNotFound
+FOR-BCN ida e volta: R$ 4.170 (03/12-09/12, Air France) · 7 pares · normal R$ 4.386 · trechos somados R$ 6.504
+  ! LON 2026-12-10/2026-12-15: FlightsNotFound
+  ! LON 2026-12-10/2026-12-17: FlightsNotFound
+  ! LON 2027-02-03/2027-02-09: FlightsNotFound
+FOR-LON ida e volta: R$ 5.573 (24/11-03/12, Air France) · 5 pares · normal R$ 5.430 · trechos somados R$ 6.469
+  ! MIL 2026-11-24/2026-12-03: FlightsNotFound
+  ! MIL 2026-11-24/2026-12-01: FlightsNotFound
+  ! MIL 2026-12-07/2026-12-15: FlightsNotFound
+FOR-MIL ida e volta: R$ 4.343 (07/12-14/12, Iberia) · 5 pares · normal R$ 4.603 · trechos somados R$ 6.212
+Ida e volta internacional: 8 rotas · 0 alerta(s) · 17 consultas, 22 erros

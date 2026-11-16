@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-16T15:52-03:00",
+ "atualizado": "2026-11-16T18:14-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "mismatched tag: line 93, column 2"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -82,19 +82,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 21,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 9,
-   "ok": true
-  },
-  {
-   "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 30,
+   "itens": 27,
    "ok": true
   },
   {
@@ -106,23 +94,81 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 23,
+   "itens": 31,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=compra+d"
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 22,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 3,
+   "itens": 4,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 15,
+   "itens": 17,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "Como emitir voos nacionais a partir de 7.500 milhas AAdvantage",
+   "resumo": "Descubra como conquistar status na oneworld com o AAdvantage mesmo sem voar com frequência. Confira! O post Como emitir voos nacionais a partir de 7.500 milhas AAdvantage apareceu primeiro em Passageiro de Primeira .",
+   "link": "https://passageirodeprimeira.com/como-emitir-voos-nacionais-a-partir-de-7-500-milhas-aadvantage/",
+   "fonte": "Passageiro de Primeira",
+   "publicado": "2026-11-16T18:00-03:00",
+   "programas": [],
+   "de": null,
+   "para": null,
+   "pct": null,
+   "milhas": 7500,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-8f5099e02a",
+   "fontes": [
+    "Passageiro de Primeira"
+   ],
+   "encontrado": "2026-11-16T18:14-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Como emitir voos nacionais a partir de 7.500 milhas AAdvantage\n🎟️ A partir de *7.500 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "Voos da Gol para Fortaleza a partir de 17 mil milhas Smiles o trecho",
+   "resumo": "Voos da Gol para Fortaleza a partir de 17 mil milhas Smiles o trecho Melhores Destinos",
+   "link": "https://news.google.com/rss/articles/CBMid0FVX3lxTE10cUNxMWppWDFjWW9UNHFuekVPbFNMbjJKbkZoZjlKMHEtX3Znb0Y2bUN4ai1jUnIyamIxenJ6MUhsWUFrNDU4T2wtOG9aYVc4LUhrSUJ1TUN2aDAzSDMtOGpkb1U1ZnFKMURQeUFJZE5qRWZBNV9B?oc=5",
+   "fonte": "Melhores Destinos",
+   "publicado": "2026-11-16T16:32-03:00",
+   "programas": [
+    "Smiles"
+   ],
+   "de": null,
+   "para": "Smiles",
+   "pct": null,
+   "milhas": 17000,
+   "validade": null,
+   "fortaleza": true,
+   "id": "mi-89739a10e2",
+   "fontes": [
+    "Melhores Destinos"
+   ],
+   "encontrado": "2026-11-16T18:14-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Gol para Fortaleza a partir de 17 mil milhas Smiles o trecho\n🎟️ A partir de *17.000 milhas* · Smiles\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "id": "tg-0a3bba7af3",
    "tipo": "passagem",
@@ -146,7 +192,7 @@
    "fortaleza": true,
    "iata": "JDO",
    "destino": "Juazeiro do Norte",
-   "texto": "💎 *ALERTA DE MILHAS!*\n\n✈️ *Fortaleza ➜ Juazeiro do Norte* (JDO)\n🎟️ *9.898 milhas* LATAM Pass o trecho\n🗓️ 21 de novembro\n\n⚡ Milhas em promoção acabam rápido. Confira antes de emitir.\n🛒 https://www.latamairlines.com/br/pt/oferta-voos?origin=FOR&amp;destination=JDO&amp;adt=1&amp;chd=0&amp;inf=0&amp;trip=OW&amp;cabin=Economy&amp;redemption=true&amp;outbound=2026-11-21T00%3A00%3A00.000Z&amp;inbound=null&amp;sort=PRICE%2Casc&amp;exp_id=b0ba46b5-065a-4bfb-8b61-9377d3f4c82c&amp;utm_source=pontos-para-voar&amp;utm_medium=affiliate&amp;utm_campaign=br_ltm_pontos-para-voar_affiliate_tkt_mega-promo_conv_lower&amp;utm_content=aberta_articulo_20260529_geral",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Juazeiro do Norte por 9.898 milhas LATAM Pass\n🎟️ A partir de *9.898 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -172,7 +218,29 @@
    "fortaleza": true,
    "iata": "PHB",
    "destino": "Parnaíba",
-   "texto": "💎 *ALERTA DE MILHAS!*\n\n✈️ *Fortaleza ➜ Parnaíba* (PHB)\n🎟️ *5.934 milhas* LATAM Pass o trecho\n🗓️ 16 de janeiro\n\n⚡ Milhas em promoção acabam rápido. Confira antes de emitir.\n🛒 https://www.latamairlines.com/br/pt/oferta-voos?origin=FOR&amp;destination=PHB&amp;adt=1&amp;chd=0&amp;inf=0&amp;trip=OW&amp;cabin=Economy&amp;redemption=true&amp;outbound=2027-01-16T00%3A00%3A00.000Z&amp;inbound=null&amp;sort=PRICE%2Casc&amp;exp_id=b0ba46b5-065a-4bfb-8b61-9377d3f4c82c&amp;utm_source=pontos-para-voar&amp;utm_medium=affiliate&amp;utm_campaign=br_ltm_pontos-para-voar_affiliate_tkt_mega-promo_conv_lower&amp;utm_content=aberta_articulo_20260529_geral",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Parnaíba por 5.934 milhas LATAM Pass\n🎟️ A partir de *5.934 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
+   "tipo": "passagem",
+   "titulo": "Floripa! Voos diretos para Florianópolis por R$ 134 ou 5 mil milhas o trecho mais taxas",
+   "resumo": "Floripa! Voos diretos para Florianópolis por R$ 134 ou 5 mil milhas o trecho mais taxas Melhores Destinos",
+   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5NVUZTdlJmLWMzU2E3LVZFbktkZEwzVHA4Zi1oYTVxZ2dwMlJGaGlJdGw3UkJFN2h3ajdmWHVnTFFQUjZDdUx2eVlnUTNyWl9qeHdaUWwtM2R0bVhKNzRhMEwyYzZGWXlnTkRzQkUzbzFicUd0TUE?oc=5",
+   "fonte": "Melhores Destinos",
+   "publicado": "2026-11-16T15:54-03:00",
+   "programas": [],
+   "de": null,
+   "para": null,
+   "pct": null,
+   "milhas": 5000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-78e16ba236",
+   "fontes": [
+    "Melhores Destinos"
+   ],
+   "encontrado": "2026-11-16T18:14-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Floripa! Voos diretos para Florianópolis por R$ 134 ou 5 mil milhas o trecho mais taxas\n🎟️ A partir de *5.000 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -238,14 +306,15 @@
    "para": null,
    "pct": 10,
    "milhas": null,
-   "validade": null,
+   "validade": "2026-11-18",
    "fortaleza": false,
    "id": "mi-b608cda139",
    "fontes": [
-    "Passageiro de Primeira"
+    "Passageiro de Primeira",
+    "Pontos pra Voar"
    ],
    "encontrado": "2026-11-16T14:43-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Nubank\n🎁 Até *10% de bônus* na transferência\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Nubank\n🎁 Até *10% de bônus* na transferência\n⏰ Válido até 18/11\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
   {
@@ -5112,81 +5181,6 @@
    ],
    "encontrado": "2026-10-26T19:59-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Passagens pela América do Sul a partir de 11 mil milhas LATAM Pass\n🎟️ A partir de *11.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "clube",
-   "titulo": "Clube Smiles oferece até 270 mil milhas em novas assinaturas",
-   "resumo": "Pensando em assinar o Clube Smiles? O programa está com uma oferta para novos assinantes, permitindo acumular até 270 mil milhas, conforme o plano escolhido. A campanha é válida até as 10h do dia 3 de novembro. Confira as condições e veja se vale a pena aproveitar! Promoção Clube",
-   "link": "https://pontospravoar.com/clube-smiles-oferece-ate-270-mil-milhas-em-novas-assinaturas/",
-   "fonte": "Pontos pra Voar",
-   "publicado": "2026-10-26T17:00-03:00",
-   "programas": [
-    "Smiles"
-   ],
-   "de": null,
-   "para": "Smiles",
-   "pct": null,
-   "milhas": null,
-   "validade": "2026-10-26",
-   "fortaleza": false,
-   "id": "mi-8403cd0fee",
-   "fontes": [
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-26T19:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n⭐ Clube Smiles oferece até 270 mil milhas em novas assinaturas\n⏰ Válido até 26/10\n\n💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "bonus",
-   "titulo": "TAP Miles&Go oferece 20% de bônus nas transferências de pontos da Revolut",
-   "resumo": "O TAP Miles&Go está oferecendo 20% de bônus nas transferências de pontos da Revolut. Na plataforma, é possível enviar pontos para o programa sem deságio. A campanha é válida até 31 de outubro. O post TAP Miles&Go oferece 20% de bônus nas transferências de pontos da Revolut aparec",
-   "link": "https://passageirodeprimeira.com/tap-milesgo-oferece-20-de-bonus-nas-transferencias-de-pontos-da-revolut-2/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-26T16:30-03:00",
-   "programas": [
-    "TAP Miles&Go"
-   ],
-   "de": null,
-   "para": "TAP Miles&Go",
-   "pct": 20,
-   "milhas": null,
-   "validade": "2026-10-31",
-   "fortaleza": false,
-   "id": "mi-5b51abaf4b",
-   "fontes": [
-    "Melhores Cartões",
-    "Passageiro de Primeira",
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-26T19:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 TAP Miles&Go\n🎁 Até *20% de bônus* na transferência\n⏰ Válido até 31/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "bonus",
-   "titulo": "Transfira pontos Premmia para a Smiles com 100% de bônus – CPM a partir de R$ 16,09",
-   "resumo": "A Smiles está oferecendo 100% de bônus na transferência de pontos do Premmia. A oferta conta com uma bonificação única para todos os clientes Smiles, e com ela é possível chegar a um CPM [custo para mil pontos] de R$ 16,09. A campanha é válida até 23h59 de sexta-feira (30). O pos",
-   "link": "https://passageirodeprimeira.com/transfira-pontos-premmia-para-a-smiles-com-100-de-bonus-cpm-a-partir-de-r-1609/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-26T16:00-03:00",
-   "programas": [
-    "Smiles"
-   ],
-   "de": null,
-   "para": "Smiles",
-   "pct": 100,
-   "milhas": null,
-   "validade": null,
-   "fortaleza": false,
-   "id": "mi-ff24270189",
-   "fontes": [
-    "Passageiro de Primeira",
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-26T19:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Smiles\n🎁 Até *100% de bônus* na transferência\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

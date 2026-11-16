@@ -1,14 +1,14 @@
 {
  "prioridades": {
   "SAO": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "RIO": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "BSB": {
    "prioridade": "alta",
@@ -36,9 +36,9 @@
    "motivo": "2 alertas em 30 dias"
   },
   "JPA": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "MCZ": {
    "prioridade": "baixa",
@@ -71,14 +71,14 @@
    "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "POA": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "CWB": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "FLN": {
    "prioridade": "baixa",
@@ -96,9 +96,9 @@
    "motivo": "voo todo dia, preço muda muito"
   },
   "IGU": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "FEN": {
    "prioridade": "baixa",
@@ -108,12 +108,12 @@
   "JDO": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (28 de ~90 dias)"
+   "motivo": "poucos voos (33 de ~90 dias)"
   },
   "LIS": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "OPO": {
    "prioridade": "alta",
@@ -161,14 +161,14 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "BUE": {
-   "prioridade": "alta",
-   "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "SCL": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (15 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "LIM": {
    "prioridade": "baixa",
@@ -241,14 +241,14 @@
    "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BCN": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "MIL": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "FRA": {
    "prioridade": "normal",
@@ -281,30 +281,30 @@
    "motivo": "poucos voos (15 de ~90 dias)"
   }
  },
- "quando": "2026-11-16T00:35-03:00",
+ "quando": "2026-11-16T01:35-03:00",
  "ultimo_lote": [
-  "JDO",
-  "OPO",
-  "MAD",
-  "PAR",
-  "BSB",
-  "AMS",
-  "IGU",
-  "BCN",
-  "MIL",
-  "POA",
-  "RIO",
-  "JPA",
-  "SAO",
-  "NAT",
-  "LIS",
-  "BUE",
-  "ORL",
-  "CWB",
-  "SCL",
-  "MAO",
-  "LIM",
-  "CGR",
-  "BPS"
+  "SSA",
+  "VIX",
+  "AJU",
+  "THE",
+  "MIA",
+  "BEL",
+  "REC",
+  "UDI",
+  "PTY",
+  "MVD",
+  "SLZ",
+  "GYN",
+  "BHZ",
+  "FRA",
+  "PHB",
+  "CGB",
+  "VCP",
+  "CUN",
+  "PUJ",
+  "MDE",
+  "NYC",
+  "NVT",
+  "MCZ"
  ]
 }

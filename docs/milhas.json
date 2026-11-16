@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-16T12:10-03:00",
+ "atualizado": "2026-11-16T12:57-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "mismatched tag: line 93, column 2"
+   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
   },
   {
    "fonte": "Aeroflap",
@@ -82,7 +82,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 20,
+   "itens": 19,
    "ok": true
   },
   {
@@ -124,6 +124,30 @@
  ],
  "ofertas": [
   {
+   "tipo": "passagem",
+   "titulo": "Voos da Latam para Miami a partir de R$ 1.142 ou 48 mil milhas o trecho mais taxas",
+   "resumo": "Voos da Latam para Miami a partir de R$ 1.142 ou 48 mil milhas o trecho mais taxas Melhores Destinos",
+   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1Cd05HNnRxYWhBT0hWSTB3UjN0VHpqeWZxRk1HQ0d1MVJpQW0wTjlUa3N6ckdYVEk1QjhUMGIweW5jNmVfSF9KUktzR1NFRkRuQnotdE11Wm0tcTk2TXFNQ1RLd0NGUWhMRGQ2WFJuQ0FfdDNqWFE?oc=5",
+   "fonte": "Melhores Destinos",
+   "publicado": "2026-11-16T12:31-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": 48000,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-c97bfcf733",
+   "fontes": [
+    "Melhores Destinos"
+   ],
+   "encontrado": "2026-11-16T12:57-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Latam para Miami a partir de R$ 1.142 ou 48 mil milhas o trecho mais taxas\n🎟️ A partir de *48.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
+  {
    "tipo": "compra",
    "titulo": "Transfira pontos Livelo + dinheiro para a Azul – milheiro a partir de R$ 12,71",
    "resumo": "A Livelo está com uma promoção imperdível! Agora é possível transferir pontos + dinheiro para o Azul Fidelidade com CPM a partir de R$ 12,71, além de até 90% de bônus na transferência até quinta-feira (19). Assinantes do Clube Azul ainda podem garantir até 30% de bônus adicional,",
@@ -144,7 +168,7 @@
    "fontes": [
     "Passageiro de Primeira"
    ],
-   "encontrado": "2026-11-16T12:10-03:00",
+   "encontrado": "2026-11-16T12:57-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Azul Fidelidade\n💸 Transfira pontos Livelo + dinheiro para a Azul – milheiro a partir de R$ 12,71\n🔥 Até *90%* de vantagem\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -168,7 +192,7 @@
    "fontes": [
     "Pontos pra Voar"
    ],
-   "encontrado": "2026-11-16T12:10-03:00",
+   "encontrado": "2026-11-16T12:57-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n⭐ Pink Friday! Livelo oferece até 102.000 pontos na adesão dos Clubes Essencial e Especial\n⏰ Válido até 16/11\n\n💡 Clube vale a pena pra quem acumula todo mês e quer bônus maiores nas transferências.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -192,7 +216,7 @@
    "fontes": [
     "Passageiro de Primeira"
    ],
-   "encontrado": "2026-11-16T12:10-03:00",
+   "encontrado": "2026-11-16T12:57-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Livelo\n💸 Só hoje: Até 102.000 pontos em 1 ano com o Clube Livelo Essencial ou Especial – Milheiro a partir de R$ 22,23\n⏰ Válido até 16/11\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -5109,60 +5133,6 @@
    ],
    "encontrado": "2026-10-26T19:59-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Livelo\n💸 Até 23h59! Multiplique seus pontos em até 20x com o Turbo Livelo – milheiro a partir de R$ 29,89\n⏰ Válido até 26/10\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "bonus",
-   "titulo": "LATAM Pass libera transferência de pontos Nubank Croma e oferece bônus de 35%",
-   "resumo": "O LATAM Pass ampliou sua parceria com o Nubank e passou a permitir que clientes Nubank Croma transfiram pontos para o programa de fidelidade. Para celebrar a novidade, as empresas oferecem 35% de bônus nas transferências realizadas até amanhã (27). O post LATAM Pass libera transf",
-   "link": "https://passageirodeprimeira.com/latam-pass-transferencia-pontos-nubank-croma/",
-   "fonte": "Passageiro de Primeira",
-   "publicado": "2026-10-26T12:45-03:00",
-   "programas": [
-    "LATAM Pass",
-    "Nubank"
-   ],
-   "de": "Nubank",
-   "para": "LATAM Pass",
-   "pct": 35,
-   "milhas": null,
-   "validade": "2026-10-27",
-   "fortaleza": false,
-   "id": "mi-2a4b65caeb",
-   "fontes": [
-    "Diário do Turismo",
-    "Melhores Cartões",
-    "Passageiro de Primeira",
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-26T19:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Nubank → LATAM Pass\n🎁 Até *35% de bônus* na transferência\n⏰ Válido até 27/10\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "id": "tg-169ba2945b",
-   "tipo": "passagem",
-   "titulo": "Fortaleza → Paris por 81.800 milhas Smiles",
-   "resumo": "25 de julho · 87.000 milhas pra quem não é do clube",
-   "link": "https://www.smiles.com.br/mfe/emissao-passagem/?adults=1&amp;cabin=ALL&amp;children=0&amp;departureDate=1804215600000&amp;infants=0&amp;isElegible=false&amp;isFlexibleDateChecked=false&amp;returnDate=&amp;searchType=g3&amp;segments=1&amp;tripType=2&amp;originAirport=GRU&amp;originCity=&amp;originCountry=&amp;originAirportIsAny=false&amp;destinationAirport=MCO&amp;destinCity=&amp;destinCountry=&amp;destinAirportIsAny=false&amp;novo-resultado-voos=true&amp;utm_source=pontos_pra_voar&amp;utm_medium=cpa",
-   "fonte": "Radar 085",
-   "fontes": [
-    "Radar 085"
-   ],
-   "publicado": "2026-10-26T12:28-03:00",
-   "encontrado": "2026-10-26T12:28-03:00",
-   "programas": [
-    "Smiles"
-   ],
-   "de": null,
-   "para": "Smiles",
-   "pct": null,
-   "milhas": 81800,
-   "validade": null,
-   "fortaleza": true,
-   "iata": "CDG",
-   "destino": "Paris",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Paris por 81.800 milhas Smiles\n🎟️ A partir de *81.800 milhas* · Smiles\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

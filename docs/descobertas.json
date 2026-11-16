@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-16T14:19+00:00",
+ "atualizado": "2026-11-16T15:13+00:00",
  "pistas": [
   "BEL",
   "CAY",
@@ -12,7 +12,6 @@
   "NAT",
   "PAR",
   "REC",
-  "RIO",
   "SAO",
   "SSA"
  ],
@@ -130,26 +129,6 @@
    "pista": false
   },
   {
-   "iata": "RIO",
-   "rt": {
-    "preco": 1104,
-    "ida": "2027-01-16",
-    "volta": "2027-02-02",
-    "paradas": 2,
-    "visto": "2026-11-13T12:59:56Z"
-   },
-   "ow": {
-    "preco": 819,
-    "ida": "2026-11-30",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-14T13:16:06Z"
-   },
-   "rastreada": true,
-   "nome": "Rio de Janeiro",
-   "pista": true
-  },
-  {
    "iata": "NVT",
    "ow": {
     "preco": 1189,
@@ -243,7 +222,7 @@
   {
    "iata": "BSB",
    "rt": {
-    "preco": 1499,
+    "preco": 1508,
     "ida": "2026-12-10",
     "volta": "2027-01-11",
     "paradas": 0,
@@ -251,6 +230,26 @@
    },
    "rastreada": true,
    "nome": "Brasília",
+   "pista": false
+  },
+  {
+   "iata": "RIO",
+   "rt": {
+    "preco": 1537,
+    "ida": "2027-01-16",
+    "volta": "2027-02-02",
+    "paradas": 1,
+    "visto": "2026-11-16T15:08:26Z"
+   },
+   "ow": {
+    "preco": 819,
+    "ida": "2026-11-30",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-14T13:16:06Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
    "pista": false
   },
   {
@@ -412,7 +411,7 @@
   {
    "iata": "BEG",
    "ow": {
-    "preco": 4119,
+    "preco": 4143,
     "ida": "2027-07-01",
     "volta": "",
     "paradas": 2,
@@ -438,7 +437,7 @@
   {
    "iata": "BLQ",
    "ow": {
-    "preco": 4973,
+    "preco": 5003,
     "ida": "2027-09-01",
     "volta": "",
     "paradas": 1,

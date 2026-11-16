@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-16T18:14-03:00",
+ "atualizado": "2026-11-16T18:53-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -75,14 +75,26 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 16,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=milhas+a"
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
    "itens": 27,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 10,
+   "ok": true
+  },
+  {
+   "fonte": "Google Notícias",
+   "url": "Google Notícias",
+   "itens": 32,
    "ok": true
   },
   {
@@ -141,7 +153,7 @@
    "fontes": [
     "Passageiro de Primeira"
    ],
-   "encontrado": "2026-11-16T18:14-03:00",
+   "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Como emitir voos nacionais a partir de 7.500 milhas AAdvantage\n🎟️ A partir de *7.500 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -165,7 +177,7 @@
    "fontes": [
     "Melhores Destinos"
    ],
-   "encontrado": "2026-11-16T18:14-03:00",
+   "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Gol para Fortaleza a partir de 17 mil milhas Smiles o trecho\n🎟️ A partir de *17.000 milhas* · Smiles\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -239,7 +251,7 @@
    "fontes": [
     "Melhores Destinos"
    ],
-   "encontrado": "2026-11-16T18:14-03:00",
+   "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Floripa! Voos diretos para Florianópolis por R$ 134 ou 5 mil milhas o trecho mais taxas\n🎟️ A partir de *5.000 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": true
   },
@@ -5157,30 +5169,6 @@
    ],
    "encontrado": "2026-10-27T14:22-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Pernambuco! Latam tem voos para o Recife a partir de 7 mil milhas o trecho\n🎟️ A partir de *7.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": false
-  },
-  {
-   "tipo": "passagem",
-   "titulo": "Alerta PPV! Passagens pela América do Sul a partir de 11 mil milhas LATAM Pass",
-   "resumo": "Que tal começar a semana planejando uma viagem pela América do Sul? No Alerta de Passagens PPV desta segunda-feira, nossa equipe encontrou oportunidades de emissão com milhas LATAM Pass, com opções a partir de 11 mil milhas + taxas. Confira os destinos disponíveis e veja como apr",
-   "link": "https://pontospravoar.com/alerta-ppv-passagens-pela-america-do-sul-a-partir-de-11-mil-milhas-latam-pass/",
-   "fonte": "Pontos pra Voar",
-   "publicado": "2026-10-26T18:30-03:00",
-   "programas": [
-    "LATAM Pass"
-   ],
-   "de": null,
-   "para": "LATAM Pass",
-   "pct": null,
-   "milhas": 11000,
-   "validade": null,
-   "fortaleza": false,
-   "id": "mi-3b8dbed6ab",
-   "fontes": [
-    "Pontos pra Voar"
-   ],
-   "encontrado": "2026-10-26T19:59-03:00",
-   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Passagens pela América do Sul a partir de 11 mil milhas LATAM Pass\n🎟️ A partir de *11.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "ativa": false
   }
  ]

@@ -63,7 +63,7 @@
   "BEL": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "17 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "18 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "MAO": {
    "prioridade": "turbo",
@@ -136,9 +136,9 @@
    "motivo": "padrão"
   },
   "LON": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "AMS": {
    "prioridade": "normal",
@@ -156,9 +156,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "NYC": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "BUE": {
    "prioridade": "alta",
@@ -198,7 +198,7 @@
   "MVD": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (16 de ~90 dias)"
   },
   "SID": {
    "prioridade": "baixa",
@@ -221,9 +221,9 @@
    "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "NVT": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "BPS": {
    "prioridade": "turbo",
@@ -278,33 +278,33 @@
   "PHB": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (16 de ~90 dias)"
+   "motivo": "poucos voos (13 de ~90 dias)"
   }
  },
- "quando": "2026-11-16T13:06-03:00",
+ "quando": "2026-11-16T14:06-03:00",
  "ultimo_lote": [
-  "CWB",
-  "BUE",
-  "MIL",
-  "AMS",
+  "UDI",
+  "MAO",
+  "CGR",
+  "BPS",
+  "SSA",
+  "VIX",
+  "BSB",
+  "NAT",
+  "SLZ",
+  "GYN",
+  "BHZ",
+  "MCZ",
+  "RIO",
+  "POA",
   "AJU",
   "THE",
   "MIA",
-  "ORL",
-  "SCL",
-  "LIM",
-  "PTY",
   "BEL",
-  "OPO",
-  "MAD",
-  "FRA",
-  "VCP",
-  "LON",
-  "NYC",
-  "MVD",
-  "NVT",
-  "REC",
-  "PHB",
-  "CUN"
+  "SAO",
+  "JPA",
+  "LIS",
+  "IGU",
+  "PUJ"
  ]
 }

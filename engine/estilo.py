@@ -191,9 +191,11 @@ def precos(t, est, cores, n, tot):
                 else f'<div style="margin-top:40px;border:2px solid {ac};padding:22px 26px;font-size:27px;font-weight:600;line-height:1.35">{e(t["nota"])}</div>')
     sub = f'<div style="font-size:24px;font-weight:600;opacity:.7;margin-top:12px">{e(t.get("sub"))}</div>' if t.get("sub") else ""
     rod = f'<div class="fonte">{e(t.get("rodape"))}</div>' if t.get("rodape") else ""
+    fp = (f'<img class="ph" src="{e(t["foto"])}" style="margin-top:36px;width:936px;height:{t.get("alt_foto",300)}px;object-position:{t.get("pos","50% 50%")}">'
+          f'<div style="font-size:17px;font-weight:600;opacity:.6;margin-top:8px">{e(t.get("legenda"))}</div>') if t.get("foto") else ""
     return f'''<section class="s" style="background:{bg};color:{fg};--ac:{ac}">{tp}
 <div class="a" style="left:72px;right:72px;top:{y}px"><div class="T" style="font-size:{t.get("tam_tit", 80 if est != "dado" else 110)}px">{destaque(t.get("titulo",""), est)}</div>{sub}
-<div style="margin-top:44px">{linhas}</div>{nota}</div>{rod}{marca(fg)}</section>'''
+<div style="margin-top:44px">{linhas}</div>{nota}{fp}</div>{rod}{marca(fg)}</section>'''
 
 
 def numero(t, est, cores, n, tot):
@@ -326,7 +328,44 @@ def calendario(t, est, cores, n, tot):
 <div class="a" style="right:48px;top:140px;font-weight:800;font-size:22px">@partiu.085</div></section>'''
 
 
-TIPOS = {"calendario": calendario, "tabela": tabela, "capa": capa, "texto": texto, "precos": precos, "numero": numero, "cartoes": cartoes, "lista": lista, "cta": cta}
+def foto(t, est, cores, n, tot):
+    """Tela de foto inteira: {foto, pos?, credito, label, selo?, titulo, texto?, tam?}"""
+    f = t.get("foto"); pos = t.get("pos", "50% 50%")
+    selo = f'<div style="display:inline-block;background:{AM};color:{NV};font-weight:900;font-size:26px;padding:8px 16px;border-radius:6px;margin-bottom:22px">{e(t.get("selo"))}</div>' if t.get("selo") else ""
+    cred = f'<div class="a" style="right:24px;top:112px;background:rgba(11,36,64,.75);color:#fff;font-size:16px;font-weight:600;padding:5px 10px">{e(t.get("credito"))}</div>' if t.get("credito") else ""
+    return f'''<section class="s" style="background:{NV};color:#fff">{foto_fill(f, pos)}
+<div class="a" style="left:0;right:0;bottom:0;height:{t.get("grad",760)}px;background:linear-gradient(180deg,rgba(11,36,64,0) 0,rgba(11,36,64,.82) 42%,{NV} 100%)"></div>
+<div class="bar"><span>{NOME_TOPO}</span><span class="ed">{e(t.get("label","")).upper()}</span></div>{cred}
+<div class="a" style="left:72px;right:72px;bottom:150px">{selo}<div class="T" style="font-size:{t.get("tam",76)}px">{destaque(t.get("titulo",""), est)}</div>
+<div style="font-size:{t.get("tam_txt",31)}px;font-weight:600;line-height:1.4;margin-top:22px;opacity:.94">{t.get("texto","")}</div></div>
+{marca("#fff")}{f'<div class="pg" style="color:#fff">{e(t.get("fonte"))}</div>' if t.get("fonte") else ""}</section>'''
+
+
+def rota(t, est, cores, n, tot):
+    """Mapa da rota: {label, titulo, paradas:[{nome, sub?}], trechos:[{modo:"voo"|"estrada"|"barco", tempo, info?}], fonte?}"""
+    bg, fg, ac = cores
+    tp, y = topo(est, t.get("label", ""), fg, ac)
+    par, tr = t.get("paradas", []), t.get("trechos", [])
+    alt = t.get("alt", 190)
+    itens = ""
+    for i, p in enumerate(par):
+        cor = [AZ, VD, AM, AZ, VD][i % 5]
+        itens += f'''<div style="display:grid;grid-template-columns:64px 1fr;gap:28px;align-items:center">
+<div style="width:64px;height:64px;border-radius:50%;background:{cor};color:{NV if cor == AM else "#fff"};font-weight:900;font-size:30px;display:flex;align-items:center;justify-content:center">{i + 1}</div>
+<div><div style="font-weight:900;font-size:44px;letter-spacing:-.02em">{e(p["nome"])}</div>{f'<div style="font-size:24px;font-weight:600;opacity:.7;margin-top:2px">{e(p.get("sub"))}</div>' if p.get("sub") else ""}</div></div>'''
+        if i < len(tr):
+            s = tr[i]
+            linha = "dashed" if s.get("modo") == "voo" else ("dotted" if s.get("modo") == "barco" else "solid")
+            itens += f'''<div style="display:grid;grid-template-columns:64px 1fr;gap:28px;height:{alt}px">
+<div style="display:flex;justify-content:center"><div style="border-left:6px {linha} {fg};opacity:.35;height:100%"></div></div>
+<div style="display:flex;flex-direction:column;justify-content:center"><div class="lab" style="font-size:18px;color:{ac}">{e(s.get("modo","")).upper()}</div>
+<div style="font-weight:900;font-size:56px;letter-spacing:-.03em;margin-top:2px">{e(s.get("tempo"))}</div>{f'<div style="font-size:24px;font-weight:600;opacity:.75">{e(s.get("info"))}</div>' if s.get("info") else ""}</div></div>'''
+    tit = f'<div class="T" style="font-size:{t.get("tam",70)}px;margin-bottom:44px">{destaque(t.get("titulo",""), est)}</div>'
+    rod = f'<div class="fonte">{e(t.get("fonte"))}</div>' if t.get("fonte") else ""
+    return f'<section class="s" style="background:{bg};color:{fg};--ac:{ac}">{tp}<div class="a" style="left:72px;right:72px;top:{y}px">{tit}{itens}</div>{rod}{marca(fg)}</section>'
+
+
+TIPOS = {"foto": foto, "rota": rota, "calendario": calendario, "tabela": tabela, "capa": capa, "texto": texto, "precos": precos, "numero": numero, "cartoes": cartoes, "lista": lista, "cta": cta}
 
 
 def montar(post):

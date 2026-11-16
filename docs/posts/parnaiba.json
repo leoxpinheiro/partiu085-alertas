@@ -1,0 +1,206 @@
+{
+"estilo": "noticia",
+"telas": [
+{
+"tipo": "capa",
+"foto": "docs/midia/PHB-lencois.jpg",
+"pos": "50% 60%",
+"credito": "Lagoa de Atins, Lençóis Maranhenses · Rosanetur / Wikimedia (CC BY 2.0)",
+"kicker": "Achado do radar",
+"data": "Saindo de Fortaleza · voo direto · visto pelo radar em 15/11",
+"titulo": "Parnaíba por *R$ 528* ida e volta",
+"tam": 84,
+"sub": "1h de voo. E de lá dá pra chegar nos Lençóis Maranhenses. Ficha, rota, roteiro e a pegadinha da época."
+},
+{
+"tipo": "precos",
+"label": "O achado",
+"titulo": "As datas *do preço*",
+"sub": "LATAM, voo direto nos dois trechos",
+"linhas": [
+{
+"rotulo": "Ida · sáb 16/01",
+"nota": "Fortaleza → Parnaíba",
+"preco": "R$ 250"
+},
+{
+"rotulo": "Volta · qui 21/01",
+"nota": "Parnaíba → Fortaleza",
+"preco": "R$ 278"
+},
+{
+"rotulo": "Total ida e volta",
+"nota": "6 dias de viagem",
+"preco": "R$ 528",
+"destaque": true
+}
+],
+"nota": "A rota só tem voo na quinta e no sábado. Bateu a data, não espera: preço de voo direto some rápido.",
+"rodape": "Visto pelo radar Partiu 085 em 15/11. Pode mudar a qualquer momento.",
+"foto": "docs/midia/PHB-porto.jpg",
+"pos": "50% 60%",
+"alt_foto": 230,
+"legenda": "Porto das Barcas, Parnaíba · Raniel Souza / Wikimedia (CC BY 4.0)"
+},
+{
+"tipo": "rota",
+"label": "A rota",
+"titulo": "Como chegar *nos Lençóis*",
+"alt": 150,
+"paradas": [
+{
+"nome": "Fortaleza",
+"sub": "saída"
+},
+{
+"nome": "Parnaíba (PI)",
+"sub": "Delta, guarás e praias"
+},
+{
+"nome": "Barreirinhas (MA)",
+"sub": "a base pras lagoas"
+},
+{
+"nome": "Lençóis Maranhenses",
+"sub": "as lagoas entre as dunas"
+}
+],
+"trechos": [
+{
+"modo": "voo",
+"tempo": "≈ 1h",
+"info": "LATAM direto, quinta e sábado"
+},
+{
+"modo": "estrada",
+"tempo": "≈ 180 km",
+"info": "pela Rota das Emoções"
+},
+{
+"modo": "estrada",
+"tempo": "4x4",
+"info": "só veículo credenciado entra no parque"
+}
+],
+"fonte": "Fontes: radar Partiu 085, Kayak, PortalIN, Viagens e Caminhos e Mala de Aventuras.",
+"tam": 76
+},
+{
+"tipo": "foto",
+"foto": "docs/midia/PHB-delta.jpg",
+"pos": "50% 50%",
+"credito": "Delta do Parnaíba · Gabriel P. Silva / Wikimedia (CC BY-SA 4.0)",
+"label": "Dia 2",
+"selo": "Delta do Parnaíba",
+"titulo": "O único delta em *mar aberto* das Américas",
+"texto": "Mais de 70 ilhas entre rio, dunas e mangue. O passeio de barco leva umas 4h e sai à tarde."
+},
+{
+"tipo": "foto",
+"foto": "docs/midia/PHB-guaras.jpg",
+"pos": "50% 40%",
+"credito": "Guarás no Delta · Gabriel P. Silva / Wikimedia (CC BY-SA 4.0)",
+"label": "Fim da tarde",
+"selo": "O ponto alto",
+"titulo": "A revoada *dos guarás*",
+"texto": "O barco é marcado pra chegar no pôr do sol, quando as aves vermelhas voltam pras árvores do mangue."
+},
+{
+"tipo": "lista",
+"label": "Roteiro",
+"titulo": "16 a 21/01 *em 6 dias*",
+"tam_txt": 29,
+"pad": 26,
+"itens": [
+{
+"n": "16/01",
+"t": "Chegada em Parnaíba",
+"x": "Fim de tarde no Porto das Barcas, o casario antigo à beira do rio."
+},
+{
+"n": "17/01",
+"t": "Delta do Parnaíba",
+"x": "Manhã livre, barco à tarde e revoada dos guarás no pôr do sol."
+},
+{
+"n": "18/01",
+"t": "Praias e estrada",
+"x": "Farol da Pedra do Sal (≈ 20 km) cedo e Rota das Emoções até Barreirinhas."
+},
+{
+"n": "19/01",
+"t": "Lençóis",
+"x": "Circuito do parque de jardineira 4x4 credenciada."
+},
+{
+"n": "20/01",
+"t": "Rio Preguiças",
+"x": "Passeio de barco pelo rio até Caburé e Atins."
+},
+{
+"n": "21/01",
+"t": "Volta",
+"x": "Estrada cedo pra Parnaíba e voo pra Fortaleza."
+}
+],
+"fonte": "Fontes: Viagens e Caminhos, Mala de Aventuras e Quero Viajar Mais. Confira o horário do voo antes de fechar."
+},
+{
+"tipo": "cartoes",
+"label": "A pegadinha",
+"titulo": "Janeiro ou julho? *Depende do que tu quer*",
+"tam": 56,
+"alt": 360,
+"cartoes": [
+{
+"rotulo": "Janeiro · passagem",
+"numero": "R$ 528",
+"texto": "Ida e volta, direto. Preço visto pelo radar em 15/11."
+},
+{
+"rotulo": "Janeiro · lagoas",
+"numero": "enchendo",
+"texto": "As chuvas estão começando. Muitas lagoas ainda estão baixas."
+},
+{
+"rotulo": "Julho · passagem",
+"numero": "?",
+"texto": "O radar ainda não vê julho. Quando aparecer preço bom, avisamos no grupo."
+},
+{
+"rotulo": "Julho · lagoas",
+"numero": "cheias",
+"texto": "Julho é apontado como o melhor mês pras lagoas."
+}
+],
+"fonte": "Fontes: 360meridianos e Viciada em Viajar. O nível das lagoas muda de um ano pro outro."
+},
+{
+"tipo": "texto",
+"label": "Antes de ir",
+"titulo": "Pra viagem *render*",
+"tam_txt": 29,
+"foto": "docs/midia/PHB-pedrasal.jpg",
+"pos": "50% 55%",
+"legenda": "Farol da Pedra do Sal · Diego Rego Monteiro / Wikimedia (CC BY-SA 4.0)",
+"blocos": [
+{
+"t": "Indo em janeiro?",
+"x": "O foco é Delta, guarás e praias. Lençóis entra como bônus."
+},
+{
+"t": "Só carro credenciado",
+"x": "No parque só entram veículos autorizados. Vá de passeio."
+}
+],
+"fonte": "Fontes: Mala de Aventuras e Quero Viajar Mais."
+},
+{
+"tipo": "cta",
+"foto": "docs/midia/PHB-lagoa.jpg",
+"pos": "50% 50%",
+"titulo": "Salva e marca quem\nvai *contigo*",
+"texto": "O radar olha Fortaleza → Parnaíba todo dia e avisa no grupo quando o preço cair."
+}
+]
+}

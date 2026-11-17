@@ -1,6 +1,130 @@
 {
- "atualizado": "2026-11-17T19:23-03:00",
+ "atualizado": "2026-11-17T20:24-03:00",
  "alertas": [
+  {
+   "id": "FOR-BEL-2027-02-06-1794957875",
+   "criado": "2026-11-17T20:24-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 311,
+   "preco_volta": 236,
+   "preco_tipico": 573,
+   "desconto": 0.457,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Azul",
+   "escalas": 0,
+   "ida": "2027-02-06",
+   "volta": "2027-01-25",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-16",
+     "preco": 332
+    },
+    {
+     "dia": "2026-12-23",
+     "preco": 332
+    },
+    {
+     "dia": "2026-12-28",
+     "preco": 332
+    },
+    {
+     "dia": "2026-12-29",
+     "preco": 332
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 332
+    },
+    {
+     "dia": "2027-02-06",
+     "preco": 311
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-25",
+     "preco": 236
+    },
+    {
+     "dia": "2027-02-01",
+     "preco": 236
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 236
+    },
+    {
+     "dia": "2027-02-14",
+     "preco": 236
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "16",
+      "23",
+      "28",
+      "29"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "03",
+      "06"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "25"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "01",
+      "03",
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMDZqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR0602BEL14021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-06",
+    "volta": "2027-02-14",
+    "total": 547,
+    "dias": 8
+   },
+   "base": {
+    "dias": 42,
+    "menor_visto": 289
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 311* o trecho\n🔁 Ida e volta: *R$ 547* (ida 06/02, volta 14/02 · 8 dias)\n🔥 *IMPERDÍVEL*\n🛫 Azul · voo direto\n\n🗓️ *IDA*\n▸ Dezembro/26: 16, 23, 28, 29\n▸ Fevereiro/27: 03, 06\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 25\n▸ Fevereiro/27: 01, 03, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0602BEL14021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-JDO-2027-02-09-1794951121",
    "criado": "2026-11-17T18:32-03:00",
@@ -92,7 +216,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Juazeiro do Norte* (JDO)\n📍 _Cariri: Juazeiro, Crato e Barbalha_\n💰 *R$ 173* o trecho\n🔁 Ida e volta: *R$ 335* (ida 13/02, volta 19/02 · 6 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (42 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Fevereiro/27: 07, 09, 13, 14\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 12, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1302JDO19021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-17T20:24-03:00",
+    "preco": 173,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-BHZ-2027-02-16-1794942459",
@@ -1653,7 +1782,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-17T15:25-03:00",
+    "quando": "2026-11-17T20:24-03:00",
     "preco": 539,
     "status": "valendo"
    }

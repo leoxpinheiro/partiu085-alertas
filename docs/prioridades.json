@@ -48,7 +48,7 @@
   "AJU": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "8 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "9 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "SLZ": {
    "prioridade": "alta",
@@ -83,7 +83,7 @@
   "FLN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (31 de ~90 dias)"
+   "motivo": "poucos voos (29 de ~90 dias)"
   },
   "VIX": {
    "prioridade": "alta",
@@ -131,14 +131,14 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "ROM": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "LON": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "AMS": {
    "prioridade": "normal",
@@ -178,12 +178,12 @@
   "BOG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (22 de ~90 dias)"
+   "motivo": "poucos voos (24 de ~90 dias)"
   },
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (5 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -193,7 +193,7 @@
   "CUN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "MVD": {
    "prioridade": "baixa",
@@ -241,9 +241,9 @@
    "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BCN": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "MIL": {
    "prioridade": "normal",
@@ -258,7 +258,7 @@
   "PUJ": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (6 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "MDE": {
    "prioridade": "baixa",
@@ -268,12 +268,12 @@
   "SDQ": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (1 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "CAY": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (6 de ~90 dias)"
+   "motivo": "poucos voos (7 de ~90 dias)"
   },
   "PHB": {
    "prioridade": "alta",
@@ -281,30 +281,30 @@
    "motivo": "2 alertas em 30 dias"
   }
  },
- "quando": "2026-11-17T04:43-03:00",
+ "quando": "2026-11-17T05:43-03:00",
  "ultimo_lote": [
+  "BPS",
+  "SSA",
   "AJU",
-  "CUN",
+  "NAT",
+  "SLZ",
+  "BHZ",
   "THE",
-  "PUJ",
-  "MDE",
-  "CTG",
-  "SDQ",
-  "CAY",
-  "FLN",
+  "CWB",
+  "BUE",
+  "PHB",
+  "VIX",
   "BEL",
-  "VCP",
+  "BSB",
+  "FEN",
   "MIA",
   "REC",
-  "BCN",
-  "MIL",
-  "ROM",
-  "MAO",
-  "CGR",
-  "LON",
-  "UDI",
-  "BOG",
-  "SID",
-  "PMW"
+  "GYN",
+  "MCZ",
+  "SAO",
+  "RIO",
+  "JPA",
+  "POA",
+  "NYC"
  ]
 }

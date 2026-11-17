@@ -1,9 +1,8 @@
 {
- "atualizado": "2026-11-17T13:44+00:00",
+ "atualizado": "2026-11-17T14:44+00:00",
  "pistas": [
   "BEL",
   "CAY",
-  "CTG",
   "IGU",
   "JDO",
   "LIS",
@@ -69,19 +68,6 @@
    },
    "rastreada": true,
    "nome": "Recife",
-   "pista": true
-  },
-  {
-   "iata": "IGU",
-   "ow": {
-    "preco": 725,
-    "ida": "2027-02-07",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-15T01:03:01Z"
-   },
-   "rastreada": true,
-   "nome": "Foz do Iguaçu",
    "pista": true
   },
   {
@@ -350,7 +336,7 @@
    },
    "rastreada": true,
    "nome": "Cartagena",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "PAR",
@@ -418,6 +404,26 @@
    "pista": false
   },
   {
+   "iata": "IGU",
+   "rt": {
+    "preco": 4933,
+    "ida": "2026-11-19",
+    "volta": "2026-11-22",
+    "paradas": 1,
+    "visto": "2026-11-17T14:28:39Z"
+   },
+   "ow": {
+    "preco": 725,
+    "ida": "2027-02-07",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-15T01:03:01Z"
+   },
+   "rastreada": true,
+   "nome": "Foz do Iguaçu",
+   "pista": true
+  },
+  {
    "iata": "BRU",
    "rt": {
     "preco": 5039,
@@ -472,7 +478,7 @@
   {
    "iata": "NYC",
    "rt": {
-    "preco": 5929,
+    "preco": 5927,
     "ida": "2027-05-01",
     "volta": "2027-05-30",
     "paradas": 3,

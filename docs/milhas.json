@@ -1,11 +1,11 @@
 {
- "atualizado": "2026-11-17T08:17-03:00",
+ "atualizado": "2026-11-17T09:23-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
    "url": "https://passageirodeprimeira.com/feed/",
-   "ok": false,
-   "erro": "HTTPSConnectionPool(host='passageirodeprimeira.com', port=443): Read timed out. (read timeout=25)"
+   "itens": 30,
+   "ok": true
   },
   {
    "fonte": "Melhores Destinos",
@@ -82,19 +82,19 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 27,
+   "itens": 26,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 10,
+   "itens": 9,
    "ok": true
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 33,
+   "itens": 34,
    "ok": true
   },
   {
@@ -123,6 +123,30 @@
   }
  ],
  "ofertas": [
+  {
+   "tipo": "passagem",
+   "titulo": "Latam tem voos diretos Fortaleza-Lisboa a partir de R$ 1.425 ou 59 mil milhas o trecho mais taxas",
+   "resumo": "Latam tem voos diretos Fortaleza-Lisboa a partir de R$ 1.425 ou 59 mil milhas o trecho mais taxas Melhores Destinos",
+   "link": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5WOXFDeXgtWGlLMDJ6T3BpeUQ0cDJRS2s2LVMwMTlYcmZGTXp0UmE2NDVkZVM1Q29PU3M2bTBic1hOdDJ3Qi1VSTRxZnFtVWhLRGtLbUNsdEJndDBlREY2Qzl0U2xTX21HMGdEQWZuQnZicXdsdEE?oc=5",
+   "fonte": "Melhores Destinos",
+   "publicado": "2026-11-17T09:04-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": 59000,
+   "validade": null,
+   "fortaleza": true,
+   "id": "mi-dc6c899a7a",
+   "fontes": [
+    "Melhores Destinos"
+   ],
+   "encontrado": "2026-11-17T09:23-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Latam tem voos diretos Fortaleza-Lisboa a partir de R$ 1.425 ou 59 mil milhas o trecho mais taxas\n🎟️ A partir de *59.000 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "passagem",
    "titulo": "Azul oferece 10% de desconto na emissão de passagens para a Europa com pontos",

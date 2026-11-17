@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-17T00:07+00:00",
+ "atualizado": "2026-11-17T01:07+00:00",
  "pistas": [
   "BEL",
   "CAY",
@@ -10,6 +10,7 @@
   "MAD",
   "MAO",
   "NAT",
+  "NYC",
   "PAR",
   "REC",
   "SAO",
@@ -28,19 +29,6 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": true
-  },
-  {
-   "iata": "REC",
-   "ow": {
-    "preco": 301,
-    "ida": "2026-12-23",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-13T00:50:55Z"
-   },
-   "rastreada": true,
-   "nome": "Recife",
    "pista": true
   },
   {
@@ -67,6 +55,19 @@
    },
    "rastreada": true,
    "nome": "Salvador",
+   "pista": true
+  },
+  {
+   "iata": "REC",
+   "ow": {
+    "preco": 637,
+    "ida": "2026-11-25",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-13T21:07:18Z"
+   },
+   "rastreada": true,
+   "nome": "Recife",
    "pista": true
   },
   {
@@ -109,19 +110,6 @@
    "pista": false
   },
   {
-   "iata": "NVT",
-   "ow": {
-    "preco": 1069,
-    "ida": "2027-01-09",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-16T15:57:10Z"
-   },
-   "rastreada": true,
-   "nome": "Navegantes",
-   "pista": false
-  },
-  {
    "iata": "CWB",
    "ow": {
     "preco": 1231,
@@ -158,26 +146,6 @@
    },
    "rastreada": true,
    "nome": "Natal",
-   "pista": true
-  },
-  {
-   "iata": "SAO",
-   "rt": {
-    "preco": 1351,
-    "ida": "2026-12-10",
-    "volta": "2026-12-15",
-    "paradas": 1,
-    "visto": "2026-11-13T00:20:21Z"
-   },
-   "ow": {
-    "preco": 400,
-    "ida": "2026-12-08",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-14T21:11:38Z"
-   },
-   "rastreada": true,
-   "nome": "São Paulo",
    "pista": true
   },
   {
@@ -228,9 +196,36 @@
     "paradas": 0,
     "visto": "2026-11-16T01:02:53Z"
    },
+   "ow": {
+    "preco": 954,
+    "ida": "2027-01-09",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-17T00:24:37Z"
+   },
    "rastreada": true,
    "nome": "Brasília",
    "pista": false
+  },
+  {
+   "iata": "SAO",
+   "rt": {
+    "preco": 1550,
+    "ida": "2026-12-08",
+    "volta": "2026-12-16",
+    "paradas": 0,
+    "visto": "2026-11-16T00:57:03Z"
+   },
+   "ow": {
+    "preco": 400,
+    "ida": "2026-12-08",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-14T21:11:38Z"
+   },
+   "rastreada": true,
+   "nome": "São Paulo",
+   "pista": true
   },
   {
    "iata": "RIO",
@@ -292,19 +287,6 @@
    "pista": true
   },
   {
-   "iata": "PET",
-   "rt": {
-    "preco": 2193,
-    "ida": "2026-12-16",
-    "volta": "2026-12-30",
-    "paradas": 2,
-    "visto": "2026-11-13T01:00:01Z"
-   },
-   "rastreada": false,
-   "nome": "PET",
-   "pista": false
-  },
-  {
    "iata": "JJD",
    "ow": {
     "preco": 2346,
@@ -342,6 +324,19 @@
    "rastreada": true,
    "nome": "Londres",
    "pista": true
+  },
+  {
+   "iata": "IMP",
+   "rt": {
+    "preco": 2642,
+    "ida": "2026-12-22",
+    "volta": "2026-12-26",
+    "paradas": 2,
+    "visto": "2026-11-17T00:36:27Z"
+   },
+   "rastreada": false,
+   "nome": "IMP",
+   "pista": false
   },
   {
    "iata": "CTG",
@@ -472,6 +467,19 @@
    "rastreada": false,
    "nome": "VIE",
    "pista": false
+  },
+  {
+   "iata": "NYC",
+   "rt": {
+    "preco": 5935,
+    "ida": "2027-05-01",
+    "volta": "2027-05-30",
+    "paradas": 3,
+    "visto": "2026-11-17T00:44:06Z"
+   },
+   "rastreada": true,
+   "nome": "Nova York",
+   "pista": true
   },
   {
    "iata": "KGD",

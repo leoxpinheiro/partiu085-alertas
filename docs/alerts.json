@@ -1,6 +1,94 @@
 {
- "atualizado": "2026-11-16T20:42-03:00",
+ "atualizado": "2026-11-16T21:51-03:00",
  "alertas": [
+  {
+   "id": "FOR-PHB-2027-01-16-1794876689",
+   "criado": "2026-11-16T21:51-03:00",
+   "rota": "FOR-PHB",
+   "destino": "PHB",
+   "destino_nome": "Parnaíba",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 250,
+   "preco_volta": 278,
+   "preco_tipico": 431,
+   "desconto": 0.42,
+   "regua": "media",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2027-01-16",
+   "volta": "2027-01-21",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-01-16",
+     "preco": 250
+    },
+    {
+     "dia": "2027-01-21",
+     "preco": 250
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-21",
+     "preco": 278
+    },
+    {
+     "dia": "2027-01-23",
+     "preco": 278
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 278
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "16",
+      "21"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "21",
+      "23",
+      "28"
+     ]
+    }
+   ],
+   "meses": [
+    "jan"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDEtMTZqBRIDRk9ScgUSA1BIQkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1601PHB23011?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-16",
+    "volta": "2027-01-23",
+    "total": 528,
+    "dias": 7
+   },
+   "base": {
+    "dias": 1,
+    "menor_visto": 250
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Parnaíba* (PHB)\n💰 *R$ 250* o trecho\n🔁 Ida e volta: *R$ 528* (ida 16/01, volta 23/01 · 7 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n\n🗓️ *IDA*\n▸ Janeiro/27: 16, 21\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 21, 23, 28\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1601PHB23011?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-BEL-2027-01-28-1794872523",
    "criado": "2026-11-16T20:42-03:00",
@@ -118,7 +206,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 289* o trecho\n🔁 Ida e volta: *R$ 555* (ida 28/01, volta 01/02 · 4 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (41 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 17, 28, 29\n▸ Janeiro/27: 28\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 16, 29, 31\n▸ Fevereiro/27: 01, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2801BEL01021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-16T21:51-03:00",
+    "preco": 1226,
+    "status": "subiu"
+   }
   },
   {
    "id": "FOR-BEL-2026-12-15-1794847346",

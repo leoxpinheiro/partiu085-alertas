@@ -63,7 +63,7 @@
   "BEL": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "19 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "18 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "MAO": {
    "prioridade": "alta",
@@ -116,9 +116,9 @@
    "motivo": "voo todo dia, preço muda muito"
   },
   "OPO": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "MAD": {
    "prioridade": "normal",
@@ -131,9 +131,9 @@
    "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "ROM": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "LON": {
    "prioridade": "baixa",
@@ -183,7 +183,7 @@
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (4 de ~90 dias)"
+   "motivo": "poucos voos (0 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -246,9 +246,9 @@
    "motivo": "padrão"
   },
   "MIL": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "FRA": {
    "prioridade": "baixa",
@@ -281,30 +281,30 @@
    "motivo": "2 alertas em 30 dias"
   }
  },
- "quando": "2026-11-17T16:40-03:00",
+ "quando": "2026-11-17T17:40-03:00",
  "ultimo_lote": [
+  "MIA",
+  "MAO",
+  "LIS",
+  "NAT",
+  "SLZ",
   "UDI",
-  "BUE",
-  "PHB",
-  "VIX",
-  "BSB",
-  "GYN",
+  "CWB",
+  "JDO",
   "BPS",
-  "MCZ",
-  "SAO",
+  "MAD",
   "SSA",
-  "RIO",
-  "JPA",
-  "POA",
+  "NYC",
+  "SDQ",
+  "CAY",
+  "FLN",
+  "BOG",
+  "SID",
+  "PMW",
+  "FEN",
   "AJU",
   "THE",
-  "BEL",
-  "REC",
-  "MIL",
-  "ROM",
-  "BHZ",
-  "CGR",
-  "LON",
-  "CTG"
+  "BUE",
+  "AMS"
  ]
 }

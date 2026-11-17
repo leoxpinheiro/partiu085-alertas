@@ -63,7 +63,7 @@
   "BEL": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "19 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "20 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "MAO": {
    "prioridade": "turbo",
@@ -131,14 +131,14 @@
    "motivo": "padrão"
   },
   "ROM": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "LON": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "AMS": {
    "prioridade": "normal",
@@ -241,9 +241,9 @@
    "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BCN": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "MIL": {
    "prioridade": "normal",
@@ -281,43 +281,30 @@
    "motivo": "2 alertas em 30 dias"
   }
  },
- "quando": "2026-11-16T22:48-03:00",
+ "quando": "2026-11-16T23:42-03:00",
  "ultimo_lote": [
-  "VIX",
-  "BSB",
-  "NAT",
-  "SLZ",
-  "GYN",
-  "BHZ",
-  "MCZ",
+  "LIS",
+  "CWB",
+  "BUE",
+  "PHB",
+  "MIL",
+  "AMS",
+  "CGB",
+  "JDO",
   "REC",
   "UDI",
-  "JPA",
-  "VCP",
   "MAO",
-  "LON",
-  "NYC",
-  "NVT",
-  "IGU",
   "CGR",
-  "VIX",
-  "BSB",
-  "NAT",
-  "SLZ",
-  "GYN",
   "BPS",
-  "BHZ",
+  "OPO",
   "SSA",
-  "MCZ",
-  "RIO",
+  "MAD",
+  "BOG",
+  "SID",
+  "PMW",
+  "FEN",
   "AJU",
-  "POA",
-  "SAO",
-  "JPA",
-  "THE",
-  "MIA",
-  "BEL",
-  "VCP",
-  "LON"
+  "VIX",
+  "BSB"
  ]
 }

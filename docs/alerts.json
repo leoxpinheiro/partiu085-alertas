@@ -1,6 +1,125 @@
 {
- "atualizado": "2026-11-17T10:30-03:00",
+ "atualizado": "2026-11-17T11:34-03:00",
  "alertas": [
+  {
+   "id": "FOR-BEL-2027-01-28-1794926094",
+   "criado": "2026-11-17T11:34-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 289,
+   "preco_volta": 266,
+   "preco_tipico": 573,
+   "desconto": 0.496,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2027-01-28",
+   "volta": "2027-01-16",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-16",
+     "preco": 314
+    },
+    {
+     "dia": "2026-12-22",
+     "preco": 314
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 289
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-16",
+     "preco": 266
+    },
+    {
+     "dia": "2027-01-29",
+     "preco": 266
+    },
+    {
+     "dia": "2027-01-31",
+     "preco": 266
+    },
+    {
+     "dia": "2027-02-01",
+     "preco": 266
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 266
+    },
+    {
+     "dia": "2027-02-14",
+     "preco": 266
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "16",
+      "22"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "28"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "16",
+      "29",
+      "31"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "01",
+      "03",
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDEtMjhqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2801BEL03021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-28",
+    "volta": "2027-02-03",
+    "total": 555,
+    "dias": 6
+   },
+   "base": {
+    "dias": 42,
+    "menor_visto": 289
+   },
+   "recorde": true,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 289* o trecho\n🔁 Ida e volta: *R$ 555* (ida 28/01, volta 03/02 · 6 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (42 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 16, 22\n▸ Janeiro/27: 28\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 16, 29, 31\n▸ Fevereiro/27: 01, 03, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2801BEL03021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-UDI-2027-02-17-1794911754",
    "criado": "2026-11-17T07:35-03:00",
@@ -897,7 +1016,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-17T04:38-03:00",
+    "quando": "2026-11-17T11:34-03:00",
     "preco": 421,
     "status": "valendo"
    }

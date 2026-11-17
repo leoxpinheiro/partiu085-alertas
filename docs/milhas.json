@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-17T09:23-03:00",
+ "atualizado": "2026-11-17T10:32-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -81,14 +81,14 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 26,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=Livelo+O"
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 9,
+   "itens": 10,
    "ok": true
   },
   {
@@ -118,11 +118,35 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 15,
+   "itens": 16,
    "ok": true
   }
  ],
  "ofertas": [
+  {
+   "tipo": "compra",
+   "titulo": "Angeloni fecha parceria com a Latam para converter compras na rede em milhas aéreas",
+   "resumo": "Angeloni fecha parceria com a Latam para converter compras na rede em milhas aéreas NSC Total",
+   "link": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOLVZsZy04c0hNbmI2MEwtS2RBNENEY0hrMEJFYmlicDdqZnBsVGNMcDA0R1ZiMFF5S0hVaDF5Vm1tY053cEZjUWpNeGx3el94M0JzaldNemFfZEJWZHZWdEdNdUdHdl9JbW54UFVGbWp5UWsybldQUk0tYzV0ZzN4Z25Ja09xY0t5eEhZVGdxUVp5c2hmRUJaeXBSWmNyeE9PSjAwMWFRSEZlUWM2TVlURXNlRndycmdmNVI3TnlDc2hUcjIyckV1Um5oNzhLcEQ2SHc?oc=5",
+   "fonte": "NSC Total",
+   "publicado": "2026-11-17T10:00-03:00",
+   "programas": [
+    "LATAM Pass"
+   ],
+   "de": null,
+   "para": "LATAM Pass",
+   "pct": null,
+   "milhas": null,
+   "validade": null,
+   "fortaleza": false,
+   "id": "mi-fa255939ef",
+   "fontes": [
+    "NSC Total"
+   ],
+   "encontrado": "2026-11-17T10:32-03:00",
+   "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar LATAM Pass\n💸 Angeloni fecha parceria com a Latam para converter compras na rede em milhas aéreas\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "ativa": true
+  },
   {
    "tipo": "passagem",
    "titulo": "Latam tem voos diretos Fortaleza-Lisboa a partir de R$ 1.425 ou 59 mil milhas o trecho mais taxas",

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-17T01:04-03:00",
+ "atualizado": "2026-11-17T02:19-03:00",
  "itens": [
   {
    "k": "JDO",
@@ -28,6 +28,19 @@
    "intl": false
   },
   {
+   "k": "BEL",
+   "nome": "Belém",
+   "menor": 423.0,
+   "rt": 771.0,
+   "d": 0.34382978723404256,
+   "normal": 1175,
+   "ida": "2027-01-28",
+   "volta": "2027-02-02",
+   "cia": "Azul",
+   "mes": "01",
+   "intl": false
+  },
+  {
    "k": "AJU",
    "nome": "Aracaju",
    "menor": 602.0,
@@ -41,33 +54,20 @@
    "intl": false
   },
   {
-   "k": "UDI",
-   "nome": "Uberlândia",
-   "menor": 650.0,
-   "rt": 1309.0,
-   "d": 0.18746120422098078,
-   "normal": 1611,
-   "ida": "2027-02-17",
-   "volta": "2027-02-20",
+   "k": "CGR",
+   "nome": "Campo Grande",
+   "menor": 677.0,
+   "rt": 1368.0,
+   "d": 0.19999999999999996,
+   "normal": 1710,
+   "ida": "2027-02-16",
+   "volta": "2027-02-19",
    "cia": "LATAM",
-   "mes": "02",
-   "intl": false
-  },
-  {
-   "k": "RIO",
-   "nome": "Rio de Janeiro",
-   "menor": 491.0,
-   "rt": 1116.0,
-   "d": 0.147440794499618,
-   "normal": 1309,
-   "ida": "2027-02-15",
-   "volta": "2027-02-18",
-   "cia": "Gol",
    "mes": "02",
    "intl": false
   }
  ],
- "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_17/11_\n\n1️⃣ *Juazeiro do Norte* · ida e volta *R$ 336* (14/02 a 19/02) · 41% abaixo do normal\n2️⃣ *Salvador* · ida e volta *R$ 838* (15/02 a 18/02) · 36% abaixo do normal\n3️⃣ *Aracaju* · ida e volta *R$ 1.196* (17/02 a 20/02) · 32% abaixo do normal\n4️⃣ *Uberlândia* · ida e volta *R$ 1.309* (17/02 a 20/02) · 19% abaixo do normal\n5️⃣ *Rio de Janeiro* · ida e volta *R$ 1.116* (15/02 a 18/02) · 15% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+ "texto": "🏆 *TOP 5 DO DIA*\n_Destinos abaixo do preço normal deles, saindo de Fortaleza_\n_17/11_\n\n1️⃣ *Juazeiro do Norte* · ida e volta *R$ 336* (14/02 a 19/02) · 41% abaixo do normal\n2️⃣ *Salvador* · ida e volta *R$ 838* (15/02 a 18/02) · 36% abaixo do normal\n3️⃣ *Belém* · ida e volta *R$ 771* (28/01 a 02/02) · 34% abaixo do normal\n4️⃣ *Aracaju* · ida e volta *R$ 1.196* (17/02 a 20/02) · 32% abaixo do normal\n5️⃣ *Campo Grande* · ida e volta *R$ 1.368* (16/02 a 19/02) · 20% abaixo do normal\n\n👉 _Quer as datas de algum? Responde aqui o número._\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
  "baratos": [
   {
    "k": "JDO",
@@ -84,10 +84,40 @@
    "nome": "Parnaíba",
    "rt": 528.0,
    "menor": 250.0,
-   "ida": "2027-01-21",
-   "volta": "2027-01-28",
+   "ida": "2027-01-16",
+   "volta": "2027-01-21",
    "normal": null,
    "d": null
+  },
+  {
+   "k": "BEL",
+   "nome": "Belém",
+   "rt": 771.0,
+   "menor": 423.0,
+   "ida": "2027-01-28",
+   "volta": "2027-02-02",
+   "normal": 1175,
+   "d": 0.34382978723404256
+  },
+  {
+   "k": "SSA",
+   "nome": "Salvador",
+   "rt": 838.0,
+   "menor": 421.0,
+   "ida": "2027-02-15",
+   "volta": "2027-02-18",
+   "normal": 1320,
+   "d": 0.36491095111784766
+  },
+  {
+   "k": "REC",
+   "nome": "Recife",
+   "rt": 899.0,
+   "menor": 449.0,
+   "ida": "2027-01-26",
+   "volta": "2027-01-29",
+   "normal": 954,
+   "d": 0.057651991614255715
   },
   {
    "k": "AJU",
@@ -98,37 +128,7 @@
    "volta": "2027-02-20",
    "normal": 1753,
    "d": 0.3177410154021677
-  },
-  {
-   "k": "BSB",
-   "nome": "Brasília",
-   "rt": 1297.0,
-   "menor": 551.0,
-   "ida": "2027-02-17",
-   "volta": "2027-02-20",
-   "normal": 1249,
-   "d": -0.038430744595676636
-  },
-  {
-   "k": "FLN",
-   "nome": "Florianópolis",
-   "rt": 1354.0,
-   "menor": 728.0,
-   "ida": "2027-02-11",
-   "volta": "2027-02-18",
-   "normal": 1252,
-   "d": -0.08146964856230032
-  },
-  {
-   "k": "CWB",
-   "nome": "Curitiba",
-   "rt": 1362.0,
-   "menor": 732.0,
-   "ida": "2027-02-12",
-   "volta": "2027-02-15",
-   "normal": 1357,
-   "d": -0.003684598378776771
   }
  ],
- "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_17/11_\n\n✈️ *Juazeiro do Norte* · *R$ 336* (14/02 a 19/02)\n✈️ *Parnaíba* · *R$ 528* (21/01 a 28/01)\n✈️ *Aracaju* · *R$ 1.196* (17/02 a 20/02)\n✈️ *Brasília* · *R$ 1.297* (17/02 a 20/02)\n✈️ *Florianópolis* · *R$ 1.354* (11/02 a 18/02)\n✈️ *Curitiba* · *R$ 1.362* (12/02 a 15/02)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
+ "texto_baratos": "💸 *IDA E VOLTA MAIS BARATAS DE HOJE*\n_Saindo de Fortaleza, voos nacionais_\n_17/11_\n\n✈️ *Juazeiro do Norte* · *R$ 336* (14/02 a 19/02)\n✈️ *Parnaíba* · *R$ 528* (16/01 a 21/01)\n✈️ *Belém* · *R$ 771* (28/01 a 02/02)\n✈️ *Salvador* · *R$ 838* (15/02 a 18/02)\n✈️ *Recife* · *R$ 899* (26/01 a 29/01)\n✈️ *Aracaju* · *R$ 1.196* (17/02 a 20/02)\n\n⚠️ _Preço pode mudar a qualquer momento._\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g"
 }

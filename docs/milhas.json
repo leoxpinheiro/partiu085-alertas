@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-17T00:23-03:00",
+ "atualizado": "2026-11-17T01:06-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -87,14 +87,14 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 9,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=b%C3%B4n"
   },
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 31,
+   "itens": 32,
    "ok": true
   },
   {
@@ -105,9 +105,9 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "https://news.google.com/rss/search",
-   "ok": false,
-   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=milhas+%"
+   "url": "Google Notícias",
+   "itens": 24,
+   "ok": true
   },
   {
    "fonte": "Google Notícias",
@@ -117,9 +117,9 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 18,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=Smiles+O"
   }
  ],
  "ofertas": [

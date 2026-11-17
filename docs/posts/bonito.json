@@ -1,0 +1,212 @@
+{
+ "estilo": "noticia",
+ "telas": [
+  {
+   "tipo": "capa",
+   "foto": "docs/midia/CGR-prata.jpg",
+   "pos": "50% 50%",
+   "credito": "Rio da Prata, Jardim (MS) · MTur Destinos / Wikimedia (domínio público)",
+   "kicker": "Destino",
+   "data": "Saindo de Fortaleza · visto pelo radar em 17/11",
+   "titulo": "Bonito em 6 dias, passagem de *R$ 1.490*",
+   "tam": 74,
+   "sub": "Voo até Campo Grande, 260 km de estrada e rio tão claro que parece aquário. Ficha e roteiro."
+  },
+  {
+   "tipo": "cartoes",
+   "label": "Ficha da viagem",
+   "titulo": "Bonito *em resumo*",
+   "tam": 62,
+   "alt": 330,
+   "cartoes": [
+    {
+     "rotulo": "Passagem · ida e volta",
+     "numero": "R$ 1.490",
+     "texto": "Fortaleza ⇄ Campo Grande, 12 a 18/02/2027, LATAM, 1 escala em cada trecho (R$ 835 + R$ 655)."
+    },
+    {
+     "rotulo": "Campo Grande → Bonito",
+     "numero": "≈ 260 km",
+     "texto": "3 a 4 horas de estrada, de carro, transfer ou ônibus."
+    },
+    {
+     "rotulo": "Rio da Prata",
+     "numero": "2.200 m",
+     "texto": "de flutuação, boiando no meio dos peixes."
+    },
+    {
+     "rotulo": "Passeios",
+     "numero": "com agência",
+     "texto": "Cada atrativo tem limite de visitantes por dia. Reserve antes."
+    }
+   ],
+   "fonte": "Fontes: radar Partiu 085 (17/11), Melhores Destinos e Viagens e Caminhos. Preço muda a qualquer momento."
+  },
+  {
+   "tipo": "rota",
+   "label": "A rota",
+   "titulo": "Como chegar *em Bonito*",
+   "alt": 150,
+   "paradas": [
+    {
+     "nome": "Fortaleza",
+     "sub": "saída"
+    },
+    {
+     "nome": "Campo Grande (MS)",
+     "sub": "aeroporto e carro alugado"
+    },
+    {
+     "nome": "Bonito (MS)",
+     "sub": "a base dos passeios"
+    },
+    {
+     "nome": "Jardim (MS)",
+     "sub": "Rio da Prata e Buraco das Araras"
+    }
+   ],
+   "trechos": [
+    {
+     "modo": "voo",
+     "tempo": "1 escala",
+     "info": "LATAM e Gol, tem voo todo dia"
+    },
+    {
+     "modo": "estrada",
+     "tempo": "≈ 260 km",
+     "info": "3 a 4 horas"
+    },
+    {
+     "modo": "estrada",
+     "tempo": "≈ 50 km",
+     "info": "de Bonito até o Rio da Prata"
+    }
+   ],
+   "fonte": "Fontes: radar Partiu 085, Melhores Destinos e Viagens e Caminhos.",
+   "tam": 76
+  },
+  {
+   "tipo": "foto",
+   "foto": "docs/midia/CGR-gruta.jpg",
+   "pos": "50% 50%",
+   "credito": "Gruta do Lago Azul · Marcel Favery / Wikimedia (CC BY-SA 3.0)",
+   "label": "Dia 3",
+   "selo": "Gruta do Lago Azul",
+   "titulo": "Um lago *azul* dentro da caverna",
+   "texto": "Desce a escadaria da gruta e o lago aparece lá embaixo. É passeio de olhar e fotografar."
+  },
+  {
+   "tipo": "foto",
+   "foto": "docs/midia/CGR-araras.jpg",
+   "pos": "50% 40%",
+   "credito": "Buraco das Araras · Bruno L Wagner / Wikimedia (CC BY-SA 4.0)",
+   "label": "Dia 4",
+   "selo": "Buraco das Araras",
+   "titulo": "Uma cratera de *100 metros* de fundo",
+   "texto": "Fica em Jardim, e as araras-vermelhas fazem ninho nas paredes do buraco."
+  },
+  {
+   "tipo": "lista",
+   "label": "Roteiro",
+   "titulo": "12 a 18/02 *em 6 dias*",
+   "tam_txt": 27,
+   "pad": 18,
+   "itens": [
+    {
+     "n": "12/02",
+     "t": "Voo e estrada",
+     "x": "Chega em Campo Grande e segue 3 a 4h até Bonito. Confira o horário do voo."
+    },
+    {
+     "n": "13/02",
+     "t": "Rio Sucuri",
+     "x": "Flutuação de até 1.800 m, a 19 km da cidade."
+    },
+    {
+     "n": "14/02",
+     "t": "Gruta do Lago Azul",
+     "x": "À tarde, Abismo Anhumas pra quem topa o rapel de 72 m."
+    },
+    {
+     "n": "15/02",
+     "t": "Rio da Prata e Buraco das Araras",
+     "x": "Os dois ficam em Jardim: flutuação de 2.200 m e a cratera."
+    },
+    {
+     "n": "16/02",
+     "t": "Balneário Municipal",
+     "x": "Dia inteiro no Rio Formoso, no meio dos peixes."
+    },
+    {
+     "n": "17/02",
+     "t": "Volta pra Campo Grande",
+     "x": "Estrada de volta e noite na capital."
+    },
+    {
+     "n": "18/02",
+     "t": "Volta",
+     "x": "Voo pra Fortaleza."
+    }
+   ],
+   "fonte": "Fontes: Melhores Destinos e Viagens e Caminhos."
+  },
+  {
+   "tipo": "cartoes",
+   "label": "A pegadinha",
+   "titulo": "Fevereiro é *época de chuva*",
+   "tam": 56,
+   "alt": 330,
+   "cartoes": [
+    {
+     "rotulo": "Fevereiro · passagem",
+     "numero": "R$ 1.490",
+     "texto": "Ida e volta. Visto pelo radar em 17/11."
+    },
+    {
+     "rotulo": "Fevereiro · água",
+     "numero": "pode turvar",
+     "texto": "Chuva forte deixa o rio menos transparente e pode cancelar passeio."
+    },
+    {
+     "rotulo": "Maio a setembro",
+     "numero": "seca",
+     "texto": "Época da água mais cristalina pra flutuação."
+    },
+    {
+     "rotulo": "O lado bom",
+     "numero": "cachoeira",
+     "texto": "No verão as quedas d'água ficam cheias e o mato mais verde."
+    }
+   ],
+   "fonte": "Fontes: Melhores Destinos, Viagens e Caminhos, Travel.com.br e Um Viajante."
+  },
+  {
+   "tipo": "texto",
+   "label": "Antes de ir",
+   "titulo": "Pra viagem *render*",
+   "tam_txt": 35,
+   "foto": "docs/midia/CGR-formoso.jpg",
+   "pos": "50% 50%",
+   "legenda": "Rio Formoso, Bonito · Danimô2023 / Wikimedia (CC BY-SA 4.0)",
+   "blocos": [
+    {
+     "t": "Reserve os passeios",
+     "x": "Eles saem por agência e cada atrativo tem vaga limitada por dia. Fechou a passagem, reserve o resto."
+    },
+    {
+     "t": "Carro ou transfer",
+     "x": "Os passeios ficam longe do centro. Carro alugado em Campo Grande dá liberdade; transfer e ônibus também fazem o trecho."
+    }
+   ],
+   "fonte": "Fontes: Melhores Destinos e Viagens e Caminhos.",
+   "tam": 96
+  },
+  {
+   "tipo": "cta",
+   "foto": "docs/midia/CGR-gruta2.jpg",
+   "pos": "50% 60%",
+   "titulo": "Salva e manda pra\nquem vai *flutuar contigo*",
+   "texto": "O radar olha Fortaleza → Campo Grande todo dia e avisa no grupo quando o preço cair."
+  }
+ ]
+}

@@ -1,11 +1,11 @@
 {
- "atualizado": "2026-11-17T07:37-03:00",
+ "atualizado": "2026-11-17T08:17-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
    "url": "https://passageirodeprimeira.com/feed/",
-   "itens": 30,
-   "ok": true
+   "ok": false,
+   "erro": "HTTPSConnectionPool(host='passageirodeprimeira.com', port=443): Read timed out. (read timeout=25)"
   },
   {
    "fonte": "Melhores Destinos",

@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-18T11:43+00:00",
+ "atualizado": "2026-11-18T12:43+00:00",
  "pistas": [
   "BSB",
   "CAY",
@@ -83,7 +83,7 @@
   {
    "iata": "NVT",
    "ow": {
-    "preco": 1221,
+    "preco": 1224,
     "ida": "2027-01-10",
     "volta": "",
     "paradas": 1,
@@ -135,7 +135,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1498,
+    "preco": 1501,
     "ida": "2026-12-13",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -175,7 +175,7 @@
     "visto": "2026-11-16T01:02:53Z"
    },
    "ow": {
-    "preco": 772,
+    "preco": 773,
     "ida": "2026-12-04",
     "volta": "",
     "paradas": 0,
@@ -219,6 +219,19 @@
    "pista": false
   },
   {
+   "iata": "SLZ",
+   "ow": {
+    "preco": 1933,
+    "ida": "2026-11-18",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-17T17:36:21Z"
+   },
+   "rastreada": true,
+   "nome": "São Luís",
+   "pista": false
+  },
+  {
    "iata": "VIX",
    "rt": {
     "preco": 2008,
@@ -258,6 +271,19 @@
    "pista": false
   },
   {
+   "iata": "LIS",
+   "ow": {
+    "preco": 2582,
+    "ida": "2026-12-16",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-18T12:25:03Z"
+   },
+   "rastreada": true,
+   "nome": "Lisboa",
+   "pista": true
+  },
+  {
    "iata": "IMP",
    "rt": {
     "preco": 2638,
@@ -269,19 +295,6 @@
    "rastreada": false,
    "nome": "IMP",
    "pista": false
-  },
-  {
-   "iata": "LIS",
-   "ow": {
-    "preco": 2682,
-    "ida": "2026-12-19",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-17T01:13:49Z"
-   },
-   "rastreada": true,
-   "nome": "Lisboa",
-   "pista": true
   },
   {
    "iata": "RAI",
@@ -444,6 +457,19 @@
    },
    "rastreada": true,
    "nome": "Roma",
+   "pista": false
+  },
+  {
+   "iata": "TUL",
+   "rt": {
+    "preco": 9979,
+    "ida": "2026-11-23",
+    "volta": "2026-11-28",
+    "paradas": 2,
+    "visto": "2026-11-18T11:54:57Z"
+   },
+   "rastreada": false,
+   "nome": "TUL",
    "pista": false
   },
   {

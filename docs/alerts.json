@@ -1,12 +1,189 @@
 {
- "atualizado": "2026-11-17T23:16-03:00",
+ "atualizado": "2026-11-18T00:04-03:00",
  "alertas": [
   {
-   "id": "FOR-BEL-2026-12-16-1794968184",
-   "criado": "2026-11-17T23:16-03:00",
+   "id": "FOR-RIO-2027-02-15-1794971061",
+   "criado": "2026-11-18T00:04-03:00",
+   "rota": "FOR-RIO",
+   "destino": "RIO",
+   "destino_nome": "Rio de Janeiro",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 539,
+   "preco_volta": 515,
+   "preco_tipico": 666,
+   "desconto": 0.191,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2027-02-15",
+   "volta": "2027-02-18",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": false,
+   "datas_ida": [
+    {
+     "dia": "2027-02-15",
+     "preco": 539
+    },
+    {
+     "dia": "2027-02-16",
+     "preco": 539
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-18",
+     "preco": 515
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "15",
+      "16"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "18"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMTVqBRIDRk9ScgUSA1JJT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1502RIO18021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-15",
+    "volta": "2027-02-18",
+    "total": 1054,
+    "dias": 3
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 476
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 539* o trecho\n🔁 Ida e volta: *R$ 1.054* (ida 15/02, volta 18/02 · 3 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 15, 16\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 18\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1502RIO18021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
+  {
+   "id": "FOR-BEL-2026-12-16-1794971063",
+   "criado": "2026-11-18T00:04-03:00",
    "rota": "FOR-BEL",
    "destino": "BEL",
    "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 332,
+   "preco_volta": 236,
+   "preco_tipico": 573,
+   "desconto": 0.421,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Azul",
+   "escalas": 0,
+   "ida": "2026-12-16",
+   "volta": "2027-01-25",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-16",
+     "preco": 332
+    },
+    {
+     "dia": "2026-12-29",
+     "preco": 332
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 332
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-25",
+     "preco": 236
+    },
+    {
+     "dia": "2027-02-01",
+     "preco": 236
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "16",
+      "29"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "28"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "25"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "01"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMTZqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2801BEL01021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-28",
+    "volta": "2027-02-01",
+    "total": 568,
+    "dias": 4
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 289
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 332* o trecho\n🔁 Ida e volta: *R$ 568* (ida 28/01, volta 01/02 · 4 dias)\n🔥 *IMPERDÍVEL*\n🛫 Azul · voo direto\n\n🗓️ *IDA*\n▸ Dezembro/26: 16, 29\n▸ Janeiro/27: 28\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 25\n▸ Fevereiro/27: 01\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2801BEL01021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
+  {
+   "id": "FOR-VCP-2027-02-18-1794965462",
+   "criado": "2026-11-17T22:31-03:00",
+   "rota": "FOR-VCP",
+   "destino": "VCP",
+   "destino_nome": "Campinas",
    "tipo": "nacional",
    "modo": "trecho",
    "preco": 332,
@@ -947,9 +1124,9 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-17T18:32-03:00",
-    "preco": 250,
-    "status": "valendo"
+    "quando": "2026-11-18T00:04-03:00",
+    "preco": 409,
+    "status": "subiu"
    }
   },
   {

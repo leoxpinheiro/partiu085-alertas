@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-18T01:33+00:00",
+ "atualizado": "2026-11-18T02:19+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -8,7 +8,6 @@
   "JDO",
   "LIS",
   "MAD",
-  "MAO",
   "NAT",
   "NYC",
   "PAR",
@@ -55,7 +54,7 @@
    },
    "rastreada": true,
    "nome": "Manaus",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "REC",
@@ -149,6 +148,26 @@
    "pista": true
   },
   {
+   "iata": "RIO",
+   "rt": {
+    "preco": 1496,
+    "ida": "2026-12-13",
+    "volta": "2026-12-13",
+    "paradas": 0,
+    "visto": "2026-11-18T01:51:31Z"
+   },
+   "ow": {
+    "preco": 543,
+    "ida": "2027-04-10",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-17T23:28:57Z"
+   },
+   "rastreada": true,
+   "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
    "iata": "CAY",
    "ow": {
     "preco": 1501,
@@ -175,7 +194,7 @@
     "ida": "2026-12-04",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-18T01:22:40Z"
+    "visto": "2026-11-18T01:43:33Z"
    },
    "rastreada": true,
    "nome": "Brasília",
@@ -199,26 +218,6 @@
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": true
-  },
-  {
-   "iata": "RIO",
-   "rt": {
-    "preco": 1563,
-    "ida": "2027-01-16",
-    "volta": "2027-02-02",
-    "paradas": 1,
-    "visto": "2026-11-16T15:08:26Z"
-   },
-   "ow": {
-    "preco": 543,
-    "ida": "2027-04-10",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-17T23:28:57Z"
-   },
-   "rastreada": true,
-   "nome": "Rio de Janeiro",
    "pista": true
   },
   {
@@ -300,19 +299,6 @@
    "pista": true
   },
   {
-   "iata": "CTG",
-   "ow": {
-    "preco": 3007,
-    "ida": "2027-01-01",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-14T01:52:15Z"
-   },
-   "rastreada": true,
-   "nome": "Cartagena",
-   "pista": false
-  },
-  {
    "iata": "PAR",
    "ow": {
     "preco": 3049,
@@ -362,19 +348,6 @@
    },
    "rastreada": false,
    "nome": "BEG",
-   "pista": false
-  },
-  {
-   "iata": "CND",
-   "ow": {
-    "preco": 4256,
-    "ida": "2026-11-17",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-15T16:23:31Z"
-   },
-   "rastreada": false,
-   "nome": "CND",
    "pista": false
   },
   {

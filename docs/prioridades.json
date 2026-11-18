@@ -23,7 +23,7 @@
   "SSA": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "5 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "REC": {
    "prioridade": "turbo",
@@ -126,9 +126,9 @@
    "motivo": "poucos voos (0 de ~90 dias)"
   },
   "PAR": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "ROM": {
    "prioridade": "baixa",
@@ -183,7 +183,7 @@
   "CTG": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (0 de ~90 dias)"
+   "motivo": "poucos voos (16 de ~90 dias)"
   },
   "PTY": {
    "prioridade": "baixa",
@@ -281,36 +281,30 @@
    "motivo": "2 alertas em 30 dias"
   }
  },
- "quando": "2026-11-17T22:33-03:00",
+ "quando": "2026-11-17T23:19-03:00",
  "ultimo_lote": [
-  "MAO",
-  "NAT",
-  "SLZ",
-  "CWB",
-  "JDO",
-  "UDI",
-  "BPS",
-  "MAO",
-  "NAT",
-  "SLZ",
-  "SSA",
-  "CWB",
-  "JDO",
-  "AJU",
-  "THE",
-  "BEL",
   "REC",
   "CGR",
-  "BUE",
-  "THE",
-  "PHB",
-  "VIX",
   "BSB",
   "GYN",
-  "AMS",
   "MCZ",
-  "CGB",
-  "IGU",
-  "NVT"
+  "UDI",
+  "SAO",
+  "RIO",
+  "JPA",
+  "BPS",
+  "POA",
+  "BHZ",
+  "MIA",
+  "SSA",
+  "AJU",
+  "THE",
+  "MAO",
+  "NAT",
+  "BEL",
+  "SLZ",
+  "CWB",
+  "JDO",
+  "LIS"
  ]
 }

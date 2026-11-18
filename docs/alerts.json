@@ -1,6 +1,104 @@
 {
- "atualizado": "2026-11-18T15:11-03:00",
+ "atualizado": "2026-11-18T15:52-03:00",
  "alertas": [
+  {
+   "id": "FOR-JDO-2027-02-11-1795027974",
+   "criado": "2026-11-18T15:52-03:00",
+   "rota": "FOR-JDO",
+   "destino": "JDO",
+   "destino_nome": "Juazeiro do Norte",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 173,
+   "preco_volta": 162,
+   "preco_tipico": 288,
+   "desconto": 0.399,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "LATAM",
+   "escalas": 0,
+   "ida": "2027-02-11",
+   "volta": "2027-02-10",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-02-07",
+     "preco": 175
+    },
+    {
+     "dia": "2027-02-11",
+     "preco": 173
+    },
+    {
+     "dia": "2027-02-13",
+     "preco": 173
+    },
+    {
+     "dia": "2027-02-14",
+     "preco": 173
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-10",
+     "preco": 162
+    },
+    {
+     "dia": "2027-02-12",
+     "preco": 162
+    },
+    {
+     "dia": "2027-02-19",
+     "preco": 162
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "07",
+      "11",
+      "13",
+      "14"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "10",
+      "12",
+      "19"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMTFqBRIDRk9ScgUSA0pET0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1102JDO19021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-11",
+    "volta": "2027-02-19",
+    "total": 335,
+    "dias": 8
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 173
+   },
+   "recorde": true,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Juazeiro do Norte* (JDO)\n📍 _Cariri: Juazeiro, Crato e Barbalha_\n💰 *R$ 173* o trecho\n🔁 Ida e volta: *R$ 335* (ida 11/02, volta 19/02 · 8 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (43 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Fevereiro/27: 07, 11, 13, 14\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 10, 12, 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1102JDO19021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": true
+  },
   {
    "id": "FOR-BEL-2027-02-06-1795025483",
    "criado": "2026-11-18T15:11-03:00",
@@ -98,7 +196,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 282* o trecho\n🔁 Ida e volta: *R$ 518* (ida 06/02, volta 14/02 · 8 dias)\n🔥 *IMPERDÍVEL*\n🛫 Azul · voo direto\n📉 _Menor preço que já vimos nesse trecho (43 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Dezembro/26: 17\n▸ Fevereiro/27: 06\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 25\n▸ Fevereiro/27: 01, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR0602BEL14021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-18T15:52-03:00",
+    "preco": 282,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-RIO-2027-02-16-1795020958",
@@ -176,7 +279,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 539* o trecho\n🔁 Ida e volta: *R$ 1.078* (ida 15/02, volta 18/02 · 3 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 15, 16\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 18\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1502RIO18021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-18T15:52-03:00",
+    "preco": 539,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-SSA-2027-02-18-1794990479",

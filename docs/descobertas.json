@@ -1,12 +1,12 @@
 {
- "atualizado": "2026-11-18T00:41+00:00",
+ "atualizado": "2026-11-18T01:33+00:00",
  "pistas": [
   "BEL",
+  "BSB",
   "CAY",
   "IGU",
   "JDO",
   "LIS",
-  "LON",
   "MAD",
   "MAO",
   "NAT",
@@ -171,15 +171,15 @@
     "visto": "2026-11-16T01:02:53Z"
    },
    "ow": {
-    "preco": 953,
-    "ida": "2027-01-09",
+    "preco": 633,
+    "ida": "2026-12-04",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-17T00:24:37Z"
+    "visto": "2026-11-18T01:22:40Z"
    },
    "rastreada": true,
    "nome": "Brasília",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SAO",
@@ -274,19 +274,6 @@
    "pista": false
   },
   {
-   "iata": "LON",
-   "ow": {
-    "preco": 2442,
-    "ida": "2026-11-29",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-14T01:21:47Z"
-   },
-   "rastreada": true,
-   "nome": "Londres",
-   "pista": true
-  },
-  {
    "iata": "IMP",
    "rt": {
     "preco": 2638,
@@ -339,19 +326,6 @@
    "pista": true
   },
   {
-   "iata": "MEX",
-   "ow": {
-    "preco": 3114,
-    "ida": "2026-12-04",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-17T22:12:36Z"
-   },
-   "rastreada": false,
-   "nome": "MEX",
-   "pista": false
-  },
-  {
    "iata": "RAI",
    "ow": {
     "preco": 3464,
@@ -388,6 +362,32 @@
    },
    "rastreada": false,
    "nome": "BEG",
+   "pista": false
+  },
+  {
+   "iata": "CND",
+   "ow": {
+    "preco": 4256,
+    "ida": "2026-11-17",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-15T16:23:31Z"
+   },
+   "rastreada": false,
+   "nome": "CND",
+   "pista": false
+  },
+  {
+   "iata": "DFW",
+   "ow": {
+    "preco": 4301,
+    "ida": "2026-12-18",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-16T23:26:03Z"
+   },
+   "rastreada": false,
+   "nome": "DFW",
    "pista": false
   },
   {

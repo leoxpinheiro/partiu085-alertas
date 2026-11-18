@@ -8,7 +8,7 @@
   "RIO": {
    "prioridade": "alta",
    "auto": "alta",
-   "motivo": "voo todo dia, preço muda muito"
+   "motivo": "2 alertas em 30 dias"
   },
   "BSB": {
    "prioridade": "alta",
@@ -111,9 +111,9 @@
    "motivo": "2 alertas em 30 dias"
   },
   "LIS": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "poucos voos (31 de ~90 dias)"
+   "prioridade": "alta",
+   "auto": "alta",
+   "motivo": "voo todo dia, preço muda muito"
   },
   "OPO": {
    "prioridade": "baixa",
@@ -281,30 +281,30 @@
    "motivo": "2 alertas em 30 dias"
   }
  },
- "quando": "2026-11-18T00:07-03:00",
+ "quando": "2026-11-18T00:56-03:00",
  "ultimo_lote": [
-  "SAO",
-  "RIO",
-  "JPA",
-  "POA",
-  "BHZ",
-  "MIA",
+  "REC",
+  "CGR",
   "UDI",
   "BPS",
   "SSA",
   "AJU",
+  "BUE",
   "THE",
+  "PHB",
+  "VIX",
   "BEL",
-  "REC",
-  "CGR",
-  "MAO",
-  "NAT",
-  "SLZ",
-  "CWB",
-  "JDO",
-  "LIS",
+  "BSB",
+  "GYN",
+  "MCZ",
+  "VCP",
+  "BCN",
+  "SAO",
+  "RIO",
   "MAD",
+  "JPA",
   "NYC",
-  "SDQ"
+  "SDQ",
+  "CAY"
  ]
 }

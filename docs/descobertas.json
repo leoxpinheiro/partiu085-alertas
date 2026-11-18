@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-18T05:45+00:00",
+ "atualizado": "2026-11-18T06:43+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -11,7 +11,6 @@
   "MAO",
   "NAT",
   "NYC",
-  "PAR",
   "REC",
   "RIO",
   "SAO"
@@ -151,7 +150,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1495,
+    "preco": 1496,
     "ida": "2026-12-13",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -300,19 +299,6 @@
    "pista": true
   },
   {
-   "iata": "PAR",
-   "ow": {
-    "preco": 3049,
-    "ida": "2027-03-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-14T05:56:08Z"
-   },
-   "rastreada": true,
-   "nome": "Paris",
-   "pista": true
-  },
-  {
    "iata": "RAI",
    "ow": {
     "preco": 3464,
@@ -323,6 +309,19 @@
    },
    "rastreada": false,
    "nome": "RAI",
+   "pista": false
+  },
+  {
+   "iata": "PAR",
+   "ow": {
+    "preco": 3642,
+    "ida": "2027-08-01",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-14T09:20:50Z"
+   },
+   "rastreada": true,
+   "nome": "Paris",
    "pista": false
   },
   {

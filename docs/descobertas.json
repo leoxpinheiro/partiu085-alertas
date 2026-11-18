@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-18T15:38+00:00",
+ "atualizado": "2026-11-18T16:23+00:00",
  "pistas": [
   "BSB",
   "CAY",
@@ -8,6 +8,7 @@
   "MAD",
   "NAT",
   "NYC",
+  "REC",
   "SAO"
  ],
  "blogs": [],
@@ -15,11 +16,11 @@
   {
    "iata": "JDO",
    "ow": {
-    "preco": 340,
-    "ida": "2026-12-01",
+    "preco": 332,
+    "ida": "2026-12-03",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-16T02:19:07Z"
+    "visto": "2026-11-18T16:14:38Z"
    },
    "rastreada": true,
    "nome": "Juazeiro do Norte",
@@ -36,7 +37,7 @@
    },
    "rastreada": true,
    "nome": "Recife",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SSA",
@@ -67,7 +68,7 @@
   {
    "iata": "NVT",
    "ow": {
-    "preco": 1228,
+    "preco": 1224,
     "ida": "2027-01-10",
     "volta": "",
     "paradas": 1,
@@ -132,7 +133,7 @@
   {
    "iata": "RIO",
    "rt": {
-    "preco": 1506,
+    "preco": 1502,
     "ida": "2026-12-13",
     "volta": "2026-12-13",
     "paradas": 0,
@@ -159,7 +160,7 @@
     "visto": "2026-11-16T01:02:53Z"
    },
    "ow": {
-    "preco": 776,
+    "preco": 774,
     "ida": "2026-12-04",
     "volta": "",
     "paradas": 0,
@@ -179,7 +180,7 @@
     "visto": "2026-11-16T00:57:03Z"
    },
    "ow": {
-    "preco": 367,
+    "preco": 366,
     "ida": "2026-12-17",
     "volta": "",
     "paradas": 0,
@@ -200,19 +201,6 @@
    },
    "rastreada": true,
    "nome": "Palmas",
-   "pista": false
-  },
-  {
-   "iata": "SLZ",
-   "ow": {
-    "preco": 1933,
-    "ida": "2026-11-18",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-17T17:36:21Z"
-   },
-   "rastreada": true,
-   "nome": "São Luís",
    "pista": false
   },
   {
@@ -242,9 +230,22 @@
    "pista": false
   },
   {
+   "iata": "SLZ",
+   "ow": {
+    "preco": 2369,
+    "ida": "2026-11-18",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-17T17:36:21Z"
+   },
+   "rastreada": true,
+   "nome": "São Luís",
+   "pista": false
+  },
+  {
    "iata": "LIS",
    "ow": {
-    "preco": 2592,
+    "preco": 2584,
     "ida": "2026-12-16",
     "volta": "",
     "paradas": 0,
@@ -433,7 +434,7 @@
   {
    "iata": "TUL",
    "rt": {
-    "preco": 10015,
+    "preco": 9983,
     "ida": "2026-11-23",
     "volta": "2026-11-28",
     "paradas": 2,

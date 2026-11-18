@@ -131,9 +131,9 @@
    "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "ROM": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "LON": {
    "prioridade": "baixa",
@@ -246,9 +246,9 @@
    "motivo": "padrão"
   },
   "MIL": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "poucos voos (32 de ~90 dias)"
   },
   "FRA": {
    "prioridade": "baixa",
@@ -281,30 +281,30 @@
    "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   }
  },
- "quando": "2026-11-18T09:43-03:00",
+ "quando": "2026-11-18T10:44-03:00",
  "ultimo_lote": [
+  "RIO",
+  "JPA",
+  "POA",
+  "BHZ",
+  "MIA",
+  "MAO",
+  "NAT",
+  "SLZ",
   "PHB",
   "BEL",
   "REC",
   "CGR",
-  "CWB",
-  "JDO",
-  "LIS",
-  "BUE",
-  "VIX",
+  "PTY",
+  "CUN",
+  "FRA",
   "UDI",
-  "BSB",
+  "MVD",
+  "OPO",
   "BPS",
-  "GYN",
+  "PUJ",
+  "MDE",
   "SSA",
-  "MCZ",
-  "CGB",
-  "IGU",
-  "AJU",
-  "NVT",
-  "SAO",
-  "MIL",
-  "THE",
-  "ROM"
+  "CTG"
  ]
 }

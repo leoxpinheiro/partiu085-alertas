@@ -1,6 +1,89 @@
 {
- "atualizado": "2026-11-18T04:23-03:00",
+ "atualizado": "2026-11-18T05:28-03:00",
  "alertas": [
+  {
+   "id": "FOR-SSA-2027-02-18-1794990479",
+   "criado": "2026-11-18T05:27-03:00",
+   "rota": "FOR-SSA",
+   "destino": "SSA",
+   "destino_nome": "Salvador",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 421,
+   "preco_volta": 417,
+   "preco_tipico": 616,
+   "desconto": 0.317,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2027-02-18",
+   "volta": "2027-02-21",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-02-18",
+     "preco": 421
+    },
+    {
+     "dia": "2027-02-19",
+     "preco": 460
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-20",
+     "preco": 456
+    },
+    {
+     "dia": "2027-02-21",
+     "preco": 417
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "18",
+      "19"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "20",
+      "21"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMThqBRIDRk9ScgUSA1NTQUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1802SSA21021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-18",
+    "volta": "2027-02-21",
+    "total": 838,
+    "dias": 3
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 421
+   },
+   "recorde": true,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Salvador* (SSA)\n💰 *R$ 421* o trecho\n🔁 Ida e volta: *R$ 838* (ida 18/02, volta 21/02 · 3 dias)\n🔥 *IMPERDÍVEL*\n🛫 Gol · 1 parada\n📉 _Menor preço que já vimos nesse trecho (43 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Fevereiro/27: 18, 19\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 20, 21\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1802SSA21021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": true
+  },
   {
    "id": "FOR-PHB-2027-01-21-1794980611",
    "criado": "2026-11-18T02:43-03:00",
@@ -400,9 +483,9 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-18T00:53-03:00",
-    "preco": 333,
-    "status": "valendo"
+    "quando": "2026-11-18T05:28-03:00",
+    "preco": 802,
+    "status": "subiu"
    }
   },
   {
@@ -627,7 +710,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-18T00:53-03:00",
+    "quando": "2026-11-18T05:28-03:00",
     "preco": 173,
     "status": "valendo"
    }

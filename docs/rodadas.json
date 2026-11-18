@@ -13098,9 +13098,16 @@
   "parou_por_tempo": false
  },
  {
-  "quando": "2026-11-18T12:35-03:00",
+  "quando": "2026-11-18T13:21-03:00",
   "rotas": [
    "AJU",
+   "PHB",
+   "REC",
+   "BEL",
+   "CGR",
+   "UDI",
+   "BPS",
+   "SSA",
    "CWB",
    "JDO",
    "LIS",
@@ -13109,28 +13116,21 @@
    "BSB",
    "GYN",
    "MCZ",
-   "PHB",
-   "REC",
-   "BEL",
-   "CGR",
-   "UDI",
-   "BPS",
-   "SSA",
    "SAO",
-   "VCP",
-   "BCN",
    "THE",
-   "MAD",
-   "NYC",
-   "SDQ"
+   "RIO",
+   "BHZ",
+   "NAT",
+   "MAO",
+   "VCP"
   ],
-  "rotas_com_dados": 19,
-  "candidatos": 0,
-  "alertas": 0,
+  "rotas_com_dados": 22,
+  "candidatos": 1,
+  "alertas": 1,
   "manual": false,
-  "segundos": 3024,
-  "consultas": 3458,
-  "erros": 1197,
-  "parou_por_tempo": true
+  "segundos": 2590,
+  "consultas": 4016,
+  "erros": 776,
+  "parou_por_tempo": false
  }
 ]

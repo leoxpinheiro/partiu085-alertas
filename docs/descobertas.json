@@ -1,12 +1,15 @@
 {
- "atualizado": "2026-11-19T16:54+00:00",
+ "atualizado": "2026-11-19T18:05+00:00",
  "pistas": [
+  "BSB",
   "CAY",
   "JDO",
+  "LIS",
   "MAD",
   "NYC",
   "REC",
-  "RIO"
+  "RIO",
+  "SAO"
  ],
  "blogs": [],
  "destinos": [
@@ -39,7 +42,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 894,
+    "preco": 898,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -139,12 +142,12 @@
    },
    "rastreada": true,
    "nome": "Brasília",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "SAO",
    "rt": {
-    "preco": 1634,
+    "preco": 1640,
     "ida": "2026-12-08",
     "volta": "2026-12-16",
     "paradas": 1,
@@ -152,14 +155,14 @@
    },
    "ow": {
     "preco": 371,
-    "ida": "2026-12-25",
+    "ida": "2026-12-17",
     "volta": "",
     "paradas": 0,
-    "visto": "2026-11-19T14:16:48Z"
+    "visto": "2026-11-18T11:22:29Z"
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "GYN",
@@ -198,7 +201,7 @@
    },
    "rastreada": true,
    "nome": "Lisboa",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "IMP",
@@ -249,7 +252,7 @@
     "visto": "2026-11-17T23:16:20Z"
    },
    "ow": {
-    "preco": 1883,
+    "preco": 1890,
     "ida": "2026-12-07",
     "volta": "",
     "paradas": 0,
@@ -314,7 +317,7 @@
   {
    "iata": "BRU",
    "rt": {
-    "preco": 5381,
+    "preco": 5403,
     "ida": "2026-12-03",
     "volta": "2027-01-07",
     "paradas": 1,
@@ -340,11 +343,11 @@
   {
    "iata": "VIE",
    "rt": {
-    "preco": 5895,
+    "preco": 5919,
     "ida": "2027-02-19",
     "volta": "2027-03-12",
     "paradas": 1,
-    "visto": "2026-11-19T11:05:44Z"
+    "visto": "2026-11-19T17:37:54Z"
    },
    "rastreada": false,
    "nome": "VIE",
@@ -366,11 +369,11 @@
   {
    "iata": "ROM",
    "rt": {
-    "preco": 9655,
+    "preco": 8532,
     "ida": "2027-01-02",
     "volta": "2027-02-02",
-    "paradas": 1,
-    "visto": "2026-11-17T17:17:55Z"
+    "paradas": 3,
+    "visto": "2026-11-19T17:16:48Z"
    },
    "rastreada": true,
    "nome": "Roma",

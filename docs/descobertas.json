@@ -1,9 +1,8 @@
 {
- "atualizado": "2026-11-19T01:00+00:00",
+ "atualizado": "2026-11-19T01:59+00:00",
  "pistas": [
   "BSB",
   "CAY",
-  "IGU",
   "JDO",
   "LIS",
   "MAD",
@@ -41,6 +40,19 @@
    "pista": true
   },
   {
+   "iata": "BEL",
+   "ow": {
+    "preco": 894,
+    "ida": "2026-11-20",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-19T01:47:32Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
+   "pista": false
+  },
+  {
    "iata": "SSA",
    "ow": {
     "preco": 953,
@@ -64,19 +76,6 @@
    },
    "rastreada": false,
    "nome": "BVB",
-   "pista": false
-  },
-  {
-   "iata": "CWB",
-   "ow": {
-    "preco": 1231,
-    "ida": "2026-11-26",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-15T01:19:59Z"
-   },
-   "rastreada": true,
-   "nome": "Curitiba",
    "pista": false
   },
   {
@@ -161,11 +160,11 @@
   {
    "iata": "SAO",
    "rt": {
-    "preco": 1550,
+    "preco": 1633,
     "ida": "2026-12-08",
     "volta": "2026-12-16",
-    "paradas": 0,
-    "visto": "2026-11-16T00:57:03Z"
+    "paradas": 1,
+    "visto": "2026-11-19T01:05:04Z"
    },
    "ow": {
     "preco": 371,
@@ -330,16 +329,9 @@
     "paradas": 1,
     "visto": "2026-11-17T14:28:39Z"
    },
-   "ow": {
-    "preco": 725,
-    "ida": "2027-02-07",
-    "volta": "",
-    "paradas": 2,
-    "visto": "2026-11-15T01:03:01Z"
-   },
    "rastreada": true,
    "nome": "Foz do Iguaçu",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BLQ",
@@ -357,7 +349,7 @@
   {
    "iata": "BRU",
    "rt": {
-    "preco": 5379,
+    "preco": 5380,
     "ida": "2026-12-03",
     "volta": "2027-01-07",
     "paradas": 1,

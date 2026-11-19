@@ -8,7 +8,7 @@
   "RIO": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BSB": {
    "prioridade": "alta",
@@ -131,9 +131,9 @@
    "motivo": "padrão"
   },
   "ROM": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "LON": {
    "prioridade": "baixa",
@@ -281,30 +281,30 @@
    "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   }
  },
- "quando": "2026-11-18T22:00-03:00",
+ "quando": "2026-11-18T22:59-03:00",
  "ultimo_lote": [
+  "FLN",
+  "JPA",
+  "POA",
+  "MIA",
   "SSA",
+  "BOG",
+  "SID",
+  "PMW",
+  "FEN",
   "AJU",
   "RIO",
+  "VCP",
+  "ORL",
   "JDO",
-  "VIX",
-  "BSB",
-  "GYN",
-  "MCZ",
-  "SAO",
-  "SLZ",
+  "SCL",
+  "LIM",
+  "PTY",
+  "CUN",
+  "MVD",
+  "FRA",
   "REC",
-  "BHZ",
-  "PHB",
-  "THE",
-  "NAT",
-  "BEL",
-  "MAO",
-  "CWB",
-  "CGR",
-  "LIS",
-  "UDI",
-  "BUE",
-  "BPS"
+  "AMS",
+  "LON"
  ]
 }

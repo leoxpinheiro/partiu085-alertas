@@ -1,6 +1,89 @@
 {
- "atualizado": "2026-11-18T21:04-03:00",
+ "atualizado": "2026-11-18T21:57-03:00",
  "alertas": [
+  {
+   "id": "FOR-RIO-2027-02-17-1795049871",
+   "criado": "2026-11-18T21:57-03:00",
+   "rota": "FOR-RIO",
+   "destino": "RIO",
+   "destino_nome": "Rio de Janeiro",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 539,
+   "preco_volta": 515,
+   "preco_tipico": 666,
+   "desconto": 0.191,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2027-02-17",
+   "volta": "2027-02-18",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-02-15",
+     "preco": 563
+    },
+    {
+     "dia": "2027-02-17",
+     "preco": 539
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-18",
+     "preco": 515
+    },
+    {
+     "dia": "2027-02-22",
+     "preco": 515
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "15",
+      "17"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "18",
+      "22"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMTdqBRIDRk9ScgUSA1JJT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1702RIO22021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-17",
+    "volta": "2027-02-22",
+    "total": 1054,
+    "dias": 5
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 476
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 539* o trecho\n🔁 Ida e volta: *R$ 1.054* (ida 17/02, volta 22/02 · 5 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 15, 17\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 18, 22\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1702RIO22021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-JDO-2027-02-09-1795035649",
    "criado": "2026-11-18T18:00-03:00",
@@ -1196,7 +1279,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-18T13:56-03:00",
+    "quando": "2026-11-18T21:57-03:00",
     "preco": 516,
     "status": "valendo"
    }

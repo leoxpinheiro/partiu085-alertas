@@ -1,6 +1,105 @@
 {
- "atualizado": "2026-11-19T10:55-03:00",
+ "atualizado": "2026-11-19T12:18-03:00",
  "alertas": [
+  {
+   "id": "FOR-BEL-2026-12-30-1795101485",
+   "criado": "2026-11-19T12:18-03:00",
+   "rota": "FOR-BEL",
+   "destino": "BEL",
+   "destino_nome": "Belém",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 302,
+   "preco_volta": 226,
+   "preco_tipico": 568,
+   "desconto": 0.469,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Azul",
+   "escalas": 0,
+   "ida": "2026-12-30",
+   "volta": "2027-02-01",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-26",
+     "preco": 320
+    },
+    {
+     "dia": "2026-12-30",
+     "preco": 302
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 322
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-01",
+     "preco": 226
+    },
+    {
+     "dia": "2027-02-03",
+     "preco": 227
+    },
+    {
+     "dia": "2027-02-14",
+     "preco": 226
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "26",
+      "30"
+     ]
+    },
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "28"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "01",
+      "03",
+      "14"
+     ]
+    }
+   ],
+   "meses": [
+    "jan",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMzBqBRIDRk9ScgUSA0JFTEIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR2801BEL01021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-01-28",
+    "volta": "2027-02-01",
+    "total": 548,
+    "dias": 4
+   },
+   "base": {
+    "dias": 44,
+    "menor_visto": 289
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Belém* (BEL)\n💰 *R$ 302* o trecho\n🔁 Ida e volta: *R$ 548* (ida 28/01, volta 01/02 · 4 dias)\n🔥 *IMPERDÍVEL*\n🛫 Azul · voo direto\n\n🗓️ *IDA*\n▸ Dezembro/26: 26, 30\n▸ Janeiro/27: 28\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 01, 03, 14\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR2801BEL01021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": true
+  },
   {
    "id": "FOR-RIO-2027-02-17-1795052784",
    "criado": "2026-11-18T22:46-03:00",
@@ -1496,7 +1595,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-19T00:37-03:00",
+    "quando": "2026-11-19T12:18-03:00",
     "preco": 676,
     "status": "valendo"
    }

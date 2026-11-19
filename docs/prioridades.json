@@ -131,9 +131,9 @@
    "motivo": "padrão"
   },
   "ROM": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "LON": {
    "prioridade": "normal",
@@ -281,24 +281,24 @@
    "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   }
  },
- "quando": "2026-11-19T01:00-03:00",
+ "quando": "2026-11-19T02:10-03:00",
  "ultimo_lote": [
+  "CGR",
+  "UDI",
+  "BPS",
+  "SSA",
+  "PAR",
+  "VIX",
   "AJU",
+  "BSB",
   "RIO",
+  "GYN",
+  "MCZ",
+  "SAO",
   "JDO",
-  "LIS",
-  "BUE",
-  "REC",
-  "JPA",
-  "POA",
-  "MIA",
-  "ROM",
-  "CGB",
-  "IGU",
-  "NVT",
-  "PHB",
-  "NYC",
-  "BCN",
-  "BEL"
+  "SLZ",
+  "BHZ",
+  "THE",
+  "OPO"
  ]
 }

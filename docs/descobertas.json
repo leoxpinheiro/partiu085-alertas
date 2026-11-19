@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-19T21:17+00:00",
+ "atualizado": "2026-11-19T22:27+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -43,7 +43,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 899,
+    "preco": 902,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -52,19 +52,6 @@
    "rastreada": true,
    "nome": "Belém",
    "pista": true
-  },
-  {
-   "iata": "SSA",
-   "ow": {
-    "preco": 953,
-    "ida": "2027-02-03",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-16T17:39:58Z"
-   },
-   "rastreada": true,
-   "nome": "Salvador",
-   "pista": false
   },
   {
    "iata": "BVB",
@@ -93,26 +80,13 @@
    "pista": false
   },
   {
-   "iata": "CAY",
-   "ow": {
-    "preco": 1501,
-    "ida": "2027-03-25",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-17T23:11:00Z"
-   },
-   "rastreada": true,
-   "nome": "Caiena",
-   "pista": true
-  },
-  {
    "iata": "RIO",
    "rt": {
-    "preco": 1523,
-    "ida": "2026-12-13",
-    "volta": "2026-12-13",
+    "preco": 1429,
+    "ida": "2027-01-16",
+    "volta": "2027-02-02",
     "paradas": 0,
-    "visto": "2026-11-18T01:51:31Z"
+    "visto": "2026-11-19T22:15:45Z"
    },
    "ow": {
     "preco": 543,
@@ -123,6 +97,19 @@
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
+   "pista": true
+  },
+  {
+   "iata": "CAY",
+   "ow": {
+    "preco": 1501,
+    "ida": "2027-03-25",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-17T23:11:00Z"
+   },
+   "rastreada": true,
+   "nome": "Caiena",
    "pista": true
   },
   {
@@ -146,9 +133,29 @@
    "pista": true
   },
   {
+   "iata": "SSA",
+   "rt": {
+    "preco": 1538,
+    "ida": "2027-01-06",
+    "volta": "2027-01-10",
+    "paradas": 1,
+    "visto": "2026-11-19T21:27:32Z"
+   },
+   "ow": {
+    "preco": 953,
+    "ida": "2027-02-03",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-16T17:39:58Z"
+   },
+   "rastreada": true,
+   "nome": "Salvador",
+   "pista": false
+  },
+  {
    "iata": "SAO",
    "rt": {
-    "preco": 1642,
+    "preco": 1647,
     "ida": "2026-12-08",
     "volta": "2026-12-16",
     "paradas": 1,
@@ -174,21 +181,15 @@
     "paradas": 1,
     "visto": "2026-11-18T19:11:35Z"
    },
-   "rastreada": true,
-   "nome": "Goiânia",
-   "pista": false
-  },
-  {
-   "iata": "VIX",
-   "rt": {
-    "preco": 2008,
-    "ida": "2026-12-30",
-    "volta": "2027-01-10",
+   "ow": {
+    "preco": 1002,
+    "ida": "2027-09-07",
+    "volta": "",
     "paradas": 1,
-    "visto": "2026-11-15T22:04:55Z"
+    "visto": "2026-11-19T21:22:53Z"
    },
    "rastreada": true,
-   "nome": "Vitória",
+   "nome": "Goiânia",
    "pista": false
   },
   {
@@ -240,7 +241,7 @@
     "visto": "2026-11-17T23:16:20Z"
    },
    "ow": {
-    "preco": 1893,
+    "preco": 1898,
     "ida": "2026-12-07",
     "volta": "",
     "paradas": 0,
@@ -305,7 +306,7 @@
   {
    "iata": "BRU",
    "rt": {
-    "preco": 5409,
+    "preco": 5426,
     "ida": "2026-12-03",
     "volta": "2027-01-07",
     "paradas": 1,
@@ -344,7 +345,7 @@
   {
    "iata": "VIE",
    "rt": {
-    "preco": 5926,
+    "preco": 5944,
     "ida": "2027-02-19",
     "volta": "2027-03-12",
     "paradas": 1,
@@ -370,7 +371,7 @@
   {
    "iata": "ROM",
    "rt": {
-    "preco": 8541,
+    "preco": 8568,
     "ida": "2027-01-02",
     "volta": "2027-02-02",
     "paradas": 3,

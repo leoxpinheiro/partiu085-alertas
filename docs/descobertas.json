@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-19T20:06+00:00",
+ "atualizado": "2026-11-19T21:17+00:00",
  "pistas": [
   "BEL",
   "BSB",
@@ -43,7 +43,7 @@
   {
    "iata": "BEL",
    "ow": {
-    "preco": 897,
+    "preco": 899,
     "ida": "2026-11-20",
     "volta": "",
     "paradas": 0,
@@ -148,7 +148,7 @@
   {
    "iata": "SAO",
    "rt": {
-    "preco": 1638,
+    "preco": 1642,
     "ida": "2026-12-08",
     "volta": "2026-12-16",
     "paradas": 1,
@@ -240,7 +240,7 @@
     "visto": "2026-11-17T23:16:20Z"
    },
    "ow": {
-    "preco": 1888,
+    "preco": 1893,
     "ida": "2026-12-07",
     "volta": "",
     "paradas": 0,
@@ -261,6 +261,19 @@
    },
    "rastreada": false,
    "nome": "BEG",
+   "pista": false
+  },
+  {
+   "iata": "MOW",
+   "ow": {
+    "preco": 4646,
+    "ida": "2027-01-18",
+    "volta": "",
+    "paradas": 3,
+    "visto": "2026-11-16T18:24:40Z"
+   },
+   "rastreada": false,
+   "nome": "MOW",
    "pista": false
   },
   {
@@ -290,26 +303,13 @@
    "pista": false
   },
   {
-   "iata": "IGU",
-   "rt": {
-    "preco": 5347,
-    "ida": "2026-11-19",
-    "volta": "2026-11-22",
-    "paradas": 2,
-    "visto": "2026-11-17T14:28:39Z"
-   },
-   "rastreada": true,
-   "nome": "Foz do Iguaçu",
-   "pista": false
-  },
-  {
    "iata": "BRU",
    "rt": {
-    "preco": 5395,
+    "preco": 5409,
     "ida": "2026-12-03",
     "volta": "2027-01-07",
     "paradas": 1,
-    "visto": "2026-11-19T00:11:38Z"
+    "visto": "2026-11-19T20:58:45Z"
    },
    "rastreada": false,
    "nome": "BRU",
@@ -329,19 +329,6 @@
    "pista": false
   },
   {
-   "iata": "VIE",
-   "rt": {
-    "preco": 5910,
-    "ida": "2027-02-19",
-    "volta": "2027-03-12",
-    "paradas": 1,
-    "visto": "2026-11-19T17:37:54Z"
-   },
-   "rastreada": false,
-   "nome": "VIE",
-   "pista": false
-  },
-  {
    "iata": "NYC",
    "rt": {
     "preco": 5925,
@@ -355,9 +342,35 @@
    "pista": true
   },
   {
+   "iata": "VIE",
+   "rt": {
+    "preco": 5926,
+    "ida": "2027-02-19",
+    "volta": "2027-03-12",
+    "paradas": 1,
+    "visto": "2026-11-19T17:37:54Z"
+   },
+   "rastreada": false,
+   "nome": "VIE",
+   "pista": false
+  },
+  {
+   "iata": "POA",
+   "rt": {
+    "preco": 7079,
+    "ida": "2026-11-19",
+    "volta": "2026-11-22",
+    "paradas": 2,
+    "visto": "2026-11-17T18:25:12Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
+   "pista": false
+  },
+  {
    "iata": "ROM",
    "rt": {
-    "preco": 8519,
+    "preco": 8541,
     "ida": "2027-01-02",
     "volta": "2027-02-02",
     "paradas": 3,
@@ -378,26 +391,6 @@
    },
    "rastreada": false,
    "nome": "TUL",
-   "pista": false
-  },
-  {
-   "iata": "MOW",
-   "rt": {
-    "preco": 10272,
-    "ida": "2027-05-01",
-    "volta": "2027-05-04",
-    "paradas": 3,
-    "visto": "2026-11-15T20:17:38Z"
-   },
-   "ow": {
-    "preco": 4646,
-    "ida": "2027-01-18",
-    "volta": "",
-    "paradas": 3,
-    "visto": "2026-11-16T18:24:40Z"
-   },
-   "rastreada": false,
-   "nome": "MOW",
    "pista": false
   },
   {

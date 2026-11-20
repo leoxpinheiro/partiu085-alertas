@@ -1,6 +1,89 @@
 {
- "atualizado": "2026-11-20T03:01-03:00",
+ "atualizado": "2026-11-20T03:43-03:00",
  "alertas": [
+  {
+   "id": "FOR-CGR-2027-02-17-1795157020",
+   "criado": "2026-11-20T03:43-03:00",
+   "rota": "FOR-CGR",
+   "destino": "CGR",
+   "destino_nome": "Campo Grande",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 657,
+   "preco_volta": 544,
+   "preco_tipico": 866,
+   "desconto": 0.241,
+   "regua": "menor_normal",
+   "classe": "otima",
+   "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2027-02-17",
+   "volta": "2027-02-23",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-02-16",
+     "preco": 683
+    },
+    {
+     "dia": "2027-02-17",
+     "preco": 657
+    },
+    {
+     "dia": "2027-02-21",
+     "preco": 677
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-23",
+     "preco": 544
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "16",
+      "17",
+      "21"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "23"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMTdqBRIDRk9ScgUSA0NHUkIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1702CGR23021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-17",
+    "volta": "2027-02-23",
+    "total": 1201,
+    "dias": 6
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 601
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Campo Grande* (CGR)\n📍 _Porta de Bonito (MS)_\n💰 *R$ 657* o trecho\n🔁 Ida e volta: *R$ 1.201* (ida 17/02, volta 23/02 · 6 dias)\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 16, 17, 21\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 23\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1702CGR23021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-UDI-2027-02-18-1795154447",
    "criado": "2026-11-20T03:00-03:00",
@@ -226,7 +309,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 539* o trecho\n🔁 Ida e volta: *R$ 1.078* (ida 17/02, volta 23/02 · 6 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 17, 21\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 22, 23\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1702RIO23021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-20T03:43-03:00",
+    "preco": 539,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-JDO-2027-02-07-1795146239",
@@ -498,7 +586,7 @@
    "story": false,
    "wpp": false,
    "conferido": {
-    "quando": "2026-11-19T23:33-03:00",
+    "quando": "2026-11-20T03:43-03:00",
     "preco": 560,
     "status": "valendo"
    }

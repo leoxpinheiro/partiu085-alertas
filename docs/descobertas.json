@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-20T19:49+00:00",
+ "atualizado": "2026-11-20T20:53+00:00",
  "pistas": [
   "BSB",
   "CAY",
@@ -7,6 +7,7 @@
   "LIS",
   "MAD",
   "NYC",
+  "POA",
   "REC",
   "RIO",
   "SAO",
@@ -38,6 +39,19 @@
    },
    "rastreada": true,
    "nome": "Recife",
+   "pista": true
+  },
+  {
+   "iata": "POA",
+   "ow": {
+    "preco": 722,
+    "ida": "2026-12-28",
+    "volta": "",
+    "paradas": 1,
+    "visto": "2026-11-20T20:24:00Z"
+   },
+   "rastreada": true,
+   "nome": "Porto Alegre",
    "pista": true
   },
   {
@@ -358,7 +372,7 @@
   {
    "iata": "AER",
    "rt": {
-    "preco": 9875,
+    "preco": 9876,
     "ida": "2027-03-25",
     "volta": "2027-03-29",
     "paradas": 3,

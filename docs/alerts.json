@@ -1,6 +1,233 @@
 {
- "atualizado": "2026-11-20T01:54-03:00",
+ "atualizado": "2026-11-20T03:01-03:00",
  "alertas": [
+  {
+   "id": "FOR-UDI-2027-02-18-1795154447",
+   "criado": "2026-11-20T03:00-03:00",
+   "rota": "FOR-UDI",
+   "destino": "UDI",
+   "destino_nome": "Uberlândia",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 676,
+   "preco_volta": 597,
+   "preco_tipico": 879,
+   "desconto": 0.231,
+   "regua": "menor_normal",
+   "classe": "otima",
+   "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
+   "cia_nome": "LATAM",
+   "escalas": 1,
+   "ida": "2027-02-18",
+   "volta": "2027-02-20",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-19",
+     "preco": 712
+    },
+    {
+     "dia": "2026-12-21",
+     "preco": 712
+    },
+    {
+     "dia": "2026-12-26",
+     "preco": 712
+    },
+    {
+     "dia": "2027-02-04",
+     "preco": 738
+    },
+    {
+     "dia": "2027-02-18",
+     "preco": 676
+    },
+    {
+     "dia": "2027-02-19",
+     "preco": 726
+    },
+    {
+     "dia": "2027-02-20",
+     "preco": 726
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-28",
+     "preco": 621
+    },
+    {
+     "dia": "2027-02-02",
+     "preco": 622
+    },
+    {
+     "dia": "2027-02-17",
+     "preco": 642
+    },
+    {
+     "dia": "2027-02-20",
+     "preco": 597
+    },
+    {
+     "dia": "2027-02-21",
+     "preco": 633
+    },
+    {
+     "dia": "2027-02-22",
+     "preco": 597
+    },
+    {
+     "dia": "2027-02-23",
+     "preco": 597
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "19",
+      "21",
+      "26"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "04",
+      "18",
+      "19",
+      "20"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "28"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "02",
+      "17",
+      "20",
+      "21",
+      "22",
+      "23"
+     ]
+    }
+   ],
+   "meses": [
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMThqBRIDRk9ScgUSA1VESUIBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1802UDI23021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-18",
+    "volta": "2027-02-23",
+    "total": 1273,
+    "dias": 5
+   },
+   "base": {
+    "dias": 43,
+    "menor_visto": 613
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Uberlândia* (UDI)\n📍 _Triângulo Mineiro (MG)_\n💰 *R$ 676* o trecho\n🔁 Ida e volta: *R$ 1.273* (ida 18/02, volta 23/02 · 5 dias)\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 19, 21, 26\n▸ Fevereiro/27: 04, 18, 19, 20\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 28\n▸ Fevereiro/27: 02, 17, 20, 21, 22, 23\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1802UDI23021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": false,
+   "story": false,
+   "wpp": false
+  },
+  {
+   "id": "FOR-RIO-2027-02-21-1795154488",
+   "criado": "2026-11-20T03:01-03:00",
+   "rota": "FOR-RIO",
+   "destino": "RIO",
+   "destino_nome": "Rio de Janeiro",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 539,
+   "preco_volta": 515,
+   "preco_tipico": 666,
+   "desconto": 0.191,
+   "regua": "menor_normal",
+   "classe": "boa",
+   "classe_txt": "✅ BOA OPORTUNIDADE",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2027-02-21",
+   "volta": "2027-02-22",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2027-02-17",
+     "preco": 563
+    },
+    {
+     "dia": "2027-02-21",
+     "preco": 539
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-02-22",
+     "preco": 515
+    },
+    {
+     "dia": "2027-02-23",
+     "preco": 515
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "17",
+      "21"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "22",
+      "23"
+     ]
+    }
+   ],
+   "meses": [
+    "fev"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMjFqBRIDRk9ScgUSA1JJT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1702RIO23021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-17",
+    "volta": "2027-02-23",
+    "total": 1078,
+    "dias": 6
+   },
+   "base": {
+    "dias": 45,
+    "menor_visto": 476
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Rio de Janeiro* (RIO)\n📍 _Galeão ou Santos Dumont_\n💰 *R$ 539* o trecho\n🔁 Ida e volta: *R$ 1.078* (ida 17/02, volta 23/02 · 6 dias)\n✅ *BOA OPORTUNIDADE*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Fevereiro/27: 17, 21\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 22, 23\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1702RIO23021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-JDO-2027-02-07-1795146239",
    "criado": "2026-11-20T00:43-03:00",
@@ -82,7 +309,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Juazeiro do Norte* (JDO)\n📍 _Cariri: Juazeiro, Crato e Barbalha_\n💰 *R$ 173* o trecho\n🔁 Ida e volta: *R$ 335* (ida 11/02, volta 19/02 · 8 dias)\n🔥 *IMPERDÍVEL*\n🛫 LATAM · voo direto\n📉 _Menor preço que já vimos nesse trecho (45 dias de pesquisa)_\n\n🗓️ *IDA*\n▸ Fevereiro/27: 07, 11, 13\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 19\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1102JDO19021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-20T03:01-03:00",
+    "preco": 173,
+    "status": "valendo"
+   }
   },
   {
    "id": "FOR-CGR-2027-02-19-1795146254",
@@ -181,7 +413,12 @@
    "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ Campo Grande* (CGR)\n📍 _Porta de Bonito (MS)_\n💰 *R$ 677* o trecho\n🔁 Ida e volta: *R$ 1.221* (ida 19/02, volta 23/02 · 4 dias)\n⭐ *ÓTIMA OPORTUNIDADE*\n🛫 LATAM · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 25\n▸ Fevereiro/27: 16, 19, 21\n\n🗓️ *VOLTA*\n▸ Fevereiro/27: 21, 23\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1902CGR23021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
    "telegram": true,
    "story": false,
-   "wpp": false
+   "wpp": false,
+   "conferido": {
+    "quando": "2026-11-20T03:01-03:00",
+    "preco": 928,
+    "status": "subiu"
+   }
   },
   {
    "id": "FOR-AJU-2027-02-20-1795136781",
@@ -934,8 +1171,8 @@
    "story": false,
    "wpp": true,
    "conferido": {
-    "quando": "2026-11-19T20:06-03:00",
-    "preco": 364,
+    "quando": "2026-11-20T03:01-03:00",
+    "preco": 421,
     "status": "valendo"
    }
   },

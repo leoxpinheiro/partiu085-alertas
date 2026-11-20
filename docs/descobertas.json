@@ -1,16 +1,11 @@
 {
- "atualizado": "2026-11-20T00:47+00:00",
+ "atualizado": "2026-11-20T01:57+00:00",
  "pistas": [
-  "BEL",
-  "BSB",
   "CAY",
-  "JDO",
-  "LIS",
+  "GYN",
   "MAD",
   "NYC",
-  "REC",
   "RIO",
-  "SAO",
   "SSA"
  ],
  "blogs": [],
@@ -26,7 +21,7 @@
    },
    "rastreada": true,
    "nome": "Juazeiro do Norte",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "REC",
@@ -39,7 +34,7 @@
    },
    "rastreada": true,
    "nome": "Recife",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BEL",
@@ -52,7 +47,7 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BVB",
@@ -114,26 +109,6 @@
    "pista": true
   },
   {
-   "iata": "BSB",
-   "rt": {
-    "preco": 1534,
-    "ida": "2026-12-10",
-    "volta": "2027-01-11",
-    "paradas": 0,
-    "visto": "2026-11-16T01:02:53Z"
-   },
-   "ow": {
-    "preco": 785,
-    "ida": "2026-12-04",
-    "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-18T03:04:17Z"
-   },
-   "rastreada": true,
-   "nome": "Brasília",
-   "pista": true
-  },
-  {
    "iata": "SSA",
    "rt": {
     "preco": 1540,
@@ -171,7 +146,7 @@
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "GYN",
@@ -191,7 +166,7 @@
    },
    "rastreada": true,
    "nome": "Goiânia",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "LIS",
@@ -204,7 +179,7 @@
    },
    "rastreada": true,
    "nome": "Lisboa",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "IMP",
@@ -230,6 +205,26 @@
    },
    "rastreada": false,
    "nome": "LIL",
+   "pista": false
+  },
+  {
+   "iata": "BSB",
+   "rt": {
+    "preco": 3275,
+    "ida": "2026-11-30",
+    "volta": "2026-12-04",
+    "paradas": 1,
+    "visto": "2026-11-18T03:04:01Z"
+   },
+   "ow": {
+    "preco": 785,
+    "ida": "2026-12-04",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-18T03:04:17Z"
+   },
+   "rastreada": true,
+   "nome": "Brasília",
    "pista": false
   },
   {
@@ -276,19 +271,6 @@
    },
    "rastreada": false,
    "nome": "MOW",
-   "pista": false
-  },
-  {
-   "iata": "BLQ",
-   "ow": {
-    "preco": 5087,
-    "ida": "2027-09-01",
-    "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-16T01:22:40Z"
-   },
-   "rastreada": false,
-   "nome": "BLQ",
    "pista": false
   },
   {

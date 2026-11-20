@@ -1,17 +1,23 @@
 {
  "iata": "SAO",
  "nome": "São Paulo",
- "atualizado": "2026-11-20T18:10-03:00",
+ "atualizado": "2026-11-20T20:25-03:00",
  "ida": [
   {
    "dia": "2026-11-25",
    "preco": 2050.0,
+   "cia": "Gol",
+   "escalas": 1
+  },
+  {
+   "dia": "2026-11-26",
+   "preco": 2293.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
    "dia": "2026-11-27",
-   "preco": 2054.0,
+   "preco": 2032.0,
    "cia": "LATAM",
    "escalas": 1
   },
@@ -23,21 +29,15 @@
   },
   {
    "dia": "2026-11-29",
-   "preco": 1824.0,
+   "preco": 1820.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2026-12-01",
-   "preco": 1412.0,
+   "dia": "2026-12-02",
+   "preco": 1560.0,
    "cia": "Gol",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-12-03",
-   "preco": 1153.0,
-   "cia": "Gol",
-   "escalas": 1
+   "escalas": 0
   },
   {
    "dia": "2026-12-04",
@@ -46,8 +46,8 @@
    "escalas": 1
   },
   {
-   "dia": "2026-12-05",
-   "preco": 1076.0,
+   "dia": "2026-12-07",
+   "preco": 953.0,
    "cia": "Gol",
    "escalas": 0
   },
@@ -58,16 +58,22 @@
    "escalas": 0
   },
   {
+   "dia": "2026-12-09",
+   "preco": 483.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2026-12-10",
    "preco": 861.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2026-12-12",
-   "preco": 415.0,
-   "cia": "Azul",
-   "escalas": 0
+   "dia": "2026-12-11",
+   "preco": 770.0,
+   "cia": "LATAM",
+   "escalas": 1
   },
   {
    "dia": "2026-12-13",
@@ -76,8 +82,8 @@
    "escalas": 0
   },
   {
-   "dia": "2026-12-14",
-   "preco": 412.0,
+   "dia": "2026-12-15",
+   "preco": 415.0,
    "cia": "Azul",
    "escalas": 0
   },
@@ -88,13 +94,7 @@
    "escalas": 0
   },
   {
-   "dia": "2026-12-18",
-   "preco": 388.0,
-   "cia": "Azul",
-   "escalas": 0
-  },
-  {
-   "dia": "2026-12-20",
+   "dia": "2026-12-19",
    "preco": 388.0,
    "cia": "Azul",
    "escalas": 0
@@ -112,37 +112,19 @@
    "escalas": 0
   },
   {
-   "dia": "2026-12-23",
-   "preco": 505.0,
-   "cia": "Azul",
-   "escalas": 0
-  },
-  {
    "dia": "2026-12-24",
    "preco": 388.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2026-12-26",
-   "preco": 711.0,
-   "cia": "Gol",
-   "escalas": 0
-  },
-  {
-   "dia": "2026-12-27",
-   "preco": 725.0,
+   "dia": "2026-12-25",
+   "preco": 388.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2026-12-28",
-   "preco": 711.0,
-   "cia": "Gol",
-   "escalas": 0
-  },
-  {
-   "dia": "2026-12-29",
+   "dia": "2026-12-30",
    "preco": 711.0,
    "cia": "Gol",
    "escalas": 0
@@ -155,9 +137,15 @@
   },
   {
    "dia": "2027-01-02",
-   "preco": 2548.0,
+   "preco": 2598.0,
    "cia": "LATAM",
    "escalas": 0
+  },
+  {
+   "dia": "2027-01-03",
+   "preco": 2635.0,
+   "cia": "Azul",
+   "escalas": 1
   },
   {
    "dia": "2027-01-04",
@@ -166,43 +154,55 @@
    "escalas": 1
   },
   {
+   "dia": "2027-01-05",
+   "preco": 1561.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2027-01-06",
    "preco": 1441.0,
    "cia": "Gol",
    "escalas": 0
   },
   {
-   "dia": "2027-01-07",
-   "preco": 1102.0,
-   "cia": "Gol",
-   "escalas": 0
-  },
-  {
-   "dia": "2027-01-08",
-   "preco": 1076.0,
-   "cia": "Gol",
-   "escalas": 0
-  },
-  {
    "dia": "2027-01-09",
-   "preco": 1286.0,
+   "preco": 1493.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
    "dia": "2027-01-10",
-   "preco": 1441.0,
+   "preco": 1413.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2027-01-13",
-   "preco": 790.0,
-   "cia": "Gol",
+   "dia": "2027-01-11",
+   "preco": 1262.0,
+   "cia": "Azul",
    "escalas": 1
   },
   {
+   "dia": "2027-01-12",
+   "preco": 1102.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-01-13",
+   "preco": 1007.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2027-01-14",
+   "preco": 905.0,
+   "cia": "LATAM",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-15",
    "preco": 857.0,
    "cia": "LATAM",
    "escalas": 0
@@ -214,16 +214,40 @@
    "escalas": 1
   },
   {
+   "dia": "2027-01-17",
+   "preco": 984.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2027-01-18",
    "preco": 1027.0,
    "cia": "Gol",
    "escalas": 0
   },
   {
+   "dia": "2027-01-20",
+   "preco": 1025.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-01-21",
+   "preco": 738.0,
+   "cia": "Gol",
+   "escalas": 1
+  },
+  {
    "dia": "2027-01-22",
    "preco": 1025.0,
    "cia": "Gol",
    "escalas": 0
+  },
+  {
+   "dia": "2027-01-23",
+   "preco": 971.0,
+   "cia": "Azul",
+   "escalas": 1
   },
   {
    "dia": "2027-01-24",
@@ -233,7 +257,13 @@
   },
   {
    "dia": "2027-01-25",
-   "preco": 1026.0,
+   "preco": 1027.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-01-26",
+   "preco": 923.0,
    "cia": "LATAM",
    "escalas": 0
   },
@@ -244,14 +274,26 @@
    "escalas": 0
   },
   {
-   "dia": "2027-01-29",
-   "preco": 1001.0,
+   "dia": "2027-01-28",
+   "preco": 1027.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
+   "dia": "2027-01-30",
+   "preco": 971.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-31",
+   "preco": 1122.0,
+   "cia": "Gol",
+   "escalas": 1
+  },
+  {
    "dia": "2027-02-01",
-   "preco": 711.0,
+   "preco": 786.0,
    "cia": "Gol",
    "escalas": 0
   },
@@ -262,14 +304,26 @@
    "escalas": 0
   },
   {
+   "dia": "2027-02-03",
+   "preco": 786.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
    "dia": "2027-02-04",
    "preco": 666.0,
    "cia": "Gol",
    "escalas": 0
   },
   {
+   "dia": "2027-02-05",
+   "preco": 786.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
    "dia": "2027-02-06",
-   "preco": 1027.0,
+   "preco": 1014.0,
    "cia": "Gol",
    "escalas": 0
   },
@@ -280,9 +334,21 @@
    "escalas": 1
   },
   {
-   "dia": "2027-02-12",
-   "preco": 680.0,
+   "dia": "2027-02-08",
+   "preco": 577.0,
    "cia": "Azul",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-02-09",
+   "preco": 1027.0,
+   "cia": "Gol",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-02-10",
+   "preco": 1232.0,
+   "cia": "LATAM",
    "escalas": 1
   },
   {
@@ -292,9 +358,21 @@
    "escalas": 0
   },
   {
+   "dia": "2027-02-14",
+   "preco": 680.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
    "dia": "2027-02-16",
    "preco": 618.0,
    "cia": "Azul",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-02-17",
+   "preco": 348.0,
+   "cia": "Gol",
    "escalas": 1
   },
   {
@@ -316,31 +394,25 @@
    "escalas": 1
   },
   {
-   "dia": "2027-02-23",
-   "preco": 505.0,
+   "dia": "2027-02-21",
+   "preco": 514.0,
    "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-02-22",
+   "preco": 545.0,
+   "cia": "Azul",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-02-23",
+   "preco": 545.0,
+   "cia": "Azul",
    "escalas": 0
   }
  ],
  "volta": [
-  {
-   "dia": "2026-11-25",
-   "preco": 2442.0,
-   "cia": "Gol",
-   "escalas": 0
-  },
-  {
-   "dia": "2026-11-28",
-   "preco": 1957.0,
-   "cia": "Azul",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-11-29",
-   "preco": 1957.0,
-   "cia": "Azul",
-   "escalas": 1
-  },
   {
    "dia": "2026-11-30",
    "preco": 1708.0,
@@ -348,7 +420,7 @@
    "escalas": 1
   },
   {
-   "dia": "2026-12-02",
+   "dia": "2026-12-01",
    "preco": 1385.0,
    "cia": "Gol",
    "escalas": 1
@@ -360,6 +432,12 @@
    "escalas": 0
   },
   {
+   "dia": "2026-12-04",
+   "preco": 1494.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
    "dia": "2026-12-05",
    "preco": 1108.0,
    "cia": "Gol",
@@ -367,7 +445,7 @@
   },
   {
    "dia": "2026-12-06",
-   "preco": 1744.0,
+   "preco": 1723.0,
    "cia": "Gol",
    "escalas": 0
   },
@@ -385,67 +463,61 @@
   },
   {
    "dia": "2026-12-10",
-   "preco": 1654.0,
-   "cia": "Gol",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-12-11",
-   "preco": 1576.0,
+   "preco": 1570.0,
    "cia": "LATAM",
    "escalas": 0
   },
   {
-   "dia": "2026-12-13",
-   "preco": 1461.0,
-   "cia": "LATAM",
-   "escalas": 0
-  },
-  {
-   "dia": "2026-12-14",
+   "dia": "2026-12-12",
    "preco": 1125.0,
    "cia": "Gol",
    "escalas": 1
   },
   {
+   "dia": "2026-12-13",
+   "preco": 1460.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2026-12-15",
+   "preco": 1178.0,
+   "cia": "Gol",
+   "escalas": 0
+  },
+  {
    "dia": "2026-12-16",
-   "preco": 1309.0,
+   "preco": 1334.0,
    "cia": "Gol",
    "escalas": 1
   },
   {
-   "dia": "2026-12-18",
-   "preco": 1838.0,
+   "dia": "2026-12-19",
+   "preco": 2096.0,
    "cia": "Azul",
    "escalas": 1
   },
   {
-   "dia": "2026-12-19",
-   "preco": 2080.0,
-   "cia": "LATAM",
-   "escalas": 1
-  },
-  {
-   "dia": "2026-12-21",
+   "dia": "2026-12-22",
    "preco": 1649.0,
    "cia": "Gol",
    "escalas": 1
   },
   {
-   "dia": "2026-12-22",
-   "preco": 1230.0,
+   "dia": "2026-12-24",
+   "preco": 1649.0,
    "cia": "Gol",
    "escalas": 1
   },
   {
-   "dia": "2026-12-23",
-   "preco": 1422.0,
+   "dia": "2026-12-25",
+   "preco": 1870.0,
    "cia": "LATAM",
    "escalas": 1
   },
   {
    "dia": "2026-12-26",
-   "preco": 2459.0,
+   "preco": 2283.0,
    "cia": "Gol",
    "escalas": 1
   },
@@ -456,20 +528,14 @@
    "escalas": 1
   },
   {
-   "dia": "2026-12-29",
-   "preco": 1804.0,
-   "cia": "Azul",
-   "escalas": 0
-  },
-  {
    "dia": "2026-12-30",
    "preco": 1555.0,
    "cia": "Azul",
    "escalas": 1
   },
   {
-   "dia": "2026-12-31",
-   "preco": 1116.0,
+   "dia": "2027-01-01",
+   "preco": 1134.0,
    "cia": "Azul",
    "escalas": 1
   },
@@ -481,15 +547,15 @@
   },
   {
    "dia": "2027-01-03",
-   "preco": 1671.0,
+   "preco": 1582.0,
    "cia": "Azul",
    "escalas": 1
   },
   {
-   "dia": "2027-01-04",
-   "preco": 1467.0,
-   "cia": "Azul",
-   "escalas": 1
+   "dia": "2027-01-05",
+   "preco": 1417.0,
+   "cia": "Gol",
+   "escalas": 0
   },
   {
    "dia": "2027-01-06",
@@ -505,7 +571,7 @@
   },
   {
    "dia": "2027-01-08",
-   "preco": 1287.0,
+   "preco": 1170.0,
    "cia": "LATAM",
    "escalas": 0
   },
@@ -523,8 +589,8 @@
   },
   {
    "dia": "2027-01-11",
-   "preco": 773.0,
-   "cia": "Gol",
+   "preco": 1044.0,
+   "cia": "Azul",
    "escalas": 1
   },
   {
@@ -558,13 +624,31 @@
    "escalas": 1
   },
   {
+   "dia": "2027-01-18",
+   "preco": 593.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
    "dia": "2027-01-19",
    "preco": 593.0,
    "cia": "Azul",
    "escalas": 1
   },
   {
+   "dia": "2027-01-20",
+   "preco": 620.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
    "dia": "2027-01-21",
+   "preco": 593.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-01-23",
    "preco": 593.0,
    "cia": "Azul",
    "escalas": 1
@@ -576,9 +660,15 @@
    "escalas": 0
   },
   {
-   "dia": "2027-01-26",
+   "dia": "2027-01-27",
    "preco": 382.0,
    "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-01-29",
+   "preco": 387.0,
+   "cia": "Azul",
    "escalas": 0
   },
   {
@@ -600,14 +690,20 @@
    "escalas": 1
   },
   {
-   "dia": "2027-02-06",
-   "preco": 897.0,
+   "dia": "2027-02-03",
+   "preco": 656.0,
    "cia": "Azul",
    "escalas": 1
   },
   {
+   "dia": "2027-02-05",
+   "preco": 1093.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2027-02-07",
-   "preco": 620.0,
+   "preco": 593.0,
    "cia": "Azul",
    "escalas": 1
   },
@@ -626,6 +722,12 @@
   {
    "dia": "2027-02-11",
    "preco": 683.0,
+   "cia": "Azul",
+   "escalas": 1
+  },
+  {
+   "dia": "2027-02-12",
+   "preco": 656.0,
    "cia": "Azul",
    "escalas": 1
   },
@@ -654,6 +756,12 @@
    "escalas": 0
   },
   {
+   "dia": "2027-02-17",
+   "preco": 481.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
    "dia": "2027-02-18",
    "preco": 523.0,
    "cia": "Azul",
@@ -666,9 +774,21 @@
    "escalas": 0
   },
   {
-   "dia": "2027-02-21",
-   "preco": 669.0,
+   "dia": "2027-02-20",
+   "preco": 487.0,
    "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-02-21",
+   "preco": 671.0,
+   "cia": "LATAM",
+   "escalas": 0
+  },
+  {
+   "dia": "2027-02-22",
+   "preco": 402.0,
+   "cia": "Azul",
    "escalas": 0
   },
   {

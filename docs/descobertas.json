@@ -1,15 +1,15 @@
 {
- "atualizado": "2026-11-20T07:18+00:00",
+ "atualizado": "2026-11-20T08:28+00:00",
  "pistas": [
-  "BEL",
+  "BSB",
   "CAY",
-  "GYN",
   "JDO",
   "LIS",
   "MAD",
   "NYC",
   "REC",
   "RIO",
+  "SAO",
   "SSA"
  ],
  "blogs": [],
@@ -64,7 +64,7 @@
    },
    "rastreada": true,
    "nome": "Belém",
-   "pista": true
+   "pista": false
   },
   {
    "iata": "BVB",
@@ -102,11 +102,11 @@
     "visto": "2026-11-19T22:15:45Z"
    },
    "ow": {
-    "preco": 543,
-    "ida": "2027-04-10",
+    "preco": 425,
+    "ida": "2027-03-15",
     "volta": "",
-    "paradas": 1,
-    "visto": "2026-11-17T23:28:57Z"
+    "paradas": 0,
+    "visto": "2026-11-20T07:41:30Z"
    },
    "rastreada": true,
    "nome": "Rio de Janeiro",
@@ -163,7 +163,7 @@
    },
    "rastreada": true,
    "nome": "São Paulo",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "GYN",
@@ -183,7 +183,20 @@
    },
    "rastreada": true,
    "nome": "Goiânia",
-   "pista": true
+   "pista": false
+  },
+  {
+   "iata": "JJD",
+   "ow": {
+    "preco": 2455,
+    "ida": "2027-02-18",
+    "volta": "",
+    "paradas": 2,
+    "visto": "2026-11-20T07:46:44Z"
+   },
+   "rastreada": false,
+   "nome": "JJD",
+   "pista": false
   },
   {
    "iata": "LIS",
@@ -242,7 +255,7 @@
    },
    "rastreada": true,
    "nome": "Brasília",
-   "pista": false
+   "pista": true
   },
   {
    "iata": "MAD",

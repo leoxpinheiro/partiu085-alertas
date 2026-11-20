@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-20T00:46-03:00",
+ "atualizado": "2026-11-20T01:56-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -65,7 +65,7 @@
    "fonte": "AEROIN",
    "url": "https://aeroin.net/feed/",
    "ok": false,
-   "erro": "404 Client Error: Not Found for url: https://aeroin.net/feed/"
+   "erro": "mismatched tag: line 93, column 2"
   },
   {
    "fonte": "Aeroflap",
@@ -99,9 +99,9 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 17,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=compra+d"
   },
   {
    "fonte": "Google Notícias",

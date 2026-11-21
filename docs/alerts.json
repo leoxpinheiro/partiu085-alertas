@@ -1,6 +1,150 @@
 {
- "atualizado": "2026-11-21T00:14-03:00",
+ "atualizado": "2026-11-21T01:39-03:00",
  "alertas": [
+  {
+   "id": "FOR-SAO-2027-02-17-1795235944",
+   "criado": "2026-11-21T01:39-03:00",
+   "rota": "FOR-SAO",
+   "destino": "SAO",
+   "destino_nome": "São Paulo",
+   "tipo": "nacional",
+   "modo": "trecho",
+   "preco": 381,
+   "preco_volta": 382,
+   "preco_tipico": 547,
+   "desconto": 0.303,
+   "regua": "menor_normal",
+   "classe": "imperdivel",
+   "classe_txt": "🔥 IMPERDÍVEL",
+   "cia_nome": "Gol",
+   "escalas": 1,
+   "ida": "2027-02-17",
+   "volta": "2027-01-27",
+   "vip": false,
+   "vip_nome": "",
+   "voltou": true,
+   "datas_ida": [
+    {
+     "dia": "2026-12-12",
+     "preco": 415
+    },
+    {
+     "dia": "2026-12-13",
+     "preco": 415
+    },
+    {
+     "dia": "2026-12-14",
+     "preco": 412
+    },
+    {
+     "dia": "2026-12-17",
+     "preco": 415
+    },
+    {
+     "dia": "2026-12-19",
+     "preco": 388
+    },
+    {
+     "dia": "2026-12-20",
+     "preco": 388
+    },
+    {
+     "dia": "2026-12-22",
+     "preco": 388
+    },
+    {
+     "dia": "2026-12-24",
+     "preco": 388
+    },
+    {
+     "dia": "2026-12-25",
+     "preco": 388
+    },
+    {
+     "dia": "2027-02-17",
+     "preco": 381
+    }
+   ],
+   "datas_volta": [
+    {
+     "dia": "2027-01-27",
+     "preco": 382
+    },
+    {
+     "dia": "2027-01-28",
+     "preco": 382
+    },
+    {
+     "dia": "2027-02-22",
+     "preco": 402
+    },
+    {
+     "dia": "2027-02-24",
+     "preco": 402
+    }
+   ],
+   "ida_meses": [
+    {
+     "mes": "Dezembro 2026",
+     "dias": [
+      "12",
+      "13",
+      "14",
+      "17",
+      "19",
+      "20",
+      "22",
+      "24",
+      "25"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "17"
+     ]
+    }
+   ],
+   "volta_meses": [
+    {
+     "mes": "Janeiro 2027",
+     "dias": [
+      "27",
+      "28"
+     ]
+    },
+    {
+     "mes": "Fevereiro 2027",
+     "dias": [
+      "22",
+      "24"
+     ]
+    }
+   ],
+   "meses": [
+    "fev",
+    "dez"
+   ],
+   "verificado": true,
+   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjctMDItMTdqBRIDRk9ScgUSA1NBT0IBAUgBmAEC&hl=pt-BR&curr=BRL",
+   "link_compra": "https://www.aviasales.com/search/FOR1702SAO24021?marker=677880.whatsapp&currency=brl",
+   "par": {
+    "ida": "2027-02-17",
+    "volta": "2027-02-24",
+    "total": 783,
+    "dias": 7
+   },
+   "base": {
+    "dias": 46,
+    "menor_visto": 348
+   },
+   "recorde": false,
+   "milhas": [],
+   "texto": "🚨 *O RADAR APITOU!*\n\n✈️ *Fortaleza ➜ São Paulo* (SAO)\n📍 _Guarulhos, Congonhas ou Campinas_\n💰 *R$ 381* o trecho\n🔁 Ida e volta: *R$ 783* (ida 17/02, volta 24/02 · 7 dias)\n🔥 *IMPERDÍVEL*\n🛫 Gol · 1 parada\n\n🗓️ *IDA*\n▸ Dezembro/26: 12, 13, 14, 17, 19, 20, 22, 24, 25\n▸ Fevereiro/27: 17\n\n🗓️ *VOLTA*\n▸ Janeiro/27: 27, 28\n▸ Fevereiro/27: 22, 24\n\n⚠️ _Preço pode mudar a qualquer momento._\n🛒 Ver e comprar: https://www.aviasales.com/search/FOR1702SAO24021?marker=677880.whatsapp&currency=brl\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
+   "telegram": true,
+   "story": false,
+   "wpp": false
+  },
   {
    "id": "FOR-CGR-2026-12-31-1795218645",
    "criado": "2026-11-20T20:50-03:00",
@@ -23556,252 +23700,6 @@
     "quando": "2026-10-09T12:37-03:00",
     "preco": 3446,
     "status": "subiu"
-   }
-  },
-  {
-   "id": "FOR-JDO-2026-11-07-1791344142",
-   "criado": "2026-10-07T00:35-03:00",
-   "rota": "FOR-JDO",
-   "destino": "JDO",
-   "destino_nome": "Juazeiro do Norte",
-   "tipo": "nacional",
-   "modo": "trecho",
-   "preco": 342,
-   "preco_volta": 285,
-   "preco_tipico": 3860,
-   "desconto": 0.911,
-   "classe": "imperdivel",
-   "classe_txt": "🔥 IMPERDÍVEL",
-   "cia_nome": "LATAM",
-   "escalas": 0,
-   "ida": "2026-11-07",
-   "volta": "2026-12-13",
-   "vip": false,
-   "vip_nome": "",
-   "datas_ida": [
-    {
-     "dia": "2026-11-07",
-     "preco": 342
-    }
-   ],
-   "datas_volta": [
-    {
-     "dia": "2026-12-13",
-     "preco": 285
-    }
-   ],
-   "ida_meses": [
-    {
-     "mes": "Novembro 2026",
-     "dias": [
-      "07"
-     ]
-    }
-   ],
-   "volta_meses": [
-    {
-     "mes": "Dezembro 2026",
-     "dias": [
-      "13"
-     ]
-    }
-   ],
-   "meses": [
-    "nov"
-   ],
-   "verificado": true,
-   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMDdqBRIDRk9ScgUSA0pET0IBAUgBmAEC&hl=pt-BR&curr=BRL",
-   "link_compra": "https://www.aviasales.com/search/FOR0711JDO13121?marker=677880&currency=brl",
-   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Juazeiro do Norte (JDO)\n💰 A partir de *R$ 342* o trecho\n🔥 IMPERDÍVEL · 91% abaixo da média\n🛫 LATAM · voo direto\n\n*Datas de ida:*\nNovembro 2026: 07\n\n*Datas de volta:*\nDezembro 2026: 13\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true,
-   "conferido": {
-    "quando": "2026-10-09T22:11-03:00",
-    "preco": 342,
-    "status": "valendo"
-   }
-  },
-  {
-   "id": "FOR-FEN-2026-12-07-1791344143",
-   "criado": "2026-10-07T00:35-03:00",
-   "rota": "FOR-FEN",
-   "destino": "FEN",
-   "destino_nome": "Fernando de Noronha",
-   "tipo": "nacional",
-   "modo": "trecho",
-   "preco": 1476,
-   "preco_volta": 1473,
-   "preco_tipico": 3860,
-   "desconto": 0.618,
-   "classe": "imperdivel",
-   "classe_txt": "🔥 IMPERDÍVEL",
-   "cia_nome": "Gol",
-   "escalas": 1,
-   "ida": "2026-12-07",
-   "volta": "2026-12-13",
-   "vip": false,
-   "vip_nome": "",
-   "datas_ida": [
-    {
-     "dia": "2026-12-07",
-     "preco": 1476
-    },
-    {
-     "dia": "2026-12-11",
-     "preco": 1476
-    },
-    {
-     "dia": "2026-12-14",
-     "preco": 1476
-    }
-   ],
-   "datas_volta": [
-    {
-     "dia": "2026-12-13",
-     "preco": 1473
-    },
-    {
-     "dia": "2026-12-31",
-     "preco": 1473
-    }
-   ],
-   "ida_meses": [
-    {
-     "mes": "Dezembro 2026",
-     "dias": [
-      "07",
-      "11",
-      "14"
-     ]
-    }
-   ],
-   "volta_meses": [
-    {
-     "mes": "Dezembro 2026",
-     "dias": [
-      "13",
-      "31"
-     ]
-    }
-   ],
-   "meses": [
-    "dez"
-   ],
-   "verificado": true,
-   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTItMDdqBRIDRk9ScgUSA0ZFTkIBAUgBmAEC&hl=pt-BR&curr=BRL",
-   "link_compra": "https://www.aviasales.com/search/FOR0712FEN13121?marker=677880&currency=brl",
-   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Fernando de Noronha (FEN)\n💰 A partir de *R$ 1.476* o trecho\n🔥 IMPERDÍVEL · 62% abaixo da média\n🛫 Gol · 1 parada\n\n*Datas de ida:*\nDezembro 2026: 07, 11, 14\n\n*Datas de volta:*\nDezembro 2026: 13, 31\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true,
-   "conferido": {
-    "quando": "2026-10-09T22:11-03:00",
-    "preco": 1622,
-    "status": "valendo"
-   }
-  },
-  {
-   "id": "FOR-GYN-2026-11-20-1791344143",
-   "criado": "2026-10-07T00:35-03:00",
-   "rota": "FOR-GYN",
-   "destino": "GYN",
-   "destino_nome": "Goiânia",
-   "tipo": "nacional",
-   "modo": "trecho",
-   "preco": 780,
-   "preco_volta": 809,
-   "preco_tipico": 1131,
-   "desconto": 0.31,
-   "classe": "otima",
-   "classe_txt": "⭐ ÓTIMA OPORTUNIDADE",
-   "cia_nome": "Azul",
-   "escalas": 1,
-   "ida": "2026-11-20",
-   "volta": "2026-11-07",
-   "vip": false,
-   "vip_nome": "",
-   "datas_ida": [
-    {
-     "dia": "2026-11-04",
-     "preco": 818
-    },
-    {
-     "dia": "2026-11-06",
-     "preco": 849
-    },
-    {
-     "dia": "2026-11-07",
-     "preco": 818
-    },
-    {
-     "dia": "2026-11-18",
-     "preco": 833
-    },
-    {
-     "dia": "2026-11-20",
-     "preco": 780
-    }
-   ],
-   "datas_volta": [
-    {
-     "dia": "2026-11-07",
-     "preco": 809
-    },
-    {
-     "dia": "2026-11-09",
-     "preco": 839
-    },
-    {
-     "dia": "2026-11-10",
-     "preco": 809
-    },
-    {
-     "dia": "2026-11-16",
-     "preco": 839
-    },
-    {
-     "dia": "2026-11-23",
-     "preco": 809
-    },
-    {
-     "dia": "2026-11-27",
-     "preco": 809
-    }
-   ],
-   "ida_meses": [
-    {
-     "mes": "Novembro 2026",
-     "dias": [
-      "04",
-      "06",
-      "07",
-      "18",
-      "20"
-     ]
-    }
-   ],
-   "volta_meses": [
-    {
-     "mes": "Novembro 2026",
-     "dias": [
-      "07",
-      "09",
-      "10",
-      "16",
-      "23",
-      "27"
-     ]
-    }
-   ],
-   "meses": [
-    "nov"
-   ],
-   "verificado": true,
-   "link_google": "https://www.google.com/travel/flights/search?tfs=GhoSCjIwMjYtMTEtMjBqBRIDRk9ScgUSA0dZTkIBAUgBmAEC&hl=pt-BR&curr=BRL",
-   "link_compra": "https://www.aviasales.com/search/FOR2011GYN07111?marker=677880&currency=brl",
-   "texto": "🚨 *O RADAR APITOU*\n\n✈️ Fortaleza (FOR) → Goiânia (GYN)\n💰 A partir de *R$ 780* o trecho\n⭐ ÓTIMA OPORTUNIDADE · 31% abaixo da média\n🛫 Azul · 1 parada\n\n*Datas de ida:*\nNovembro 2026: 04, 06, 07, 18, 20\n\n*Datas de volta:*\nNovembro 2026: 07, 09, 10, 16, 23, 27\n\n⚠️ Preço pode mudar a qualquer momento.\n\n✈️ Receba alertas no WhatsApp: https://bit.ly/radar085",
-   "telegram": true,
-   "conferido": {
-    "quando": "2026-10-09T23:03-03:00",
-    "preco": 821,
-    "status": "valendo"
    }
   },
   {

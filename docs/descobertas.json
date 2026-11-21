@@ -1,12 +1,11 @@
 {
- "atualizado": "2026-11-21T00:23+00:00",
+ "atualizado": "2026-11-21T01:34+00:00",
  "pistas": [
   "BSB",
   "CAY",
   "JDO",
   "LIS",
   "MAD",
-  "NYC",
   "POA",
   "REC",
   "RIO",
@@ -53,6 +52,19 @@
    "rastreada": true,
    "nome": "Porto Alegre",
    "pista": true
+  },
+  {
+   "iata": "BEL",
+   "ow": {
+    "preco": 895,
+    "ida": "2026-11-27",
+    "volta": "",
+    "paradas": 0,
+    "visto": "2026-11-21T01:22:01Z"
+   },
+   "rastreada": true,
+   "nome": "Belém",
+   "pista": false
   },
   {
    "iata": "MAO",
@@ -246,19 +258,6 @@
    "pista": false
   },
   {
-   "iata": "IMP",
-   "rt": {
-    "preco": 2638,
-    "ida": "2026-12-22",
-    "volta": "2026-12-26",
-    "paradas": 2,
-    "visto": "2026-11-17T00:36:27Z"
-   },
-   "rastreada": false,
-   "nome": "IMP",
-   "pista": false
-  },
-  {
    "iata": "LIL",
    "ow": {
     "preco": 3130,
@@ -311,19 +310,6 @@
    "pista": false
   },
   {
-   "iata": "NYC",
-   "rt": {
-    "preco": 5925,
-    "ida": "2027-05-01",
-    "volta": "2027-05-30",
-    "paradas": 3,
-    "visto": "2026-11-17T00:44:06Z"
-   },
-   "rastreada": true,
-   "nome": "Nova York",
-   "pista": true
-  },
-  {
    "iata": "VIE",
    "rt": {
     "preco": 5952,
@@ -346,11 +332,11 @@
     "visto": "2026-11-20T11:38:17Z"
    },
    "ow": {
-    "preco": 2620,
-    "ida": "2026-12-16",
+    "preco": 2124,
+    "ida": "2026-12-26",
     "volta": "",
-    "paradas": 0,
-    "visto": "2026-11-18T12:25:03Z"
+    "paradas": 2,
+    "visto": "2026-11-21T00:30:58Z"
    },
    "rastreada": true,
    "nome": "Lisboa",

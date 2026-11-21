@@ -83,7 +83,7 @@
   "FLN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (18 de ~90 dias)"
+   "motivo": "poucos voos (20 de ~90 dias)"
   },
   "VIX": {
    "prioridade": "alta",
@@ -103,7 +103,7 @@
   "FEN": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (10 de ~90 dias)"
+   "motivo": "poucos voos (20 de ~90 dias)"
   },
   "JDO": {
    "prioridade": "turbo",
@@ -126,14 +126,14 @@
    "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "PAR": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "ROM": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "LON": {
    "prioridade": "normal",
@@ -168,7 +168,7 @@
   "SCL": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (15 de ~90 dias)"
+   "motivo": "poucos voos (14 de ~90 dias)"
   },
   "LIM": {
    "prioridade": "baixa",
@@ -203,7 +203,7 @@
   "SID": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (6 de ~90 dias)"
+   "motivo": "poucos voos (5 de ~90 dias)"
   },
   "VCP": {
    "prioridade": "alta",
@@ -246,9 +246,9 @@
    "motivo": "padrão"
   },
   "MIL": {
-   "prioridade": "normal",
-   "auto": "normal",
-   "motivo": "padrão"
+   "prioridade": "baixa",
+   "auto": "baixa",
+   "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "FRA": {
    "prioridade": "baixa",
@@ -281,24 +281,24 @@
    "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   }
  },
- "quando": "2026-11-21T13:02-03:00",
+ "quando": "2026-11-21T14:42-03:00",
  "ultimo_lote": [
-  "MAD",
-  "PHB",
-  "CGR",
-  "BPS",
-  "UDI",
-  "SID",
-  "PMW",
-  "MIL",
-  "ROM",
-  "PAR",
-  "BCN",
-  "CWB",
-  "FLN",
-  "FEN",
-  "NAT",
-  "ORL",
-  "SCL"
+  "CAY",
+  "SSA",
+  "RIO",
+  "AJU",
+  "BHZ",
+  "REC",
+  "BEL",
+  "JDO",
+  "NYC",
+  "LIM",
+  "PTY",
+  "CUN",
+  "MVD",
+  "OPO",
+  "PUJ",
+  "MCZ",
+  "MAO"
  ]
 }

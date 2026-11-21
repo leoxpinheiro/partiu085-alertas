@@ -48,7 +48,7 @@
   "AJU": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "8 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "9 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "SLZ": {
    "prioridade": "alta",
@@ -126,14 +126,14 @@
    "motivo": "pouca oferta e nenhum alerta em 30 dias"
   },
   "PAR": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "ROM": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "LON": {
    "prioridade": "baixa",
@@ -228,7 +228,7 @@
   "BPS": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "6 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "7 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "PMW": {
    "prioridade": "baixa",
@@ -241,9 +241,9 @@
    "motivo": "8 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   },
   "BCN": {
-   "prioridade": "baixa",
-   "auto": "baixa",
-   "motivo": "pouca oferta e nenhum alerta em 30 dias"
+   "prioridade": "normal",
+   "auto": "normal",
+   "motivo": "padrão"
   },
   "MIL": {
    "prioridade": "normal",
@@ -273,32 +273,32 @@
   "CAY": {
    "prioridade": "baixa",
    "auto": "baixa",
-   "motivo": "poucos voos (7 de ~90 dias)"
+   "motivo": "poucos voos (4 de ~90 dias)"
   },
   "PHB": {
    "prioridade": "turbo",
    "auto": "turbo",
-   "motivo": "3 alertas em 30 dias: promoção relâmpago, olha mais vezes"
+   "motivo": "4 alertas em 30 dias: promoção relâmpago, olha mais vezes"
   }
  },
- "quando": "2026-11-21T06:19-03:00",
+ "quando": "2026-11-21T08:00-03:00",
  "ultimo_lote": [
-  "CAY",
-  "AJU",
-  "BHZ",
-  "REC",
-  "BEL",
-  "JDO",
-  "PHB",
-  "CGR",
-  "BPS",
-  "UDI",
-  "MIL",
-  "CWB",
-  "NAT",
-  "VCP",
-  "ROM",
-  "PAR",
-  "BCN"
+  "SSA",
+  "RIO",
+  "THE",
+  "LIS",
+  "BUE",
+  "MIA",
+  "BSB",
+  "JPA",
+  "POA",
+  "GYN",
+  "SAO",
+  "MCZ",
+  "MAO",
+  "VIX",
+  "SLZ",
+  "SDQ",
+  "NYC"
  ]
 }

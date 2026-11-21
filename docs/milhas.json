@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-20T23:03-03:00",
+ "atualizado": "2026-11-21T00:15-03:00",
  "fontes": [
   {
    "fonte": "Passageiro de Primeira",
@@ -82,7 +82,7 @@
   {
    "fonte": "Google Notícias",
    "url": "Google Notícias",
-   "itens": 25,
+   "itens": 26,
    "ok": true
   },
   {
@@ -99,9 +99,9 @@
   },
   {
    "fonte": "Google Notícias",
-   "url": "Google Notícias",
-   "itens": 19,
-   "ok": true
+   "url": "https://news.google.com/rss/search",
+   "ok": false,
+   "erro": "429 Client Error: Too Many Requests for url: https://news.google.com/rss/search?hl=pt-BR&gl=BR&ceid=BR:pt-419&q=compra+d"
   },
   {
    "fonte": "Google Notícias",
@@ -681,7 +681,7 @@
    ],
    "encontrado": "2026-11-18T13:22-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n💳 Inter Loop → LATAM Pass\n🎁 Até *25% de bônus* na transferência\n⏰ Válido até 20/11\n\n⚠️ O bônus costuma depender do seu clube/categoria. Confira as regras antes de transferir.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "clube",
@@ -1369,7 +1369,7 @@
    ],
    "encontrado": "2026-11-16T19:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Azul oferece 10% de desconto na emissão de passagens para a Europa com pontos\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1391,7 +1391,7 @@
    ],
    "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Como emitir voos nacionais a partir de 7.500 milhas AAdvantage\n🎟️ A partir de *7.500 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1415,7 +1415,7 @@
    ],
    "encontrado": "2026-11-18T13:56-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Resgate passagens a partir de 3.000 pontos Azul Fidelidade + taxas\n🎟️ A partir de *3.000 milhas* · Azul Fidelidade\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1439,7 +1439,7 @@
    ],
    "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Gol para Fortaleza a partir de 17 mil milhas Smiles o trecho\n🎟️ A partir de *17.000 milhas* · Smiles\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "id": "tg-0a3bba7af3",
@@ -1465,7 +1465,7 @@
    "iata": "JDO",
    "destino": "Juazeiro do Norte",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Juazeiro do Norte por 9.898 milhas LATAM Pass\n🎟️ A partir de *9.898 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "id": "tg-3eea72a873",
@@ -1491,7 +1491,7 @@
    "iata": "PHB",
    "destino": "Parnaíba",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Fortaleza → Parnaíba por 5.934 milhas LATAM Pass\n🎟️ A partir de *5.934 milhas* · LATAM Pass\n📍 Com saída de Fortaleza\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1514,7 +1514,7 @@
    ],
    "encontrado": "2026-11-16T18:53-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Floripa! Voos diretos para Florianópolis por R$ 134 ou 5 mil milhas o trecho mais taxas\n🎟️ A partir de *5.000 milhas*\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1538,7 +1538,7 @@
    ],
    "encontrado": "2026-11-16T15:52-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Muito barato! Latam Pass tem voos a partir de R$ 47 ou 2 mil milhas o trecho mais taxas\n🎟️ A partir de *2.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1562,7 +1562,7 @@
    ],
    "encontrado": "2026-11-17T15:26-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Alerta PPV! Confira passagens na Smiles a partir de 6.900 milhas + taxas\n🎟️ A partir de *6.900 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1586,7 +1586,7 @@
    ],
    "encontrado": "2026-11-16T15:52-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Latam de São Paulo para Aracaju a partir de R$ 286 ou 12 mil milhas o trecho mais taxas\n🎟️ A partir de *12.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "bonus",
@@ -1637,7 +1637,7 @@
    ],
    "encontrado": "2026-11-16T12:57-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Voos da Latam para Miami a partir de R$ 1.142 ou 48 mil milhas o trecho mais taxas\n🎟️ A partir de *48.000 milhas* · LATAM Pass\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "compra",
@@ -1662,7 +1662,7 @@
    ],
    "encontrado": "2026-11-18T17:04-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Azul Fidelidade\n💸 Milheiro Azul a partir de R$ 12,73 enviando pontos UAU Caixa mais dinheiro com bônus\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "compra",
@@ -1687,7 +1687,7 @@
    ],
    "encontrado": "2026-11-16T12:57-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Azul Fidelidade\n💸 Transfira pontos Livelo + dinheiro para a Azul – milheiro a partir de R$ 12,71\n🔥 Até *90%* de vantagem\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "clube",
@@ -1787,7 +1787,7 @@
    ],
    "encontrado": "2026-11-16T11:11-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar Azul Fidelidade\n💸 Envie pontos Livelo mais dinheiro para a Azul com bônus e consiga o milheiro a partir de R$ 12,70\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "bonus",
@@ -1841,7 +1841,7 @@
    ],
    "encontrado": "2026-11-16T11:11-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n🛒 Promoção pra comprar LATAM Pass\n💸 LATAM Pass oferece até 66% de desconto na compra de milhas\n🔥 Até *66%* de vantagem\n⏰ Válido até 20/11\n\n💡 Só compre se já tiver uma viagem em mente: milha parada perde valor.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
@@ -1865,7 +1865,7 @@
    ],
    "encontrado": "2026-11-16T08:02-03:00",
    "texto": "🚨 *O RADAR APITOU — MILHAS*\n\n✈️ Promoção da Smiles tem voos a partir de 5.800 milhas o trecho\n🎟️ A partir de *5.800 milhas* · Smiles\n\n⚠️ Disponibilidade em milhas some rápido. Confira no app do programa.\n\n📲 Grupo grátis: https://partiu.avancepro.app.br/g",
-   "ativa": true
+   "ativa": false
   },
   {
    "tipo": "passagem",
